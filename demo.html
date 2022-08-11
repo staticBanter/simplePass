@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>simplePass | Demo</title>
+</head>
+<body>
+    <header>
+        <div>
+            <h1>simplePass</h1>
+            <h2>Demo</h2>
+        </div>
+    </header>
+    <main>
+        <div>
+            <p>
+                <b>Password:</b>
+            </p>
+            <p id="displayPassword"></p>
+            <button id="copyPassword" type="button">Copy</button>
+        </div>
+        <form id="passwordForm">
+            <label>Lower Case
+                <input type="checkbox" form="passwordForm" name="lowerCase" />
+            </label>
+            <label>Upper Case
+                <input type="checkbox" form="passwordForm" name="upperCase" />
+            </label>
+            <label>Numbers
+                <input type="checkbox" form="passwordForm" name="numbers" />
+            </label>
+            <label>Punctuation
+                <input type="checkbox" form="passwordForm" name="punctuation" />
+            </label>
+            <label>Special Chars(Emojis, Unicode Symbols)
+                <input type="checkbox" form="passwordForm" name="special" />
+            </label>
+            <label>Memorable
+                <input type="checkbox" form="passwordForm" name="memorable" />
+            </label>
+            <button type="submit" form="passwordForm">Generate</button>
+        </form>
+    </main>
+</body>
+</html>
