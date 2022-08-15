@@ -1,0 +1,31 @@
+{
+  "devDependencies": {
+    "typescript": "^4.7.4"
+  },
+  "name": "simplepass",
+  "description": "simplePass is a Javascript password generator.",
+  "version": "1.0.0-Development",
+  "main": "bs-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/staticBanter/simplePass.git"
+  },
+  "keywords": [
+    "password",
+    "generator"
+  ],
+  "author": {
+    "name":"Jordan Vezina (staticBanter)",
+    "email": "staticbanter@gmail.com",
+    "url": "https://staticblogs.ca/users/staticBanter"
+  },
+  "license":"GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/staticBanter/simplePass/issues"
+  },
+  "homepage": "https://github.com/staticBanter/simplePass#readme",
+  "private":true
+}
