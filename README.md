@@ -76,7 +76,7 @@ Directory structure after downloading ```build/simplePass.js```
 // yourProjectScript.js
 
 // Import simplePass
-import {simplePass} from "../build/simplePass.js";
+import simplePass from "yourLocalPathing/simplePass/simplePass.js";
 
 // Generate password using only lowercase.
 const lowercasePass = simplePass({
