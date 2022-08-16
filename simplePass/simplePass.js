@@ -1,6 +1,7 @@
 'use strict';
 import E_errors from "./enums/errors.enum.js";
 import generateCharCode from "./helpers/generateCharCode.helper.js";
+import conformPassword from "./helpers/conformPassword.helper.js";
 export default function simplePass(modifier = {
     length: 8,
     lowercase: true,
@@ -42,5 +43,5 @@ export default function simplePass(modifier = {
     else {
         return;
     }
-    return password;
+    return conformPassword(password, modifier);
 }

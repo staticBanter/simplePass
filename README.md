@@ -18,7 +18,7 @@ simplePass
 
 # About
 
-> v:2.0.0-Development
+> v:2.1.0-Development
 
 simplePass is a JavaScript password generator.
 
@@ -57,9 +57,6 @@ simplePass may be called a variety of modifiers to change the desired passwords 
 
 > [!CAUTION]
 > The *memorable* option currently does not work and will be silently ignored.
-
-> [!WARNING]
-> Currently simplePass does not check if the output conforms to the modifications set by the user. This could lead to a password being generated that does not contain one of the selected modifications.
 
 # Examples
 

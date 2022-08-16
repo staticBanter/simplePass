@@ -6,6 +6,7 @@
 import I_passwordModifier from "./interfaces/passwordModifier.interface.js";
 import E_errors from "./enums/errors.enum.js";
 import generateCharCode from "./helpers/generateCharCode.helper.js";
+import conformPassword from "./helpers/conformPassword.helper.js";
 
 /**
  * simplePass main function.
@@ -70,6 +71,6 @@ export default function simplePass(
         return;
     }
 
-    return password;
+    return conformPassword(password,modifier);
 
 }
