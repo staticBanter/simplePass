@@ -1,4 +1,4 @@
-import simplePass from "../build/simplePass.js";
+import simplePass from "../simplePass/simplePass.js";
 const assert = chai.assert;
 
 describe('simplePass | Genereate Lowercase Passwords',function(){
