@@ -1,12 +1,4 @@
 'use strict';
-/**
- * Generates a char code the confroms to the required modifications
- * set by the *modifier* parameter.
- *
- * @function generateCharCode
- * @param {I_passwordModifier} modifier The avaliale password modifications. See README.md for more information about modifiers.
- * @returns {number} A charcode that conforms to the required modifications.
- */
 export default function generateCharCode(modifier) {
     const charCode = self.crypto.getRandomValues(new Uint8Array(1))[0];
     if (modifier.lowercase

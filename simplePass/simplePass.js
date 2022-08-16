@@ -1,16 +1,6 @@
 'use strict';
 import E_errors from "./enums/errors.enum.js";
 import generateCharCode from "./helpers/generateCharCode.helper.js";
-/**
- * simplePass main function.
- * This function will return a *password* string.
- *
- * @function simplePass
- * @type {Function}
- * @param {I_passwordModifier} modifier The avaliale password modifications. See README.md for more information about modifiers.
- * @returns {string} The generated password.
- *
- */
 export default function simplePass(modifier = {
     length: 8,
     lowercase: true,
@@ -54,7 +44,6 @@ export default function simplePass(modifier = {
         return createRandomPassword();
     }
     else {
-        // TODO
         return;
     }
 }

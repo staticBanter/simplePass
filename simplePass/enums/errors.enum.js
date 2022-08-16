@@ -1,5 +1,4 @@
 'use strict';
-/** @enum {string} */
 var E_errors;
 (function (E_errors) {
     E_errors["invalidLength"] = "sP_E.1: The given length was not valid. A valid input length must be a number between 1 and 256.";
