@@ -4,7 +4,7 @@
   },
   "name": "simplepass",
   "description": "simplePass is a Javascript password generator.",
-  "version": "1.0.0-Development",
+  "version": "1.0.1-Development",
   "main": "bs-config.js",
   "directories": {
     "test": "test"

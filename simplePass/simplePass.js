@@ -33,17 +33,14 @@ export default function simplePass(modifier = {
     else if (typeof (modifier.length) !== 'number') {
         throw new Error(E_errors.invalidLength + ' | 2');
     }
-    function createRandomPassword() {
-        let password = '';
+    let password = '';
+    if (!modifier.memorable) {
         while (password.length < modifier.length) {
             password += String.fromCharCode(generateCharCode(modifier));
         }
-        return password;
-    }
-    if (!modifier.memorable) {
-        return createRandomPassword();
     }
     else {
         return;
     }
+    return password;
 }

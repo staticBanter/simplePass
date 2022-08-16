@@ -59,22 +59,17 @@ export default function simplePass(
         throw new Error(E_errors.invalidLength + ' | 2');
     }
 
-    function createRandomPassword():string {
-
-        let password:string  = '';
-
-        while(password.length < modifier.length){ password += String.fromCharCode(generateCharCode(modifier)); }
-
-        return password;
-    }
+    let password:string  = '';
 
     if(!modifier.memorable){
 
-        return createRandomPassword();
+        while(password.length < modifier.length){ password += String.fromCharCode(generateCharCode(modifier)); }
 
     }else{
         // TODO
         return;
     }
+
+    return password;
 
 }
