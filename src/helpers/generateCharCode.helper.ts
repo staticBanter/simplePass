@@ -60,18 +60,19 @@ export default function generateCharCode(modifier:I_passwordModifier):number{
         )
     ){
         return charCode;
-    }else if(
-        modifier.special
-        && (
-            (
-                charCode >= 0
-                && charCode <= 32
-            )
-            || charCode >= 127
-        )
-    ){
-        return charCode;
     }
+    // }else if(
+    //     modifier.special
+    //     && (
+    //         (
+    //             charCode >= 0
+    //             && charCode <= 32
+    //         )
+    //         || charCode >= 127
+    //     )
+    // ){
+    //     return charCode;
+    // }
 
     return generateCharCode(modifier);
 }

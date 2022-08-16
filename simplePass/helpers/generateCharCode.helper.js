@@ -27,11 +27,5 @@ export default function generateCharCode(modifier) {
                 && charCode <= 126))) {
         return charCode;
     }
-    else if (modifier.special
-        && ((charCode >= 0
-            && charCode <= 32)
-            || charCode >= 127)) {
-        return charCode;
-    }
     return generateCharCode(modifier);
 }
