@@ -15,8 +15,7 @@ export default function simplePass(modifier = {
         || typeof modifier !== 'object') {
         throw new Error(E_errors.invalidModifier);
     }
-    if (!modifier.length
-        && !modifier.lowercase
+    if (!modifier.lowercase
         && !modifier.uppercase
         && !modifier.numbers
         && !modifier.punctuation

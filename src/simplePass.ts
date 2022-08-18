@@ -38,8 +38,7 @@ export default function simplePass(
     }
 
     if(
-        !modifier.length
-        && !modifier.lowercase
+        !modifier.lowercase
         && !modifier.uppercase
         && !modifier.numbers
         && !modifier.punctuation
