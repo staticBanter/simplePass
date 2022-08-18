@@ -31,12 +31,7 @@ describe('simplePass | Genereate An Uppercase Password Of Defualt Length',functi
 
     const password = simplePass({
         length:8,
-        lowercase:false,
         uppercase:true,
-        numbers:false,
-        punctuation:false,
-        special:false,
-        memorable:false
     });
 
     it('should create a password containing only uppercase characters', function(){
@@ -65,12 +60,7 @@ describe('simplePass | Genereate A Number Password Of Defualt Length',function()
 
     const password = simplePass({
         length:8,
-        lowercase:false,
-        uppercase:false,
         numbers:true,
-        punctuation:false,
-        special:false,
-        memorable:false
     });
 
     it('should create a password containing only numbers', function(){
@@ -99,12 +89,7 @@ describe('simplePass | Genereate A Punctuation Password Of Defualt Length',funct
 
     const password = simplePass({
         length:8,
-        lowercase:false,
-        uppercase:false,
-        numbers:false,
         punctuation:true,
-        special:false,
-        memorable:false
     });
 
     it('should create a password containing only punctuation', function(){
@@ -141,8 +126,6 @@ describe('simplePass | Genereate A Random Password Of Defualt Length',function()
         uppercase:true,
         numbers:true,
         punctuation:true,
-        special:false,
-        memorable:false
     });
 
     it('should create a password containing punctuation', function(){
