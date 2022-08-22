@@ -8,7 +8,7 @@ export default function conformPassword(password, modifier) {
             activeValuesCount++;
     });
     if (activeValuesCount > password.length) {
-        throw new Error(E_errors.invalidNumberOfSelectedModifers);
+        throw new Error(E_errors.invalidNumberOfSelectedModifiers);
     }
     if (password.length > modifier.length) {
         const slicePoint = Math.round(Math.random() * (password.length - 1) + 1);
@@ -78,6 +78,14 @@ export default function conformPassword(password, modifier) {
                 memorable: false
             }))
             + password.slice(slicePoint + 1, password.length));
+        return conformPassword(newPassword, modifier);
+    }
+    if (modifier.w_between
+        && !new RegExp(/[\s]/g).test(password)) {
+        const slicePoint = Math.round(Math.random() * (password.length - 3) + 1);
+        const newPassword = (password.slice(0, slicePoint)
+            + " "
+            + password.slice(slicePoint + 1, (password.length)));
         return conformPassword(newPassword, modifier);
     }
     return password;

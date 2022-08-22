@@ -22,11 +22,6 @@ export default function simplePass(
     modifier:I_passwordModifier = {
         length:8,
         lowercase:true,
-        uppercase:false,
-        numbers:false,
-        punctuation:false,
-        special:false,
-        memorable:false
     }
 ){
 
@@ -37,6 +32,11 @@ export default function simplePass(
         throw new Error(E_errors.invalidModifier)
     }
 
+    /**
+     * * Note: Whitespace options are not check,
+     * because they must always be paired with one
+     * of these options.
+     */
     if(
         !modifier.lowercase
         && !modifier.uppercase
@@ -50,20 +50,32 @@ export default function simplePass(
 
     if(
         !modifier.length
-        || modifier.length < 1
+        || modifier.length < 3
+        || modifier.length > 256
     ){
-        throw new Error(E_errors.invalidLength + ' | 1');
+        throw new Error(E_errors.invalidLength);
     }else if(typeof(modifier.length) === 'string'){
         modifier.length = Number.parseInt(modifier.length);
     }else if(typeof(modifier.length) !== 'number'){
-        throw new Error(E_errors.invalidLength + ' | 2');
+        throw new Error(E_errors.invalidLength);
     }
 
     let password:string  = '';
 
     if(!modifier.memorable){
 
-        while(password.length < modifier.length){ password += String.fromCharCode(generateCharCode(modifier)); }
+        const limit:number = (modifier.length - 1);
+
+        password += String.fromCharCode(generateCharCode(modifier,{beginning:true}));
+
+        while(
+            password.length < limit
+            && password.length < 256
+        ){
+            password += String.fromCharCode(generateCharCode(modifier));
+        }
+
+        password += String.fromCharCode(generateCharCode(modifier,{end:true}));
 
     }else{
         // TODO

@@ -8,4 +8,7 @@ export default interface I_passwordModifier {
     punctuation?:boolean,
     special?:boolean,
     memorable?:boolean,
+    w_beginning?:boolean,
+    w_end?:boolean,
+    w_between?:boolean,
 }

@@ -1,18 +1,21 @@
 'use strict';
 
 import I_passwordModifier  from "../interfaces/passwordModifier.interface.js";
+import I_charCodeGenerationFlag from "../interfaces/charCodeGenerationFlag.interface.js";
 
 /**
  * Generates a char code the confroms to the required modifications
  * set by the *modifier* parameter.
  *
  * @function generateCharCode
- * @param {I_passwordModifier} modifier The avaliale password modifications. See README.md for more information about modifiers.
- * @returns {number} A charcode that conforms to the required modifications.
+ * @param {I_passwordModifier} modifier The available password modifications. See README.md for more information about modifiers.
+ * @param {I_charCodeGenerationFlag} flag A flag object used to indicate specific locations in the password
+ * such as the beginning and end.
+ * @returns {number} A charCode that conforms to the required modifications.
  */
-export default function generateCharCode(modifier:I_passwordModifier):number{
+export default function generateCharCode(modifier:I_passwordModifier,flag?:I_charCodeGenerationFlag):number{
 
-    const charCode:number = self.crypto.getRandomValues(new Uint8Array(1))[0]
+    const charCode:number = self.crypto.getRandomValues(new Uint8Array(1))[0];
 
     if(
         modifier.lowercase
@@ -60,6 +63,28 @@ export default function generateCharCode(modifier:I_passwordModifier):number{
         )
     ){
         return charCode;
+    }else if(
+        charCode === 32
+    ){
+
+        if(
+            modifier.w_between
+            && !flag
+        ){
+            return charCode;
+        }else if(
+            (
+                modifier.w_beginning
+                || modifier.w_end
+            )
+            && (
+                flag?.beginning
+                || flag?.end
+            )
+        ){
+            return charCode;
+        }
+
     }
     // }else if(
     //     modifier.special
@@ -74,5 +99,5 @@ export default function generateCharCode(modifier:I_passwordModifier):number{
     //     return charCode;
     // }
 
-    return generateCharCode(modifier);
+    return generateCharCode(modifier,flag);
 }

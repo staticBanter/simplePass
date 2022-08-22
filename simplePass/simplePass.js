@@ -5,11 +5,6 @@ import conformPassword from "./helpers/conformPassword.helper.js";
 export default function simplePass(modifier = {
     length: 8,
     lowercase: true,
-    uppercase: false,
-    numbers: false,
-    punctuation: false,
-    special: false,
-    memorable: false
 }) {
     if (!modifier
         || typeof modifier !== 'object') {
@@ -24,20 +19,25 @@ export default function simplePass(modifier = {
         throw new Error(E_errors.invalidModifier);
     }
     if (!modifier.length
-        || modifier.length < 1) {
-        throw new Error(E_errors.invalidLength + ' | 1');
+        || modifier.length < 3
+        || modifier.length > 256) {
+        throw new Error(E_errors.invalidLength);
     }
     else if (typeof (modifier.length) === 'string') {
         modifier.length = Number.parseInt(modifier.length);
     }
     else if (typeof (modifier.length) !== 'number') {
-        throw new Error(E_errors.invalidLength + ' | 2');
+        throw new Error(E_errors.invalidLength);
     }
     let password = '';
     if (!modifier.memorable) {
-        while (password.length < modifier.length) {
+        const limit = (modifier.length - 1);
+        password += String.fromCharCode(generateCharCode(modifier, { beginning: true }));
+        while (password.length < limit
+            && password.length < 256) {
             password += String.fromCharCode(generateCharCode(modifier));
         }
+        password += String.fromCharCode(generateCharCode(modifier, { end: true }));
     }
     else {
         return;

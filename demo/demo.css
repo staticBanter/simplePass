@@ -12,6 +12,7 @@
     word-wrap: anywhere;
     width: 80%;
     margin-left: 0.5rem;
+    white-space: pre;
 }
 
 #generateButton{
@@ -31,4 +32,8 @@
 
 #passwordForm > * + *{
     margin-top: 0.5rem;
+}
+
+*[hidden]{
+    display: none;
 }

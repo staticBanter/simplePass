@@ -16,7 +16,7 @@ export default function conformPassword(password:string,modifier:I_passwordModif
         if(value) activeValuesCount++;
     });
 
-    if(activeValuesCount > password.length){ throw new Error(E_errors.invalidNumberOfSelectedModifers); }
+    if(activeValuesCount > password.length){ throw new Error(E_errors.invalidNumberOfSelectedModifiers); }
 
     if(password.length > modifier.length){
 
@@ -124,6 +124,23 @@ export default function conformPassword(password:string,modifier:I_passwordModif
         );
 
         return conformPassword(newPassword,modifier);
+    }
+
+    if(
+        modifier.w_between
+        && !new RegExp(/[\s]/g).test(password)
+    ){
+
+        const slicePoint:number = Math.round(Math.random() * (password.length - 3) + 1);
+
+        const newPassword:string = (
+            password.slice(0,slicePoint)
+            + " "
+            + password.slice(slicePoint+1,(password.length))
+        );
+
+        return conformPassword(newPassword,modifier);
+
     }
 
     return password;

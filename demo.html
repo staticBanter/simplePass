@@ -47,10 +47,25 @@
             <label>Memorable:
                 <input type="checkbox" form="passwordForm" name="memorable" disabled/>
             </label>
+            <label>Allow Whitespace:
+                <input type="checkbox" form="passwordForm" name="allow_whitespace">
+            </label>
+            <fieldset id="whitespaceOptions" name="whitespaceOptions" form="passwordForm">
+                <legend>Whitespace Options</legend>
+                <label>Beginning of Password:
+                    <input type="checkbox" form="passwordForm" name="w_beginning" />
+                </label>
+                <label>End of Password:
+                    <input type="checkbox" form="passwordForm" name="w_end" />
+                </label>
+                <label>Between:
+                    <input type="checkbox" form="passwordForm" name="w_between" />
+                </label>
+            </fieldset>
         </form>
     </main>
     <footer>
-        <p>Version:2.1.0-Development</p>
+        <p>Version:2.2.0-Development</p>
     </footer>
 </body>
 </html>

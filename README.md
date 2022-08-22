@@ -18,7 +18,7 @@ simplePass
 
 # About
 
-> v:2.1.0-Development
+> v:2.2.0-Development
 
 simplePass is a JavaScript password generator.
 
@@ -41,16 +41,18 @@ const password = simplePass(modifier)
 simplePass may be called a variety of modifiers to change the desired passwords outcome. These modifiers are passed as an object to simplePass.
 
 * length:*number* - The length of the password (default: 8)
-* min: 1
-* max 256
+  * min: 1
+  * max 256
 * lowercase:*boolean* - Allow lowercase characters (default: true)
 * uppercase:*boolean* - Allow uppercase characters (default: false)
 * numbers:*boolean* - Allow numbers (default: false)
 * punctuation:*boolean* - Allow punctuation (default: false)
-* special:*boolean* - Allow special characters (default: false)
-* memorable: *boolean* - Create a password using a series of regular words (ie HorseRulerBatteryStapler) (default: false).
-> [!NOTE]
-> White-space characters are under the *special* modification.
+* special:*boolean* - Allow special characters (default: false) **disabled**
+* memorable: *boolean* - Create a password using a series of regular words (ie HorseRulerBatteryStapler) (default: false). **disabled**
+* **Whitespace Options**
+* w_beginning: *boolean* - Allow whitespace at the beginning of a password.
+* w_end: *boolean* - Allow whitespace at the end of a password.
+* w_between: *boolean* - Ensure a whitespace character between the beginning and end of a password.
 
 > [!CAUTION]
 > The *special* option currently does not work and will be silently ignored.
@@ -68,7 +70,8 @@ Directory structure after downloading ```build/simplePass.js```
 | +-- index.html
 | +-- css
 | +-- js
-| | +-- simplePass.js
+| | +-- simplePass
+| | | +-- simplePass.js
 | | +-- yourProjectScript.js
 ```
 
