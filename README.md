@@ -114,10 +114,8 @@ simplePass is also built using [Typescript](https://www.typescriptlang.org/) and
 ## Download/Clone
 
 Currently this repo is only available through GitHub. You can find the repo at:
-* GitHub
-* [View Repo](https://github.com/staticBanter/simplePass)
-* [HTTPS](https://github.com/staticBanter/simplePass.git)
-* [SSH](git@github.com:staticBanter/simplePass.git)
+* [Github | staticBanter | simplePass](https://github.com/staticBanter/simplePass)
+
 
 ## Install Packages
 
