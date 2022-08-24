@@ -107,21 +107,24 @@ const randomPass = simplePass({
 Due to simplePass being module based you will need a local server to host files (See: [Mozilla Developer | Reason: CORS request not HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS/Errors/CORSRequestNotHttp)). We recommend the following:
 * [Browser-Sync](https://browsersync.io/)
 
-simplePass is also built using [Typescript](https://www.typescriptlang.org/) and you will need some form of installation to compile typescript files into Javascript. We recommend using:
+simplePass is also built using [Typescript](https://www.typescriptlang.org/) and you will need some form of installation to compile typescript files into Javascript. We recommend using the NPM distribution of Typescript, this means you will need:
 * [NodeJS](https://nodejs.org/en/)
 * and its package manager [NPM](https://www.npmjs.com/)
+
+Then you will be able to [install Typescript through NPM globally](https://www.npmjs.com/package/typescript#installing) or install the package locally scoped to the project; see [Install Packages | Via NPM](#via-npm).
 
 ## Download/Clone
 
 Currently this repo is only available through GitHub. You can find the repo at:
 * [Github | staticBanter | simplePass](https://github.com/staticBanter/simplePass)
 
-
 ## Install Packages
+
+Ensure you have navigated to the project directory, then proceed to install the packages.
 
 ### Via NPM
 
-If you do not have typescript installed on your machine you may install a local project version via NPM
+If you do not have Typescript installed on your machine you may install a local project version via NPM
 
 ```javascript
 npm install
