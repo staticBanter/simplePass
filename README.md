@@ -43,11 +43,11 @@ simplePass may be called a variety of modifiers to change the desired passwords 
 * length:*number* - The length of the password (default: 8)
   * min: 1
   * max 256
-* lowercase:*boolean* - Allow lowercase characters (default: true)
-* uppercase:*boolean* - Allow uppercase characters (default: false)
-* numbers:*boolean* - Allow numbers (default: false)
-* punctuation:*boolean* - Allow punctuation (default: false)
-* special:*boolean* - Allow special characters (default: false) **disabled**
+* lowercase:*boolean* - Ensure lowercase characters (default: true)
+* uppercase:*boolean* - Ensure uppercase characters (default: false)
+* numbers:*boolean* - Ensure numbers (default: false)
+* punctuation:*boolean* - Ensure punctuation (default: false)
+* special:*boolean* - Ensure special characters (default: false) **disabled**
 * memorable: *boolean* - Create a password using a series of regular words (ie HorseRulerBatteryStapler) (default: false). **disabled**
 * **Whitespace Options**
 * w_beginning: *boolean* - Allow whitespace at the beginning of a password.
