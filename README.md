@@ -29,11 +29,11 @@ To include simplePass in your project follow these steps:
 1. Download the ```simplePass``` directory.
 2. simplePass is built using *ESNext* Modules imports so in your project you will have to import simplePass like so:
 ```javascript
-import * as simplePass from 'yourLocalPathing/simplePass/simplePass.js'
+import * as simplePass from 'yourLocalPathing/simplePass/simplePass.js';
 ```
 1. Call simplePass like so 
 ```javascript
-const password = simplePass(modifier)
+const password = simplePass(modifier);
 ```
 
 # Modifier(Options)
