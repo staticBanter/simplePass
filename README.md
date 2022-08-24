@@ -84,12 +84,7 @@ import simplePass from "yourLocalPathing/simplePass/simplePass.js";
 // Generate password using only lowercase.
 const lowercasePass = simplePass({
   length:8,
-  lowercase:true,
-  uppercase:false,
-  numbers:false,
-  punctuation:false,
-  special:false,
-  memorable:false
+  lowercase:true
 });
 // outputs: esbcxvsr
 
@@ -100,8 +95,6 @@ const randomPass = simplePass({
   uppercase:true,
   numbers:true,
   punctuation:true,
-  special:false,
-  memorable:false
 });
 // outputs: "R\ucJ4/EG8oZVrH+uyQ
 
