@@ -41,7 +41,7 @@ const password = simplePass(modifier);
 simplePass may be called a variety of modifiers to change the desired passwords outcome. These modifiers are passed as an object to simplePass.
 
 * length:*number* - The length of the password (default: 8)
-  * min: 1
+  * min: 3
   * max 256
 * lowercase:*boolean* - Ensure lowercase characters (default: true)
 * uppercase:*boolean* - Ensure uppercase characters (default: false)
