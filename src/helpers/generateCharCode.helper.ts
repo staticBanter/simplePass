@@ -1,17 +1,24 @@
 'use strict';
+/**
+ * @file File containing code for the function that generates charCodes.
+ * @module generateCharCode
+ */
 
 import I_passwordModifier  from "../interfaces/passwordModifier.interface.js";
 import I_charCodeGenerationFlag from "../interfaces/charCodeGenerationFlag.interface.js";
 
 /**
- * Generates a char code the confroms to the required modifications
- * set by the *modifier* parameter.
+ * Generates a char code the conforms to the required modifications
+ * set by the `modifier` argument.
  *
  * @function generateCharCode
+ * @type {Function}
  * @param {I_passwordModifier} modifier The available password modifications. See README.md for more information about modifiers.
  * @param {I_charCodeGenerationFlag} flag A flag object used to indicate specific locations in the password
  * such as the beginning and end.
  * @returns {number} A charCode that conforms to the required modifications.
+ * @requires module:I_passwordModifier
+ * @requires module:I_charCodeGenerationFlag
  */
 export default function generateCharCode(modifier:I_passwordModifier,flag?:I_charCodeGenerationFlag):number{
 

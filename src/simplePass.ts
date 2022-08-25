@@ -1,6 +1,7 @@
 'use strict';
 /**
  * @file Main file for simplePass. Exports the simplePass function
+ * @module simplePass
  */
 
 import I_passwordModifier from "./interfaces/passwordModifier.interface.js";
@@ -9,14 +10,19 @@ import generateCharCode from "./helpers/generateCharCode.helper.js";
 import conformPassword from "./helpers/conformPassword.helper.js";
 
 /**
- * simplePass main function.
- * This function will return a *password* string.
+ * Returns a *password* string.
  *
  * @function simplePass
  * @type {Function}
- * @param {I_passwordModifier} modifier The avaliale password modifications. See README.md for more information about modifiers.
+ * @param {I_passwordModifier} modifier The available password modifications. See README.md for more information about modifiers.
  * @returns {string} The generated password.
- *
+ * @global
+ * @requires module:generateCharCode
+ * @requires module:conformPassword
+ * @requires module:E_errors
+ * @requires module:I_passwordModifier
+ * @throws Throws an error if the modifier is not properly formatted.
+ * @throws Throws an error if modifier length not properly formatted.
  */
 export default function simplePass(
     modifier:I_passwordModifier = {

@@ -1,5 +1,11 @@
 'use strict';
 
+/**
+ * Interface for object that represents a Password Modifier.
+ *
+ * @interface I_passwordModifier
+ * @module
+ */
 export default interface I_passwordModifier {
     length:number|string,
     lowercase?:boolean,

@@ -1,9 +1,27 @@
-"use strict";
+'use strict';
+/**
+ * @file File containing code for the function that conforms generated passwords.
+ * @module conformPassword
+ */
 
 import E_errors from "../enums/errors.enum.js";
 import I_passwordModifier from "../interfaces/passwordModifier.interface";
 import generateCharCode from "./generateCharCode.helper.js";
 
+
+/**
+ * Takes a given password and adjusts it until the password conforms with
+ * desired modifications.
+ *
+ * @function conformPassword
+ * @type {Function}
+ * @param {string} password The password to conform.
+ * @param {I_passwordModifier} modifier The modifiers the password must conform to.
+ * @returns {string} The conformed password
+ * @requires module:E_errors
+ * @requires module:I_passwordModifier
+ * @requires module:generateCharCode
+ */
 export default function conformPassword(password:string,modifier:I_passwordModifier):string{
 
     /**

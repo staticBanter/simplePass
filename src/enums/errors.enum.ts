@@ -1,7 +1,12 @@
 
 'use strict';
 
-/** @enum {string} */
+/**
+ * Enum for a set of possible errors.
+ *
+ * @enum {string}
+ * @module E_errors
+ */
 enum E_errors{
     invalidLength = 'sP_E.1: The given length was not valid. A valid input length must be a number between 1 and 256.',
     invalidModifier = 'sP_E.2: The given modifier was not valid',
