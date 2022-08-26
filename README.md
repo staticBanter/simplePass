@@ -29,7 +29,7 @@ To include simplePass in your project follow these steps:
 1. Download the ```simplePass``` directory.
 2. simplePass is built using *ESNext* Modules imports so in your project you will have to import simplePass like so:
 ```javascript
-import simplePass from './simplePass/simplePass.js';
+import * as simplePass from 'yourLocalPathing/simplePass/simplePass.js';
 ```
 1. Call simplePass like so 
 ```javascript
@@ -79,7 +79,7 @@ Directory structure after downloading ```build/simplePass.js```
 // yourProjectScript.js
 
 // Import simplePass
-import simplePass from "yourLocalPathing/simplePass/simplePass.js";
+import simplePass from "./simplePass/simplePass.js";
 
 // Generate password using only lowercase.
 const lowercasePass = simplePass({
