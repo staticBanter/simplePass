@@ -2,6 +2,7 @@
 import E_errors from "./enums/errors.enum.js";
 import generateCharCode from "./helpers/generateCharCode.helper.js";
 import conformPassword from "./helpers/conformPassword.helper.js";
+import L_allowedModifiers from "./lists/allowedModifiers.list.js";
 export default function simplePass(modifier = {
     length: 8,
     lowercase: true,
@@ -28,6 +29,12 @@ export default function simplePass(modifier = {
     }
     else if (typeof (modifier.length) !== 'number') {
         throw new Error(E_errors.invalidLength);
+    }
+    if ((Object.entries(modifier).filter((attVal) => {
+        return (L_allowedModifiers.includes(attVal[0]) && attVal[1]);
+    }).length) >
+        modifier.length) {
+        throw new Error(E_errors.invalidNumberOfSelectedModifiers);
     }
     let password = '';
     if (!modifier.memorable) {

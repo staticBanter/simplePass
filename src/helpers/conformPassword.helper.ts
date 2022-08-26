@@ -4,10 +4,8 @@
  * @module conformPassword
  */
 
-import E_errors from "../enums/errors.enum.js";
 import I_passwordModifier from "../interfaces/passwordModifier.interface";
 import generateCharCode from "./generateCharCode.helper.js";
-
 
 /**
  * Takes a given password and adjusts it until the password conforms with
@@ -18,35 +16,10 @@ import generateCharCode from "./generateCharCode.helper.js";
  * @param {string} password The password to conform.
  * @param {I_passwordModifier} modifier The modifiers the password must conform to.
  * @returns {string} The conformed password
- * @requires module:E_errors
  * @requires module:I_passwordModifier
  * @requires module:generateCharCode
  */
 export default function conformPassword(password:string,modifier:I_passwordModifier):string{
-
-    /**
-     * Since the length attribute does not count,
-     * the counter will start at -1.
-     */
-    let activeValuesCount:number = -1;
-
-    Object.values(modifier).forEach((value)=>{
-        if(value) activeValuesCount++;
-    });
-
-    if(activeValuesCount > password.length){ throw new Error(E_errors.invalidNumberOfSelectedModifiers); }
-
-    if(password.length > modifier.length){
-
-        const slicePoint:number = Math.round(Math.random() * (password.length - 1) + 1);
-
-        const newPassword:string = (
-            password.slice(0,slicePoint)
-            + password.slice(slicePoint+1,password.length)
-        );
-
-        return conformPassword(newPassword,modifier);
-    }
 
     if(
         modifier.lowercase
