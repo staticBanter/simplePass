@@ -18,7 +18,7 @@ simplePass
 
 # About
 
-> v:2.2.1-Development
+> v:2.2.2-Development
 
 simplePass is a JavaScript password generator.
 

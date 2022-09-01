@@ -1,77 +1,37 @@
 'use strict';
 import generateCharCode from "./generateCharCode.helper.js";
 export default function conformPassword(password, modifier) {
-    if (modifier.lowercase
-        && !new RegExp(/[a-z]/g).test(password)) {
-        const slicePoint = Math.round(Math.random() * (password.length - 1) + 1);
-        const newPassword = (password.slice(0, slicePoint)
-            + String.fromCharCode(generateCharCode({
-                length: 1,
-                lowercase: true,
-                uppercase: false,
-                numbers: false,
-                punctuation: false,
-                special: false,
-                memorable: false
-            }))
-            + password.slice(slicePoint + 1, password.length));
-        return conformPassword(newPassword, modifier);
-    }
-    if (modifier.uppercase
-        && !new RegExp(/[A-Z]/g).test(password)) {
-        const slicePoint = Math.round(Math.random() * (password.length - 1) + 1);
-        const newPassword = (password.slice(0, slicePoint)
-            + String.fromCharCode(generateCharCode({
-                length: 1,
-                lowercase: false,
-                uppercase: true,
-                numbers: false,
-                punctuation: false,
-                special: false,
-                memorable: false
-            }))
-            + password.slice(slicePoint + 1, password.length));
-        return conformPassword(newPassword, modifier);
-    }
-    if (modifier.numbers
-        && !new RegExp(/[0-9]/g).test(password)) {
-        const slicePoint = Math.round(Math.random() * (password.length - 1) + 1);
-        const newPassword = (password.slice(0, slicePoint)
-            + String.fromCharCode(generateCharCode({
-                length: 1,
-                lowercase: false,
-                uppercase: false,
-                numbers: true,
-                punctuation: false,
-                special: false,
-                memorable: false
-            }))
-            + password.slice(slicePoint + 1, password.length));
-        return conformPassword(newPassword, modifier);
-    }
-    if (modifier.punctuation
-        && !new RegExp(/[^A-Za-z0-9]/g).test(password)) {
-        const slicePoint = Math.round(Math.random() * (password.length - 1) + 1);
-        const newPassword = (password.slice(0, slicePoint)
-            + String.fromCharCode(generateCharCode({
-                length: 1,
-                lowercase: false,
-                uppercase: false,
-                numbers: false,
-                punctuation: true,
-                special: false,
-                memorable: false
-            }))
-            + password.slice(slicePoint + 1, password.length));
-        return conformPassword(newPassword, modifier);
-    }
-    if (modifier.w_between
-        && !new RegExp(/[\s]/g).test(password)) {
-        const slicePoint = Math.round(Math.random() * (password.length - 3) + 1);
-        const newPassword = (password.slice(0, slicePoint)
-            + " "
-            + password.slice(slicePoint + 1, (password.length)));
-        return conformPassword(newPassword, modifier);
+    const passwordConformationConstraints = {
+        lowercase: /[a-z]/g,
+        uppercase: /[A-Z]/g,
+        number: /[0-9]/g,
+        punctuation: /[^A-Za-z0-9]/g,
+        w_between: /[\s]/g,
+    };
+    for (const attribute in modifier) {
+        if (Object.keys(passwordConformationConstraints).includes(attribute)) {
+            if (!new RegExp(passwordConformationConstraints[attribute]).test(password)) {
+                let newChar = "";
+                let slicePoint = Math.round(Math.random() * (password.length - 1) + 1);
+                if (attribute === 'w_between') {
+                    slicePoint = Math.round(Math.random() * (password.length - 3) + 1);
+                    newChar = " ";
+                }
+                else {
+                    const missingModifier = {
+                        length: 1
+                    };
+                    Object.defineProperty(missingModifier, attribute, {
+                        value: true,
+                        writable: false,
+                    });
+                    newChar = String.fromCharCode(generateCharCode(missingModifier));
+                }
+                return conformPassword((password.slice(0, slicePoint)
+                    + newChar
+                    + password.slice(slicePoint + 1, password.length)), modifier);
+            }
+        }
     }
     return password;
 }
