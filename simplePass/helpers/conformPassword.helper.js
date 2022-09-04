@@ -4,7 +4,7 @@ export default function conformPassword(password, modifier) {
     const passwordConformationConstraints = {
         lowercase: /[a-z]/g,
         uppercase: /[A-Z]/g,
-        number: /[0-9]/g,
+        numbers: /[0-9]/g,
         punctuation: /[^A-Za-z0-9]/g,
         w_between: /[\s]/g,
     };
