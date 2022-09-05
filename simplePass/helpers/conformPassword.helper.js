@@ -9,7 +9,7 @@ export default function conformPassword(password, modifier) {
         w_between: /[\s]/g,
     };
     for (const attribute in modifier) {
-        if (Object.keys(passwordConformationConstraints).includes(attribute)) {
+        if (passwordConformationConstraints[attribute]) {
             if (!new RegExp(passwordConformationConstraints[attribute]).test(password)) {
                 let newChar = "";
                 let slicePoint = Math.round(Math.random() * (password.length - 1) + 1);

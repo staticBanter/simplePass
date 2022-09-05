@@ -36,7 +36,7 @@ export default function conformPassword(password:string,modifier:I_passwordModif
      * Generate the missing character and recheck for conformity.
      */
     for (const attribute in modifier) {
-        if(Object.keys(passwordConformationConstraints).includes(attribute)){
+        if(passwordConformationConstraints[attribute]){
             if(!new RegExp(passwordConformationConstraints[attribute]).test(password)){
 
                 let newChar:string = "";
