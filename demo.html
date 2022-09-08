@@ -52,12 +52,24 @@
             </label>
             <fieldset id="whitespaceOptions" name="whitespaceOptions" form="passwordForm">
                 <legend>Whitespace Options</legend>
-                <label>Beginning of Password:
-                    <input type="checkbox" form="passwordForm" name="w_beginning" />
-                </label>
-                <label>End of Password:
-                    <input type="checkbox" form="passwordForm" name="w_end" />
-                </label>
+                <fieldset>
+                    <legend>Beginning of Password:</legend>
+                    <label>Yes:
+                        <input type="checkbox" form="passwordForm" name="w_beginning" />
+                    </label>
+                    <label>Required:
+                        <input type="checkbox" form="passwordForm" name="w_beginning_required" />
+                    </label>
+                </fieldset>
+                <fieldset>
+                    <legend>End of Password:</legend>
+                    <label>Yes:
+                        <input type="checkbox" form="passwordForm" name="w_end" />
+                    </label>
+                    <label>Required:
+                        <input type="checkbox" form="passwordForm" name="w_end_required" />
+                    </label>
+                </fieldset>
                 <label>Between:
                     <input type="checkbox" form="passwordForm" name="w_between" />
                 </label>

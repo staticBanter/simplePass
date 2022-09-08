@@ -1,6 +1,18 @@
 'use strict';
 export default function generateCharCode(modifier, flag) {
     const charCode = self.crypto.getRandomValues(new Uint8Array(1))[0];
+    if (flag?.beginning) {
+        if (modifier.w_beginning
+            && modifier.w_beginning_required) {
+            return 32;
+        }
+    }
+    if (flag?.end) {
+        if (modifier.w_end
+            && modifier.w_end_required) {
+            return 32;
+        }
+    }
     if (modifier.lowercase
         && (charCode >= 97
             && charCode <= 122)) {

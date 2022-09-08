@@ -49,7 +49,9 @@ simplePass may be called a variety of modifiers to change the desired passwords 
 * memorable: *boolean* - Create a password using a series of regular words (ie HorseRulerBatteryStapler) (default: false). **disabled**
 * **Whitespace Options**
 * w_beginning: *boolean* - Allow whitespace at the beginning of a password.
+* w_beginning_required: *boolean* - Ensure a whitespace character at the beginning of a password.
 * w_end: *boolean* - Allow whitespace at the end of a password.
+* w_end_required: *boolean* - Ensure a whitespace character at the end of a password.
 * w_between: *boolean* - Ensure a whitespace character between the beginning and end of a password.
 
 > [!CAUTION]

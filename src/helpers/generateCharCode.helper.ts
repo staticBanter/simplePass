@@ -24,6 +24,34 @@ export default function generateCharCode(modifier:I_passwordModifier,flag?:I_cha
 
     const charCode:number = self.crypto.getRandomValues(new Uint8Array(1))[0];
 
+    /**
+     * Do things at the beginning of the password.
+     */
+    if(flag?.beginning){
+
+        if(
+            modifier.w_beginning
+            && modifier.w_beginning_required
+        ){
+            return 32;
+        }
+
+    }
+
+    /**
+     * Do things at the end of the password.
+     */
+    if(flag?.end){
+
+        if(
+            modifier.w_end
+            && modifier.w_end_required
+        ){
+            return 32;
+        }
+
+    }
+
     if(
         modifier.lowercase
         && (

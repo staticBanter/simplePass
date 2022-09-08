@@ -19,4 +19,6 @@ export default interface I_passwordModifier {
     w_beginning?:boolean,
     w_end?:boolean,
     w_between?:boolean,
+    w_beginning_required?:boolean,
+    w_end_required?:boolean,
 }
