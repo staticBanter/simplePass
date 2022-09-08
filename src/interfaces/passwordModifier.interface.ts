@@ -7,7 +7,9 @@
  * @module
  */
 export default interface I_passwordModifier {
-    length:number|string,
+    [index: string]: number|string|boolean|undefined;
+
+    length:number|string;
     lowercase?:boolean,
     uppercase?:boolean,
     numbers?:boolean,

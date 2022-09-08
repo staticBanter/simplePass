@@ -68,35 +68,35 @@ export default function simplePass(
         throw new Error(E_errors.invalidLength);
     }
 
+    // Subtract one from the length because we manually append a character at the end.
+    const limit:number = (modifier.length - 1);
+
+    /**
+     * Remove any properties that are not in the 'allowed modifiers list'
+     * or non-truthy values.
+     * This will give us cleaner modifier object to work with.
+     */
+    Object.entries(modifier).forEach((attVal)=>{
+        if(
+            !L_allowedModifiers.includes(attVal[0])
+            || !attVal[1]
+        ){
+            delete modifier[attVal[0]];
+        }
+    });
+
     /**
      * If the number of allowed attributes set is larger than the modifier limit,
      * throw an error.
      */
     if(
-        (
-            /**
-             * Go through each modifier argument entries,
-             * When filtered we get an array containing the modifier attribute and its value (ie: [lowercase, on] or [uppercase, false]);
-             * We filter if that modifier attribute is an allowed on the list(Prevents arbitrary attributes from being counted as set) and if its value set is truthy.
-             * Finally get the length of the newly returned filtered array.
-             *
-             * This is done to allow a user to send a FormData Object to simplePass and not have to worry to much about creating a proper object.
-             * simplePass will simply ignore any unfamiliar attributes and carry on creating a proper password.
-             *
-             * Finally because we (currently) only need this value for just this check there is no real need to assign a whole new variable to store the output.
-             */
-            Object.entries(modifier).filter((attVal)=>{
-                return (L_allowedModifiers.includes(attVal[0]) && attVal[1])
-            }).length
-        ) >
-        modifier.length
+        Object.entries(modifier).length
+        > modifier.length
     ){ throw new Error(E_errors.invalidNumberOfSelectedModifiers); }
 
     let password:string  = '';
 
     if(!modifier.memorable){
-
-        const limit:number = (modifier.length - 1);
 
         password += String.fromCharCode(generateCharCode(modifier,{beginning:true}));
 

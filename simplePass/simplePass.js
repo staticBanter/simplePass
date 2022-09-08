@@ -30,15 +30,19 @@ export default function simplePass(modifier = {
     else if (typeof (modifier.length) !== 'number') {
         throw new Error(E_errors.invalidLength);
     }
-    if ((Object.entries(modifier).filter((attVal) => {
-        return (L_allowedModifiers.includes(attVal[0]) && attVal[1]);
-    }).length) >
-        modifier.length) {
+    const limit = (modifier.length - 1);
+    Object.entries(modifier).forEach((attVal) => {
+        if (!L_allowedModifiers.includes(attVal[0])
+            || !attVal[1]) {
+            delete modifier[attVal[0]];
+        }
+    });
+    if (Object.entries(modifier).length
+        > modifier.length) {
         throw new Error(E_errors.invalidNumberOfSelectedModifiers);
     }
     let password = '';
     if (!modifier.memorable) {
-        const limit = (modifier.length - 1);
         password += String.fromCharCode(generateCharCode(modifier, { beginning: true }));
         while (password.length < limit
             && password.length < 256) {
