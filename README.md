@@ -72,6 +72,7 @@ Directory structure after downloading the *simplePass* directory.
 | +-- js
 | | +-- simplePass
 | | | +-- simplePass.js
+| | | +-- ...
 | | +-- yourProjectScript.js
 ```
 
