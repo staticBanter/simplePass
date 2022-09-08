@@ -62,7 +62,7 @@ simplePass may be called a variety of modifiers to change the desired passwords 
 
 # Examples
 
-Directory structure after downloading ```build/simplePass.js```
+Directory structure after downloading the *simplePass* directory.
 
 ```
 .
