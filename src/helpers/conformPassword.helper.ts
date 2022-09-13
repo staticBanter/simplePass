@@ -25,7 +25,7 @@ export default function conformPassword(password:string,modifier:I_passwordModif
         lowercase: /[a-z]/g,
         uppercase: /[A-Z]/g,
         numbers:/[0-9]/g,
-        punctuation:/[^A-Za-z0-9]/g,
+        punctuation:/[^\w\s]|_/g,
         w_between:/.\s./g,
     }
 

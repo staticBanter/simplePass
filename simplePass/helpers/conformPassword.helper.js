@@ -5,7 +5,7 @@ export default function conformPassword(password, modifier) {
         lowercase: /[a-z]/g,
         uppercase: /[A-Z]/g,
         numbers: /[0-9]/g,
-        punctuation: /[^A-Za-z0-9]/g,
+        punctuation: /[^\w\s]|_/g,
         w_between: /.\s./g,
     };
     for (const attribute in modifier) {
