@@ -43,12 +43,26 @@ export default function conformPassword(password:string,modifier:I_passwordModif
                 let slicePoint:number = Math.round(Math.random() * (password.length - 1) + 1);
 
                 /**
+                 * If whitespace is required at the beginning or end of the password,
+                 * Or if the current missing attribute is a whitespace for the middle of the password;
+                 * Adjust the `slicePoint` to somewhere in the middle of the password.
+                 */
+                 if(
+                    (
+                        modifier.w_beginning_required
+                        || modifier.w_end_required
+                    )
+                    || attribute === 'w_between'
+                ){
+                    slicePoint = Math.round(Math.random() * (password.length - 3) + 1);
+                }
+
+                /**
                  * If the missing modifier attribute is for a space character,
                  * just set the `newChar` to a space character; this is faster than trying to generate one.
                  * Else set `newChar` to a random character of the missing attribute.
                  */
                 if(attribute === 'w_between'){
-                    slicePoint = Math.round(Math.random() * (password.length - 3) + 1);
                     newChar = " ";
                 }else{
 

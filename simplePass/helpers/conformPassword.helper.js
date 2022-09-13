@@ -13,8 +13,12 @@ export default function conformPassword(password, modifier) {
             if (!new RegExp(passwordConformationConstraints[attribute]).test(password)) {
                 let newChar = "";
                 let slicePoint = Math.round(Math.random() * (password.length - 1) + 1);
-                if (attribute === 'w_between') {
+                if ((modifier.w_beginning_required
+                    || modifier.w_end_required)
+                    || attribute === 'w_between') {
                     slicePoint = Math.round(Math.random() * (password.length - 3) + 1);
+                }
+                if (attribute === 'w_between') {
                     newChar = " ";
                 }
                 else {
