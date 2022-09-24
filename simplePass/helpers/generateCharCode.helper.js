@@ -1,6 +1,11 @@
 'use strict';
 export default function generateCharCode(modifier, flag) {
     const charCode = self.crypto.getRandomValues(new Uint8Array(1))[0];
+    if (modifier.excludeCharacters) {
+        if (modifier.excludeCharacters.includes(String.fromCharCode(charCode))) {
+            return generateCharCode(modifier, flag);
+        }
+    }
     if (flag?.beginning) {
         if (modifier.w_beginning
             && modifier.w_beginning_required) {

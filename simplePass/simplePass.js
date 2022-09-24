@@ -41,6 +41,15 @@ export default function simplePass(modifier = {
         > modifier.length) {
         throw new Error(E_errors.invalidNumberOfSelectedModifiers);
     }
+    if (modifier.excludeCharacters) {
+        if (!modifier.excludeCharacters.length
+            && modifier.excludeCharacters.length <= 0) {
+            throw new Error(E_errors.excludeCharactersZeroLength);
+        }
+        if (new RegExp('/[\s]/g').test(modifier.excludeCharacters)) {
+            throw new Error(E_errors.excludeCharactersIncludesWhitespace);
+        }
+    }
     let password = '';
     if (!modifier.memorable) {
         password += String.fromCharCode(generateCharCode(modifier, { beginning: true }));

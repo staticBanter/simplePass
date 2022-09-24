@@ -41,9 +41,10 @@ export default function simplePass(
     }
 
     /**
-     * * Note: Whitespace options are not check,
-     * because they must always be paired with one
-     * of these options.
+     * The following attributes are not checked here
+     * because they must be paired with another:
+     * * any whitespace character attribute.
+     * * excludeCharacters
      */
     if(
         !modifier.lowercase
@@ -93,6 +94,20 @@ export default function simplePass(
         Object.entries(modifier).length
         > modifier.length
     ){ throw new Error(E_errors.invalidNumberOfSelectedModifiers); }
+
+    if(
+        modifier.excludeCharacters
+    ){
+        if(
+            !modifier.excludeCharacters.length
+            && modifier.excludeCharacters.length <= 0
+        ){
+            throw new Error(E_errors.excludeCharactersZeroLength);
+        }
+        if(new RegExp('/[\s]/g').test(modifier.excludeCharacters)){
+            throw new Error(E_errors.excludeCharactersIncludesWhitespace);
+        }
+    }
 
     let password:string  = '';
 

@@ -25,6 +25,17 @@ export default function generateCharCode(modifier:I_passwordModifier,flag?:I_cha
     const charCode:number = self.crypto.getRandomValues(new Uint8Array(1))[0];
 
     /**
+     * If the excluded characters attribute is set,
+     * If the excluded characters contains the newly generated string,
+     * regenerate a new string.
+     */
+    if(modifier.excludeCharacters){
+        if(modifier.excludeCharacters.includes(String.fromCharCode(charCode))){
+            return generateCharCode(modifier,flag);
+        }
+    }
+
+    /**
      * Do things at the beginning of the password.
      */
     if(flag?.beginning){

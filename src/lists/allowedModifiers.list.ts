@@ -15,6 +15,7 @@ const L_allowedModifiers:Array<string> = [
     'w_between',
     'w_end_required',
     'w_beginning_required',
+    'excludeCharacters'
 ];
 
 export default L_allowedModifiers;

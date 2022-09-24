@@ -13,5 +13,7 @@ enum E_errors{
     invalidWhitespaceOption = 'sP_E.3: The given whitespace options were not valid.',
     invalidCharCheckRestriction = 'sP-cC_E.1: The restriction used to check a character was not valid.',
     invalidNumberOfSelectedModifiers = 'sP-cP_E.1: The password was not long enough to contain the selected number of modifiers.',
+    excludeCharactersZeroLength = 'sP_E.4: The given \'excludeCharacters\' was not valid. If set, it must have a length of at least 1',
+    excludeCharactersIncludesWhitespace = 'sp_E.5: The given \'excludeCharacters\' was invalid. It may not contain a whitespace character.'
 }
 export default E_errors;

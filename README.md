@@ -45,6 +45,7 @@ simplePass may be called a variety of modifiers to change the desired passwords 
 * uppercase:*boolean* - Ensure uppercase characters (default: false)
 * numbers:*boolean* - Ensure numbers (default: false)
 * punctuation:*boolean* - Ensure punctuation (default: false)
+* excludedCharacters: *string* - Ensure the following characters are excluded from the password (default: empty)
 * special:*boolean* - Ensure special characters (default: false) **disabled**
 * memorable: *boolean* - Create a password using a series of regular words (ie HorseRulerBatteryStapler) (default: false). **disabled**
 * **Whitespace Options**

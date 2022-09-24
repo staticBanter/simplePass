@@ -21,4 +21,5 @@ export default interface I_passwordModifier {
     w_between?:boolean,
     w_beginning_required?:boolean,
     w_end_required?:boolean,
+    excludeCharacters?:string
 }
