@@ -34,7 +34,7 @@ import simplePass from "../simplePass/simplePass.js";
     // When the user submits the form, call simplePass and display the new form.
     document.body.querySelector("#passwordForm").addEventListener('submit',function(event){
         event.preventDefault();
-        displayPassword.innerText = simplePass(Object.fromEntries(new FormData(this).entries()));
+        displayPassword.innerText = simplePass(new FormData(this));
     });
 
 })();

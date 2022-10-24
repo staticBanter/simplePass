@@ -1,5 +1,6 @@
 'use strict';
 const L_allowedModifiers = [
+    'length',
     'lowercase',
     'uppercase',
     'numbers',

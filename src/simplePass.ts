@@ -9,6 +9,7 @@ import E_errors from "./enums/errors.enum.js";
 import generateCharCode from "./helpers/generateCharCode.helper.js";
 import conformPassword from "./helpers/conformPassword.helper.js";
 import L_allowedModifiers from "./lists/allowedModifiers.list.js";
+import cleanModifier from "./helpers/cleanModifier.helper.js";
 
 /**
  * Returns a *password* string.
@@ -27,7 +28,7 @@ import L_allowedModifiers from "./lists/allowedModifiers.list.js";
  * @throws Throws an error if there is an invalid number of modifiers selected.
  */
 export default function simplePass(
-    modifier:I_passwordModifier = {
+    modifier:I_passwordModifier|FormData = {
         length:8,
         lowercase:true,
     }
@@ -39,6 +40,12 @@ export default function simplePass(
     ){
         throw new Error(E_errors.invalidModifier)
     }
+
+    /**
+     * Clean out any unneeded attributes that might be attached to the object,
+     * and convert FormData objects into something we can use.
+     */
+    modifier = cleanModifier(modifier);
 
     /**
      * The following attributes are not checked here
@@ -71,20 +78,6 @@ export default function simplePass(
 
     // Subtract one from the length because we manually append a character at the end.
     const limit:number = (modifier.length - 1);
-
-    /**
-     * Remove any properties that are not in the 'allowed modifiers list'
-     * or non-truthy values.
-     * This will give us cleaner modifier object to work with.
-     */
-    Object.entries(modifier).forEach((attVal)=>{
-        if(
-            !L_allowedModifiers.includes(attVal[0])
-            || !attVal[1]
-        ){
-            delete modifier[attVal[0]];
-        }
-    });
 
     /**
      * If the number of allowed attributes set is larger than the modifier limit,

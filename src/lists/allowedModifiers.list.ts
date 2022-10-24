@@ -4,6 +4,7 @@
  * List of allowed modifier attributes.
  */
 const L_allowedModifiers:Array<string> = [
+    'length',
     'lowercase',
     'uppercase',
     'numbers',

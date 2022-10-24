@@ -2,7 +2,7 @@
 import E_errors from "./enums/errors.enum.js";
 import generateCharCode from "./helpers/generateCharCode.helper.js";
 import conformPassword from "./helpers/conformPassword.helper.js";
-import L_allowedModifiers from "./lists/allowedModifiers.list.js";
+import cleanModifier from "./helpers/cleanModifier.helper.js";
 export default function simplePass(modifier = {
     length: 8,
     lowercase: true,
@@ -11,6 +11,7 @@ export default function simplePass(modifier = {
         || typeof modifier !== 'object') {
         throw new Error(E_errors.invalidModifier);
     }
+    modifier = cleanModifier(modifier);
     if (!modifier.lowercase
         && !modifier.uppercase
         && !modifier.numbers
@@ -31,12 +32,6 @@ export default function simplePass(modifier = {
         throw new Error(E_errors.invalidLength);
     }
     const limit = (modifier.length - 1);
-    Object.entries(modifier).forEach((attVal) => {
-        if (!L_allowedModifiers.includes(attVal[0])
-            || !attVal[1]) {
-            delete modifier[attVal[0]];
-        }
-    });
     if (Object.entries(modifier).length
         > modifier.length) {
         throw new Error(E_errors.invalidNumberOfSelectedModifiers);
