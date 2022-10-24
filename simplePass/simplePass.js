@@ -3,6 +3,7 @@ import E_errors from "./enums/errors.enum.js";
 import generateCharCode from "./helpers/generateCharCode.helper.js";
 import conformPassword from "./helpers/conformPassword.helper.js";
 import cleanModifier from "./helpers/cleanModifier.helper.js";
+import L_requiredAttributes from "./lists/requiredAttributes.list.js";
 export default function simplePass(modifier = {
     length: 8,
     lowercase: true,
@@ -12,12 +13,7 @@ export default function simplePass(modifier = {
         throw new Error(E_errors.invalidModifier);
     }
     modifier = cleanModifier(modifier);
-    if (!modifier.lowercase
-        && !modifier.uppercase
-        && !modifier.numbers
-        && !modifier.punctuation
-        && !modifier.special
-        && !modifier.memorable) {
+    if (!Object.keys(modifier).some(attribute => L_requiredAttributes.includes(attribute))) {
         throw new Error(E_errors.invalidModifier);
     }
     if (!modifier.length

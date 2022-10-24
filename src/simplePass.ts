@@ -10,6 +10,7 @@ import generateCharCode from "./helpers/generateCharCode.helper.js";
 import conformPassword from "./helpers/conformPassword.helper.js";
 import L_allowedModifiers from "./lists/allowedModifiers.list.js";
 import cleanModifier from "./helpers/cleanModifier.helper.js";
+import L_requiredAttributes from "./lists/requiredAttributes.list.js";
 
 /**
  * Returns a *password* string.
@@ -48,19 +49,15 @@ export default function simplePass(
     modifier = cleanModifier(modifier);
 
     /**
+     * Check if the modifier contains at least one of these attributes.
      * The following attributes are not checked here
-     * because they must be paired with another:
+     * because they must be paired with another
+     * and will be check elsewhere when needed:
+     * * length
      * * any whitespace character attribute.
      * * excludeCharacters
      */
-    if(
-        !modifier.lowercase
-        && !modifier.uppercase
-        && !modifier.numbers
-        && !modifier.punctuation
-        && !modifier.special
-        && !modifier.memorable
-    ){
+    if(!Object.keys(modifier).some(attribute=>L_requiredAttributes.includes(attribute))){
         throw new Error(E_errors.invalidModifier);
     }
 
