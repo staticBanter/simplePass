@@ -29,27 +29,22 @@
             <label>Length:
                 <input type="number" form="passwordForm" name="length" max="256" min="1" step="1" value="8" required/>
             </label>
-            <label>Lower Case:
-                <input type="checkbox" form="passwordForm" name="lowercase" checked/>
-            </label>
-            <label>Upper Case:
-                <input type="checkbox" form="passwordForm" name="uppercase" />
-            </label>
-            <label>Numbers:
-                <input type="checkbox" form="passwordForm" name="numbers" />
-            </label>
-            <label>Punctuation:
-                <input type="checkbox" form="passwordForm" name="punctuation" />
-            </label>
-            <label>Special Chars(Emojis, Unicode Symbols):
-                <input type="checkbox" form="passwordForm" name="special" disabled/>
-            </label>
-            <label>Memorable:
-                <input type="checkbox" form="passwordForm" name="memorable" disabled/>
-            </label>
-            <label>Allow Whitespace:
-                <input type="checkbox" form="passwordForm" name="allow_whitespace">
-            </label>
+            <fieldset>
+                <legend>Latin Basic</legend>
+                <p>This does not include Control Characters 0-31,127</p>
+                <label>Lower Case:
+                    <input type="checkbox" form="passwordForm" name="lowercase" checked/>
+                </label>
+                <label>Upper Case:
+                    <input type="checkbox" form="passwordForm" name="uppercase" />
+                </label>
+                <label>Numbers:
+                    <input type="checkbox" form="passwordForm" name="numbers" />
+                </label>
+                <label>Punctuation:
+                    <input type="checkbox" form="passwordForm" name="punctuation" />
+                </label>
+            </fieldset>
             <fieldset id="whitespaceOptions" name="whitespaceOptions" form="passwordForm">
                 <legend>Whitespace Options</legend>
                 <fieldset>
@@ -76,6 +71,7 @@
             </fieldset>
             <label>Exclude Characters:
                 <input type="text" form="passwordForm" name="excludeCharacters" />
+                <p>* <strong>Warning</strong>: Excessive use of this feature may result in degraded performance or non-performance of the program. *</p>
             </label>
         </form>
     </main>

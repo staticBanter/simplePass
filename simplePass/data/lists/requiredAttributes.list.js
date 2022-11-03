@@ -2,8 +2,9 @@
 const L_requiredAttributes = [
     'lowercase',
     'uppercase',
+    'numbers',
     'punctuation',
     'special',
-    'memorable'
+    'memorable',
 ];
 export default L_requiredAttributes;

@@ -1,13 +1,17 @@
 simplePass
 =
 
-> [!CAUTION]
-> This project is still in development. Certain features are incomplete or may not function entirely. **Use At Your Own Risk**
+> **CAUTION**
+>
+> This project is in Beta Phase. Some features may still contain a few bugs.
 
 - [simplePass](#simplepass)
 - [About](#about)
 - [Installation](#installation)
 - [Modifier(Options)](#modifieroptions)
+  - [General Modifiers](#general-modifiers)
+    - [Whitespace Modifiers](#whitespace-modifiers)
+  - [Latin Basic Modifiers](#latin-basic-modifiers)
 - [Examples](#examples)
 - [Development](#development)
   - [Requirements](#requirements)
@@ -25,7 +29,7 @@ simplePass is a JavaScript password generator.
 To include simplePass in your project follow these steps:
 
 1. Download the ```simplePass``` directory.
-2. simplePass is built using *ESNext* Modules imports so in your project you will have to import simplePass like so:
+2. simplePass is built using *ESNext* module imports so in your project you will have to import simplePass like so:
 ```javascript
 import simplePass from 'yourLocalPathing/simplePass/simplePass.js';
 ```
@@ -38,28 +42,25 @@ const password = simplePass(modifier);
 
 simplePass may be called a variety of modifiers to change the desired passwords outcome. These modifiers are passed as an object to simplePass.
 
+## General Modifiers
 * length:*number* - The length of the password (default: 8)
   * min: 3
   * max 256
-* lowercase:*boolean* - Ensure lowercase characters (default: true)
-* uppercase:*boolean* - Ensure uppercase characters (default: false)
-* numbers:*boolean* - Ensure numbers (default: false)
-* punctuation:*boolean* - Ensure punctuation (default: false)
 * excludeCharacters: *string* - Ensure the following characters are excluded from the password (default: empty)
-* special:*boolean* - Ensure special characters (default: false) **disabled**
-* memorable: *boolean* - Create a password using a series of regular words (ie HorseRulerBatteryStapler) (default: false). **disabled**
-* **Whitespace Options**
+
+### Whitespace Modifiers
 * w_beginning: *boolean* - Allow whitespace at the beginning of a password.
 * w_beginning_required: *boolean* - Ensure a whitespace character at the beginning of a password.
 * w_end: *boolean* - Allow whitespace at the end of a password.
 * w_end_required: *boolean* - Ensure a whitespace character at the end of a password.
 * w_between: *boolean* - Ensure a whitespace character between the beginning and end of a password.
 
-> [!CAUTION]
-> The *special* option currently does not work and will be silently ignored.
+## Latin Basic Modifiers
+* lowercase:*boolean* - Ensure a lowercase characters (default: true)
+* uppercase:*boolean* - Ensure uppercase characters (default: false)
+* numbers:*boolean* - Ensure numbers (default: false)
+* punctuation:*boolean* - Ensure punctuation (default: false)
 
-> [!CAUTION]
-> The *memorable* option currently does not work and will be silently ignored.
 
 # Examples
 

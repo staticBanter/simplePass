@@ -4,8 +4,9 @@
  * @module generateCharCode
  */
 
-import I_passwordModifier  from "../interfaces/passwordModifier.interface.js";
-import I_charCodeGenerationFlag from "../interfaces/charCodeGenerationFlag.interface.js";
+import I_charCodeGenerationFlag from "../data/interfaces/charCodeGenerationFlag.interface.js";
+import I_charCodeRequest from "../data/interfaces/charCodeRequest.interface.js";
+import characterCodeConstraints from "../data/objects/characterCodeConstraints.object.js";
 
 /**
  * Generates a char code the conforms to the required modifications
@@ -20,7 +21,7 @@ import I_charCodeGenerationFlag from "../interfaces/charCodeGenerationFlag.inter
  * @requires module:I_passwordModifier
  * @requires module:I_charCodeGenerationFlag
  */
-export default function generateCharCode(modifier:I_passwordModifier,flag?:I_charCodeGenerationFlag):number{
+export default function generateCharCode(charCodeRequest:I_charCodeRequest,flags?:I_charCodeGenerationFlag):number{
 
     const charCode:number = self.crypto.getRandomValues(new Uint8Array(1))[0];
 
@@ -29,121 +30,126 @@ export default function generateCharCode(modifier:I_passwordModifier,flag?:I_cha
      * If the excluded characters contains the newly generated string,
      * regenerate a new string.
      */
-    if(modifier.excludeCharacters){
-        if(modifier.excludeCharacters.includes(String.fromCharCode(charCode))){
-            return generateCharCode(modifier,flag);
+    if(charCodeRequest.charCodeOptions?.excludeCharacters){
+        if(charCodeRequest.charCodeOptions.excludeCharacters.includes(String.fromCharCode(charCode))){
+            return generateCharCode(charCodeRequest);
         }
     }
+
 
     /**
-     * Do things at the beginning of the password.
+     * Check for flags.
      */
-    if(flag?.beginning){
+    if(flags){
 
-        if(
-            modifier.w_beginning
-            && modifier.w_beginning_required
-        ){
-            return 32;
+        /**
+         * Do things at the beginning of the password.
+         */
+        if(flags?.beginning){
+
+            /**
+             * If a whitespace is requested at the beginning of the password,
+             *  If a whitespace is required at the beginning of the password, return 32.
+             *  If we get 32 character code, return 32.
+             */
+            if(charCodeRequest.charCodeOptions?.whitespaceOptions?.includes('w_beginning')){
+                if(charCodeRequest.charCodeOptions.whitespaceOptions.includes('w_beginning_required')){
+                    return 32;
+                }
+                if(charCode === 32){return charCode;}
+            }else if(charCode === 32){
+                return generateCharCode(charCodeRequest,flags);
+            }
+
+        }
+
+        /**
+         * Do things at the end of the password.
+         */
+        if(flags?.end){
+
+            /**
+             * If a whitespace is requested at the end of the password,
+             *  If a whitespace is required at the end of the password, return 32.
+             *  If we get 32 character code, return 32.
+             */
+            if(charCodeRequest.charCodeOptions?.whitespaceOptions?.includes('w_end')){
+                if(charCodeRequest.charCodeOptions.whitespaceOptions.includes('w_end_required')){
+                    return 32;
+                }
+                if(charCode === 32){return charCode;}
+            }else if(charCode === 32){
+                return generateCharCode(charCodeRequest,flags);
+            }
+
         }
 
     }
 
-    /**
-     * Do things at the end of the password.
-     */
-    if(flag?.end){
+    if(characterCodeConstraints[charCodeRequest.charType]){
 
         if(
-            modifier.w_end
-            && modifier.w_end_required
-        ){
-            return 32;
-        }
-
-    }
-
-    if(
-        modifier.lowercase
-        && (
-            charCode >= 97
-            && charCode <= 122
-        )
-    ){
-        return charCode
-    }else if(
-       modifier.uppercase
-        && (
-            charCode >= 65
-            && charCode <= 90
-        )
-    ){
-        return charCode
-    }else if(
-        modifier.numbers
-        && (
-            charCode >= 48
-            && charCode <= 57
-        )
-    ){
-        return charCode
-    }else if(
-        modifier.punctuation
-        &&(
-            (
-                charCode >= 33
-                && charCode <= 47
-            )
-            || (
-                charCode >= 58
-                && charCode <= 64
-            )
-            || (
-                charCode >= 91
-                && charCode <= 96
-            )
-            || (
-                charCode >= 123
-                && charCode <= 126
-            )
-        )
-    ){
-        return charCode;
-    }else if(
-        charCode === 32
-    ){
-
-        if(
-            modifier.w_between
-            && !flag
+            characterCodeConstraints[charCodeRequest.charType]?.single
+            && characterCodeConstraints[charCodeRequest.charType]?.single === charCode
         ){
             return charCode;
+        }
+
+        const min:number|undefined = characterCodeConstraints[charCodeRequest.charType]?.min
+        const max:number|undefined = characterCodeConstraints[charCodeRequest.charType]?.max
+        const range:Array<Array<number>>|undefined = characterCodeConstraints[charCodeRequest.charType]?.range
+
+
+        /**
+         * If the character code we are looking for exists in a range of codes.
+         * If the generated charCode is within the min or max of that range.
+         * If the generated charCode is equal to our min or max, we can just return it.
+         * Iterate over our range;
+         *  If our generated charCode exists somewhere in there, return it.
+         */
+        if(range){
+            if(
+                (
+                    min
+                    && max
+                )
+                && (
+                    charCode >= min
+                    && charCode <= max
+                )
+            ){
+                if(
+                    charCode === min
+                    || charCode === max
+                ){
+                    return charCode;
+                }
+
+                for(let i = 0; i < range.length; i++){
+                    if(
+                        charCode >= range[i][0]
+                        && charCode <= range[i][1]
+                    ){
+                        return charCode;
+                    }
+                }
+            }
         }else if(
             (
-                modifier.w_beginning
-                || modifier.w_end
+                min
+                && max
             )
             && (
-                flag?.beginning
-                || flag?.end
+                charCode >= min
+                && charCode <= max
             )
         ){
             return charCode;
         }
 
+    }else{
+        throw new Error('sP-gCC_E.1: A requested character did not have a character constraint set and could not be generated.');
     }
-    // }else if(
-    //     modifier.special
-    //     && (
-    //         (
-    //             charCode >= 0
-    //             && charCode <= 32
-    //         )
-    //         || charCode >= 127
-    //     )
-    // ){
-    //     return charCode;
-    // }
 
-    return generateCharCode(modifier,flag);
+    return generateCharCode(charCodeRequest,flags);
 }

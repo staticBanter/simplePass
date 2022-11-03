@@ -1,5 +1,5 @@
 'use strict';
-import L_allowedModifiers from "../lists/allowedModifiers.list.js";
+import L_allowedModifiers from "../data/lists/allowedModifiers.list.js";
 export default function cleanModifier(modifier) {
     const converter = {};
     if (modifier instanceof FormData) {

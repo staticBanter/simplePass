@@ -4,10 +4,12 @@
   },
   "name": "simplepass",
   "description": "simplePass is a Javascript password generator.",
-  "version": "2.5.1-Development",
-  "main": "bs-config.js",
+  "version": "1.0.0-Beta",
+  "browser": "./simplePass/simplePass.js",
   "directories": {
-    "test": "test"
+    "test": "test",
+    "src": "src",
+    "lib": "simplePass"
   },
   "repository": {
     "type": "git",
@@ -22,7 +24,12 @@
     "email": "staticbanter@gmail.com",
     "url": "https://staticblogs.ca/users/staticBanter"
   },
-  "license":"GPL-3.0",
+  "licenses":[
+    {
+      "type": "GPL-3.0",
+      "url": "https://www.gnu.org/licenses/gpl-3.0.html"
+    }
+  ],
   "bugs": {
     "url": "https://github.com/staticBanter/simplePass/issues"
   },

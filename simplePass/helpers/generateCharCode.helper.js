@@ -1,60 +1,74 @@
 'use strict';
-export default function generateCharCode(modifier, flag) {
+import characterCodeConstraints from "../data/objects/characterCodeConstraints.object.js";
+export default function generateCharCode(charCodeRequest, flags) {
     const charCode = self.crypto.getRandomValues(new Uint8Array(1))[0];
-    if (modifier.excludeCharacters) {
-        if (modifier.excludeCharacters.includes(String.fromCharCode(charCode))) {
-            return generateCharCode(modifier, flag);
+    if (charCodeRequest.charCodeOptions?.excludeCharacters) {
+        if (charCodeRequest.charCodeOptions.excludeCharacters.includes(String.fromCharCode(charCode))) {
+            return generateCharCode(charCodeRequest);
         }
     }
-    if (flag?.beginning) {
-        if (modifier.w_beginning
-            && modifier.w_beginning_required) {
-            return 32;
+    if (flags) {
+        if (flags?.beginning) {
+            if (charCodeRequest.charCodeOptions?.whitespaceOptions?.includes('w_beginning')) {
+                if (charCodeRequest.charCodeOptions.whitespaceOptions.includes('w_beginning_required')) {
+                    return 32;
+                }
+                if (charCode === 32) {
+                    return charCode;
+                }
+            }
+            else if (charCode === 32) {
+                return generateCharCode(charCodeRequest, flags);
+            }
+        }
+        if (flags?.end) {
+            if (charCodeRequest.charCodeOptions?.whitespaceOptions?.includes('w_end')) {
+                if (charCodeRequest.charCodeOptions.whitespaceOptions.includes('w_end_required')) {
+                    return 32;
+                }
+                if (charCode === 32) {
+                    return charCode;
+                }
+            }
+            else if (charCode === 32) {
+                return generateCharCode(charCodeRequest, flags);
+            }
         }
     }
-    if (flag?.end) {
-        if (modifier.w_end
-            && modifier.w_end_required) {
-            return 32;
-        }
-    }
-    if (modifier.lowercase
-        && (charCode >= 97
-            && charCode <= 122)) {
-        return charCode;
-    }
-    else if (modifier.uppercase
-        && (charCode >= 65
-            && charCode <= 90)) {
-        return charCode;
-    }
-    else if (modifier.numbers
-        && (charCode >= 48
-            && charCode <= 57)) {
-        return charCode;
-    }
-    else if (modifier.punctuation
-        && ((charCode >= 33
-            && charCode <= 47)
-            || (charCode >= 58
-                && charCode <= 64)
-            || (charCode >= 91
-                && charCode <= 96)
-            || (charCode >= 123
-                && charCode <= 126))) {
-        return charCode;
-    }
-    else if (charCode === 32) {
-        if (modifier.w_between
-            && !flag) {
+    if (characterCodeConstraints[charCodeRequest.charType]) {
+        if (characterCodeConstraints[charCodeRequest.charType]?.single
+            && characterCodeConstraints[charCodeRequest.charType]?.single === charCode) {
             return charCode;
         }
-        else if ((modifier.w_beginning
-            || modifier.w_end)
-            && (flag?.beginning
-                || flag?.end)) {
+        const min = characterCodeConstraints[charCodeRequest.charType]?.min;
+        const max = characterCodeConstraints[charCodeRequest.charType]?.max;
+        const range = characterCodeConstraints[charCodeRequest.charType]?.range;
+        if (range) {
+            if ((min
+                && max)
+                && (charCode >= min
+                    && charCode <= max)) {
+                if (charCode === min
+                    || charCode === max) {
+                    return charCode;
+                }
+                for (let i = 0; i < range.length; i++) {
+                    if (charCode >= range[i][0]
+                        && charCode <= range[i][1]) {
+                        return charCode;
+                    }
+                }
+            }
+        }
+        else if ((min
+            && max)
+            && (charCode >= min
+                && charCode <= max)) {
             return charCode;
         }
     }
-    return generateCharCode(modifier, flag);
+    else {
+        throw new Error('sP-gCC_E.1: A requested character did not have a character constraint set and could not be generated.');
+    }
+    return generateCharCode(charCodeRequest, flags);
 }

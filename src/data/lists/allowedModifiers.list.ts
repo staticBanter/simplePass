@@ -2,6 +2,7 @@
 
 /**
  * List of allowed modifier attributes.
+ * These are attributes that are allowed to be on the password modifier.
  */
 const L_allowedModifiers:Array<string> = [
     'length',

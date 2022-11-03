@@ -1,7 +1,7 @@
 'use strict';
 
-import I_passwordModifier from "../interfaces/passwordModifier.interface.js";
-import L_allowedModifiers from "../lists/allowedModifiers.list.js";
+import I_passwordModifier from "../data/interfaces/passwordModifier.interface.js";
+import L_allowedModifiers from "../data/lists/allowedModifiers.list.js";
 
 export default function cleanModifier(modifier:I_passwordModifier|FormData|object):I_passwordModifier{
     const converter:I_passwordModifier= {};
