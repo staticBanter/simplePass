@@ -1,0 +1,16 @@
+# IDE Directories
+.vscode/
+
+# Demo Files
+demo/
+demo.html
+
+# Source Files
+src/
+
+# Test Files
+test/
+
+# Build Environment Files
+bs-config.js
+tsconfig.json
