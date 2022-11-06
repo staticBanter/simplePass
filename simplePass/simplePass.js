@@ -4,7 +4,7 @@ import generateCharCode from "./helpers/generateCharCode.helper.js";
 import cleanModifier from "./helpers/cleanModifier.helper.js";
 import L_requiredAttributes from "./data/lists/requiredAttributes.list.js";
 import L_whitespaceAttributes from "./data/lists/whitespaceAttributes.list.js";
-import L_useableAttributes from "./data/lists/usableAttributes,list.js";
+import L_useableAttributes from "./data/lists/usableAttributes.list.js";
 import shuffle from "./helpers/shuffle.helper.js";
 import createModifierList from "./helpers/createModifierList.helper.js";
 export default function simplePass(modifier = {
