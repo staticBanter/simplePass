@@ -14,3 +14,7 @@ test/
 # Build Environment Files
 bs-config.js
 tsconfig.json
+
+# Documentation Build Files
+docs/template/
+jsdoc.config.json

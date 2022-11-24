@@ -1,11 +1,13 @@
-'use strict';
-
 /**
- * Interface for object that represents a charCode Generation Flag.
+ * Interface for an object that represents the 'Character Code Generation Flag' object.
  *
  * @interface I_charCodeGenerationFlag
- * @module
+ * @property {boolean} [beginning] - Flag that it's the beginning of the password.
+ * @property {boolean} [end] - Flag that it's the end of the password.
  */
+
+'use strict';
+
 export default interface I_charCodeGenerationFlag{
     beginning?:boolean,
     end?:boolean,

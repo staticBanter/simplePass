@@ -1,0 +1,11 @@
+{
+    "development":{
+        "title":"Development"
+    },
+    "installation-and-examples":{
+        "title":"Installation & Examples"
+    },
+    "contributing":{
+        "title":"Contributing"
+    }
+}

@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>simplePass Docs: Module: validateModifier</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Module: validateModifier</h1>
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Contains validation function for the simplePass modifier. Exports <code>validateModifier</code>.</p></div>
+        
+
+        
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="helpers_validateModifier.helper.js.html">helpers/validateModifier.helper.js</a>, <a href="helpers_validateModifier.helper.js.html#line7">line 7</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="~validateModifier"><span class="type-signature">(inner) </span>validateModifier<span class="signature">(modifier)</span><span class="type-signature"> &rarr; {void}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>A basic validation function used to ensure the set modifier attributes are usable.
+<strong>WARNING!</strong> simplePass does not preform comprehensive input sanitization/validation at the moment,
+please ensure you are sanitizing and validating any inputs before they reach your server/application!</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>modifier</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="I_passwordModifier.html">I_passwordModifier</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="helpers_validateModifier.helper.js.html">helpers/validateModifier.helper.js</a>, <a href="helpers_validateModifier.helper.js.html#line11">line 11</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+<h5>Requires:</h5>
+<ul>
+    <li><a href="module-createMessage.html">module:createMessage</a></li>
+
+    <li><a href="module-E_errors.html">module:E_errors</a></li>
+
+    <li><a href="module-config.html">module:config</a></li>
+
+    <li><a href="module-L_useableAttributes.html">module:L_useableAttributes</a></li>
+
+    <li><a href="module-L_requiredAttributes.html">module:L_requiredAttributes</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">void</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-E_errors.html">E_errors</a></li><li><a href="module-L_allowedModifiers.html">L_allowedModifiers</a></li><li><a href="module-L_requiredAttributes.html">L_requiredAttributes</a></li><li><a href="module-L_useableAttributes.html">L_useableAttributes</a></li><li><a href="module-L_whitespaceAttributes.html">L_whitespaceAttributes</a></li><li><a href="module-characterCodeConstraints.html">characterCodeConstraints</a></li><li><a href="module-cleanModifier.html">cleanModifier</a></li><li><a href="module-config.html">config</a></li><li><a href="module-createMessage.html">createMessage</a></li><li><a href="module-createModifierList.html">createModifierList</a></li><li><a href="module-generateCharCode.html">generateCharCode</a></li><li><a href="module-shuffle.html">shuffle</a></li><li><a href="module-simplePass.html">simplePass</a></li><li><a href="module-validateModifier.html">validateModifier</a></li></ul><h3>Interfaces</h3><ul><li><a href="I_charCodeGenerationFlag.html">I_charCodeGenerationFlag</a></li><li><a href="I_charCodeOptions.html">I_charCodeOptions</a></li><li><a href="I_charCodeRequest.html">I_charCodeRequest</a></li><li><a href="I_passwordModifier.html">I_passwordModifier</a></li><li><a href="module-characterCodeConstraints-I_charCodeConstraintsAttributes.html">I_charCodeConstraintsAttributes</a></li></ul><h3>Other Resources</h3><ul><li><a href="tutorial-contributing.html">Contributing</a></li><li><a href="tutorial-development.html">Development</a></li><li><a href="tutorial-installation-and-examples.html">Installation & Examples</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.0</a> on Wed Nov 23 2022 21:56:06 GMT-0500 (Eastern Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

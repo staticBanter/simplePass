@@ -1,17 +1,20 @@
 'use strict';
+/**
+ * @file Contains a list of attributes that are required to be in the password modifier.
+ * @module L_requiredAttributes
+ */
 
 /**
- * List of required attributes.
- * At least one of these attributes must be in the modifier in order to create a password.
- * Any other modifier attributes are optional.
+ * Defines what attributes that are required to be in the password modifier.
+ * > Note: Only 1 of these modifiers is required for the program to function.
+ *
+ * @const {Array<string>} L_requiredAttributes
  */
 const L_requiredAttributes:Array<string> = [
     'lowercase',
     'uppercase',
     'numbers',
-    'punctuation',
-    'special',
-    'memorable',
+    'punctuation'
 ];
 
 export default L_requiredAttributes;

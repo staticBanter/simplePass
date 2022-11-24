@@ -32,16 +32,16 @@
             <fieldset>
                 <legend>Latin Basic</legend>
                 <p>This does not include Control Characters 0-31,127</p>
-                <label>Lower Case:
+                <label>Lower Case: [abcdefghijklmnopqrstuvwxyz]
                     <input type="checkbox" form="passwordForm" name="lowercase" checked/>
                 </label>
-                <label>Upper Case:
+                <label>Upper Case: [ABCDEFGHIJKLMNOPQRSTUVWXYZ]
                     <input type="checkbox" form="passwordForm" name="uppercase" />
                 </label>
-                <label>Numbers:
+                <label>Numbers: [0123456789]
                     <input type="checkbox" form="passwordForm" name="numbers" />
                 </label>
-                <label>Punctuation:
+                <label>Punctuation: [~!@#$%^&*()-+_={}[]:;"'<>,.?/|\]
                     <input type="checkbox" form="passwordForm" name="punctuation" />
                 </label>
             </fieldset>
@@ -50,24 +50,29 @@
                 <fieldset>
                     <legend>Beginning of Password:</legend>
                     <label>Yes:
-                        <input type="checkbox" form="passwordForm" name="w_beginning" />
+                        <input type="checkbox" form="passwordForm" name="w_beginning" class="toggle" data-toggle="disabled" data-target="#w_beginning_required" />
                     </label>
                     <label>Required:
-                        <input type="checkbox" form="passwordForm" name="w_beginning_required" />
+                        <input type="checkbox" form="passwordForm" name="w_beginning_required" id="w_beginning_required"/>
                     </label>
                 </fieldset>
                 <fieldset>
                     <legend>End of Password:</legend>
                     <label>Yes:
-                        <input type="checkbox" form="passwordForm" name="w_end" />
+                        <input type="checkbox" form="passwordForm" name="w_end" class="toggle" data-toggle="disabled" data-target="#w_end_required" />
                     </label>
                     <label>Required:
-                        <input type="checkbox" form="passwordForm" name="w_end_required" />
+                        <input type="checkbox" form="passwordForm" name="w_end_required" id="w_end_required" />
                     </label>
                 </fieldset>
-                <label>Between:
-                    <input type="checkbox" form="passwordForm" name="w_between" />
-                </label>
+                <fieldset>
+                    <label>Between:
+                        <input class="toggle" data-target="#w_between_limit" data-toggle="disabled" type="checkbox" form="passwordForm" name="w_between" />
+                    </label>
+                    <label>Limit:
+                        <input type="number" step="1" min="1" max="252" value="1" form="passwordForm" id="w_between_limit" name="w_between_limit" />
+                    </label>
+                </fieldset>
             </fieldset>
             <label>Exclude Characters:
                 <input type="text" form="passwordForm" name="excludeCharacters" />

@@ -1,8 +1,13 @@
 'use strict';
+/**
+ * @file Contains a list of attributes that are allowed on the password modifier.
+ * @module L_allowedModifiers
+ */
 
 /**
- * List of allowed modifier attributes.
- * These are attributes that are allowed to be on the password modifier.
+ * Defines what attributes are allowed on the password modifier.
+ *
+ * @const {Array<string>} L_allowedModifiers
  */
 const L_allowedModifiers:Array<string> = [
     'length',
@@ -10,11 +15,10 @@ const L_allowedModifiers:Array<string> = [
     'uppercase',
     'numbers',
     'punctuation',
-    'special',
-    'memorable',
     'w_beginning',
     'w_end',
     'w_between',
+    'w_between_limit',
     'w_end_required',
     'w_beginning_required',
     'excludeCharacters'

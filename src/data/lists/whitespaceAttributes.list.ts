@@ -1,7 +1,13 @@
 'use strict';
+/**
+ * @file Contains a list of white-space modifier attributes.
+ * @module L_whitespaceAttributes
+ */
 
 /**
- * List of whitespace options.
+ * Defines what attributes are considered white-space attributes.
+ *
+ * @const {Array<string>} L_whitespaceAttributes
  */
 const L_whitespaceAttributes:Array<string> = [
     'w_beginning',

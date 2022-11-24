@@ -1,19 +1,33 @@
-
 'use strict';
-
 /**
- * Enum for a set of possible errors.
- *
- * @enum {string}
+ * @file Contains Error Enum.
  * @module E_errors
  */
+
+/**
+ * Enumerated list of possible error codes and there message template strings.
+ * Anything wrapped in braces, [example], is meant to be a substitution for
+ * the string.
+ *
+ * @enum {string}
+ * @readonly
+ * @property {string} invalidModifier - The password modifier must be a valid JavaScript Object or JavaScript FormData Object.
+ * @property {string} toManyAttributes - The requested password may only contain [maximum-allowed-attributes] amount of attributes, [provided-number-of-attributes] attributes were selected.
+ * @property {string} nonGenerableCharacterType - Non Generable Character Type. Attempted to generate a character of type [provided-string]
+ * @property {string} invalidAttributeType - Attribute [provided-attribute] is supposed to be of type [required-attribute-type]
+ * @property {string} outOfBoundsAttributeValue - Attribute type [provided-attribute] is out of its value bounds.
+ * @property {string} whitespaceBetweenMissingLimit - The Whitespace Between attribute must be set with a Whitespace Between Limit attribute.
+ * @property {string} missingRequiredAttributes - The Password Modifier must contain one of the following attributes [list-of-required-attributes].
+ * @property {string} excludeCharactersContainedWhitespace - Exclude Characters contained whitespace.
+ */
 enum E_errors{
-    invalidLength = 'sP_E.1: The given length was not valid. A valid input length must be a number between 1 and 256.',
-    invalidModifier = 'sP_E.2: The given modifier was not valid',
-    invalidWhitespaceOption = 'sP_E.3: The given whitespace options were not valid.',
-    invalidCharCheckRestriction = 'sP-cC_E.1: The restriction used to check a character was not valid.',
-    invalidNumberOfSelectedModifiers = 'sP-cP_E.1: The password was not long enough to contain the selected number of modifiers.',
-    excludeCharactersZeroLength = 'sP_E.4: The given \'excludeCharacters\' was not valid. If set, it must have a length of at least 1',
-    excludeCharactersIncludesWhitespace = 'sp_E.5: The given \'excludeCharacters\' was invalid. It may not contain a whitespace character.'
+    invalidModifier = '~-~_E.~: Invalid Modifier. The password modifier must be a valid JavaScript Object or JavaScript \'FormData\' Object.',
+    toManyAttributes = '~-~_E.~: To Many Attributes. The requested password may only contain ~ amount of attributes, ~ attributes were selected.',
+    nonGenerableCharacterType = '~-~_E.~: Non Generable Character Type. Attempted to generate a character of type ~',
+    invalidAttributeType = '~-~_.~: InvalidAttribute Type. Attribute ~ is supposed to be of type ~',
+    outOfBoundsAttributeValue = '~-~_E.~: Out Of Bounds Attribute Type. Attribute type ~ is out of its value bounds.',
+    whitespaceBetweenMissingLimit = '~-~_E.~: Whitespace Between Missing Limit. The \'Whitespace Between\' attribute must be set with a \'Whitespace Between Limit\' attribute.',
+    missingRequiredAttributes = '~-~_E.~: Missing Required Attributes. The Password Modifier must contain one of the following attributes ~.',
+    excludeCharactersContainedWhitespace = '~-~_E.~: \'Exclude Characters\' contained whitespace.'
 }
 export default E_errors;

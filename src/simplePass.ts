@@ -1,229 +1,298 @@
 'use strict';
+
+import I_passwordModifier from "./data/interfaces/passwordModifier.interface.js";
+import cleanModifier from "./helpers/cleanModifier.helper.js";
+import validateModifier from "./helpers/validateModifier.helper.js";
+import config from "./config.simplePass.js"
+import L_requiredAttributes from "./data/lists/requiredAttributes.list.js";
+import L_whitespaceAttributes from "./data/lists/whitespaceAttributes.list.js";
+import shuffle from "./helpers/shuffle.helper.js";
+import generateCharCode from "./helpers/generateCharCode.helper.js";
+import createMessage from "./helpers/createMessage.helper.js";
+import E_errors from "./data/enums/errors.enum.js";
 /**
- * @file Main file for simplePass. Exports the simplePass function
+ * @file Main file for simplePass. Exports the `simplePass` function.
  * @module simplePass
  */
 
-import I_passwordModifier from "./data/interfaces/passwordModifier.interface.js";
-import E_errors from "./data/enums/errors.enum.js";
-import generateCharCode from "./helpers/generateCharCode.helper.js";
-import cleanModifier from "./helpers/cleanModifier.helper.js";
-import L_requiredAttributes from "./data/lists/requiredAttributes.list.js";
-import I_charCodeRequest from "./data/interfaces/charCodeRequest.interface.js";
-import L_whitespaceAttributes from "./data/lists/whitespaceAttributes.list.js";
-import L_useableAttributes from "./data/lists/usableAttributes.list.js";
-import shuffle from "./helpers/shuffle.helper.js";
-import createModifierList from "./helpers/createModifierList.helper.js";
-
 /**
- * Returns a *password* string.
+ * Main program function. Returns a string.
  *
  * @function simplePass
- * @type {Function}
  * @param {I_passwordModifier | FormData} modifier The available password modifications. See README.md for more information about modifiers.
+ * @requires config
+ * @requires E_errors
+ * @requires createMessage
+ * @requires cleanModifier
+ * @requires validateModifier
+ * @requires L_requiredAttributes
+ * @requires L_whitespaceAttributes
+ * @requires generateCharCode
+ * @throws {E_errors.invalidModifier} Will throw an Error if the modifier is `null`, `undefined` or not a JavaScript *Object.*
  * @returns {string} The generated password.
- * @global
  */
 export default function simplePass(
     modifier:I_passwordModifier|FormData = {
-        length:8,
+        length:config.defaultPasswordLength,
         lowercase:true,
     }
 ){
-
+    /**
+     * If the modifier is not an object
+     * throw an error.
+     */
     if(
         !modifier
         || typeof modifier !== 'object'
     ){
-        throw new Error(E_errors.invalidModifier)
+        throw new Error(createMessage(E_errors.invalidModifier,[config.errorMessagePrefix,'M','1']));
     }
 
-    /**
-     * Clean out any unneeded attributes that might be attached to the object,
-     * and convert FormData objects into something we can use.
-     */
-    const c_modifier:I_passwordModifier = cleanModifier(modifier);
+    // Initialize the password.
+    let password:string = '';
+    let middleCharacters:string = '';
+
+    // Remove unneeded object attributes and normalize formData objects.
+    modifier = cleanModifier(modifier);
+
+    // Ensure certain values are set and set properly.
+    validateModifier(modifier)
+
+    // Get the attributes that can affect the character type
+    const characterAttributes:Array<string> = Object.keys(modifier).filter((item:string)=>{
+        return L_requiredAttributes.includes(item);
+    });
+
+    // Get the attributes that can set whitespace
+    const whitespaceAttributes:Array<string> = Object.keys(modifier).filter((item:string)=>{
+        return L_whitespaceAttributes.includes(item);
+    });
 
     /**
-     * Check if the modifier contains at least one of these attributes.
-     * The following attributes are not checked here
-     * because they must be paired with another
-     * and will be check elsewhere when needed:
-     * * length
-     * * any whitespace character attribute.
-     * * excludeCharacters
+     * Because we manually add the first and last character
+     * we need to changed the password length limit.
      */
-    if(!Object.keys(c_modifier).some(attribute=>L_requiredAttributes.includes(attribute))){
-        throw new Error(E_errors.invalidModifier);
-    }
+    let passwordLimit = (modifier.length - 2);
 
+    /**
+     * If the whitespace between attribute is set,
+     * we need to lower the password limit
+     * to make room for the whitespace.
+     */
     if(
-        !c_modifier.length
-        || c_modifier.length < 3
-        || c_modifier.length > 256
+        modifier.w_between
+        && modifier.w_between_limit
     ){
-        throw new Error(E_errors.invalidLength);
-    }else if(typeof(c_modifier.length) === 'string'){
-        c_modifier.length = Number.parseInt(c_modifier.length);
-    }else if(typeof(c_modifier.length) !== 'number'){
-        throw new Error(E_errors.invalidLength);
+        passwordLimit = passwordLimit - modifier.w_between_limit;
     }
 
-    // Subtract one from the password length limit because we manually append a character at the end.
-    const passwordLengthLimit:number = (c_modifier.length - 1);
-
     /**
-     * If the number of allowed attributes set is larger than the modifier limit,
-     * throw an error.
+     * If our character attributes list is greater than one,
+     * we need to use `.pop()` and therefore need to do more work,
+     * like ensuring the attribute list is replenished.
+     * Where if there is only one item we can just reference that.
      */
-    if(
-        createModifierList(c_modifier,L_useableAttributes).length
-        > c_modifier.length
-    ){ throw new Error(E_errors.invalidNumberOfSelectedModifiers); }
+    if(characterAttributes.length > 1){
 
-    if(
-        c_modifier.excludeCharacters
-    ){
+        /**
+         * Because we may need through the attributes a few times
+         * we don't want to modify the original list.
+         * Therefore we create a new list.
+         * Because we don't want this list to just be a pointer
+         * to the old list we need to initialize it and contact
+         * the old list to it.
+         */
+        let deck:Array<string> = [];
+        deck = deck.concat(characterAttributes);
+
+        let currentCharType:string|undefined = deck.pop();
+
+        /**
+         * Set the first character of the password.
+         * Check if it's required to be a whitespace.
+         */
         if(
-            !c_modifier.excludeCharacters.length
-            && c_modifier.excludeCharacters.length <= 0
+            modifier.w_beginning
+            && modifier.w_beginning_required
         ){
-            throw new Error(E_errors.excludeCharactersZeroLength);
-        }
-        if(new RegExp('/[\s]/g').test(c_modifier.excludeCharacters)){
-            throw new Error(E_errors.excludeCharactersIncludesWhitespace);
-        }
-    }
-
-    let requiredModifierList:Array<string> = createModifierList(c_modifier,L_requiredAttributes);
-    let whitespaceModifierList:Array<string> = createModifierList(c_modifier,L_whitespaceAttributes);
-
-    if(whitespaceModifierList.includes('w_between')){
-        requiredModifierList.push('whitespace');
-    }
-
-    const charCodeRequest:I_charCodeRequest = {
-        charType:'',
-        charCodeOptions:{
-            whitespaceOptions:whitespaceModifierList,
-            excludeCharacters:c_modifier.excludeCharacters
-        }
-    }
-
-    /**
-     * A list containing one item is essentially a string.
-     * So if our list only contains one item it's not a *real* list.
-     */
-    const realList:boolean = (requiredModifierList.length > 1);
-
-    requiredModifierList = shuffle(requiredModifierList);
-
-    let password:string  = '';
-
-    if(!c_modifier.memorable){
-
-
-        /**
-         * If the password requires a whitespace at the beginning, append a whitespace.
-         * Else set the first character and add it to the password.
-         */
-        if(whitespaceModifierList.includes('w_beginning_required')){
-            password += ' '
+            password += ' ';
         }else{
 
-            /**
-             * If we are not dealing with a *real* list do not pop a character off here.
-             */
-            if(realList){
-                // Because popping can be undefined we need to check the character...
-                const currentType:string|undefined = requiredModifierList.pop();
-
-                if(currentType){
-                    charCodeRequest.charType = currentType;
-                }
-
-            }else{
-                charCodeRequest.charType = requiredModifierList[0];
+            if(currentCharType){
+                password += String.fromCharCode(generateCharCode({
+                    charType:currentCharType,
+                    charCodeOptions:{
+                        whitespaceOptions:whitespaceAttributes,
+                        excludeCharacters:modifier.excludeCharacters
+                    }
+                },{beginning:true}));
             }
-
-            password += String.fromCharCode(generateCharCode(charCodeRequest,{beginning:true}));
         }
 
         /**
-         * If the we are dealing with a *real* list we will need to pop the characters off 
-         * of it and add it to the password. Also we will need to check if the list has reached
-         * the end and we will need to replenish it.
-         * Else if we are not dealing with a *real* list, we can just reference the first item
-         * in the list without having to modify it.
+         * Set the middle characters for the password.
          */
-        if(realList){
-
-            while(
-                password.length < passwordLengthLimit
-                && password.length < 256
-            ){
-
-                /**
-                 * If we have reached the end of the list,
-                 * replenish and reshuffle it.
-                 */
-                if(requiredModifierList.length === 0){ requiredModifierList = shuffle(createModifierList(c_modifier,L_requiredAttributes)); }
-
-                const currentType:string|undefined = requiredModifierList.pop();
-
-                if(currentType){
-                    charCodeRequest.charType = currentType;
-                }
-
-                password += String.fromCharCode(generateCharCode(charCodeRequest));
-            }
+        while(middleCharacters.length < passwordLimit){
+            currentCharType = deck.pop();
 
             /**
-             * If the password requires a whitespace at the end, append a whitespace.
-             * Else set the last character and add it to the password.
+             * If the current character type is undefined,
+             * and the deck length is 0,
+             * replenish the deck.
              */
-            if(whitespaceModifierList.includes('w_end_required')){
-                password += ' ';
-            }else{
+            if(
+                !currentCharType
+                && deck.length <= 0
+            ){
 
-                /**
-                 * Just incase we used all the modifiers up while looping
-                 * we need to preform one more check
-                 */
-                if(requiredModifierList.length === 0){ requiredModifierList = shuffle(createModifierList(c_modifier,L_requiredAttributes)); }
+                deck = deck.concat(characterAttributes);
 
-                const currentType:string|undefined = requiredModifierList.pop();
-
-                if(currentType){
-                    charCodeRequest.charType = currentType;
-                }
-
-                password += String.fromCharCode(generateCharCode(charCodeRequest,{end:true}));
+                currentCharType = deck.pop();
             }
 
+            if(currentCharType){
+                middleCharacters += String.fromCharCode(generateCharCode({
+                    charType:currentCharType,
+                    charCodeOptions:{
+                        whitespaceOptions:whitespaceAttributes,
+                        excludeCharacters:modifier.excludeCharacters
+                    }
+                }));
+            }
+        }
+
+        // Add any needed whitespace characters.
+        if(
+            modifier.w_between
+            && modifier.w_between_limit
+        ){
+            while(modifier.w_between_limit--){
+                middleCharacters += " ";
+            }
+        }
+
+        // Shuffle the middle characters.
+        middleCharacters = shuffle(middleCharacters.split('')).join('');
+
+        // Append middle characters to the password.
+        password += middleCharacters;
+
+        /**
+         * Set the last character of the password.
+         * Check if it's required to be a whitespace.
+         */
+        if(
+            modifier.w_end
+            && modifier.w_end_required
+        ){
+            password += ' ';
         }else{
 
-            charCodeRequest.charType = requiredModifierList[0];
-
-            while(
-                password.length < passwordLengthLimit
-                && password.length < 256
+            /**
+             * If the current character type is undefined,
+             * and the deck length is 0,
+             * replenish the deck.
+             * We need to do this here because the loop
+             * could have ended it on empty.
+             */
+            if(
+                !currentCharType
+                && deck.length <= 0
             ){
-                password += String.fromCharCode(generateCharCode(charCodeRequest));
+
+                deck = deck.concat(shuffle(characterAttributes));
+
+                const newCurrentChar = deck.pop();
+
+                if(newCurrentChar){
+                    currentCharType = newCurrentChar;
+                }
             }
 
-            if(whitespaceModifierList.includes('w_end_required')){
-                password += ' ';
-            }else{
-                password += String.fromCharCode(generateCharCode(charCodeRequest,{end:true}));
+            if(currentCharType){
+                password += String.fromCharCode(generateCharCode({
+                    charType:currentCharType,
+                    charCodeOptions:{
+                        whitespaceOptions:whitespaceAttributes,
+                        excludeCharacters:modifier.excludeCharacters
+                    }
+                },{end:true}));
             }
+
         }
 
     }else{
-        // TODO
-        return;
+    // ^ Our character attributes list only contained one item.
+
+        /**
+         * Set the first character of the password.
+         * Check if it's required to be a whitespace.
+         */
+        if(
+            modifier.w_beginning
+            && modifier.w_beginning_required
+        ){
+            password += ' ';
+        }else{
+            password += String.fromCharCode(generateCharCode({
+                charType:characterAttributes[0],
+                charCodeOptions:{
+                    whitespaceOptions:whitespaceAttributes,
+                    excludeCharacters:modifier.excludeCharacters
+                }
+            },{beginning:true}));
+        }
+
+        /**
+         * Set the middle characters for the password.
+         */
+        while(middleCharacters.length < passwordLimit){
+            middleCharacters += String.fromCharCode(generateCharCode({
+                charType:characterAttributes[0],
+                charCodeOptions:{
+                    whitespaceOptions:whitespaceAttributes,
+                    excludeCharacters:modifier.excludeCharacters
+                }
+            }));
+        }
+
+        // Add any needed whitespace characters.
+        if(
+            modifier.w_between
+            && modifier.w_between_limit
+        ){
+            while(modifier.w_between_limit--){
+                middleCharacters += " ";
+            }
+        }
+
+        // Shuffle the middle characters.
+        middleCharacters = shuffle(middleCharacters.split('')).join('');
+
+        // Append middle characters to the password.
+        password += middleCharacters;
+
+        /**
+         * Set the last character of the password.
+         * Check if it's required to be a whitespace.
+         */
+        if(
+            modifier.w_end
+            && modifier.w_end_required
+        ){
+            password += ' ';
+        }else{
+            password += String.fromCharCode(generateCharCode({
+                charType:characterAttributes[0],
+                charCodeOptions:{
+                    whitespaceOptions:whitespaceAttributes,
+                    excludeCharacters:modifier.excludeCharacters
+                }
+            },{end:true}));
+        }
+
     }
 
+    // Return the password.
     return password;
-
 }

@@ -1,141 +1,36 @@
-simplePass
-=
-
 > **CAUTION**
 >
 > This project is in Beta Phase. Some features may still contain a few bugs.
 
-- [simplePass](#simplepass)
 - [About](#about)
-- [Installation](#installation)
-- [Modifier(Options)](#modifieroptions)
-  - [General Modifiers](#general-modifiers)
-    - [Whitespace Modifiers](#whitespace-modifiers)
-  - [Latin Basic Modifiers](#latin-basic-modifiers)
-- [Examples](#examples)
-- [Development](#development)
-  - [Requirements](#requirements)
-  - [Download/Clone](#downloadclone)
-  - [Install Packages](#install-packages)
-    - [Via NPM](#via-npm)
-  - [Testing](#testing)
+- [Available Modifiers](#available-modifiers)
+- [External Resources](#external-resources)
 
-# About
+## About
 
 simplePass is a JavaScript password generator.
 
-# Installation
+## Available Modifiers
 
-To include simplePass in your project follow these steps:
+**General Modifiers**
+* Length - Adjusts the length of the the password.
+* Exclude Characters - Any characters the password should not contain.
 
-1. Download the ```simplePass``` directory.
-2. simplePass is built using *ESNext* module imports so in your project you will have to import simplePass like so:
-```javascript
-import simplePass from 'yourLocalPathing/simplePass/simplePass.js';
-```
-1. Call simplePass like so 
-```javascript
-const password = simplePass(modifier);
-```
+**Basic Latin Modifiers**
+* Lowercase - Includes Basic Latin lowercase characters [a-z].
+* Uppercase - Includes Basic Latin uppercase characters [A-Z].
+* Numbers - Includes Basic Latin numerals [0-9].
+* Punctuation - Includes Basic Latin punctuation.
 
-# Modifier(Options)
+**White-space Modifiers**
+* Whitespace Between - Include whitespace in the middle of the password
+  * Whitespace Between Limit - Set the number of whitespace characters to include in the middle of the password.
+* Whitespace Beginning - Chance for password to contain whitespace in the beginning.
+  * White Beginning Required - Require whitespace characters in the beginning of the password.
+* Whitespace Beginning - Chance for password to contain whitespace in the end.
+  * White Beginning Required - Require whitespace characters in the end of the password.
 
-simplePass may be called a variety of modifiers to change the desired passwords outcome. These modifiers are passed as an object to simplePass.
-
-## General Modifiers
-* length:*number* - The length of the password (default: 8)
-  * min: 3
-  * max 256
-* excludeCharacters: *string* - Ensure the following characters are excluded from the password (default: empty)
-
-### Whitespace Modifiers
-* w_beginning: *boolean* - Allow whitespace at the beginning of a password.
-* w_beginning_required: *boolean* - Ensure a whitespace character at the beginning of a password.
-* w_end: *boolean* - Allow whitespace at the end of a password.
-* w_end_required: *boolean* - Ensure a whitespace character at the end of a password.
-* w_between: *boolean* - Ensure a whitespace character between the beginning and end of a password.
-
-## Latin Basic Modifiers
-* lowercase:*boolean* - Ensure a lowercase characters (default: true)
-* uppercase:*boolean* - Ensure uppercase characters (default: false)
-* numbers:*boolean* - Ensure numbers (default: false)
-* punctuation:*boolean* - Ensure punctuation (default: false)
-
-
-# Examples
-
-Directory structure after downloading the *simplePass* directory.
-
-```
-.
-+-- yourProjectsMainDir
-| +-- index.html
-| +-- css
-| +-- js
-| | +-- simplePass
-| | | +-- simplePass.js
-| | | +-- ...
-| | +-- yourProjectScript.js
-```
-
-```javascript
-// yourProjectScript.js
-
-// Import simplePass
-import simplePass from "./simplePass/simplePass.js";
-
-// Generate password using only lowercase.
-const lowercasePass = simplePass({
-  length:8,
-  lowercase:true
-});
-// outputs: esbcxvsr
-
-// Generate more 'random' password.
-const randomPass = simplePass({
-  length:20,
-  lowercase:true,
-  uppercase:true,
-  numbers:true,
-  punctuation:true,
-});
-// outputs: "R\ucJ4/EG8oZVrH+uyQ
-
-```
-
-# Development
-
-## Requirements
-
-Due to simplePass being module based you will need a local server to host files (See: [Mozilla Developer | Reason: CORS request not HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS/Errors/CORSRequestNotHttp)). We recommend the following:
-* [Browser-Sync](https://browsersync.io/)
-
-simplePass is also built using [Typescript](https://www.typescriptlang.org/) and you will need some form of installation to compile typescript files into Javascript. We recommend using the NPM distribution of Typescript, this means you will need:
-* [NodeJS](https://nodejs.org/en/)
-* and its package manager [NPM](https://www.npmjs.com/)
-
-Then you will be able to [install Typescript through NPM globally](https://www.npmjs.com/package/typescript#installing) or install the package locally scoped to the project; see [Install Packages | Via NPM](#via-npm).
-
-## Download/Clone
-
-Currently this repo is only available through GitHub. You can find the repo at:
-* [Github | staticBanter | simplePass](https://github.com/staticBanter/simplePass)
-
-## Install Packages
-
-Ensure you have navigated to the project directory, then proceed to install the packages.
-
-### Via NPM
-
-If you do not have Typescript installed on your machine you may install a local project version via NPM
-
-```javascript
-npm install
-```
-## Testing
-
-Testing is currently done inside of a browser using [MochaJS](https://mochajs.org/#running-mocha-in-the-browser) and [ChaiJS](https://www.chaijs.com/).
-
-Again, due to the this project being module based you will need to be running a local server hosting the files to view the test page.
-
-simplePass includes local versions of MochaJS and ChaiJs found in the ```test/lib``` directory so there is no need to install them.
+## External Resources
+* **[Installation & Examples](./tutorial-installation-and-examples.html)**
+* **[Development](./tutorial-development.html)**
+* **[Contributing](./tutorial-contributing.html)**
