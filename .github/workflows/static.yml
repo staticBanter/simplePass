@@ -35,8 +35,8 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          # Upload only the docs/simplePass/[version] directory.
-          path: './docs/simplePass/1.1.0-Beta/'
+          # Upload only the docs/simplepass/[version] directory.
+          path: './docs/simplepass/1.1.0-Beta'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
