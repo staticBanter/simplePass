@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>simplePass Docs: Module: config</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Module: config</h1>
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Configurable settings for simplePass.</p></div>
+        
+
+        
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="config.simplePass.js.html">config.simplePass.js</a>, <a href="config.simplePass.js.html#line2">line 2</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id="~config"><span class="type-signature">(inner, constant) </span>config<span class="type-signature"> :object</span></h4>
+
+
+
+
+<div class="description">
+    <p>Configuration settings for the simplePass password program.
+These settings can be configured to your needs or your machines capabilities.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>passwordLengthMin</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The minimum password length.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>passwordLengthMin</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The maximum password length.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>excludeCharactersMin</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The minimum excluded characters to allow.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>excludeCharactersMax</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The maximum excluded characters to allow.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>defaultPasswordLength</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The default password length.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>possibleWhitespaceCharacterOffset</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Offsets the maximum amount of possible whitespace characters.
+This because simplePass does not allow a password to contain only whitespace, and give a default offset of 2 characters.
+Likewise, simplePass will also manually added the beginning and ending characters, adding 2 more to our offset for a total of 4.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>whitespaceBetweenMax</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The maximum amount of white-space to allow between a password.
+<strong>Dynamic</strong> : based on passwords length.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>whitespaceBetweenMin</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The minimum amount of white-space to allow between a password.
+<strong>Dynamic</strong> : based on passwords length.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>errorMessagePrefix</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Prefix used at the beginning of an error message.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>templateMessageMarker</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The marker to look for inside of error message template strings
+to swap out for dynamic error properties.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="config.simplePass.js.html">config.simplePass.js</a>, <a href="config.simplePass.js.html#line6">line 6</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+        
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-E_errors.html">E_errors</a></li><li><a href="module-L_allowedModifiers.html">L_allowedModifiers</a></li><li><a href="module-L_requiredAttributes.html">L_requiredAttributes</a></li><li><a href="module-L_useableAttributes.html">L_useableAttributes</a></li><li><a href="module-L_whitespaceAttributes.html">L_whitespaceAttributes</a></li><li><a href="module-characterCodeConstraints.html">characterCodeConstraints</a></li><li><a href="module-cleanModifier.html">cleanModifier</a></li><li><a href="module-config.html">config</a></li><li><a href="module-createMessage.html">createMessage</a></li><li><a href="module-createModifierList.html">createModifierList</a></li><li><a href="module-generateCharCode.html">generateCharCode</a></li><li><a href="module-shuffle.html">shuffle</a></li><li><a href="module-simplePass.html">simplePass</a></li><li><a href="module-validateModifier.html">validateModifier</a></li></ul><h3>Interfaces</h3><ul><li><a href="I_charCodeGenerationFlag.html">I_charCodeGenerationFlag</a></li><li><a href="I_charCodeOptions.html">I_charCodeOptions</a></li><li><a href="I_charCodeRequest.html">I_charCodeRequest</a></li><li><a href="I_passwordModifier.html">I_passwordModifier</a></li><li><a href="module-characterCodeConstraints-I_charCodeConstraintsAttributes.html">I_charCodeConstraintsAttributes</a></li></ul><h3>Other Resources</h3><ul><li><a href="tutorial-CODE_OF_CONDUCT.html">Code Of Conduct</a></li><li><a href="tutorial-CONTRIBUTING.html">Contributing</a></li><li><a href="tutorial-README.html">README</a></li><li><a href="tutorial-SECURITY.html">Security</a></li><li><a href="tutorial-development.html">Development</a></li><li><a href="tutorial-installation-and-examples.html">Installation & Examples</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.0</a>
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
