@@ -14,12 +14,15 @@
     },
     "templates": {
         "cleverLinks": false,
-        "monospaceLinks": true
+        "monospaceLinks": true,
+        "default":{
+            "includeDate":false
+        }
     },
     "opts":{
-        "destination":"./docs/",
+        "destination":"./site",
         "package":"./package.json",
-        "readme":"./README.md",
+        "readme":"./docs/README.md",
         "recurse":true,
         "template":"docs/template"
     }

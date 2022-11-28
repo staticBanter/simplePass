@@ -42,6 +42,6 @@
     "webpack-build": "webpack build --config webpack.config.js",
     "tsc": "tsc --project .",
     "tsc-watch": "tsc --watch --project .",
-    "docs-build": "jsdoc ./simplePass --tutorials ./docs/markdown --configure ./jsdoc.config.json"
+    "docs-build": "jsdoc ./simplePass --tutorials ./docs --configure ./jsdoc.config.json"
   }
 }

@@ -1,0 +1,17 @@
+{
+    "development":{
+        "title":"Development"
+    },
+    "installation-and-examples":{
+        "title":"Installation & Examples"
+    },
+    "CONTRIBUTING":{
+        "title":"Contributing"
+    },
+    "CODE_OF_CONDUCT":{
+        "title":"Code Of Conduct"
+    },
+    "SECURITY":{
+        "title":"Security"
+    }
+}
