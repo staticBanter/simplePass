@@ -19,11 +19,14 @@
             "includeDate":false
         }
     },
+    "markdown":{
+        "idInHeadings":true
+    },
     "opts":{
         "destination":"./site",
         "package":"./package.json",
-        "readme":"./docs/README.md",
+        "readme":"README.md",
         "recurse":true,
-        "template":"docs/template"
+        "template":"./docs/site_template"
     }
 }

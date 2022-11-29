@@ -206,33 +206,7 @@ For a complete understanding of JSDoc please visit its documentation pages at [J
 
 To add additional Markdown files to the documentation add a markdown file with the name of your choosing to the ```docs/``` directory.
 
-JSDocs provides some configurations that explains the linking of the files and you may customize these attributes to your liking in the ```docs/jsdoc.config.json``` file. The documentation for this file can be found at [JSDoc | About Configuring JSDoc](https://jsdoc.app/about-configuring-jsdoc.html). 
-
-Linking from one file to anther is done like so;
-
-```bash
-# Directory Structure
-| +-- docs/
-| | +-- main.md
-| | +-- example.md
-| | +-- sub_dir/
-| | | +-- sub-file.md
-```
-
-If you would like to create a link inside of ```main.md``` linking to ```example.md```. You would preform the following:
-```md
-<!-- Link inside of main.md linking to example.md -->
-[link to example](./tutorial-example.html)
-```
-
-```md
-<!-- Link inside of main.md linking to sub_file.md -->
-[link to sub-file](./sub_dir/tutorial-sub-file.html)
-```
-Notice how the following:
-1. The files are still relatively linked. This is because JSDoc maintains the copied directory structure.
-2. The files all got prefixed with *tutorial* this is a limitation of the JSDoc program and is suppressed in the final documentation output due to some minor modifications to the default JSDoc template (but it's still there behind the scenes).
-3. The ```.md``` extension gets replaced with a ```.html``` one.
+JSDocs provides some configurations that explains how the documenation hieracrhy should be structured and the names of the files, you may customize these attributes to your liking in the ```docs/jsdoc.config.json``` file. The documentation for this file can be found at [JSDoc | About Configuring JSDoc](https://jsdoc.app/about-tutorials.html). 
 
 ### Webpack
 
@@ -263,3 +237,7 @@ We also recommend you include the following commands in your ```package.json```;
 ```
 
 For a complete understanding of TypeScript please visit its documentation pages at [TypeScript | Docs](https://www.typescriptlang.org/docs/).
+
+---
+
+<sub>Thank you for taking the time to read this document. If you have any questions comments or concerns regarding this report open an issue on the <a href="https://github.com/staticBanter/simplePass/issues">simplePass GitHub Issue Tracker</a></sub>

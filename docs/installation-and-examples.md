@@ -1,7 +1,9 @@
 - [Browser/Javascript](#browserjavascript)
 - [Typescript](#typescript)
 
-simplePass is currently only available through its GitHub at [](), there you can download the entire project repo.
+simplePass is currently only available through its GitHub at [GitHub | staticBanter | simplePass](https://github.com/staticBanter/simplePass), there you can download the entire project repo.
+
+simplePass is built using *ESNext* modules so you will need deployed it in a server environment.
 
 ## Browser/Javascript
 
@@ -163,16 +165,16 @@ Directory structure after downloading and renaming the ```src``` directory (for 
 +-- yourProjectsMainDir/
 | +-- index.html
 | +-- css/
-| +-- js/
+| +-- ts/
 | | +-- simplePass/
 | | | +-- data/
 | | | +-- helpers/
-| | | +-- config.simplePass.js
-| | | +-- simplePass.js
-| | +-- yourProjectScript.js
+| | | +-- config.simplePass.ts
+| | | +-- simplePass.ts
+| | +-- yourProjectScript.ts
 ```
 
-Including *simplePass.js* in *yourProjectScript.js*
+Including *simplePass.ts* in *yourProjectScript.ts*
 ```javascript
 // yourProjectScript.js
 
@@ -233,3 +235,7 @@ import config from "./simplePass/config.simplePass.ts";
 console.log(config.passwordLengthMin)
 
 ```
+
+---
+
+<sub>Thank you for taking the time to read this document. If you have any questions comments or concerns regarding this report open an issue on the <a href="https://github.com/staticBanter/simplePass/issues">simplePass GitHub Issue Tracker</a></sub>
