@@ -16,61 +16,7 @@ If you believe you have found a vulnerability in this program please contact one
 
 Your message should follow this format
 1. The message title needs to include the phrase "simplePass Vulnerability"
-2. The message body should be formatted as follows:
-```markdown
-[AFFECTED VERSION #]
-
-<!--
-IF related to specific browser/run-time environment.
-List the affected environments.
--->
-* [AFFECTED BROWSER]
-* [AFFECTED RUN-TIME]
-<!--
-ELSE
--->
-**ALL**
-<!---->
-
-[DESCRIPTION OF HOW THE VULNERABILITY WAS DISCOVERED AND HOW TO REPLICATE]
-
-<!--
-IF you know what files are causing the issue
-List the affected files by name, and sub-list their line numbers.
--->
-* [AFFECTED FILE] - [LINE NUMBER(Start)] : [LINE NUMBER(End)]
-* [AFFECTED FILE] -
-  * [LINE NUMBER(Start)] : [LINE NUMBER(End)]
-  * [LINE NUMBER(Start)] : [LINE NUMBER(End)]  
-<!--
-ELSE
--->
-**Debugging Needed**
-<!---->
-
-<!--
-OPTIONAL
--->
-[DESCRIPTION OF PURPOSED SOLUTIONS]
-<!---->
-
-<!--
-OPTIONAL
--->
-[LIST OF ALTERNATIVE CONTACT INFORMATION]
-<!---->
-
-<!--
-OPTIONAL
-If you would like public credit for you discovery please provide some extra information so we can recognize you properly.
-Please note that you do not need to fill out all of these fields.
-If you wish to remain anonymous when reporting you may do so by removing this section or not modifying it.
--->
-[WEB HANDLE OR NAME]
-[ORGANIZATION OR GROUP]
-[CONTACT INFORMATION]
-<!---->
-```
+2. The message body should follow the same format as a *Bug Report* but change the title too *Security Report*. To find the Bug Report template please visit the [simplePass GitHub Bug Report Issue Template](https://github.com/staticBanter/simplePass/blob/main/.github/ISSUE_TEMPLATE/bug_report.md)
 
 If you do not get a response within 7-days we ask that you please send us another email after 1-week and continue to do so until we respond.
 
@@ -82,4 +28,6 @@ If you do not hear from any of the maintainers for over 1-month **OR** 3-weeks *
 
 If we respond to your report we will be as honest and open as we can about how we are going to approach the situation and how long it may take us to solve it. We ask that you respect our honesty and do not share any information that we will disclose with you until we approve.
 
-<sub>Thank you for taking the time to read this report. If you have any questions comments or concerns regarding this report please contact staticBanter via email at staticbanter@staticblogs.ca.</sub>
+---
+
+<sub>Thank you for taking the time to read this document. If you have any questions comments or concerns regarding this report open an issue on the <a href="https://github.com/staticBanter/simplePass/issues">simplePass GitHub Issue Tracker</a></sub>

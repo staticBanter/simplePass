@@ -1,8 +1,12 @@
 ---
-name: Bug report
+name: Bug Report.
+
 about: Create a report to help us improve
+
 title: ''
+
 labels: ''
+
 assignees: ''
 
 ---
@@ -23,6 +27,14 @@ A clear and concise description of what you expected to happen.
 **Screenshots**
 If applicable, add screenshots to help explain your problem.
 
+**simplePass Program (please complete the following information):**
+- Version #: [e.g 1.0.1-Example]
+
+<!--
+A minimum of 1 platform must be included.
+The more platforms that are tested before the request will
+always be appreciated!
+-->
 **Desktop (please complete the following information):**
  - OS: [e.g. iOS]
  - Browser [e.g. chrome, safari]
@@ -33,6 +45,7 @@ If applicable, add screenshots to help explain your problem.
  - OS: [e.g. iOS8.1]
  - Browser [e.g. stock browser, safari]
  - Version [e.g. 22]
+<!---->
 
 **Additional context**
 Add any other context about the problem here.

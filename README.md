@@ -4,7 +4,6 @@
 
 - [About](#about)
 - [Available Modifiers](#available-modifiers)
-- [Documentation](#documentation)
 
 ## About
 
@@ -26,13 +25,6 @@ simplePass is a JavaScript password generator.
 * Whitespace Between - Include whitespace in the middle of the password
   * Whitespace Between Limit - Set the number of whitespace characters to include in the middle of the password.
 * Whitespace Beginning - Chance for password to contain whitespace in the beginning.
-  * White Beginning Required - Require whitespace characters in the beginning of the password.
-* Whitespace Beginning - Chance for password to contain whitespace in the end.
-  * White Beginning Required - Require whitespace characters in the end of the password.
-
-## Documentation
-* **[Installation & Examples](installation-and-examples)**
-* **[Development](development)**
-* **[Code Of Conduct](CODE_OF_CONDUCT)**
-* **[Contributing](CONTRIBUTING)**
-* **[Security](SECURITY)**
+  * White Beginning Required - Require whitespace characters at the beginning of the password.
+* Whitespace End - Chance for password to contain whitespace at the end.
+  * White End Required - Require whitespace characters in the end of the password.
