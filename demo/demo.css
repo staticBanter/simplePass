@@ -30,6 +30,11 @@
     box-shadow: 0 1px 5px;
 }
 
+#passwordForm{
+    display: flex;
+    flex-flow: column;
+}
+
 #passwordForm > fieldset{
     display: flex;
     flex-flow: column;

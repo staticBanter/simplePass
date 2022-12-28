@@ -20,6 +20,9 @@ const L_allowedModifiers = [
     'w_between_limit',
     'w_end_required',
     'w_beginning_required',
-    'excludeCharacters'
+    'excludeCharacters',
+    'repeatingCharacter',
+    'repeatingCharacter_limit',
+    'customRepeatingCharacters'
 ];
 export default L_allowedModifiers;

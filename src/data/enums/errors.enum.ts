@@ -26,7 +26,7 @@ enum E_errors{
     nonGenerableCharacterType = '~-~_E.~: Non Generable Character Type. Attempted to generate a character of type ~',
     invalidAttributeType = '~-~_.~: InvalidAttribute Type. Attribute ~ is supposed to be of type ~',
     outOfBoundsAttributeValue = '~-~_E.~: Out Of Bounds Attribute Type. Attribute type ~ is out of its value bounds.',
-    whitespaceBetweenMissingLimit = '~-~_E.~: Whitespace Between Missing Limit. The \'Whitespace Between\' attribute must be set with a \'Whitespace Between Limit\' attribute.',
+    missingRequiredAttribute = '~-~_E.~: Attribute Missing Required. The attribute \'~\' requires attribute \'~\' to be set before it can be used.',
     missingRequiredAttributes = '~-~_E.~: Missing Required Attributes. The Password Modifier must contain one of the following attributes ~.',
     excludeCharactersContainedWhitespace = '~-~_E.~: \'Exclude Characters\' contained whitespace.'
 }

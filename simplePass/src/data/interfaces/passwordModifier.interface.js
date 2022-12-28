@@ -14,6 +14,10 @@
  * @property {boolean} [w_beginning_end] - If the password is required to contain a white-space in the end.
  * @property {boolean} [w_between] - If the password can contain white-space in the middle.
  * @property {boolean} [w_between_limit] - The number of white-spaces to insert in the middle of the password.
+ * @property {boolean} [repeatingCharacter] - If the password is required to contain a repeating character.
+ * @property {number} [repeatingCharacter_limit] - The number of repeating character sets the password requires.
+ * @property {string|Array<Array<string>>} [customRepeatingCharacters] - A string input of repeating characters that should be repeated in the password. This can also
+ * include how many times the character should be repeated in the password; if so, the property will be converted to a list.
  */
 'use strict';
 export {};

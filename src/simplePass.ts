@@ -10,6 +10,8 @@ import shuffle from "./helpers/shuffle.helper.js";
 import generateCharCode from "./helpers/generateCharCode.helper.js";
 import createMessage from "./helpers/createMessage.helper.js";
 import E_errors from "./data/enums/errors.enum.js";
+import ensureRepeatingCharacters from "./helpers/ensureRepeatingCharacters.helper.js";
+
 /**
  * @file Main file for simplePass. Exports the `simplePass` function.
  * @module simplePass
@@ -28,6 +30,7 @@ import E_errors from "./data/enums/errors.enum.js";
  * @requires L_requiredAttributes
  * @requires L_whitespaceAttributes
  * @requires generateCharCode
+ * @requires ensureRepeatingCharacters
  * @throws {E_errors.invalidModifier} Will throw an Error if the modifier is `null`, `undefined` or not a JavaScript *Object.*
  * @returns {string} The generated password.
  */
@@ -52,6 +55,10 @@ export default function simplePass(
     let password:string = '';
     let middleCharacters:string = '';
 
+    // Initialize preserve beginning and end character flags.
+    let preserveBeginning:boolean = false;
+    let preserveEnd: boolean = false;
+
     // Remove unneeded object attributes and normalize formData objects.
     modifier = cleanModifier(modifier);
 
@@ -73,6 +80,38 @@ export default function simplePass(
      * we need to changed the password length limit.
      */
     let passwordLimit = (modifier.length - 2);
+
+    /**
+     * If the repeating characters attribute is set we need to generate less characters.
+     */
+    if (modifier.repeatingCharacter){
+
+        if(modifier.customRepeatingCharacters){
+
+            if(typeof(modifier.customRepeatingCharacters) !== 'string'){
+
+                modifier.customRepeatingCharacters.forEach((set)=>{
+                    passwordLimit -= parseInt(set[1]);
+                });
+
+            }else{
+                passwordLimit -= (modifier.customRepeatingCharacters.length * 2);
+            }
+
+        }else if(modifier.repeatingCharacter_limit){
+            passwordLimit -= modifier.repeatingCharacter_limit;
+        }else{
+            passwordLimit--;
+        }
+
+    }
+
+    /**
+     * If the password limit drops below zero the password will not be able to contain all the characters.
+     */
+    if(passwordLimit <= (-1)){
+        throw new Error('The password length can not contain the selected amount of characters');
+    }
 
     /**
      * If the whitespace between attribute is set,
@@ -103,9 +142,9 @@ export default function simplePass(
          * the old list to it.
          */
         let deck:Array<string> = [];
-        deck = deck.concat(characterAttributes);
+        deck = deck.concat(shuffle(characterAttributes));
 
-        let currentCharType:string|undefined = deck.pop();
+        let currentCharType:string|undefined = '';
 
         /**
          * Set the first character of the password.
@@ -116,9 +155,14 @@ export default function simplePass(
             && modifier.w_beginning_required
         ){
             password += ' ';
+            preserveBeginning = true;
+
         }else{
 
+            currentCharType = deck.pop();
+
             if(currentCharType){
+
                 password += String.fromCharCode(generateCharCode({
                     charType:currentCharType,
                     charCodeOptions:{
@@ -126,13 +170,16 @@ export default function simplePass(
                         excludeCharacters:modifier.excludeCharacters
                     }
                 },{beginning:true}));
+
             }
+
         }
 
         /**
          * Set the middle characters for the password.
          */
         while(middleCharacters.length < passwordLimit){
+
             currentCharType = deck.pop();
 
             /**
@@ -145,12 +192,14 @@ export default function simplePass(
                 && deck.length <= 0
             ){
 
-                deck = deck.concat(characterAttributes);
+                deck = deck.concat(shuffle(characterAttributes));
 
                 currentCharType = deck.pop();
+
             }
 
             if(currentCharType){
+
                 middleCharacters += String.fromCharCode(generateCharCode({
                     charType:currentCharType,
                     charCodeOptions:{
@@ -158,7 +207,9 @@ export default function simplePass(
                         excludeCharacters:modifier.excludeCharacters
                     }
                 }));
+
             }
+
         }
 
         // Add any needed whitespace characters.
@@ -171,11 +222,8 @@ export default function simplePass(
             }
         }
 
-        // Shuffle the middle characters.
-        middleCharacters = shuffle(middleCharacters.split('')).join('');
-
-        // Append middle characters to the password.
-        password += middleCharacters;
+        // Add the middle characters
+        password += shuffle(middleCharacters.split('')).join('');
 
         /**
          * Set the last character of the password.
@@ -186,6 +234,7 @@ export default function simplePass(
             && modifier.w_end_required
         ){
             password += ' ';
+            preserveEnd = true;
         }else{
 
             /**
@@ -196,20 +245,16 @@ export default function simplePass(
              * could have ended it on empty.
              */
             if(
-                !currentCharType
-                && deck.length <= 0
+                deck.length <= 0
+                && !currentCharType
             ){
-
                 deck = deck.concat(shuffle(characterAttributes));
-
-                const newCurrentChar = deck.pop();
-
-                if(newCurrentChar){
-                    currentCharType = newCurrentChar;
-                }
             }
 
+            currentCharType = deck.pop()
+
             if(currentCharType){
+
                 password += String.fromCharCode(generateCharCode({
                     charType:currentCharType,
                     charCodeOptions:{
@@ -217,6 +262,87 @@ export default function simplePass(
                         excludeCharacters:modifier.excludeCharacters
                     }
                 },{end:true}));
+
+            }
+
+        }
+
+        // Check if we need to repeat any characters.
+        if(modifier.repeatingCharacter){
+
+            // Recreate the password
+            password = ensureRepeatingCharacters(password,{
+                repeatingSetCount:modifier.repeatingCharacter_limit,
+                customCharacterSet:modifier.customRepeatingCharacters,
+                preservations:{
+                    beginning:preserveBeginning,
+                    end:preserveEnd
+                }
+            });
+
+            /**
+             * The *ensureRepeatingCharacters* function may remove some characters from
+             * the original password.
+             * We will check if the password length is less than our requested length
+             * and add new characters if it is.
+             * 
+             * Because *ensureRepeatingCharacters* function only removes repeating 
+             * characters from the original password, we should be OK to add any
+             * new characters from the request as we like.
+             */
+            if(password.length < modifier.length){
+
+                
+                // Split the sting into pieces
+                let stringBeginning = password.slice(0,1)
+                let stringMiddle = password.slice(1,password.length-1);
+                let stringEnd = password.slice(password.length-1,password.length);
+
+                // Add new characters to the middle of the string  the way we usually do.
+                while(stringMiddle.length < (modifier.length - 2)){
+
+                    /**
+                     * Check and reinitialize deck.
+                     */
+                    if(
+                        deck.length <= 0
+                        || !currentCharType
+                    ){
+                        deck = deck.concat(shuffle(characterAttributes));
+                    }
+
+                    // Get current character
+                    currentCharType = deck.pop()
+
+                    /**
+                     * Add current character to string middle.
+                     * If we can repeat this character we will.
+                     */
+
+                    if(currentCharType){
+
+                        const currentCharacter = String.fromCharCode(generateCharCode({
+                            charType:currentCharType,
+                            charCodeOptions:{
+                                whitespaceOptions:whitespaceAttributes,
+                                excludeCharacters:modifier.excludeCharacters
+                            }
+                        }));
+
+                        stringMiddle += currentCharacter;
+
+                        // Repeat character if possible.
+                        if((stringMiddle.length + 1) <= (modifier.length - 2)){
+                            stringMiddle += currentCharacter;
+                        }
+
+                    }
+
+                }
+
+                // Recreate our password.
+                password = stringBeginning + shuffle(stringMiddle.split('')).join('') + stringEnd;
+
             }
 
         }
@@ -233,6 +359,7 @@ export default function simplePass(
             && modifier.w_beginning_required
         ){
             password += ' ';
+            preserveBeginning = true;
         }else{
             password += String.fromCharCode(generateCharCode({
                 charType:characterAttributes[0],
@@ -266,11 +393,8 @@ export default function simplePass(
             }
         }
 
-        // Shuffle the middle characters.
-        middleCharacters = shuffle(middleCharacters.split('')).join('');
-
-        // Append middle characters to the password.
-        password += middleCharacters;
+        // Add middle characters to password
+        password += shuffle(middleCharacters.split('')).join('');
 
         /**
          * Set the last character of the password.
@@ -281,7 +405,9 @@ export default function simplePass(
             && modifier.w_end_required
         ){
             password += ' ';
+            preserveEnd = true;
         }else{
+
             password += String.fromCharCode(generateCharCode({
                 charType:characterAttributes[0],
                 charCodeOptions:{
@@ -289,6 +415,67 @@ export default function simplePass(
                     excludeCharacters:modifier.excludeCharacters
                 }
             },{end:true}));
+
+        }
+
+        // Check if we need to repeat any characters.
+        if(modifier.repeatingCharacter){
+
+            // Recreate the password
+            password = ensureRepeatingCharacters(password,{
+                repeatingSetCount:modifier.repeatingCharacter_limit,
+                customCharacterSet:modifier.customRepeatingCharacters,
+                preservations:{
+                    beginning:preserveBeginning,
+                    end:preserveEnd
+                }
+            });
+
+            /**
+             * The *ensureRepeatingCharacters* function may remove some characters from
+             * the original password.
+             * We will check if the password length is less than our requested length
+             * and add new characters if it is.
+             * 
+             * Because *ensureRepeatingCharacters* function only removes repeating 
+             * characters from the original password, we should be OK to add any
+             * new characters from the request as we like.
+             */
+            if(password.length < modifier.length){
+
+                // Split the sting into pieces
+                let stringBeginning = password.slice(0,1)
+                let stringMiddle = password.slice(1,password.length-1);
+                let stringEnd = password.slice(password.length-1,password.length);
+
+                // Add new characters to the middle of the string  the way we usually do.
+                while(stringMiddle.length < (modifier.length - 2)){
+
+                    const currentCharacter = String.fromCharCode(generateCharCode({
+                        charType:characterAttributes[0],
+                        charCodeOptions:{
+                            whitespaceOptions:whitespaceAttributes,
+                            excludeCharacters:modifier.excludeCharacters
+                        }
+                    }));
+
+                    stringMiddle += currentCharacter;
+
+                    // If we can repeat this character we shall.
+                    if((stringMiddle.length + 1) <= (modifier.length - 2)){
+
+                        stringMiddle += currentCharacter;
+
+                    }
+
+
+                }
+
+                // Recreate our password.
+                password = stringBeginning + shuffle(stringMiddle.split('')).join('') + stringEnd;
+
+            }
+
         }
 
     }

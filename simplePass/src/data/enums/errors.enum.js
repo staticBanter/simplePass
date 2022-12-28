@@ -26,7 +26,7 @@ var E_errors;
     E_errors["nonGenerableCharacterType"] = "~-~_E.~: Non Generable Character Type. Attempted to generate a character of type ~";
     E_errors["invalidAttributeType"] = "~-~_.~: InvalidAttribute Type. Attribute ~ is supposed to be of type ~";
     E_errors["outOfBoundsAttributeValue"] = "~-~_E.~: Out Of Bounds Attribute Type. Attribute type ~ is out of its value bounds.";
-    E_errors["whitespaceBetweenMissingLimit"] = "~-~_E.~: Whitespace Between Missing Limit. The 'Whitespace Between' attribute must be set with a 'Whitespace Between Limit' attribute.";
+    E_errors["missingRequiredAttribute"] = "~-~_E.~: Attribute Missing Required. The attribute '~' requires attribute '~' to be set before it can be used.";
     E_errors["missingRequiredAttributes"] = "~-~_E.~: Missing Required Attributes. The Password Modifier must contain one of the following attributes ~.";
     E_errors["excludeCharactersContainedWhitespace"] = "~-~_E.~: 'Exclude Characters' contained whitespace.";
 })(E_errors || (E_errors = {}));

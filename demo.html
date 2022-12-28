@@ -30,6 +30,35 @@
                 <input type="number" form="passwordForm" name="length" max="256" min="1" step="1" value="8" required/>
             </label>
             <fieldset>
+                <legend>Repeat Characters</legend>
+                <div>
+                    <label>Repeating Character:
+                        <input type="checkbox" form="passwordForm" name="repeatingCharacter" class="toggle" data-toggle="disabled" data-target="#repeatingCharacter_limit #customRepeatingCharacters"/>
+                    </label>
+                    <p>Ensure at least one character in the password will be repeated.</p>
+                </div>
+                <div>
+                    <label>Repeating Character Limit:
+                        <input type="number" form="passwordForm" name="repeatingCharacter_limit" id="repeatingCharacter_limit" min="1" max="256" step="1" value="1" />
+                    </label>
+                    <p>Specify the number of characters that should be repeated in the password.</p>
+                </div>
+                <div>
+                    <label>Custom Repeats:
+                        <input type="text" form="passwordForm" name="customRepeatingCharacters" id="customRepeatingCharacters" minlength="1" maxlength="256" />
+                    </label>
+                    <p>Specify the exact characters that should be repeated in the password, as-well as indicate the number of times the character should repeat.</p>
+                    <p>The input either needs to be a single string containing all characters wished to be repeated (abcd). Or it can be formated to define the amount each character should be repeated (b a:3 \::4);</p>
+                    <ul>
+                        <li>each set should be space separated,</li>
+                        <li>characters single characters and characters with a repeat of 1 will default to a repeat of 2,</li>
+                        <li>to use literal characters prefix them with a "\" (forward-slash),</li>
+                    </ul>
+                    <p><b>* Note:</b> This feature is currently limited with the total of repeated characters that can be requested in a password to the constraint of <i>passwordLength - 2</i> (ie; a password of length 8 would can only contain 6 repeating characters).</p>
+                    <p><b>* Note:</b> This feature will ignore any password modifiers already set when including characters.</p>
+                </div>
+            </fieldset>
+            <fieldset>
                 <legend>Latin Basic</legend>
                 <p>This does not include Control Characters 0-31,127</p>
                 <label>Lower Case: [abcdefghijklmnopqrstuvwxyz]

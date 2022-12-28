@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>simplePass Docs: Source: helpers/generateCharCode.helper.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: helpers/generateCharCode.helper.js</h1>
+
+    
+
+
+
+    
+
+<section>
+    <article>
+        <pre class="prettyprint source linenums"><code>'use strict';
+import config from "../config.simplePass.js";
+import E_errors from "../data/enums/errors.enum.js";
+import characterCodeConstraints from "../data/objects/characterCodeConstraints.object.js";
+import createMessage from "./createMessage.helper.js";
+/**
+ * @file Contains function that generates requested character codes. Exports `generateCharCode`.
+ * @module generateCharCode
+ */
+/**
+ * Generates a random character code of a given type.
+ *
+ * @function generateCharCode
+ * @param {I_charCodeRequest} charCodeRequest - An object contain the properties that describe the type of character code being requested
+ * and certain restrictions being place on it.
+ * @param {I_charCodeGenerationFlag} [flags] - A flag object used to give more information about what stage of password generation we are at.
+ * @requires characterCodeConstraints
+ * @requires createMessage
+ * @throws {E_errors.nonGenerableCharacterType} - Will throw an error if the requested character code type
+ * is not found within the character code constraints object.
+ * @returns {number}
+ */
+export default function generateCharCode(charCodeRequest, flags) {
+    // Generate our random number.
+    const charCode = self.crypto.getRandomValues(new Uint8Array(1))[0];
+    /**
+     * If the 'excluded characters' attribute is set,
+     * If the 'excluded characters' contains the newly generated string,
+     * regenerate a new string.
+     */
+    if (charCodeRequest.charCodeOptions?.excludeCharacters) {
+        if (charCodeRequest.charCodeOptions.excludeCharacters.includes(String.fromCharCode(charCode))) {
+            return generateCharCode(charCodeRequest);
+        }
+    }
+    /**
+     * Check for flags.
+     */
+    if (flags) {
+        /**
+         * Do things at the beginning of the password.
+         */
+        if (flags?.beginning) {
+            /**
+             * If a white-space is optional at the beginning of the password,
+             * and the charCode is 32,
+             * return the charCode.
+             * Else regenerate.
+             */
+            if (charCodeRequest.charCodeOptions?.whitespaceOptions?.includes('w_beginning')
+                &amp;&amp; charCode === 32) {
+                return charCode;
+            }
+            else if (charCode === 32) {
+                return generateCharCode(charCodeRequest, flags);
+            }
+        }
+        /**
+         * Do things at the end of the password.
+         */
+        if (flags?.end) {
+            /**
+             * If a whitespace is optional at the end of the password,
+             * and the charCode is 32,
+             * return the charCode.
+             * Else regenerate.
+             */
+            if (charCodeRequest.charCodeOptions?.whitespaceOptions?.includes('w_end')
+                &amp;&amp; charCode === 32) {
+                return charCode;
+            }
+            else if (charCode === 32) {
+                return generateCharCode(charCodeRequest, flags);
+            }
+        }
+    }
+    /**
+     * If the requested character type is within our character code constraints,
+     * preform further checks to determine if it's the correct character code we
+     * want.
+     * Else throw an error, we can not check for the requested character type.
+     */
+    if (characterCodeConstraints[charCodeRequest.charType]) {
+        /**
+         * If the character code we are requesting only has a single constraint,
+         * we can preform a direct comparison on it to determine if it's the one
+         * we want.
+         * Else continue as the constraint may have more attributes that we can
+         * test for.
+         */
+        if (characterCodeConstraints[charCodeRequest.charType]?.single
+            &amp;&amp; characterCodeConstraints[charCodeRequest.charType]?.single === charCode) {
+            return charCode;
+        }
+        /**
+         * Initialize these three attributes as they are used in a combination of
+         * comparisons.
+         */
+        const min = characterCodeConstraints[charCodeRequest.charType]?.min;
+        const max = characterCodeConstraints[charCodeRequest.charType]?.max;
+        const range = characterCodeConstraints[charCodeRequest.charType]?.range;
+        /**
+         * If the character code we are looking for exists in a range of codes.
+         * If the generated charCode is within the min or max of that range.
+         * If the generated charCode is equal to our min or max, we can just return it.
+         * Iterate over our range;
+         *  If our generated charCode exists somewhere in there, return it.
+         */
+        if (range) {
+            if ((min
+                &amp;&amp; max)
+                &amp;&amp; (charCode >= min
+                    &amp;&amp; charCode &lt;= max)) {
+                if (charCode === min
+                    || charCode === max) {
+                    return charCode;
+                }
+                for (let i = 0; i &lt; range.length; i++) {
+                    if (charCode >= range[i][0]
+                        &amp;&amp; charCode &lt;= range[i][1]) {
+                        return charCode;
+                    }
+                }
+            }
+        }
+        else if (
+        // ^ Else there was no range attribute and we only need to check the min and max.
+        (min
+            &amp;&amp; max)
+            &amp;&amp; (charCode >= min
+                &amp;&amp; charCode &lt;= max)) {
+            return charCode;
+        }
+    }
+    else {
+        throw new Error(createMessage(E_errors.nonGenerableCharacterType, [config.errorMessagePrefix, 'gCC', '1', charCodeRequest.charType]));
+    }
+    /**
+     * We did not find our character.
+     * Regenerate.
+     */
+    return generateCharCode(charCodeRequest, flags);
+}
+</code></pre>
+    </article>
+</section>
+
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-E_errors.html">E_errors</a></li><li><a href="module-L_allowedModifiers.html">L_allowedModifiers</a></li><li><a href="module-L_requiredAttributes.html">L_requiredAttributes</a></li><li><a href="module-L_useableAttributes.html">L_useableAttributes</a></li><li><a href="module-L_whitespaceAttributes.html">L_whitespaceAttributes</a></li><li><a href="module-characterCodeConstraints.html">characterCodeConstraints</a></li><li><a href="module-cleanModifier.html">cleanModifier</a></li><li><a href="module-config.html">config</a></li><li><a href="module-createMessage.html">createMessage</a></li><li><a href="module-createModifierList.html">createModifierList</a></li><li><a href="module-ensureRepeatingCharacters.html">ensureRepeatingCharacters</a></li><li><a href="module-generateCharCode.html">generateCharCode</a></li><li><a href="module-shuffle.html">shuffle</a></li><li><a href="module-simplePass.html">simplePass</a></li><li><a href="module-validateModifier.html">validateModifier</a></li></ul><h3>Interfaces</h3><ul><li><a href="I_charCodeGenerationFlag.html">I_charCodeGenerationFlag</a></li><li><a href="I_charCodeOptions.html">I_charCodeOptions</a></li><li><a href="I_charCodeRequest.html">I_charCodeRequest</a></li><li><a href="I_ensureRepeatingCharacterOptions.html">I_ensureRepeatingCharacterOptions</a></li><li><a href="I_passwordModifier.html">I_passwordModifier</a></li><li><a href="I_repeatingCharacterOptionsPreservations.html">I_repeatingCharacterOptionsPreservations</a></li><li><a href="module-characterCodeConstraints-I_charCodeConstraintsAttributes.html">I_charCodeConstraintsAttributes</a></li></ul><h3>Other Resources</h3><ul><li><a href="tutorial-CODE_OF_CONDUCT.html">Code Of Conduct</a></li><li><a href="tutorial-CONTRIBUTING.html">Contributing</a></li><li><a href="tutorial-SECURITY.html">Security</a></li><li><a href="tutorial-development.html">Development</a></li><li><a href="tutorial-installation-and-examples.html">Installation & Examples</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.0</a>
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
