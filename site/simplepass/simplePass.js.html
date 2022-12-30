@@ -1,4 +1,33 @@
-'use strict';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>simplePass Docs: Source: simplePass.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: simplePass.js</h1>
+
+    
+
+
+
+    
+
+<section>
+    <article>
+        <pre class="prettyprint source linenums"><code>'use strict';
 import cleanModifier from "./helpers/cleanModifier.helper.js";
 import validateModifier from "./helpers/validateModifier.helper.js";
 import config from "./config.simplePass.js";
@@ -89,7 +118,7 @@ export default function simplePass(modifier = {
     /**
      * If the password limit drops below zero the password will not be able to contain all the characters.
      */
-    if (passwordLimit <= (-1)) {
+    if (passwordLimit &lt;= (-1)) {
         throw new Error('The password length can not contain the selected amount of characters');
     }
     /**
@@ -98,7 +127,7 @@ export default function simplePass(modifier = {
      * to make room for the whitespace.
      */
     if (modifier.w_between
-        && modifier.w_between_limit) {
+        &amp;&amp; modifier.w_between_limit) {
         passwordLimit = passwordLimit - modifier.w_between_limit;
     }
     /**
@@ -124,7 +153,7 @@ export default function simplePass(modifier = {
          * Check if it's required to be a whitespace.
          */
         if (modifier.w_beginning
-            && modifier.w_beginning_required) {
+            &amp;&amp; modifier.w_beginning_required) {
             password += ' ';
             preserveBeginning = true;
         }
@@ -143,7 +172,7 @@ export default function simplePass(modifier = {
         /**
          * Set the middle characters for the password.
          */
-        while (middleCharacters.length < passwordLimit) {
+        while (middleCharacters.length &lt; passwordLimit) {
             currentCharType = deck.pop();
             /**
              * If the current character type is undefined,
@@ -151,7 +180,7 @@ export default function simplePass(modifier = {
              * replenish the deck.
              */
             if (!currentCharType
-                && deck.length <= 0) {
+                &amp;&amp; deck.length &lt;= 0) {
                 deck = deck.concat(shuffle(characterAttributes));
                 currentCharType = deck.pop();
             }
@@ -167,7 +196,7 @@ export default function simplePass(modifier = {
         }
         // Add any needed whitespace characters.
         if (modifier.w_between
-            && modifier.w_between_limit) {
+            &amp;&amp; modifier.w_between_limit) {
             while (modifier.w_between_limit--) {
                 middleCharacters += " ";
             }
@@ -179,7 +208,7 @@ export default function simplePass(modifier = {
          * Check if it's required to be a whitespace.
          */
         if (modifier.w_end
-            && modifier.w_end_required) {
+            &amp;&amp; modifier.w_end_required) {
             password += ' ';
             preserveEnd = true;
         }
@@ -191,8 +220,8 @@ export default function simplePass(modifier = {
              * We need to do this here because the loop
              * could have ended it on empty.
              */
-            if (deck.length <= 0
-                && !currentCharType) {
+            if (deck.length &lt;= 0
+                &amp;&amp; !currentCharType) {
                 deck = deck.concat(shuffle(characterAttributes));
             }
             currentCharType = deck.pop();
@@ -227,17 +256,17 @@ export default function simplePass(modifier = {
              * characters from the original password, we should be OK to add any
              * new characters from the request as we like.
              */
-            if (password.length < modifier.length) {
+            if (password.length &lt; modifier.length) {
                 // Split the sting into pieces
                 let stringBeginning = password.slice(0, 1);
                 let stringMiddle = password.slice(1, password.length - 1);
                 let stringEnd = password.slice(password.length - 1, password.length);
                 // Add new characters to the middle of the string  the way we usually do.
-                while (stringMiddle.length < (modifier.length - 2)) {
+                while (stringMiddle.length &lt; (modifier.length - 2)) {
                     /**
                      * Check and reinitialize deck.
                      */
-                    if (deck.length <= 0
+                    if (deck.length &lt;= 0
                         || !currentCharType) {
                         deck = deck.concat(shuffle(characterAttributes));
                     }
@@ -257,7 +286,7 @@ export default function simplePass(modifier = {
                         }));
                         stringMiddle += currentCharacter;
                         // Repeat character if possible.
-                        if ((stringMiddle.length + 1) <= (modifier.length - 2)) {
+                        if ((stringMiddle.length + 1) &lt;= (modifier.length - 2)) {
                             stringMiddle += currentCharacter;
                         }
                     }
@@ -274,7 +303,7 @@ export default function simplePass(modifier = {
          * Check if it's required to be a whitespace.
          */
         if (modifier.w_beginning
-            && modifier.w_beginning_required) {
+            &amp;&amp; modifier.w_beginning_required) {
             password += ' ';
             preserveBeginning = true;
         }
@@ -290,7 +319,7 @@ export default function simplePass(modifier = {
         /**
          * Set the middle characters for the password.
          */
-        while (middleCharacters.length < passwordLimit) {
+        while (middleCharacters.length &lt; passwordLimit) {
             middleCharacters += String.fromCharCode(generateCharCode({
                 charType: characterAttributes[0],
                 charCodeOptions: {
@@ -301,7 +330,7 @@ export default function simplePass(modifier = {
         }
         // Add any needed whitespace characters.
         if (modifier.w_between
-            && modifier.w_between_limit) {
+            &amp;&amp; modifier.w_between_limit) {
             while (modifier.w_between_limit--) {
                 middleCharacters += " ";
             }
@@ -313,7 +342,7 @@ export default function simplePass(modifier = {
          * Check if it's required to be a whitespace.
          */
         if (modifier.w_end
-            && modifier.w_end_required) {
+            &amp;&amp; modifier.w_end_required) {
             password += ' ';
             preserveEnd = true;
         }
@@ -347,13 +376,13 @@ export default function simplePass(modifier = {
              * characters from the original password, we should be OK to add any
              * new characters from the request as we like.
              */
-            if (password.length < modifier.length) {
+            if (password.length &lt; modifier.length) {
                 // Split the sting into pieces
                 let stringBeginning = password.slice(0, 1);
                 let stringMiddle = password.slice(1, password.length - 1);
                 let stringEnd = password.slice(password.length - 1, password.length);
                 // Add new characters to the middle of the string  the way we usually do.
-                while (stringMiddle.length < (modifier.length - 2)) {
+                while (stringMiddle.length &lt; (modifier.length - 2)) {
                     const currentCharacter = String.fromCharCode(generateCharCode({
                         charType: characterAttributes[0],
                         charCodeOptions: {
@@ -363,7 +392,7 @@ export default function simplePass(modifier = {
                     }));
                     stringMiddle += currentCharacter;
                     // If we can repeat this character we shall.
-                    if ((stringMiddle.length + 1) <= (modifier.length - 2)) {
+                    if ((stringMiddle.length + 1) &lt;= (modifier.length - 2)) {
                         stringMiddle += currentCharacter;
                     }
                 }
@@ -375,3 +404,27 @@ export default function simplePass(modifier = {
     // Return the password.
     return password;
 }
+</code></pre>
+    </article>
+</section>
+
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-E_errors.html">E_errors</a></li><li><a href="module-L_allowedModifiers.html">L_allowedModifiers</a></li><li><a href="module-L_requiredAttributes.html">L_requiredAttributes</a></li><li><a href="module-L_useableAttributes.html">L_useableAttributes</a></li><li><a href="module-L_whitespaceAttributes.html">L_whitespaceAttributes</a></li><li><a href="module-characterCodeConstraints.html">characterCodeConstraints</a></li><li><a href="module-cleanModifier.html">cleanModifier</a></li><li><a href="module-config.html">config</a></li><li><a href="module-createMessage.html">createMessage</a></li><li><a href="module-createModifierList.html">createModifierList</a></li><li><a href="module-ensureRepeatingCharacters.html">ensureRepeatingCharacters</a></li><li><a href="module-generateCharCode.html">generateCharCode</a></li><li><a href="module-shuffle.html">shuffle</a></li><li><a href="module-simplePass.html">simplePass</a></li><li><a href="module-validateModifier.html">validateModifier</a></li></ul><h3>Interfaces</h3><ul><li><a href="I_charCodeGenerationFlag.html">I_charCodeGenerationFlag</a></li><li><a href="I_charCodeOptions.html">I_charCodeOptions</a></li><li><a href="I_charCodeRequest.html">I_charCodeRequest</a></li><li><a href="I_ensureRepeatingCharacterOptions.html">I_ensureRepeatingCharacterOptions</a></li><li><a href="I_passwordModifier.html">I_passwordModifier</a></li><li><a href="I_repeatingCharacterOptionsPreservations.html">I_repeatingCharacterOptionsPreservations</a></li><li><a href="module-characterCodeConstraints-I_charCodeConstraintsAttributes.html">I_charCodeConstraintsAttributes</a></li></ul><h3>Other Resources</h3><ul><li><a href="tutorial-CODE_OF_CONDUCT.html">Code Of Conduct</a></li><li><a href="tutorial-CONTRIBUTING.html">Contributing</a></li><li><a href="tutorial-SECURITY.html">Security</a></li><li><a href="tutorial-development.html">Development</a></li><li><a href="tutorial-installation-and-examples.html">Installation & Examples</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.0</a>
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

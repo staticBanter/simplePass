@@ -1,6 +1,6 @@
 "use strict";
 
-import simplePass from "../simplePass/browser/simplePass.js";
+import simplePass from "../simplePass/src/simplePass.js";
 
 (()=>{
 
@@ -31,22 +31,35 @@ import simplePass from "../simplePass/browser/simplePass.js";
         })
     });
 
+    function toggleAttributes(){
+
+        if(
+            !this.dataset.target
+            || !this.dataset.toggle
+        ){
+            throw new Error(`Toggle Element (${this}) was missing the proper data attributes`)
+        }
+
+        this.dataset.target.split(' ').forEach((target)=>{
+
+            document.querySelectorAll(target).forEach((element)=>{
+
+                element.hasAttribute(this.dataset.toggle)?
+                element.removeAttribute(this.dataset.toggle):
+                element.setAttribute(this.dataset.toggle,this.dataset.toggle);
+
+            });
+
+        });
+
+    }
+
     // Event listener for toggles.
     document.body.querySelectorAll('.toggle').forEach((toggle)=>{
 
-        document.body.querySelectorAll(toggle.dataset.target).forEach((target)=>{
-            if(!target.hasAttribute(toggle.dataset.attribute)){
-                target.toggleAttribute(toggle.dataset.toggle);
-            }
-        })
+        toggle.addEventListener('click',toggleAttributes);
 
-        toggle.addEventListener('click',function(){
-            document.body.querySelectorAll(toggle.dataset.target).forEach((target)=>{
-                !target.hasAttribute(toggle.dataset.attribute)?
-                target.toggleAttribute(toggle.dataset.toggle):
-                target.toggleAttribute(toggle.dataset.toggle);
-            })
-        });
+        toggleAttributes.apply(toggle);
 
     })
 
