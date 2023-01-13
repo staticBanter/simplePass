@@ -34,7 +34,7 @@
     <div class="container-overview">
     
         
-            <div class="description"><p>Contains validation function for the simplePass modifier. Exports <code>validateModifier</code>.</p></div>
+            <div class="description"><p>Contains the validation function for the <a href="I_passwordModifier.html"><code>simplePass modifier object</code></a>.</p></div>
         
 
         
@@ -149,7 +149,7 @@ therefore we need to increase the modifier count accordingly</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_validateModifier.helper.js.html">helpers/validateModifier.helper.js</a>, <a href="helpers_validateModifier.helper.js.html#line109">line 109</a>
+        <a href="helpers_validateModifier.helper.js.html">helpers/validateModifier.helper.js</a>, <a href="helpers_validateModifier.helper.js.html#line115">line 115</a>
     </li></ul></dd>
     
 
@@ -212,7 +212,7 @@ therefore we need to increase the modifier count accordingly</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_validateModifier.helper.js.html">helpers/validateModifier.helper.js</a>, <a href="helpers_validateModifier.helper.js.html#line161">line 161</a>
+        <a href="helpers_validateModifier.helper.js.html">helpers/validateModifier.helper.js</a>, <a href="helpers_validateModifier.helper.js.html#line167">line 167</a>
     </li></ul></dd>
     
 
@@ -275,7 +275,7 @@ therefore we need to increase the modifier count accordingly</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_validateModifier.helper.js.html">helpers/validateModifier.helper.js</a>, <a href="helpers_validateModifier.helper.js.html#line170">line 170</a>
+        <a href="helpers_validateModifier.helper.js.html">helpers/validateModifier.helper.js</a>, <a href="helpers_validateModifier.helper.js.html#line176">line 176</a>
     </li></ul></dd>
     
 
@@ -338,7 +338,7 @@ therefore we need to increase the modifier count accordingly</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_validateModifier.helper.js.html">helpers/validateModifier.helper.js</a>, <a href="helpers_validateModifier.helper.js.html#line201">line 201</a>
+        <a href="helpers_validateModifier.helper.js.html">helpers/validateModifier.helper.js</a>, <a href="helpers_validateModifier.helper.js.html#line207">line 207</a>
     </li></ul></dd>
     
 
@@ -373,8 +373,9 @@ therefore we need to increase the modifier count accordingly</p>
 
 
 <div class="description">
-    <p>A basic validation function used to ensure the set modifier attributes are usable.
-<strong>WARNING!</strong> simplePass does not preform comprehensive input sanitization/validation at the moment,
+    <p>A basic validation function used to ensure the set <a href="I_passwordModifier.html"><code>simplePass modifier object</code></a> attributes are usable.
+This function will throw an error if the object is not usable, else the function will return <code>void</code>.</p>
+<p><strong>WARNING!</strong> simplePass does not preform comprehensive input sanitization/validation,
 please ensure you are sanitizing and validating any inputs before they reach your server/application!</p>
 </div>
 
@@ -485,8 +486,6 @@ please ensure you are sanitizing and validating any inputs before they reach you
 <ul>
     <li><a href="module-createMessage.html">module:createMessage</a></li>
 
-    <li><a href="module-E_errors.html">module:E_errors</a></li>
-
     <li><a href="module-config.html">module:config</a></li>
 
     <li><a href="module-L_useableAttributes.html">module:L_useableAttributes</a></li>
@@ -504,6 +503,143 @@ please ensure you are sanitizing and validating any inputs before they reach you
 
 
 
+<h5>Throws:</h5>
+<ul>
+        <li>
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        <p>Will throw an error if a modifier attribute is not a valid type.</p>
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">E_errors.invalidAttributeType</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+</li>
+    
+        <li>
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        <p>Will throw an error if a modifier attribute is out of its allowed value bounds.</p>
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">E_errors.outOfBoundsAttributeValue</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+</li>
+    
+        <li>
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        <p>Will throw an error if the modifier contains more attributes than the password can contain.</p>
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">E_errors.toManyAttributes</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+</li>
+    
+        <li>
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        <p>Will throw an error if a modifier attribute is missing another attribute that needs to be present.</p>
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">E_errors.missingRequiredAttribute</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+</li>
+    
+        <li>
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        <p>Will throw an error if the <code>excludeCharacters</code> attribute contains a whitespace.</p>
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">E_errors.excludeCharactersContainedWhitespace</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+</li>
+    </ul>
 
 
 <h5>Returns:</h5>

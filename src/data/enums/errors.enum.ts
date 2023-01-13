@@ -7,7 +7,7 @@
 /**
  * Enumerated list of possible error codes and there message template strings.
  * Anything wrapped in braces, [example], is meant to be a substitution for
- * the string.
+ * the template string.
  *
  * @enum {string}
  * @readonly

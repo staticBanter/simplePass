@@ -5,21 +5,27 @@ import config from "../config.simplePass.js";
 import createMessage from "./createMessage.helper.js";
 import E_errors from "../data/enums/errors.enum.js";
 /**
- * @file Contains validation function for the simplePass modifier. Exports `validateModifier`.
+ * @file Contains the validation function for the [simplePass modifier object]{@link I_passwordModifier}.
  * @module validateModifier
  */
 /**
- * A basic validation function used to ensure the set modifier attributes are usable.
- * **WARNING!** simplePass does not preform comprehensive input sanitization/validation at the moment,
+ * A basic validation function used to ensure the set [simplePass modifier object]{@link I_passwordModifier} attributes are usable.
+ * This function will throw an error if the object is not usable, else the function will return ```void```.
+ *
+ * **WARNING!** simplePass does not preform comprehensive input sanitization/validation,
  * please ensure you are sanitizing and validating any inputs before they reach your server/application!
  *
  * @function validateModifier
  * @param {I_passwordModifier} modifier
  * @requires createMessage
- * @requires E_errors
  * @requires config
  * @requires L_useableAttributes
  * @requires L_requiredAttributes
+ * @throws {E_errors.invalidAttributeType} Will throw an error if a modifier attribute is not a valid type.
+ * @throws {E_errors.outOfBoundsAttributeValue} Will throw an error if a modifier attribute is out of its allowed value bounds.
+ * @throws {E_errors.toManyAttributes} Will throw an error if the modifier contains more attributes than the password can contain.
+ * @throws {E_errors.missingRequiredAttribute} Will throw an error if a modifier attribute is missing another attribute that needs to be present.
+ * @throws {E_errors.excludeCharactersContainedWhitespace} Will throw an error if the ```excludeCharacters``` attribute contains a whitespace.
  * @returns {void}
  */
 export default function validateModifier(modifier) {

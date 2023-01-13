@@ -6,23 +6,24 @@ import I_charCodeGenerationFlag from "../data/interfaces/charCodeGenerationFlag.
 import I_charCodeRequest from "../data/interfaces/charCodeRequest.interface.js";
 import characterCodeConstraints from "../data/objects/characterCodeConstraints.object.js";
 import createMessage from "./createMessage.helper.js";
+
 /**
- * @file Contains function that generates requested character codes. Exports `generateCharCode`.
+ * @file Contains function that generates requested character codes.
  * @module generateCharCode
  */
 
 /**
- * Generates a random character code of a given type.
+ * Generates a random integer of a requested type.
  *
  * @function generateCharCode
- * @param {I_charCodeRequest} charCodeRequest - An object contain the properties that describe the type of character code being requested
- * and certain restrictions being place on it.
- * @param {I_charCodeGenerationFlag} [flags] - A flag object used to give more information about what stage of password generation we are at.
+ * @param {I_charCodeRequest} charCodeRequest An object contain the properties that describes the type of character code being requested
+ * and restrictions being place on it.
+ * @param {I_charCodeGenerationFlag} [flags] A flag object used to give more information about what stage of password generation we are at.
  * @requires characterCodeConstraints
  * @requires createMessage
- * @throws {E_errors.nonGenerableCharacterType} - Will throw an error if the requested character code type
+ * @throws {E_errors.nonGenerableCharacterType} Will throw an error if the requested character code type
  * is not found within the character code constraints object.
- * @returns {number}
+ * @returns {number} An integer representing a UTF-16 character code unit. The integer will be within range of the defined character code request constraints.
  */
 export default function generateCharCode(charCodeRequest:I_charCodeRequest,flags?:I_charCodeGenerationFlag):number{
 

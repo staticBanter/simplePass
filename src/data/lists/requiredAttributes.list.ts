@@ -1,4 +1,5 @@
 'use strict';
+
 /**
  * @file Contains a list of attributes that are required to be in the password modifier.
  * @module L_requiredAttributes

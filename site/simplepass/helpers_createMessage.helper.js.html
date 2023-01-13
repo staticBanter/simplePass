@@ -30,19 +30,19 @@
         <pre class="prettyprint source linenums"><code>'use strict';
 import config from "../config.simplePass.js";
 /**
- * @file Contains the code for the `createMessage` function. Exports `createMessage`.
+ * @file Contains the code for a helper function used to create messages.
  * @module createMessage
  */
 /**
- * Creates messages using template strings.
+ * Creates a message using a template strings.
  *
  * @function createMessage
- * @param {string} templateString - The template message string.
- * @param {Array&lt;string>} replacements - The message string replacements
- * @param {string} [marker] - The marker to replace with the message string replacements.
- * @throws - Will throw an error a message replacement contains a template marker.
+ * @param {string} templateString The template message string.
+ * @param {Array&lt;string>} replacements The template string replacements.
+ * @param {string} [marker] The template marker to replace in the string.
+ * @throws  Will throw an error a message replacement contains a template marker.
  * @requires module:config
- * @returns {string}
+ * @returns {string} The message with the template markers replaced.
  */
 export default function createMessage(templateString, replacements, marker = config.templateMessageMarker) {
     // * Note: Please do not use this function to create it's own error messages, as this could be... problematic.

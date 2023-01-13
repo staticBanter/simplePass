@@ -1,6 +1,6 @@
 'use strict';
 /**
- * @file Contains code used for 'ensureRepeatingCharacters' function.
+ * @file Contains code that is used to ensure the password contains repeating characters.
  * @module ensureRepeatingCharacters
  */
 import shuffle from "./shuffle.helper.js";
@@ -8,8 +8,9 @@ import shuffle from "./shuffle.helper.js";
  * Removes repeats of a character found in a string.
  *
  * @function removeRepeats
- * @param {Array<any>} string - The string to check for repeats.
- * @returns {string} - A string containing the original characters not repeated.
+ * @private
+ * @param {Array<any>} string The string to check for repeats.
+ * @returns {string} A string containing the original characters not repeated.
  */
 function removeRepeats(string) {
     // The list to contain the unique characters.
@@ -31,12 +32,12 @@ function removeRepeats(string) {
  * Ensures a string contains repeating characters.
  *
  * @function ensureRepeatingCharacters
- * @param {string} string - The string to ensure contains repeating characters.
- * @param {I_ensureRepeatingCharacterOptions} options - An object defining how to repeat the characters in the string.
+ * @param {string} string The string to ensure contains repeating characters.
+ * @param {I_ensureRepeatingCharacterOptions} options An object defining how to repeat the characters in the string.
  * If none of the matching attributes are passed with this object, the string will be returned unmodified.
  * @requires shuffle
  * @requires removeRepeats
- * @returns {string} - A string with the desired repeating character requirements.
+ * @returns {string} A string with the desired repeating character requirements.
  */
 export default function ensureRepeatingCharacters(string, options) {
     /**

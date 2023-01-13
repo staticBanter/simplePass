@@ -1,14 +1,14 @@
 'use strict';
 /**
- * @file Fisher-Yates Shuffle helper function.
+ * @file Contains the Fisher Yates shuffle helper function.
  * @module shuffle
  */
 /**
- * A fisher yates shuffle function.
+ * A [Fisher Yates shuffle]{@link https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle} function.
  *
  * @function shuffle
- * @param {Array<any>} array - A list that needs to be shuffled
- * @returns {Array<any>} - The shuffled list.
+ * @param {Array<any>} array A list that needs to be shuffled
+ * @returns {Array<any>} The shuffled list.
  */
 export default function shuffle(array) {
     let currentIndex = array.length, randomIndex;

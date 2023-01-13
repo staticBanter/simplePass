@@ -13,7 +13,7 @@ import E_errors from "./data/enums/errors.enum.js";
 import ensureRepeatingCharacters from "./helpers/ensureRepeatingCharacters.helper.js";
 
 /**
- * @file Main file for simplePass. Exports the `simplePass` function.
+ * @file Main file for simplePass.
  * @module simplePass
  */
 
@@ -31,7 +31,8 @@ import ensureRepeatingCharacters from "./helpers/ensureRepeatingCharacters.helpe
  * @requires L_whitespaceAttributes
  * @requires generateCharCode
  * @requires ensureRepeatingCharacters
- * @throws {E_errors.invalidModifier} Will throw an Error if the modifier is `null`, `undefined` or not a JavaScript *Object.*
+ * @requires shuffle
+ * @throws {E_errors.invalidModifier} Will throw an Error if the [modifier]{@link I_passwordModifier} is ```null```, ```undefined``` or not a JavaScript Object.
  * @returns {string} The generated password.
  */
 export default function simplePass(

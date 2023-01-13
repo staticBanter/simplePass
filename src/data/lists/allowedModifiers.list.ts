@@ -1,4 +1,5 @@
 'use strict';
+
 /**
  * @file Contains a list of attributes that are allowed on the password modifier.
  * @module L_allowedModifiers

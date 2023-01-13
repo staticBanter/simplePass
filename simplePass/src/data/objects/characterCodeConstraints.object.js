@@ -7,21 +7,21 @@
  * Interface for an object representing the different type of character code constraints
  *
  * @interface I_charCodeConstraintsAttributes
- * @property {number} [min] - The maximum possible character code for a character type.
- * @property {number} [max] - The minimum possible character code for a character type.
- * @property {Array<Array<number>>} [range] - A list containing all possible minimum
+ * @property {number} [min] The maximum possible character code for a character type.
+ * @property {number} [max] The minimum possible character code for a character type.
+ * @property {Array<Array<number>>} [range] A list containing all possible minimum
  * and maximum values as a pair for a character type.
- * @property {number} [single] - The only possible character code for a character type.
+ * @property {number} [single] The only possible character code for a character type.
  */
 /**
  * Character-code constraint object. Defines the bounds that each character code type exists in.
  *
  * @const {object} characterCodeConstraints
- * @property {object} lowercase
- * @property {object} uppercase
- * @property {object} numbers
- * @property {object} punctuation
- * @property {object} whitespace
+ * @property {object} [lowercase] Basic Latin Lower Alpha character code constraints.
+ * @property {object} [uppercase] Basic Latin Upper Alpha character code constraints.
+ * @property {object} [numbers] Basic Latin Numeric character code constraints.
+ * @property {object} [punctuation] Basic Latin Punctuation character code constraints.
+ * @property {object} [whitespace]  Whitespace character code constraint.
  * @implements {I_charCodeConstraintsAttributes}
  *
  */

@@ -34,7 +34,7 @@
     <div class="container-overview">
     
         
-            <div class="description"><p>Contains function that generates requested character codes. Exports <code>generateCharCode</code>.</p></div>
+            <div class="description"><p>Contains function that generates requested character codes.</p></div>
         
 
         
@@ -117,7 +117,7 @@
 
 
 <div class="description">
-    <p>Generates a random character code of a given type.</p>
+    <p>Generates a random integer of a requested type.</p>
 </div>
 
 
@@ -179,8 +179,8 @@
 
             
 
-            <td class="description last"><p>An object contain the properties that describe the type of character code being requested
-and certain restrictions being place on it.</p></td>
+            <td class="description last"><p>An object contain the properties that describes the type of character code being requested
+and restrictions being place on it.</p></td>
         </tr>
 
     
@@ -291,10 +291,8 @@ and certain restrictions being place on it.</p></td>
 <dl>
     <dt>
         <div class="param-desc">
-        <ul>
-<li>Will throw an error if the requested character code type
-is not found within the character code constraints object.</li>
-</ul>
+        <p>Will throw an error if the requested character code type
+is not found within the character code constraints object.</p>
         </div>
     </dt>
     <dd></dd>
@@ -321,6 +319,10 @@ is not found within the character code constraints object.</li>
 <h5>Returns:</h5>
 
         
+<div class="param-desc">
+    <p>An integer representing a UTF-16 character code unit. The integer will be within range of the defined character code request constraints.</p>
+</div>
+
 
 
 <dl>

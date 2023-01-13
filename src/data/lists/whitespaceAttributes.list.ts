@@ -1,4 +1,5 @@
 'use strict';
+
 /**
  * @file Contains a list of white-space modifier attributes.
  * @module L_whitespaceAttributes

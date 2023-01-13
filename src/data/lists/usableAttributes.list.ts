@@ -1,4 +1,5 @@
 'use strict';
+
 /**
  * @file Contains a list of attributes that can be used by the program.
  * @module L_useableAttributes

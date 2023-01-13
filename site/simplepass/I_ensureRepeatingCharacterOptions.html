@@ -37,7 +37,7 @@
     <div class="container-overview">
     
         
-            <div class="description"><p>Interface object that represents the 'Ensure Repeating Characters Option' object.</p></div>
+            <div class="description"><p>Interface object that represents the 'Ensure Repeating Characters Option' object used by the <a href="module-ensureRepeatingCharacters.html"><code>Ensure Repeating Characters Function</code></a>.</p></div>
         
 
         
@@ -102,7 +102,7 @@
 
         <tr>
             
-                <td class="name"><code></code></td>
+                <td class="name"><code>customCharacterSet</code></td>
             
 
             <td class="type">
@@ -120,6 +120,8 @@
             
                 <td class="attributes">
                 
+                    &lt;optional><br>
+                
 
                 
                 </td>
@@ -128,15 +130,20 @@
             
 
             <td class="description last"><p>A string input containing characters that should be repeated in the password.
-This attribute can be formatted in three ways:
-1. A standard string input (abc); where each character will be repeated 2 times.
-2. A (standalone) custom repeating set (a:4); requesting &quot;a&quot; to be repeated 4 times.
-3. A custom repeating set (a b:1 c:3 ::4 3f:10);
-* requesting &quot;a&quot; to be repeated 2 times,
-* repeats of &quot;1&quot; are converted to 2, so &quot;b&quot; gets repeated 2 times,
-* requesting &quot;c&quot; to be repeated 3 times,
-* literal characters such as &quot;:&quot; (colon) and &quot;&quot; (forward-slash) can be prefixed with a &quot;&quot; (forward-slash),
-* only the first character in a repeating set will be used, so &quot;3&quot; will be repeated 10 times.</p></td>
+This attribute can be formatted in three ways:</p>
+<ol>
+<li>A standard string input (abc); where each character will be repeated 2 times.</li>
+<li>A (standalone) custom repeating set (a:4); requesting &quot;a&quot; to be repeated 4 times.</li>
+<li>A custom repeating set (a b:1 c:3 ::4 3f:10);
+<ul>
+<li>requesting &quot;a&quot; to be repeated 2 times,</li>
+<li>repeats of &quot;1&quot; are converted to 2, so &quot;b&quot; gets repeated 2 times,</li>
+<li>requesting &quot;c&quot; to be repeated 3 times,</li>
+<li>literal characters such as &quot;:&quot; (colon) and &quot;&quot; (forward-slash) can be prefixed with a &quot;&quot; (forward-slash),</li>
+<li>only the first character in a repeating set will be used, so &quot;3&quot; will be repeated 10 times.</li>
+</ul>
+</li>
+</ol></td>
         </tr>
 
     
@@ -157,6 +164,8 @@ This attribute can be formatted in three ways:
 
             
                 <td class="attributes">
+                
+                    &lt;optional><br>
                 
 
                 
