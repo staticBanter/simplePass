@@ -14,6 +14,10 @@ simplePass is a JavaScript password generator.
 **General Modifiers**
 * Length - Adjusts the length of the the password.
 * Exclude Characters - Any characters the password should not contain.
+* **Repeating Character Modifiers**
+  * Repeating Character - Ensure the password contains at least one repeating character.
+  * Repeating Character Limit - Ensure the password contains at least the set amount of repeating characters.
+  * Custom Repeating Characters - Ensure the password contains at least the specified repeating characters. Can be formatted to specify how many times each character can be repeated.
 
 **Basic Latin Modifiers**
 * Lowercase - Includes Basic Latin lowercase characters [a-z].
