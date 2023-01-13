@@ -620,7 +620,7 @@ exports.publish = (taffyData, opts, tutorials) => {
                 readme: opts.readme,
                 longname: (opts.mainpagetitle) ? opts.mainpagetitle : 'Main Page'
             }]
-        ).concat(files), indexUrl);
+        ), indexUrl);
 
     // set up the lists that we'll use to generate pages
     classes = taffy(members.classes);
