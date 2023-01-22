@@ -42,6 +42,9 @@ const characterCodeConstraints:{
     numbers?:I_charCodeConstraintsAttributes,
     punctuation?:I_charCodeConstraintsAttributes,
     whitespace?:I_charCodeConstraintsAttributes
+    lowercase_supplement?:I_charCodeConstraintsAttributes,
+    uppercase_supplement?:I_charCodeConstraintsAttributes,
+    symbols_supplement?:I_charCodeConstraintsAttributes
 } = {
     lowercase:{
         min:97,
@@ -68,6 +71,32 @@ const characterCodeConstraints:{
     whitespace:{
         single:32
     },
+    lowercase_supplement:{
+        min:223,
+        max:255,
+        range:[
+            [233,246],
+            [248,255]
+        ]
+    },
+    uppercase_supplement:{
+        min:192,
+        max:222,
+        range:[
+            [192,214],
+            [216,222]
+        ]
+    },
+    symbols_supplement:{
+        min:161,
+        max:247,
+        range:[
+            [161,191],
+            [215],
+            [247]
+        ]
+    }
+    
 }
 
 export default characterCodeConstraints;

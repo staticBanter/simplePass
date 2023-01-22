@@ -150,9 +150,21 @@ export default function generateCharCode(charCodeRequest:I_charCodeRequest,flags
                 }
 
                 for(let i = 0; i < range.length; i++){
+
                     if(
-                        charCode >= range[i][0]
-                        && charCode <= range[i][1]
+                        (
+                            range[i][0]
+                            && range[i][1]
+                        )
+                        && (
+                            charCode >= range[i][0]
+                            && charCode <= range[i][1]
+                        )
+                    ){
+                        return charCode;
+                    }else if(
+                        range[i][0]
+                        && charCode === range[i][0]
                     ){
                         return charCode;
                     }

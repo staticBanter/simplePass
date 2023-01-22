@@ -13,6 +13,9 @@ const L_requiredAttributes = [
     'lowercase',
     'uppercase',
     'numbers',
-    'punctuation'
+    'punctuation',
+    'lowercase_supplement',
+    'uppercase_supplement',
+    'symbols_supplement'
 ];
 export default L_requiredAttributes;

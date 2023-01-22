@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="A JavaScript password generator" />
+    <meta name="theme-color" content="#636980"/>
+
+    <!--Open Graph Protocol Meta Data-->
+    <meta property="og:title" content="simplePass | Demo" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://staticbanter.github.io/simplePass/" />
+    <meta property="og:description" content="A JavaScript password generator." />
+    <meta property="og:locale" content="en_CA" />
+    <meta property="og:site_name" content="GitHub" />
+
+    <!--iOS/Safari-->
+    <link type="image/png" rel="apple-touch-icon" href="./storage/icons/simplePass-Logo-512.png" />
+    <meta name="apple-mobile-web-app-status-bar" content="#636980" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="#636980" />
+    <meta name="apple-mobile-web-app-title" content="simplePass" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="format-detection" content="address=no">
+
+    <!--Chrome-->
+    <meta name="mobile-web-application-capable" content="yes" />
+    <meta name="application-name" content="simplePass" />
+
+    <!--Win8 Support-->
+    <meta name="msapplication-TileColor" content="#636980" />
+    <meta name="msapplication-TileImage" content="./storage/icons/simplePass-Logo-512.png" />
+
+    <title>simplePass | Demo</title>
+    <script type="module" src="./main.js"></script>
+    <link type="text/css" href="./main.css" rel="stylesheet" />
+    <link rel="manifest" href="./manifest.json" />
+    <link type="image/png" rel="icon" href="./storage/icons/simplePass-Logo-512.png"/>
+</head>
+<body>
+    <header>
+        <div>
+            <h1>simplePass</h1>
+        </div>
+        <nav>
+            <a href="./docs/index.html">Read The Documentation</a>
+        </nav>
+    </header>
+    <main>
+        <div id="passwordBox">
+            <p>
+                <b>Password:</b>
+            </p>
+            <p id="displayPassword"></p>
+            <button id="copyPassword" type="button">Copy</button>
+            <button id="generateButton" type="submit" form="passwordForm">Generate</button>
+        </div>
+        <form id="passwordForm">
+            <h2>Modifiers</h2>
+            <div>
+            <p>Character Codes that are displayed are shown as the decimal value(s) for the character(s). A helpful list of these resources can be found at:</p>
+            <ul>
+                <li><a href="https://www.w3schools.com/charsets/">W3Schools | HTML Character Sets</a>)</li>
+                <li>and <a href="https://www.unicode.org/charts/">Unicode | Code Charts</a> (Though you may need to convert the hexadecimal representation to decimal)</li>
+            </ul>
+            </div>
+            <label>Length:
+                <input type="number" form="passwordForm" name="length" max="256" min="1" step="1" value="8" required/>
+            </label>
+            <fieldset>
+                <legend>Repeat Characters</legend>
+                <div>
+                    <label>Repeating Character:
+                        <input type="checkbox" form="passwordForm" name="repeatingCharacter" class="toggle" data-toggle="disabled" data-target="#repeatingCharacter_limit #customRepeatingCharacters"/>
+                    </label>
+                    <p>Ensure at least one character in the password will be repeated.</p>
+                </div>
+                <div>
+                    <label>Repeating Character Limit:
+                        <input type="number" form="passwordForm" name="repeatingCharacter_limit" id="repeatingCharacter_limit" min="1" max="256" step="1" value="1" />
+                    </label>
+                    <p>Specify the number of characters that should be repeated in the password.</p>
+                </div>
+                <div>
+                    <label>Custom Repeats:
+                        <input type="text" form="passwordForm" name="customRepeatingCharacters" id="customRepeatingCharacters" minlength="1" maxlength="256" />
+                    </label>
+                    <p>Specify the exact characters that should be repeated in the password, as-well as indicate the number of times the character should repeat.</p>
+                    <p>The input either needs to be a single string containing all characters wished to be repeated (abcd). Or it can be formatted to define the amount each character should be repeated (b a:3 \::4);</p>
+                    <ul>
+                        <li>each set should be space separated,</li>
+                        <li>characters single characters and characters with a repeat of 1 will default to a repeat of 2,</li>
+                        <li>to use literal characters prefix them with a "\" (forward-slash),</li>
+                    </ul>
+                    <p><b>* Note:</b> This feature is currently limited with the total of repeated characters that can be requested in a password to the constraint of <i>passwordLength - 2</i> (ie; a password of length 8 would can only contain 6 repeating characters).</p>
+                    <p><b>* Note:</b> This feature will ignore any password modifiers already set when including characters.</p>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Latin Basic</legend>
+                <p>This does not include Control Characters (0-31, 127)</p>
+                <label>Lowercase Alpha; Character Codes (95-122):
+                    <input type="checkbox" form="passwordForm" name="lowercase" checked/>
+                </label>
+                <label>Uppercase Alpha; Character Codes (65-90):
+                    <input type="checkbox" form="passwordForm" name="uppercase" />
+                </label>
+                <label>Numbers; Character Codes (48-57): 
+                    <input type="checkbox" form="passwordForm" name="numbers" />
+                </label>
+                <label>Punctuation; Character Codes (33-47, 58-64, 91-96, 123-126): 
+                    <input type="checkbox" form="passwordForm" name="punctuation" />
+                </label>
+            </fieldset>
+            <fieldset id="whitespaceOptions" name="whitespaceOptions" form="passwordForm">
+                <legend>Whitespace Options; Character Code (32)</legend>
+                <fieldset>
+                    <legend>Beginning of Password:</legend>
+                    <label>Yes:
+                        <input type="checkbox" form="passwordForm" name="w_beginning" class="toggle" data-toggle="disabled" data-target="#w_beginning_required" />
+                    </label>
+                    <label>Required:
+                        <input type="checkbox" form="passwordForm" name="w_beginning_required" id="w_beginning_required"/>
+                    </label>
+                </fieldset>
+                <fieldset>
+                    <legend>End of Password:</legend>
+                    <label>Yes:
+                        <input type="checkbox" form="passwordForm" name="w_end" class="toggle" data-toggle="disabled" data-target="#w_end_required" />
+                    </label>
+                    <label>Required:
+                        <input type="checkbox" form="passwordForm" name="w_end_required" id="w_end_required" />
+                    </label>
+                </fieldset>
+                <fieldset>
+                    <label>Between:
+                        <input class="toggle" data-target="#w_between_limit" data-toggle="disabled" type="checkbox" form="passwordForm" name="w_between" />
+                    </label>
+                    <label>Limit:
+                        <input type="number" step="1" min="1" max="252" value="1" form="passwordForm" id="w_between_limit" name="w_between_limit" />
+                    </label>
+                </fieldset>
+            </fieldset>
+            <fieldset>
+                <legend>Latin Supplement</legend>
+                <label>Lowercase Characters; Character Codes (223-246, 248-255):
+                    <input type="checkbox" form="passwordForm" name="lowercase_supplement" />
+                </label>
+                <label>Uppercase Characters; Character Codes (192-214, 216-222):
+                    <input type="checkbox" form="passwordForm" name="uppercase_supplement" />
+                </label>
+                <label>Symbols: Character Codes (161-191, 215, 247):
+                    <input type="checkbox" form="passwordForm" name="symbols_supplement" />
+                </label>
+            </fieldset>
+            <label>Exclude Characters:
+                <input type="text" form="passwordForm" name="excludeCharacters" />
+                <p>* <strong>Warning</strong>: Excessive use of this feature may result in degraded performance or non-performance of the program. *</p>
+            </label>
+        </form>
+        <button class="add-button">Add to home screen</button>
+    </main>
+</body>
+</html>

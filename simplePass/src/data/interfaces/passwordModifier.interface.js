@@ -20,6 +20,9 @@
  * @property {number} [repeatingCharacter_limit] The number of repeating character sets the password requires.
  * @property {string|Array<Array<string>>} [customRepeatingCharacters] A string input of repeating characters that should be repeated in the password. This can also
  * include how many times the character should be repeated in the password; if so, the property will be converted to a list.
+ * @property {boolean} [lowercase_supplement] If the password should contain Latin(1) Supplement Lowercase characters.
+ * @property {boolean} [uppercase_supplement] If the password should contain Latin(1) Supplement Uppercase characters.
+ * @property {boolean} [symbols_supplement] If the password should contain Latin(1) Supplement Symbol characters.
  */
 'use strict';
 export {};

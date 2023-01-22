@@ -1,0 +1,64 @@
+#passwordBox{
+    display: flex;
+    flex-wrap: wrap;
+    border: 1px solid;
+    border-radius: 10px 10px 0 0;
+    box-sizing: border-box;
+    padding: 0.5rem;
+    box-shadow: 0 -1px 5px;
+}
+
+#displayPassword{
+    word-wrap: anywhere;
+    width: 80%;
+    margin-left: 0.5rem;
+    white-space: pre;
+    font-family: 'Liberation Mono';
+    text-decoration: underline;
+}
+
+#generateButton{
+    width: 100%;
+    margin-top: 0.5rem;
+}
+
+#passwordForm{
+    box-sizing: border-box;
+    padding: 0.5rem;
+    border: 1px solid;
+    border-radius: 0 0 10px 10px;
+    box-shadow: 0 1px 5px;
+}
+
+#passwordForm{
+    display: flex;
+    flex-flow: column;
+}
+
+#passwordForm > fieldset{
+    display: flex;
+    flex-flow: column;
+}
+
+#passwordForm > * + *{
+    margin-top: 0.5rem;
+}
+
+.add-button {
+    position: absolute;
+    top: 1px;
+    left: 1px;
+}
+
+*[hidden]{
+    display: none;
+}
+
+header{
+    display: flex;
+    align-items: center;
+}
+
+header > nav{
+    margin-left: auto;
+}

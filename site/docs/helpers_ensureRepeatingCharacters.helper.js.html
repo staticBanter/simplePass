@@ -1,0 +1,138 @@
+<!doctypehtml><html lang=en><meta charset=utf-8><meta content="A JavaScript password generator"name=description><meta content=#636980 name=theme-color><meta content="simplePass | Source: helpers/ensureRepeatingCharacters.helper.js"property=og:title><meta content=website property=og:type><meta content=https://staticbanter.github.io/simplePass/ property=og:url><meta content="simplePass documentation page for Source: helpers/ensureRepeatingCharacters.helper.js"property=og:description><meta content=en_CA property=og:locale><meta content=GitHub property=og:site_name><link href=../storage/icons/simplePass-Logo-1080.png rel=apple-touch-icon><link href=../manifest.json rel=manifest><link href=../storage/icons/simplePass-Logo-512.png rel=icon type=image/png><title>simplePass Docs: Source: helpers/ensureRepeatingCharacters.helper.js</title><script src=scripts/prettify/prettify.js></script><script src=scripts/prettify/lang-css.js></script><!--[if lt IE 9]><script src=//html5shiv.googlecode.com/svn/trunk/html5.js></script><![endif]--><link href=styles/prettify-tomorrow.css rel=stylesheet><link href=styles/jsdoc-default.css rel=stylesheet><div id=main><h1 class=page-title>Source: helpers/ensureRepeatingCharacters.helper.js</h1><section><article><pre class="linenums prettyprint source"><code>'use strict';
+/**
+ * @file Contains code that is used to ensure the password contains repeating characters.
+ * @module ensureRepeatingCharacters
+ */
+import shuffle from "./shuffle.helper.js";
+/**
+ * Removes repeats of a character found in a string.
+ *
+ * @function removeRepeats
+ * @private
+ * @param {Array&lt;any>} string The string to check for repeats.
+ * @returns {string} A string containing the original characters not repeated.
+ */
+function removeRepeats(string) {
+    // The list to contain the unique characters.
+    const uniqueSet = [];
+    /**
+     * Foreach character in the string,
+     * if the unique set does not already include that character,
+     * add it.
+     */
+    string.split('').forEach((char) => {
+        if (!uniqueSet.includes(char)) {
+            uniqueSet.push(char);
+        }
+    });
+    // Return our unique set as a string.
+    return uniqueSet.join('');
+}
+/**
+ * Ensures a string contains repeating characters.
+ *
+ * @function ensureRepeatingCharacters
+ * @param {string} string The string to ensure contains repeating characters.
+ * @param {I_ensureRepeatingCharacterOptions} options An object defining how to repeat the characters in the string.
+ * If none of the matching attributes are passed with this object, the string will be returned unmodified.
+ * @requires shuffle
+ * @requires removeRepeats
+ * @returns {string} A string with the desired repeating character requirements.
+ */
+export default function ensureRepeatingCharacters(string, options) {
+    /**
+     * Split the string into pieces.
+     * This makes it easier to ensure the beginning and end characters can be preserved if needed.
+     */
+    let stringBeginning = string.slice(0, 1);
+    let stringMiddle = string.slice(1, string.length - 1);
+    let stringEnd = string.slice(string.length - 1, string.length);
+    /**
+     * Determine if we are:
+     *  Custom Repeating Characters
+     *  Repeating random characters in the already generated password.
+     *  Repeating a single character in the password.
+     * * Note: It needs to be checked in this order.
+     */
+    if (options.customCharacterSet) {
+        // ^ Custom Repeating Characters.
+        // Initialize our characters list.
+        const characters = [];
+        // Push all the middle string characters into our list.
+        stringMiddle.split('').forEach((char) => {
+            characters.push(char);
+        });
+        /**
+         * Check if the attribute is a string else it will be list of sets.
+         */
+        if (typeof (options.customCharacterSet) === 'string') {
+            // Split the repeating characters string up and add each character to our list twice.
+            options.customCharacterSet.split('').forEach((char) => {
+                characters.push(char);
+                characters.push(char);
+            });
+        }
+        else {
+            // ^ Custom Repeating Characters should be a list.
+            /**
+             * Iterate over the list.
+             * Foreach set add it's character teh request amount of times.
+             */
+            options.customCharacterSet.forEach((set) => {
+                let i = parseInt(set[1]);
+                while (i--) {
+                    characters.push(set[0]);
+                }
+            });
+        }
+        /**
+         * If the beginning or end preservations are not set,
+         * push their characters into our list and blank them.
+         */
+        if (!options.preservations?.beginning) {
+            characters.push(stringBeginning);
+            stringBeginning = '';
+        }
+        if (!options.preservations?.end) {
+            characters.push(stringEnd);
+            stringEnd = '';
+        }
+        /***/
+        // Create our string.
+        string = stringBeginning + shuffle(characters).join('') + stringEnd;
+    }
+    else if (options.repeatingSetCount
+        && options.repeatingSetCount > 1) {
+        // ^ Repeating random characters in the already generated password.
+        // Break up the characters into an array
+        let characters = shuffle(string.split(''));
+        /**
+         * Remove any currently repeating characters,
+         * as they will through us off count.
+         */
+        characters = removeRepeats(characters.join('')).split('');
+        stringMiddle = removeRepeats(stringMiddle);
+        /***/
+        /**
+         * Add characters from our list to the middle of the string
+         * as many times as we need to repeat character and while a
+         * character exists in the list at that position.
+         */
+        for (let i = 0; (i &lt; options.repeatingSetCount
+            && characters[i]); i++) {
+            stringMiddle += characters[i];
+        }
+        // Create our string.
+        string = stringBeginning + shuffle(stringMiddle.split('')).join('') + stringEnd;
+    }
+    else {
+        // ^ Repeating a single character in the password.
+        // Shuffle the string and add a the first character to the middle.
+        stringMiddle += shuffle(string.split(''))[0];
+        // Create our string.
+        string = stringBeginning + shuffle(stringMiddle.split('')).join('') + stringEnd;
+    }
+    // Return our string.
+    return string;
+}
+</code></pre></article></section></div><nav><b><a href=../index.html>simplePass Program</a></b><h3><a href=index.html>README</a></h3><h3>Modules</h3><ul><li><a href=module-E_errors.html>E_errors</a><li><a href=module-L_allowedModifiers.html>L_allowedModifiers</a><li><a href=module-L_requiredAttributes.html>L_requiredAttributes</a><li><a href=module-L_useableAttributes.html>L_useableAttributes</a><li><a href=module-L_whitespaceAttributes.html>L_whitespaceAttributes</a><li><a href=module-characterCodeConstraints.html>characterCodeConstraints</a><li><a href=module-cleanModifier.html>cleanModifier</a><li><a href=module-config.html>config</a><li><a href=module-createMessage.html>createMessage</a><li><a href=module-createModifierList.html>createModifierList</a><li><a href=module-ensureRepeatingCharacters.html>ensureRepeatingCharacters</a><li><a href=module-generateCharCode.html>generateCharCode</a><li><a href=module-shuffle.html>shuffle</a><li><a href=module-simplePass.html>simplePass</a><li><a href=module-validateModifier.html>validateModifier</a></ul><h3>Interfaces</h3><ul><li><a href=I_charCodeGenerationFlag.html>I_charCodeGenerationFlag</a><li><a href=I_charCodeOptions.html>I_charCodeOptions</a><li><a href=I_charCodeRequest.html>I_charCodeRequest</a><li><a href=I_ensureRepeatingCharacterOptions.html>I_ensureRepeatingCharacterOptions</a><li><a href=I_passwordModifier.html>I_passwordModifier</a><li><a href=I_repeatingCharacterOptionsPreservations.html>I_repeatingCharacterOptionsPreservations</a><li><a href=module-characterCodeConstraints-I_charCodeConstraintsAttributes.html>I_charCodeConstraintsAttributes</a></ul><h3>Other Resources</h3><ul><li><a href=tutorial-CODE_OF_CONDUCT.html>Code Of Conduct</a><li><a href=tutorial-CONTRIBUTING.html>Contributing</a><li><a href=tutorial-SECURITY.html>Security</a><li><a href=tutorial-development.html>Development</a><li><a href=tutorial-installation-and-examples.html>Installation & Examples</a></ul></nav><br class=clear><footer>Documentation generated by <a href=https://github.com/jsdoc/jsdoc>JSDoc 4.0.0</a></footer><script>prettyPrint()</script><script src=scripts/linenumber.js></script>

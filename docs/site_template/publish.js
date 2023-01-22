@@ -355,7 +355,7 @@ function linktoExternal(longName, name) {
  */
 function buildNav(members) {
     let globalNav;
-    let nav = '<h2><a href="index.html">Home</a></h2>';
+    let nav = '<h3><a href="index.html">README</a></h3>';
     const seen = {};
     const seenTutorials = {};
 
@@ -490,9 +490,10 @@ exports.publish = (taffyData, opts, tutorials) => {
 
     // update outdir if necessary, then create outdir
     packageInfo = ( find({kind: 'package'}) || [] )[0];
-    if (packageInfo && packageInfo.name) {
-        outdir = path.join( outdir, packageInfo.name, '');
-    }
+    outdir = path.join( outdir,"docs", '');
+    // if (packageInfo && packageInfo.name) {
+    //     outdir = path.join( outdir, packageInfo.name, '');
+    // }
     fs.mkPath(outdir);
 
     // copy the template's static files to outdir
@@ -613,7 +614,7 @@ exports.publish = (taffyData, opts, tutorials) => {
     files = find({kind: 'file'});
     packages = find({kind: 'package'});
 
-    generate('Home',
+    generate('README',
         packages.concat(
             [{
                 kind: 'mainpage',

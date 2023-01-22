@@ -18,7 +18,10 @@ const L_useableAttributes:Array<string> = [
     'w_beginning',
     'w_end',
     'w_between',
-    'excludeCharacters'
+    'excludeCharacters',
+    'lowercase_supplement',
+    'uppercase_supplement',
+    'symbols_supplement'
 ];
 
 export default L_useableAttributes;

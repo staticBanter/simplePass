@@ -25,7 +25,10 @@ const L_allowedModifiers:Array<string> = [
     'excludeCharacters',
     'repeatingCharacter',
     'repeatingCharacter_limit',
-    'customRepeatingCharacters'
+    'customRepeatingCharacters',
+    'lowercase_supplement',
+    'uppercase_supplement',
+    'symbols_supplement'
 ];
 
 export default L_allowedModifiers;
