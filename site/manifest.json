@@ -9,7 +9,7 @@
     "display":"minimal-ui",
     "name": "simplePass",
     "short_name": "simplePass",
-    "start_url": "simplePass/",
+    "start_url": "https://staticbanter.github.io/simplePass/",
     "id": "/",
     "prefer_related_applications": false,
     "description": "A JavaScript password generator.",
