@@ -109,7 +109,7 @@ import simplePass from "./simplePass.js";
      * https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Offline_Service_workers
      */
     if ("serviceWorker" in navigator) {
-        navigator.serviceWorker.register("/sw.js");
+        navigator.serviceWorker.register("/simplePass/sw.js");
     }
         
 })();
