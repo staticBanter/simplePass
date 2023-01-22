@@ -4,7 +4,7 @@ const appShellFiles = [
     "/simplePass/offline.html",
     "/simplePass/main.css",
     "/simplePass/main.js",
-    "/simplePass/simplePass/browser/simplePass.js",
+    "/simplePass/simplePass.js",
     "/simplePass/sw.js",
     "/simplePass/manifest.json",
     "/simplePass/storage/icons/simplePass-Logo-1080.png",
