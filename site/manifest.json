@@ -9,7 +9,7 @@
     "display":"minimal-ui",
     "name": "simplePass",
     "short_name": "simplePass",
-    "start_url": "/",
+    "start_url": "/simplePass",
     "id": "/",
     "prefer_related_applications": false,
     "description": "A JavaScript password generator.",
