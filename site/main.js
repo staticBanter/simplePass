@@ -1,6 +1,6 @@
 "use strict";
 
-import simplePass from "../simplePass/browser/simplePass.js";
+import simplePass from "./simplePass.js";
 
 (()=>{
 
