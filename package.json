@@ -40,13 +40,15 @@
   "homepage": "https://github.com/staticBanter/simplePass#readme",
   "private": true,
   "scripts": {
-    "webpack-build": "webpack build --config webpack.config.js",
-    "webpack-watch": "webpack build --config webpack.config.js --watch",
+    "webpack-build": "webpack build --config webpack.config.js --env production",
+    "webpack-prod-watch": "webpack build --config webpack.config.js --watch --env production",
+    "webpack-dev-build": "webpack build --config webpack.config.js --env development",
+    "webpack-watch": "webpack build --config webpack.config.js --env development --watch",
     "tsc": "tsc --project .",
     "tsc-watch": "tsc --watch --project .",
     "docs-build": "jsdoc ./simplePass/src/ --tutorials ./docs --configure ./jsdoc.config.json",
-    "prod": "npm run tsc && npm run docs-build && npm run webpack-build && npm run html-min",
-    "production": "npm run prod",
-    "html-min":"html-minifier --config-file html-minifier.config.json --input-dir ./site/docs --output-dir ./site/docs --file-ext html"
+    "html-min": "html-minifier --config-file html-minifier.config.json --input-dir ./site/docs --output-dir ./site/docs --file-ext html",
+    "prod": "npm run production",
+    "production": "npm run tsc && npm run docs-build && npm run webpack-build && npm run html-min"
   }
 }

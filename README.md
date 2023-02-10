@@ -1,4 +1,4 @@
-> **CAUTION**
+> **CAUTION!**
 >
 > This project is in Beta Phase. Some features may still contain a few bugs.
 
@@ -63,16 +63,18 @@ Uses character code: 32. For whitespace.
 
 ### Browser Support
 
-| Feature | [Firefox](https://www.mozilla.org/en-CA/firefox/) | [Google Chrome](https://www.google.com/intl/en_ca/chrome/) | [GNome Web](https://wiki.gnome.org/Apps/Web) | [Falkon](https://www.falkon.org/) | [Edge](https://www.microsoft.com/en-us/edge) | [Opera](https://www.opera.com/)
+| Feature | [Firefox](https://www.mozilla.org/en-CA/firefox/)* | [Google Chrome](https://www.google.com/intl/en_ca/chrome/) | [GNome Web](https://wiki.gnome.org/Apps/Web) | [Falkon](https://www.falkon.org/) | [Edge](https://www.microsoft.com/en-us/edge) | [Opera](https://www.opera.com/)
 | --- | --- | --- | --- | --- | --- | --- |
 | [JavaScript Web.crypto.getRandomValues()](https://developer.mozilla.org/en-US/docs/Web/API/Crypto/getRandomValues) | + | + | + | + | * | * |
-| PWA Installation  | - | + | - | - | * | * |
+| PWA Installation  | ~ | + | - | - | * | * |
+
+\* Firefox currently only supports PWA installation on mobile.
 
 ### OS Support
 
-| Feature | Linux ** | Windows | MacOS | ChromeOS |
-| --- | --- | --- | --- | --- | --- | --- |
-| PWA Installation | +  | * | * | * |
+| Feature | Linux ** | Windows | MacOS | ChromeOS | Android |
+| --- | --- | --- | --- | --- | --- |
+| PWA Installation | +  | * | * | * | + |
 
 Positions filled with a * (asterisk) have not be personally tested.
 
@@ -84,3 +86,7 @@ Positions filled with a * (asterisk) have not be personally tested.
 
 - [Visit The GitHup Repository](https://github.com/staticBanter/simplePass)
 - [Use The Program](https://staticbanter.github.io/simplePass/)
+
+---
+
+<sub>Have an issue? Want to see a new feature added? Open an issue on the <a href="https://github.com/staticBanter/simplePass/issues">simplePass GitHub Issue Tracker</a> and we will take a look into it!</sub>

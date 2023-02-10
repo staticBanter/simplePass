@@ -10,7 +10,8 @@ simplePass is built using *ESNext* modules so you will need deployed it in a ser
 For usage inside of a Web Browser it is recommend that you grab the bundled version of the project located at ```simplePass/simplePass/browser/simplePass.js```. Once you have the file you may include it in you project like so:
 
 Directory structure after downloading the *simplePass.js* file.
-```
+
+```text
 .
 +-- yourProjectsMainDir
 | +-- index.html
@@ -21,6 +22,7 @@ Directory structure after downloading the *simplePass.js* file.
 ```
 
 Including *simplePass.js* in *yourProjectScript.js*
+
 ```javascript
 // yourProjectScript.js
 
@@ -77,7 +79,8 @@ console.log(complexPass)
 If you would like to use the unbundled version (usually for personal development) you should take the entire ```simplePass/simplePass/src``` directory, and rename it to something more unique (ie: *simplePass*). Once you have the directory you may include it in your project like so:
 
 Directory structure after downloading and renaming the ```src``` directory (for this example we renamed ```src``` to ```simplePass```).
-```
+
+```text
 .
 +-- yourProjectsMainDir/
 | +-- index.html
@@ -92,6 +95,7 @@ Directory structure after downloading and renaming the ```src``` directory (for 
 ```
 
 Including *simplePass.js* in *yourProjectScript.js*
+
 ```javascript
 // yourProjectScript.js
 
@@ -146,6 +150,7 @@ console.log(complexPass)
 ```
 
 This version also allows you to include individual simplePass modules
+
 ```javascript
 import config from "./simplePass/config.simplePass.js";
 
@@ -160,7 +165,8 @@ Installing the TypeScript version of the project is similar to installing the Br
 If you would like to use the TypeScript versions of simplePass (usually for personal development) you should take the entire ```simplePass/src``` directory, and rename it to something more unique (ie: *simplePass*). Once you have the directory you may include it in your project like so:
 
 Directory structure after downloading and renaming the ```src``` directory (for this example we renamed ```src``` to ```simplePass```).
-```
+
+```text
 .
 +-- yourProjectsMainDir/
 | +-- index.html
@@ -175,6 +181,7 @@ Directory structure after downloading and renaming the ```src``` directory (for 
 ```
 
 Including *simplePass.ts* in *yourProjectScript.ts*
+
 ```javascript
 // yourProjectScript.js
 
@@ -229,11 +236,11 @@ console.log(complexPass)
 ```
 
 This version also allows you to include individual simplePass modules
+
 ```javascript
 import config from "./simplePass/config.simplePass.ts";
 
 console.log(config.passwordLengthMin)
-
 ```
 
 ---
