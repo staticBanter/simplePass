@@ -1,9 +1,9 @@
 'use strict';
 
 import config from "../config.simplePass.js";
-import E_errors from "../data/enums/errors.enum.js";
-import I_charCodeGenerationFlag from "../data/interfaces/charCodeGenerationFlag.interface.js";
-import I_charCodeRequest from "../data/interfaces/charCodeRequest.interface.js";
+import errors from "../data/enums/errors.enum.js";
+import charCodeGenerationFlag from "../data/interfaces/charCodeGenerationFlag.interface.js";
+import charCodeRequest from "../data/interfaces/charCodeRequest.interface.js";
 import characterCodeConstraints from "../data/objects/characterCodeConstraints.object.js";
 import createMessage from "./createMessage.helper.js";
 
@@ -16,16 +16,16 @@ import createMessage from "./createMessage.helper.js";
  * Generates a random integer of a requested type.
  *
  * @function generateCharCode
- * @param {I_charCodeRequest} charCodeRequest An object contain the properties that describes the type of character code being requested
+ * @param {charCodeRequest} charCodeRequest An object contain the properties that describes the type of character code being requested
  * and restrictions being place on it.
- * @param {I_charCodeGenerationFlag} [flags] A flag object used to give more information about what stage of password generation we are at.
+ * @param {charCodeGenerationFlag} [flags] A flag object used to give more information about what stage of password generation we are at.
  * @requires characterCodeConstraints
  * @requires createMessage
- * @throws {E_errors.nonGenerableCharacterType} Will throw an error if the requested character code type
+ * @throws {errors.nonGenerableCharacterType} Will throw an error if the requested character code type
  * is not found within the character code constraints object.
  * @returns {number} An integer representing a UTF-16 character code unit. The integer will be within range of the defined character code request constraints.
  */
-export default function generateCharCode(charCodeRequest:I_charCodeRequest,flags?:I_charCodeGenerationFlag):number{
+export default function generateCharCode(charCodeRequest:charCodeRequest,flags?:charCodeGenerationFlag):number{
 
     // Generate our random number.
     const charCode:number = self.crypto.getRandomValues(new Uint8Array(1))[0];
@@ -59,7 +59,7 @@ export default function generateCharCode(charCodeRequest:I_charCodeRequest,flags
              * Else regenerate.
              */
             if(
-                charCodeRequest.charCodeOptions?.whitespaceOptions?.includes('w_beginning')
+                charCodeRequest.charCodeOptions?.whitespaceOptions?.includes('whitespaceBeginning')
                 && charCode === 32
             ){
                 return charCode;
@@ -81,7 +81,7 @@ export default function generateCharCode(charCodeRequest:I_charCodeRequest,flags
              * Else regenerate.
              */
              if(
-                charCodeRequest.charCodeOptions?.whitespaceOptions?.includes('w_end')
+                charCodeRequest.charCodeOptions?.whitespaceOptions?.includes('whitespaceEnd')
                 && charCode === 32
             ){
                 return charCode;
@@ -185,7 +185,7 @@ export default function generateCharCode(charCodeRequest:I_charCodeRequest,flags
         }
 
     }else{
-        throw new Error(createMessage(E_errors.nonGenerableCharacterType,[config.errorMessagePrefix,'gCC','1',charCodeRequest.charType]))
+        throw new Error(createMessage(errors.nonGenerableCharacterType,[config.errorMessagePrefix,'gCC','1',charCodeRequest.charType]))
     }
 
     /**

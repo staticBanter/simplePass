@@ -1,19 +1,19 @@
 'use strict';
-import L_allowedModifiers from "../data/lists/allowedModifiers.list.js";
+import allowedModifiers from "../data/lists/allowedModifiers.list.js";
 import config from "../config.simplePass.js";
 /**
- * @file Contains the code that cleans the [password modifier object]{@link I_passwordModifier}.
+ * @file Contains the code that cleans the [password modifier object]{@link passwordModifier}.
  * @module cleanModifier
  */
 /**
  * Cleans an object of any attributes that are not apart of this program.
- * Returns a new [password modifier object]{@link I_passwordModifier}.
+ * Returns a new [password modifier object]{@link passwordModifier}.
  *
  * @function cleanModifier
- * @param {I_passwordModifier|FormData} modifier The object that needs to be cleaned.
+ * @param {passwordModifier|FormData} modifier The object that needs to be cleaned.
  * @requires config
- * @requires L_allowedModifiers
- * @returns {I_passwordModifier} The cleaned [password modifier object]{@link I_passwordModifier}.
+ * @requires allowedModifiers
+ * @returns {passwordModifier} The cleaned [password modifier object]{@link passwordModifier}.
  */
 export default function cleanModifier(modifier) {
     // Initialize a new passwordModifier object to return.
@@ -32,7 +32,7 @@ export default function cleanModifier(modifier) {
      * @private
      */
     function checkPair([key, value]) {
-        if (L_allowedModifiers.includes(key)) {
+        if (allowedModifiers.includes(key)) {
             if (value
                 && (typeof (value) === 'string'
                     || typeof (value) === 'number'

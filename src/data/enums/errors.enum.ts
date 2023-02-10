@@ -1,7 +1,7 @@
 'use strict';
 /**
  * @file Contains Error Enum.
- * @module E_errors
+ * @module errors
  */
 
 /**
@@ -20,7 +20,7 @@
  * @property {string} missingRequiredAttributes - The Password Modifier must contain one of the following attributes [list-of-required-attributes].
  * @property {string} excludeCharactersContainedWhitespace - Exclude Characters contained whitespace.
  */
-enum E_errors{
+enum errors{
     invalidModifier = '~-~_E.~: Invalid Modifier. The password modifier must be a valid JavaScript Object or JavaScript \'FormData\' Object.',
     toManyAttributes = '~-~_E.~: To Many Attributes. The requested password may only contain ~ amount of attributes, ~ attributes were selected.',
     nonGenerableCharacterType = '~-~_E.~: Non Generable Character Type. Attempted to generate a character of type ~',
@@ -30,4 +30,4 @@ enum E_errors{
     missingRequiredAttributes = '~-~_E.~: Missing Required Attributes. The Password Modifier must contain one of the following attributes ~.',
     excludeCharactersContainedWhitespace = '~-~_E.~: \'Exclude Characters\' contained whitespace.'
 }
-export default E_errors;
+export default errors;

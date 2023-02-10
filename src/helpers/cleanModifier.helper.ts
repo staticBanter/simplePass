@@ -1,28 +1,28 @@
 'use strict';
 
-import I_passwordModifier from "../data/interfaces/passwordModifier.interface.js";
-import L_allowedModifiers from "../data/lists/allowedModifiers.list.js";
+import passwordModifier from "../data/interfaces/passwordModifier.interface.js";
+import allowedModifiers from "../data/lists/allowedModifiers.list.js";
 import config from "../config.simplePass.js";
 
 /**
- * @file Contains the code that cleans the [password modifier object]{@link I_passwordModifier}.
+ * @file Contains the code that cleans the [password modifier object]{@link passwordModifier}.
  * @module cleanModifier
  */
 
 /**
  * Cleans an object of any attributes that are not apart of this program.
- * Returns a new [password modifier object]{@link I_passwordModifier}.
+ * Returns a new [password modifier object]{@link passwordModifier}.
  *
  * @function cleanModifier
- * @param {I_passwordModifier|FormData} modifier The object that needs to be cleaned.
+ * @param {passwordModifier|FormData} modifier The object that needs to be cleaned.
  * @requires config
- * @requires L_allowedModifiers
- * @returns {I_passwordModifier} The cleaned [password modifier object]{@link I_passwordModifier}.
+ * @requires allowedModifiers
+ * @returns {passwordModifier} The cleaned [password modifier object]{@link passwordModifier}.
  */
-export default function cleanModifier(modifier:I_passwordModifier|FormData|object):I_passwordModifier{
+export default function cleanModifier(modifier:passwordModifier|FormData|object):passwordModifier{
 
     // Initialize a new passwordModifier object to return.
-    const converter:I_passwordModifier = {
+    const converter:passwordModifier = {
         length: config.defaultPasswordLength
     };
 
@@ -39,7 +39,7 @@ export default function cleanModifier(modifier:I_passwordModifier|FormData|objec
      */
     function checkPair([key,value]:any){
 
-        if(L_allowedModifiers.includes(key)){
+        if(allowedModifiers.includes(key)){
 
             if(
                 value

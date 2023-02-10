@@ -1,15 +1,15 @@
 'use strict';
 
-import I_passwordModifier from "./data/interfaces/passwordModifier.interface.js";
+import passwordModifier from "./data/interfaces/passwordModifier.interface.js";
 import cleanModifier from "./helpers/cleanModifier.helper.js";
 import validateModifier from "./helpers/validateModifier.helper.js";
 import config from "./config.simplePass.js"
-import L_requiredAttributes from "./data/lists/requiredAttributes.list.js";
-import L_whitespaceAttributes from "./data/lists/whitespaceAttributes.list.js";
+import requiredAttributes from "./data/lists/requiredAttributes.list.js";
+import whitespaceAttributes from "./data/lists/whitespaceAttributes.list.js";
 import shuffle from "./helpers/shuffle.helper.js";
 import generateCharCode from "./helpers/generateCharCode.helper.js";
 import createMessage from "./helpers/createMessage.helper.js";
-import E_errors from "./data/enums/errors.enum.js";
+import errors from "./data/enums/errors.enum.js";
 import ensureRepeatingCharacters from "./helpers/ensureRepeatingCharacters.helper.js";
 
 /**
@@ -21,22 +21,22 @@ import ensureRepeatingCharacters from "./helpers/ensureRepeatingCharacters.helpe
  * Main program function. Returns a string.
  *
  * @function simplePass
- * @param {I_passwordModifier | FormData} modifier The available password modifications. See README.md for more information about modifiers.
+ * @param {passwordModifier | FormData} modifier The available password modifications. See README.md for more information about modifiers.
  * @requires config
- * @requires E_errors
+ * @requires errors
  * @requires createMessage
  * @requires cleanModifier
  * @requires validateModifier
- * @requires L_requiredAttributes
- * @requires L_whitespaceAttributes
+ * @requires requiredAttributes
+ * @requires whitespaceAttributes
  * @requires generateCharCode
  * @requires ensureRepeatingCharacters
  * @requires shuffle
- * @throws {E_errors.invalidModifier} Will throw an Error if the [modifier]{@link I_passwordModifier} is ```null```, ```undefined``` or not a JavaScript Object.
+ * @throws {errors.invalidModifier} Will throw an Error if the [modifier]{@link passwordModifier} is ```null```, ```undefined``` or not a JavaScript Object.
  * @returns {string} The generated password.
  */
 export default function simplePass(
-    modifier:I_passwordModifier|FormData = {
+    modifier:passwordModifier|FormData = {
         length:config.defaultPasswordLength,
         lowercase:true,
     }
@@ -49,7 +49,7 @@ export default function simplePass(
         !modifier
         || typeof modifier !== 'object'
     ){
-        throw new Error(createMessage(E_errors.invalidModifier,[config.errorMessagePrefix,'M','1']));
+        throw new Error(createMessage(errors.invalidModifier,[config.errorMessagePrefix,'M','1']));
     }
 
     // Initialize the password.
@@ -64,16 +64,16 @@ export default function simplePass(
     modifier = cleanModifier(modifier);
 
     // Ensure certain values are set and set properly.
-    validateModifier(modifier)
+    validateModifier(modifier);
 
     // Get the attributes that can affect the character type
     const characterAttributes:Array<string> = Object.keys(modifier).filter((item:string)=>{
-        return L_requiredAttributes.includes(item);
+        return requiredAttributes.includes(item);
     });
 
     // Get the attributes that can set whitespace
     const whitespaceAttributes:Array<string> = Object.keys(modifier).filter((item:string)=>{
-        return L_whitespaceAttributes.includes(item);
+        return whitespaceAttributes.includes(item);
     });
 
     /**
@@ -99,8 +99,8 @@ export default function simplePass(
                 passwordLimit -= (modifier.customRepeatingCharacters.length * 2);
             }
 
-        }else if(modifier.repeatingCharacter_limit){
-            passwordLimit -= modifier.repeatingCharacter_limit;
+        }else if(modifier.max_repeatingCharacter){
+            passwordLimit -= modifier.max_repeatingCharacter;
         }else{
             passwordLimit--;
         }
@@ -120,10 +120,10 @@ export default function simplePass(
      * to make room for the whitespace.
      */
     if(
-        modifier.w_between
-        && modifier.w_between_limit
+        modifier.whitespaceBetween
+        && modifier.max_whitespaceBetween
     ){
-        passwordLimit = passwordLimit - modifier.w_between_limit;
+        passwordLimit = passwordLimit - modifier.max_whitespaceBetween;
     }
 
     /**
@@ -152,8 +152,8 @@ export default function simplePass(
          * Check if it's required to be a whitespace.
          */
         if(
-            modifier.w_beginning
-            && modifier.w_beginning_required
+            modifier.whitespaceBeginning
+            && modifier.required_whitespaceBeginning
         ){
             password += ' ';
             preserveBeginning = true;
@@ -215,10 +215,10 @@ export default function simplePass(
 
         // Add any needed whitespace characters.
         if(
-            modifier.w_between
-            && modifier.w_between_limit
+            modifier.whitespaceBetween
+            && modifier.max_whitespaceBetween
         ){
-            while(modifier.w_between_limit--){
+            while(modifier.max_whitespaceBetween--){
                 middleCharacters += " ";
             }
         }
@@ -231,8 +231,8 @@ export default function simplePass(
          * Check if it's required to be a whitespace.
          */
         if(
-            modifier.w_end
-            && modifier.w_end_required
+            modifier.whitespaceEnd
+            && modifier.required_whitespaceEnd
         ){
             password += ' ';
             preserveEnd = true;
@@ -252,7 +252,7 @@ export default function simplePass(
                 deck = deck.concat(shuffle(characterAttributes));
             }
 
-            currentCharType = deck.pop()
+            currentCharType = deck.pop();
 
             if(currentCharType){
 
@@ -273,7 +273,7 @@ export default function simplePass(
 
             // Recreate the password
             password = ensureRepeatingCharacters(password,{
-                repeatingSetCount:modifier.repeatingCharacter_limit,
+                repeatingSetCount:modifier.max_repeatingCharacter,
                 customCharacterSet:modifier.customRepeatingCharacters,
                 preservations:{
                     beginning:preserveBeginning,
@@ -295,7 +295,7 @@ export default function simplePass(
 
                 
                 // Split the sting into pieces
-                let stringBeginning = password.slice(0,1)
+                let stringBeginning = password.slice(0,1);
                 let stringMiddle = password.slice(1,password.length-1);
                 let stringEnd = password.slice(password.length-1,password.length);
 
@@ -313,7 +313,7 @@ export default function simplePass(
                     }
 
                     // Get current character
-                    currentCharType = deck.pop()
+                    currentCharType = deck.pop();
 
                     /**
                      * Add current character to string middle.
@@ -356,8 +356,8 @@ export default function simplePass(
          * Check if it's required to be a whitespace.
          */
         if(
-            modifier.w_beginning
-            && modifier.w_beginning_required
+            modifier.whitespaceBeginning
+            && modifier.required_whitespaceBeginning
         ){
             password += ' ';
             preserveBeginning = true;
@@ -386,10 +386,10 @@ export default function simplePass(
 
         // Add any needed whitespace characters.
         if(
-            modifier.w_between
-            && modifier.w_between_limit
+            modifier.whitespaceBetween
+            && modifier.max_whitespaceBetween
         ){
-            while(modifier.w_between_limit--){
+            while(modifier.max_whitespaceBetween--){
                 middleCharacters += " ";
             }
         }
@@ -402,8 +402,8 @@ export default function simplePass(
          * Check if it's required to be a whitespace.
          */
         if(
-            modifier.w_end
-            && modifier.w_end_required
+            modifier.whitespaceEnd
+            && modifier.required_whitespaceEnd
         ){
             password += ' ';
             preserveEnd = true;
@@ -424,7 +424,7 @@ export default function simplePass(
 
             // Recreate the password
             password = ensureRepeatingCharacters(password,{
-                repeatingSetCount:modifier.repeatingCharacter_limit,
+                repeatingSetCount:modifier.max_repeatingCharacter,
                 customCharacterSet:modifier.customRepeatingCharacters,
                 preservations:{
                     beginning:preserveBeginning,
@@ -445,7 +445,7 @@ export default function simplePass(
             if(password.length < modifier.length){
 
                 // Split the sting into pieces
-                let stringBeginning = password.slice(0,1)
+                let stringBeginning = password.slice(0,1);
                 let stringMiddle = password.slice(1,password.length-1);
                 let stringEnd = password.slice(password.length-1,password.length);
 

@@ -1,18 +1,18 @@
 'use strict';
 /**
  * @file Contains a list of white-space modifier attributes.
- * @module L_whitespaceAttributes
+ * @module whitespaceAttributes
  */
 /**
  * Defines what attributes are considered white-space attributes.
  *
- * @const {Array<string>} L_whitespaceAttributes
+ * @const {Array<string>} whitespaceAttributes
  */
-const L_whitespaceAttributes = [
-    'w_beginning',
-    'w_end',
-    'w_between',
-    'w_end_required',
-    'w_beginning_required',
+const whitespaceAttributes = [
+    'whitespaceBeginning',
+    'whitespaceEnd',
+    'whitespaceBetween',
+    'required_whitespaceEnd',
+    'required_whitespaceBeginning',
 ];
-export default L_whitespaceAttributes;
+export default whitespaceAttributes;

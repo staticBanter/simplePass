@@ -1,7 +1,7 @@
 'use strict';
 /**
  * @file Contains Error Enum.
- * @module E_errors
+ * @module errors
  */
 /**
  * Enumerated list of possible error codes and there message template strings.
@@ -19,15 +19,15 @@
  * @property {string} missingRequiredAttributes - The Password Modifier must contain one of the following attributes [list-of-required-attributes].
  * @property {string} excludeCharactersContainedWhitespace - Exclude Characters contained whitespace.
  */
-var E_errors;
-(function (E_errors) {
-    E_errors["invalidModifier"] = "~-~_E.~: Invalid Modifier. The password modifier must be a valid JavaScript Object or JavaScript 'FormData' Object.";
-    E_errors["toManyAttributes"] = "~-~_E.~: To Many Attributes. The requested password may only contain ~ amount of attributes, ~ attributes were selected.";
-    E_errors["nonGenerableCharacterType"] = "~-~_E.~: Non Generable Character Type. Attempted to generate a character of type ~";
-    E_errors["invalidAttributeType"] = "~-~_.~: InvalidAttribute Type. Attribute ~ is supposed to be of type ~";
-    E_errors["outOfBoundsAttributeValue"] = "~-~_E.~: Out Of Bounds Attribute Type. Attribute type ~ is out of its value bounds.";
-    E_errors["missingRequiredAttribute"] = "~-~_E.~: Attribute Missing Required. The attribute '~' requires attribute '~' to be set before it can be used.";
-    E_errors["missingRequiredAttributes"] = "~-~_E.~: Missing Required Attributes. The Password Modifier must contain one of the following attributes ~.";
-    E_errors["excludeCharactersContainedWhitespace"] = "~-~_E.~: 'Exclude Characters' contained whitespace.";
-})(E_errors || (E_errors = {}));
-export default E_errors;
+var errors;
+(function (errors) {
+    errors["invalidModifier"] = "~-~_E.~: Invalid Modifier. The password modifier must be a valid JavaScript Object or JavaScript 'FormData' Object.";
+    errors["toManyAttributes"] = "~-~_E.~: To Many Attributes. The requested password may only contain ~ amount of attributes, ~ attributes were selected.";
+    errors["nonGenerableCharacterType"] = "~-~_E.~: Non Generable Character Type. Attempted to generate a character of type ~";
+    errors["invalidAttributeType"] = "~-~_.~: InvalidAttribute Type. Attribute ~ is supposed to be of type ~";
+    errors["outOfBoundsAttributeValue"] = "~-~_E.~: Out Of Bounds Attribute Type. Attribute type ~ is out of its value bounds.";
+    errors["missingRequiredAttribute"] = "~-~_E.~: Attribute Missing Required. The attribute '~' requires attribute '~' to be set before it can be used.";
+    errors["missingRequiredAttributes"] = "~-~_E.~: Missing Required Attributes. The Password Modifier must contain one of the following attributes ~.";
+    errors["excludeCharactersContainedWhitespace"] = "~-~_E.~: 'Exclude Characters' contained whitespace.";
+})(errors || (errors = {}));
+export default errors;

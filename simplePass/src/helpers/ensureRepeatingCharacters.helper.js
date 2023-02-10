@@ -33,7 +33,7 @@ function removeRepeats(string) {
  *
  * @function ensureRepeatingCharacters
  * @param {string} string The string to ensure contains repeating characters.
- * @param {I_ensureRepeatingCharacterOptions} options An object defining how to repeat the characters in the string.
+ * @param {ensureRepeatingCharacterOptions} options An object defining how to repeat the characters in the string.
  * If none of the matching attributes are passed with this object, the string will be returned unmodified.
  * @requires shuffle
  * @requires removeRepeats

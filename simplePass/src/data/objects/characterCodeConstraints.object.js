@@ -6,7 +6,7 @@
 /**
  * Interface for an object representing the different type of character code constraints
  *
- * @interface I_charCodeConstraintsAttributes
+ * @interface charCodeConstraintsAttributes
  * @property {number} [min] The maximum possible character code for a character type.
  * @property {number} [max] The minimum possible character code for a character type.
  * @property {Array<Array<number>>} [range] A list containing all possible minimum
@@ -22,7 +22,7 @@
  * @property {object} [numbers] Basic Latin Numeric character code constraints.
  * @property {object} [punctuation] Basic Latin Punctuation character code constraints.
  * @property {object} [whitespace]  Whitespace character code constraint.
- * @implements {I_charCodeConstraintsAttributes}
+ * @implements {charCodeConstraintsAttributes}
  *
  */
 const characterCodeConstraints = {

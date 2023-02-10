@@ -78,7 +78,7 @@
                 </div>
                 <div>
                     <label>Repeating Character Limit:
-                        <input type="number" form="passwordForm" name="repeatingCharacter_limit" id="repeatingCharacter_limit" min="1" max="256" step="1" value="1" />
+                        <input type="number" form="passwordForm" name="max_repeatingCharacter" id="max_repeatingCharacter" min="1" max="256" step="1" value="1" />
                     </label>
                     <p>Specify the number of characters that should be repeated in the password.</p>
                 </div>
@@ -118,27 +118,27 @@
                 <fieldset>
                     <legend>Beginning of Password:</legend>
                     <label>Yes:
-                        <input type="checkbox" form="passwordForm" name="w_beginning" class="toggle" data-toggle="disabled" data-target="#w_beginning_required" />
+                        <input type="checkbox" form="passwordForm" name="whitespaceBeginning" class="toggle" data-toggle="disabled" data-target="#required_whitespaceBeginning" />
                     </label>
                     <label>Required:
-                        <input type="checkbox" form="passwordForm" name="w_beginning_required" id="w_beginning_required"/>
+                        <input type="checkbox" form="passwordForm" name="required_whitespaceBeginning" id="required_whitespaceBeginning"/>
                     </label>
                 </fieldset>
                 <fieldset>
                     <legend>End of Password:</legend>
                     <label>Yes:
-                        <input type="checkbox" form="passwordForm" name="w_end" class="toggle" data-toggle="disabled" data-target="#w_end_required" />
+                        <input type="checkbox" form="passwordForm" name="whitespaceEnd" class="toggle" data-toggle="disabled" data-target="#required_whitespaceEnd" />
                     </label>
                     <label>Required:
-                        <input type="checkbox" form="passwordForm" name="w_end_required" id="w_end_required" />
+                        <input type="checkbox" form="passwordForm" name="required_whitespaceEnd" id="required_whitespaceEnd" />
                     </label>
                 </fieldset>
                 <fieldset>
                     <label>Between:
-                        <input class="toggle" data-target="#w_between_limit" data-toggle="disabled" type="checkbox" form="passwordForm" name="w_between" />
+                        <input class="toggle" data-target="#max_whitespaceBetween" data-toggle="disabled" type="checkbox" form="passwordForm" name="whitespaceBetween" />
                     </label>
                     <label>Limit:
-                        <input type="number" step="1" min="1" max="252" value="1" form="passwordForm" id="w_between_limit" name="w_between_limit" />
+                        <input type="number" step="1" min="1" max="252" value="1" form="passwordForm" id="max_whitespaceBetween" name="max_whitespaceBetween" />
                     </label>
                 </fieldset>
             </fieldset>

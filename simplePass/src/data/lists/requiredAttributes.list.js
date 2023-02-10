@@ -1,15 +1,15 @@
 'use strict';
 /**
  * @file Contains a list of attributes that are required to be in the password modifier.
- * @module L_requiredAttributes
+ * @module requiredAttributes
  */
 /**
  * Defines what attributes that are required to be in the password modifier.
  * > Note: Only 1 of these modifiers is required for the program to function.
  *
- * @const {Array<string>} L_requiredAttributes
+ * @const {Array<string>} requiredAttributes
  */
-const L_requiredAttributes = [
+const requiredAttributes = [
     'lowercase',
     'uppercase',
     'numbers',
@@ -18,4 +18,4 @@ const L_requiredAttributes = [
     'uppercase_supplement',
     'symbols_supplement'
 ];
-export default L_requiredAttributes;
+export default requiredAttributes;
