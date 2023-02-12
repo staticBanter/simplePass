@@ -8,7 +8,7 @@
  *
  * @const {Array<string>} allowedModifiers
  */
-const L_allowedModifiers = [
+const allowedModifiers = [
     'length',
     'lowercase',
     'uppercase',
@@ -28,4 +28,4 @@ const L_allowedModifiers = [
     'uppercase_supplement',
     'symbols_supplement'
 ];
-export default L_allowedModifiers;
+export default allowedModifiers;

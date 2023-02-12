@@ -3,6 +3,7 @@ import cleanModifier from "./helpers/cleanModifier.helper.js";
 import validateModifier from "./helpers/validateModifier.helper.js";
 import config from "./config.simplePass.js";
 import requiredAttributes from "./data/lists/requiredAttributes.list.js";
+import whitespaceAttributes from "./data/lists/whitespaceAttributes.list.js";
 import shuffle from "./helpers/shuffle.helper.js";
 import generateCharCode from "./helpers/generateCharCode.helper.js";
 import createMessage from "./helpers/createMessage.helper.js";
@@ -57,7 +58,7 @@ export default function simplePass(modifier = {
         return requiredAttributes.includes(item);
     });
     // Get the attributes that can set whitespace
-    const whitespaceAttributes = Object.keys(modifier).filter((item) => {
+    const setWhitespaceAttributes = Object.keys(modifier).filter((item) => {
         return whitespaceAttributes.includes(item);
     });
     /**
@@ -134,7 +135,7 @@ export default function simplePass(modifier = {
                 password += String.fromCharCode(generateCharCode({
                     charType: currentCharType,
                     charCodeOptions: {
-                        whitespaceOptions: whitespaceAttributes,
+                        whitespaceOptions: setWhitespaceAttributes,
                         excludeCharacters: modifier.excludeCharacters
                     }
                 }, { beginning: true }));
@@ -159,7 +160,7 @@ export default function simplePass(modifier = {
                 middleCharacters += String.fromCharCode(generateCharCode({
                     charType: currentCharType,
                     charCodeOptions: {
-                        whitespaceOptions: whitespaceAttributes,
+                        whitespaceOptions: setWhitespaceAttributes,
                         excludeCharacters: modifier.excludeCharacters
                     }
                 }));
@@ -200,7 +201,7 @@ export default function simplePass(modifier = {
                 password += String.fromCharCode(generateCharCode({
                     charType: currentCharType,
                     charCodeOptions: {
-                        whitespaceOptions: whitespaceAttributes,
+                        whitespaceOptions: setWhitespaceAttributes,
                         excludeCharacters: modifier.excludeCharacters
                     }
                 }, { end: true }));
@@ -251,7 +252,7 @@ export default function simplePass(modifier = {
                         const currentCharacter = String.fromCharCode(generateCharCode({
                             charType: currentCharType,
                             charCodeOptions: {
-                                whitespaceOptions: whitespaceAttributes,
+                                whitespaceOptions: setWhitespaceAttributes,
                                 excludeCharacters: modifier.excludeCharacters
                             }
                         }));
@@ -282,7 +283,7 @@ export default function simplePass(modifier = {
             password += String.fromCharCode(generateCharCode({
                 charType: characterAttributes[0],
                 charCodeOptions: {
-                    whitespaceOptions: whitespaceAttributes,
+                    whitespaceOptions: setWhitespaceAttributes,
                     excludeCharacters: modifier.excludeCharacters
                 }
             }, { beginning: true }));
@@ -294,7 +295,7 @@ export default function simplePass(modifier = {
             middleCharacters += String.fromCharCode(generateCharCode({
                 charType: characterAttributes[0],
                 charCodeOptions: {
-                    whitespaceOptions: whitespaceAttributes,
+                    whitespaceOptions: setWhitespaceAttributes,
                     excludeCharacters: modifier.excludeCharacters
                 }
             }));
@@ -321,7 +322,7 @@ export default function simplePass(modifier = {
             password += String.fromCharCode(generateCharCode({
                 charType: characterAttributes[0],
                 charCodeOptions: {
-                    whitespaceOptions: whitespaceAttributes,
+                    whitespaceOptions: setWhitespaceAttributes,
                     excludeCharacters: modifier.excludeCharacters
                 }
             }, { end: true }));
@@ -357,7 +358,7 @@ export default function simplePass(modifier = {
                     const currentCharacter = String.fromCharCode(generateCharCode({
                         charType: characterAttributes[0],
                         charCodeOptions: {
-                            whitespaceOptions: whitespaceAttributes,
+                            whitespaceOptions: setWhitespaceAttributes,
                             excludeCharacters: modifier.excludeCharacters
                         }
                     }));

@@ -72,7 +72,7 @@ export default function simplePass(
     });
 
     // Get the attributes that can set whitespace
-    const whitespaceAttributes:Array<string> = Object.keys(modifier).filter((item:string)=>{
+    const setWhitespaceAttributes:Array<string> = Object.keys(modifier).filter((item:string)=>{
         return whitespaceAttributes.includes(item);
     });
 
@@ -167,7 +167,7 @@ export default function simplePass(
                 password += String.fromCharCode(generateCharCode({
                     charType:currentCharType,
                     charCodeOptions:{
-                        whitespaceOptions:whitespaceAttributes,
+                        whitespaceOptions:setWhitespaceAttributes,
                         excludeCharacters:modifier.excludeCharacters
                     }
                 },{beginning:true}));
@@ -204,7 +204,7 @@ export default function simplePass(
                 middleCharacters += String.fromCharCode(generateCharCode({
                     charType:currentCharType,
                     charCodeOptions:{
-                        whitespaceOptions:whitespaceAttributes,
+                        whitespaceOptions:setWhitespaceAttributes,
                         excludeCharacters:modifier.excludeCharacters
                     }
                 }));
@@ -259,7 +259,7 @@ export default function simplePass(
                 password += String.fromCharCode(generateCharCode({
                     charType:currentCharType,
                     charCodeOptions:{
-                        whitespaceOptions:whitespaceAttributes,
+                        whitespaceOptions:setWhitespaceAttributes,
                         excludeCharacters:modifier.excludeCharacters
                     }
                 },{end:true}));
@@ -325,7 +325,7 @@ export default function simplePass(
                         const currentCharacter = String.fromCharCode(generateCharCode({
                             charType:currentCharType,
                             charCodeOptions:{
-                                whitespaceOptions:whitespaceAttributes,
+                                whitespaceOptions:setWhitespaceAttributes,
                                 excludeCharacters:modifier.excludeCharacters
                             }
                         }));
@@ -365,7 +365,7 @@ export default function simplePass(
             password += String.fromCharCode(generateCharCode({
                 charType:characterAttributes[0],
                 charCodeOptions:{
-                    whitespaceOptions:whitespaceAttributes,
+                    whitespaceOptions:setWhitespaceAttributes,
                     excludeCharacters:modifier.excludeCharacters
                 }
             },{beginning:true}));
@@ -378,7 +378,7 @@ export default function simplePass(
             middleCharacters += String.fromCharCode(generateCharCode({
                 charType:characterAttributes[0],
                 charCodeOptions:{
-                    whitespaceOptions:whitespaceAttributes,
+                    whitespaceOptions:setWhitespaceAttributes,
                     excludeCharacters:modifier.excludeCharacters
                 }
             }));
@@ -412,7 +412,7 @@ export default function simplePass(
             password += String.fromCharCode(generateCharCode({
                 charType:characterAttributes[0],
                 charCodeOptions:{
-                    whitespaceOptions:whitespaceAttributes,
+                    whitespaceOptions:setWhitespaceAttributes,
                     excludeCharacters:modifier.excludeCharacters
                 }
             },{end:true}));
@@ -455,7 +455,7 @@ export default function simplePass(
                     const currentCharacter = String.fromCharCode(generateCharCode({
                         charType:characterAttributes[0],
                         charCodeOptions:{
-                            whitespaceOptions:whitespaceAttributes,
+                            whitespaceOptions:setWhitespaceAttributes,
                             excludeCharacters:modifier.excludeCharacters
                         }
                     }));

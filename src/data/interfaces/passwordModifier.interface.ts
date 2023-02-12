@@ -27,7 +27,7 @@
 
 'use strict';
 
-export default interface I_passwordModifier {
+export default interface passwordModifier {
     [index: string]: number|string|boolean|Array<Array<string|number>>|undefined;
 
     length:number;
