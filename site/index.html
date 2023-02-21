@@ -53,10 +53,13 @@
                 <b>Password:</b>
             </p>
             <p id="displayPassword"></p>
+            <p>
+                Bits of Entropy: ~<span id="passwordEntropy"></span>
+            </p>
             <button id="copyPassword" type="button">Copy</button>
-            <button id="generateButton" type="submit" form="passwordForm">Generate</button>
+            <button id="generateButton" type="submit" form="sp_form">Generate</button>
         </div>
-        <form id="passwordForm">
+        <form id="sp_form">
             <h2>Modifiers</h2>
             <div>
             <p>Character Codes that are displayed are shown as the decimal value(s) for the character(s). A helpful list of these resources can be found at:</p>
@@ -66,25 +69,25 @@
             </ul>
             </div>
             <label>Length:
-                <input type="number" form="passwordForm" name="length" max="256" min="1" step="1" value="8" required/>
+                <input type="number" form="sp_form" name="length" max="256" min="1" step="1" value="8" required/>
             </label>
             <fieldset>
                 <legend>Repeat Characters</legend>
                 <div>
                     <label>Repeating Character:
-                        <input type="checkbox" form="passwordForm" name="repeatingCharacter" class="toggle" data-toggle="disabled" data-target="#repeatingCharacter_limit #customRepeatingCharacters"/>
+                        <input type="checkbox" form="sp_form" name="repeatingCharacter" class="toggle" data-toggle="disabled" data-target="#repeatingCharacter_limit #customRepeatingCharacters"/>
                     </label>
                     <p>Ensure at least one character in the password will be repeated.</p>
                 </div>
                 <div>
                     <label>Repeating Character Limit:
-                        <input type="number" form="passwordForm" name="max_repeatingCharacter" id="max_repeatingCharacter" min="1" max="256" step="1" value="1" />
+                        <input type="number" form="sp_form" name="max_repeatingCharacter" id="max_repeatingCharacter" min="1" max="256" step="1" value="1" disabled/>
                     </label>
                     <p>Specify the number of characters that should be repeated in the password.</p>
                 </div>
                 <div>
                     <label>Custom Repeats:
-                        <input type="text" form="passwordForm" name="customRepeatingCharacters" id="customRepeatingCharacters" minlength="1" maxlength="256" />
+                        <input type="text" form="sp_form" name="customRepeatingCharacters" id="customRepeatingCharacters" minlength="1" maxlength="256" />
                     </label>
                     <p>Specify the exact characters that should be repeated in the password, as-well as indicate the number of times the character should repeat.</p>
                     <p>The input either needs to be a single string containing all characters wished to be repeated (abcd). Or it can be formatted to define the amount each character should be repeated (b a:3 \::4);</p>
@@ -101,61 +104,61 @@
                 <legend>Latin Basic</legend>
                 <p>This does not include Control Characters (0-31, 127)</p>
                 <label>Lowercase Alpha; Character Codes (95-122):
-                    <input type="checkbox" form="passwordForm" name="lowercase" checked/>
+                    <input type="checkbox" form="sp_form" name="lowercase" checked/>
                 </label>
                 <label>Uppercase Alpha; Character Codes (65-90):
-                    <input type="checkbox" form="passwordForm" name="uppercase" />
+                    <input type="checkbox" form="sp_form" name="uppercase" />
                 </label>
                 <label>Numbers; Character Codes (48-57): 
-                    <input type="checkbox" form="passwordForm" name="numbers" />
+                    <input type="checkbox" form="sp_form" name="numbers" />
                 </label>
                 <label>Punctuation; Character Codes (33-47, 58-64, 91-96, 123-126): 
-                    <input type="checkbox" form="passwordForm" name="punctuation" />
+                    <input type="checkbox" form="sp_form" name="punctuation" />
                 </label>
             </fieldset>
-            <fieldset id="whitespaceOptions" name="whitespaceOptions" form="passwordForm">
+            <fieldset id="whitespaceOptions" name="whitespaceOptions" form="sp_form">
                 <legend>Whitespace Options; Character Code (32)</legend>
                 <fieldset>
                     <legend>Beginning of Password:</legend>
                     <label>Yes:
-                        <input type="checkbox" form="passwordForm" name="whitespaceBeginning" class="toggle" data-toggle="disabled" data-target="#required_whitespaceBeginning" />
+                        <input type="checkbox" form="sp_form" name="whitespaceBeginning" class="toggle" data-toggle="disabled" data-target="#required_whitespaceBeginning" />
                     </label>
                     <label>Required:
-                        <input type="checkbox" form="passwordForm" name="required_whitespaceBeginning" id="required_whitespaceBeginning"/>
+                        <input type="checkbox" form="sp_form" name="required_whitespaceBeginning" id="required_whitespaceBeginning"/>
                     </label>
                 </fieldset>
                 <fieldset>
                     <legend>End of Password:</legend>
                     <label>Yes:
-                        <input type="checkbox" form="passwordForm" name="whitespaceEnd" class="toggle" data-toggle="disabled" data-target="#required_whitespaceEnd" />
+                        <input type="checkbox" form="sp_form" name="whitespaceEnd" class="toggle" data-toggle="disabled" data-target="#required_whitespaceEnd" />
                     </label>
                     <label>Required:
-                        <input type="checkbox" form="passwordForm" name="required_whitespaceEnd" id="required_whitespaceEnd" />
+                        <input type="checkbox" form="sp_form" name="required_whitespaceEnd" id="required_whitespaceEnd" />
                     </label>
                 </fieldset>
                 <fieldset>
                     <label>Between:
-                        <input class="toggle" data-target="#max_whitespaceBetween" data-toggle="disabled" type="checkbox" form="passwordForm" name="whitespaceBetween" />
+                        <input class="toggle" data-target="#max_whitespaceBetween" data-toggle="disabled" type="checkbox" form="sp_form" name="whitespaceBetween" />
                     </label>
                     <label>Limit:
-                        <input type="number" step="1" min="1" max="252" value="1" form="passwordForm" id="max_whitespaceBetween" name="max_whitespaceBetween" />
+                        <input type="number" step="1" min="1" max="252" value="1" form="sp_form" id="max_whitespaceBetween" name="max_whitespaceBetween" />
                     </label>
                 </fieldset>
             </fieldset>
             <fieldset>
                 <legend>Latin Supplement</legend>
                 <label>Lowercase Characters; Character Codes (223-246, 248-255):
-                    <input type="checkbox" form="passwordForm" name="lowercase_supplement" />
+                    <input type="checkbox" form="sp_form" name="lowercase_supplement" />
                 </label>
                 <label>Uppercase Characters; Character Codes (192-214, 216-222):
-                    <input type="checkbox" form="passwordForm" name="uppercase_supplement" />
+                    <input type="checkbox" form="sp_form" name="uppercase_supplement" />
                 </label>
                 <label>Symbols: Character Codes (161-191, 215, 247):
-                    <input type="checkbox" form="passwordForm" name="symbols_supplement" />
+                    <input type="checkbox" form="sp_form" name="symbols_supplement" />
                 </label>
             </fieldset>
             <label>Exclude Characters:
-                <input type="text" form="passwordForm" name="excludeCharacters" />
+                <input type="text" form="sp_form" name="excludeCharacters" />
                 <p>* <strong>Warning</strong>: Excessive use of this feature may result in degraded performance or non-performance of the program. *</p>
             </label>
         </form>

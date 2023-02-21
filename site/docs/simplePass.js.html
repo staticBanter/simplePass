@@ -1,40 +1,43 @@
 <!doctypehtml><html lang=en><meta charset=utf-8><meta content="A JavaScript password generator"name=description><meta content=#636980 name=theme-color><meta content="simplePass | Source: simplePass.js"property=og:title><meta content=website property=og:type><meta content=https://staticbanter.github.io/simplePass/ property=og:url><meta content="simplePass documentation page for Source: simplePass.js"property=og:description><meta content=en_CA property=og:locale><meta content=GitHub property=og:site_name><link href=../storage/icons/simplePass-Logo-1080.png rel=apple-touch-icon><link href=../manifest.json rel=manifest><link href=../storage/icons/simplePass-Logo-512.png rel=icon type=image/png><title>simplePass Docs: Source: simplePass.js</title><script src=scripts/prettify/prettify.js></script><script src=scripts/prettify/lang-css.js></script><!--[if lt IE 9]><script src=//html5shiv.googlecode.com/svn/trunk/html5.js></script><![endif]--><link href=styles/prettify-tomorrow.css rel=stylesheet><link href=styles/jsdoc-default.css rel=stylesheet><div id=main><h1 class=page-title>Source: simplePass.js</h1><section><article><pre class="linenums prettyprint source"><code>'use strict';
-import cleanModifier from "./helpers/cleanModifier.helper.js";
-import validateModifier from "./helpers/validateModifier.helper.js";
-import config from "./config.simplePass.js";
+import cleanModifier from "./functions/cleanModifier.function.js";
+import validateModifier from "./functions/validateModifier.function.js";
+import config from "./simplePass.config.js";
 import requiredAttributes from "./data/lists/requiredAttributes.list.js";
 import whitespaceAttributes from "./data/lists/whitespaceAttributes.list.js";
-import shuffle from "./helpers/shuffle.helper.js";
-import generateCharCode from "./helpers/generateCharCode.helper.js";
-import createMessage from "./helpers/createMessage.helper.js";
+import shuffle from "./functions/shuffle.function.js";
+import generateCharCode from "./functions/generateCharCode.function.js";
+import createMessage from "./functions/createMessage.function.js";
 import errors from "./data/enums/errors.enum.js";
-import ensureRepeatingCharacters from "./helpers/ensureRepeatingCharacters.helper.js";
+import ensureRepeatingCharacters from "./functions/ensureRepeatingCharacters.function.js";
+import strengthChecker from "./functions/strengthChecker.function.js";
+import useableAttributes from "./data/lists/useableAttributes.list.js";
 /**
- * @file Main file for simplePass.
+ * @file
  * @module simplePass
  */
 /**
- * Main program function. Returns a string.
+ * Main program function. Can return a password string or an [object]{@link strengthCheckedPassword} describing a strength checked password.
  *
  * @function simplePass
  * @param {passwordModifier | FormData} modifier The available password modifications. See README.md for more information about modifiers.
+ * @param {boolean | strengthCheckerStyling} strengthCheck If set a strength score will also be calculated and an object containing the password and a strength score will be returned.
+ * Can also be a ['Strength Checker Styling' Object]{@link module:strengthCheckerStyling}, if set simplePass will also attempt to style the target element.
  * @requires config
  * @requires errors
  * @requires createMessage
- * @requires cleanModifier
+ * @requires module:cleanModifier
  * @requires validateModifier
  * @requires requiredAttributes
  * @requires whitespaceAttributes
  * @requires generateCharCode
  * @requires ensureRepeatingCharacters
  * @requires shuffle
+ * @requires useableAttributes
+ * @requires strengthChecker
  * @throws {errors.invalidModifier} Will throw an Error if the [modifier]{@link passwordModifier} is ```null```, ```undefined``` or not a JavaScript Object.
- * @returns {string} The generated password.
+ * @returns {string | strengthCheckedPassword} The generated password or strength checked password object.
  */
-export default function simplePass(modifier = {
-    length: config.defaultPasswordLength,
-    lowercase: true,
-}) {
+export default function simplePass(modifier = config.defaultPasswordModifier, strengthCheck) {
     /**
      * If the modifier is not an object
      * throw an error.
@@ -169,7 +172,7 @@ export default function simplePass(modifier = {
         // Add any needed whitespace characters.
         if (modifier.whitespaceBetween
             && modifier.max_whitespaceBetween) {
-            while (modifier.max_whitespaceBetween--) {
+            for (let i = 0; i &lt; modifier.max_whitespaceBetween; i++) {
                 middleCharacters += " ";
             }
         }
@@ -192,8 +195,12 @@ export default function simplePass(modifier = {
              * We need to do this here because the loop
              * could have ended it on empty.
              */
+            /**
+             * * Fixed: Issue where selecting a password length of *x* and selecting *y* number of modifiers,
+             * * would result in the password length being ```l=x-y```
+             */
             if (deck.length &lt;= 0
-                && !currentCharType) {
+                || !currentCharType) {
                 deck = deck.concat(shuffle(characterAttributes));
             }
             currentCharType = deck.pop();
@@ -303,9 +310,12 @@ export default function simplePass(modifier = {
         // Add any needed whitespace characters.
         if (modifier.whitespaceBetween
             && modifier.max_whitespaceBetween) {
-            while (modifier.max_whitespaceBetween--) {
+            for (let i = 0; i &lt; modifier.max_whitespaceBetween; i++) {
                 middleCharacters += " ";
             }
+            // while(modifier.max_whitespaceBetween--){
+            //     middleCharacters += " ";
+            // }
         }
         // Add middle characters to password
         password += shuffle(middleCharacters.split('')).join('');
@@ -373,7 +383,34 @@ export default function simplePass(modifier = {
             }
         }
     }
+    if (strengthCheck) {
+        if (typeof (strengthCheck) !== 'boolean'
+            && strengthCheck.styleTarget
+            && strengthCheck.styleType) {
+            return strengthChecker(password, {
+                characterSets: {
+                    used: Object.keys(modifier),
+                    available: useableAttributes
+                },
+                excludeCharacters: modifier.excludeCharacters,
+                min_length: config.min_passwordLength,
+                max_length: config.max_passwordLength
+            }, {
+                styleTarget: strengthCheck.styleTarget,
+                styleType: strengthCheck.styleType
+            });
+        }
+        return strengthChecker(password, {
+            characterSets: {
+                used: Object.keys(modifier),
+                available: useableAttributes
+            },
+            excludeCharacters: modifier.excludeCharacters,
+            min_length: config.min_passwordLength,
+            max_length: config.max_passwordLength
+        });
+    }
     // Return the password.
     return password;
 }
-</code></pre></article></section></div><nav><b><a href=../index.html>simplePass Program</a></b><h3><a href=index.html>README</a></h3><h3>Modules</h3><ul><li><a href=module-allowedModifiers.html>allowedModifiers</a><li><a href=module-characterCodeConstraints.html>characterCodeConstraints</a><li><a href=module-cleanModifier.html>cleanModifier</a><li><a href=module-config.html>config</a><li><a href=module-createMessage.html>createMessage</a><li><a href=module-createModifierList.html>createModifierList</a><li><a href=module-ensureRepeatingCharacters.html>ensureRepeatingCharacters</a><li><a href=module-errors.html>errors</a><li><a href=module-generateCharCode.html>generateCharCode</a><li><a href=module-requiredAttributes.html>requiredAttributes</a><li><a href=module-shuffle.html>shuffle</a><li><a href=module-simplePass.html>simplePass</a><li><a href=module-useableAttributes.html>useableAttributes</a><li><a href=module-validateModifier.html>validateModifier</a><li><a href=module-whitespaceAttributes.html>whitespaceAttributes</a></ul><h3>Interfaces</h3><ul><li><a href=charCodeGenerationFlag.html>charCodeGenerationFlag</a><li><a href=charCodeOptions.html>charCodeOptions</a><li><a href=charCodeRequest.html>charCodeRequest</a><li><a href=ensureRepeatingCharacterOptions.html>ensureRepeatingCharacterOptions</a><li><a href=module-characterCodeConstraints-charCodeConstraintsAttributes.html>charCodeConstraintsAttributes</a><li><a href=passwordModifier.html>passwordModifier</a><li><a href=repeatingCharacterOptionsPreservations.html>repeatingCharacterOptionsPreservations</a></ul><h3>Other Resources</h3><ul><li><a href=tutorial-CODE_OF_CONDUCT.html>Code Of Conduct</a><li><a href=tutorial-CONTRIBUTING.html>Contributing</a><li><a href=tutorial-DEVELOPMENT.html>DEVELOPMENT</a><li><a href=tutorial-EXAMPLES.html>EXAMPLES</a><li><a href=tutorial-SECURITY.html>Security</a></ul></nav><br class=clear><footer>Documentation generated by <a href=https://github.com/jsdoc/jsdoc>JSDoc 4.0.0</a></footer><script>prettyPrint()</script><script src=scripts/linenumber.js></script>
+</code></pre></article></section></div><nav><b><a href=../index.html>simplePass Program</a></b><h3><a href=index.html>README</a></h3><h3>Modules</h3><ul><li><a href=module-allowedModifiers.html>allowedModifiers</a><li><a href=module-calculateMaxPossibleCharacters.html>calculateMaxPossibleCharacters</a><li><a href=module-characterCodeConstraints.html>characterCodeConstraints</a><li><a href=module-characterStrengthCheck.html>characterStrengthCheck</a><li><a href=module-cleanModifier.html>cleanModifier</a><li><a href=module-config.html>config</a><li><a href=module-createMessage.html>createMessage</a><li><a href=module-createModifierList.html>createModifierList</a><li><a href=module-ensureRepeatingCharacters.html>ensureRepeatingCharacters</a><li><a href=module-errors.html>errors</a><li><a href=module-generateCharCode.html>generateCharCode</a><li><a href=module-requiredAttributes.html>requiredAttributes</a><li><a href=module-shuffle.html>shuffle</a><li><a href=module-simplePass.html>simplePass</a><li><a href=module-strengthChecker.html>strengthChecker</a><li><a href=module-strengthScores.html>strengthScores</a><li><a href=module-useableAttributes.html>useableAttributes</a><li><a href=module-validateModifier.html>validateModifier</a><li><a href=module-whitespaceAttributes.html>whitespaceAttributes</a></ul><h3>Interfaces</h3><ul><li><a href=charCodeGenerationFlag.html>charCodeGenerationFlag</a><li><a href=charCodeOptions.html>charCodeOptions</a><li><a href=charCodeRequest.html>charCodeRequest</a><li><a href=characterCodeConstraintsAttributes.html>characterCodeConstraintsAttributes</a><li><a href=characterSetObject.html>characterSetObject</a><li><a href=characterStrengthCheckConstraints.html>characterStrengthCheckConstraints</a><li><a href=configHTMLForm.html>configHTMLForm</a><li><a href=ensureRepeatingCharacterOptions.html>ensureRepeatingCharacterOptions</a><li><a href=passwordModifier.html>passwordModifier</a><li><a href=repeatingCharacterOptionsPreservations.html>repeatingCharacterOptionsPreservations</a><li><a href=strengthCheckedPassword.html>strengthCheckedPassword</a><li><a href=strengthCheckerConstraints.html>strengthCheckerConstraints</a><li><a href=strengthCheckerStyling.html>strengthCheckerStyling</a><li><a href=strengthScoreAttributes.html>strengthScoreAttributes</a></ul><h3>Other Resources</h3><ul><li><a href=tutorial-CODE_OF_CONDUCT.html>Code Of Conduct</a><li><a href=tutorial-CONTRIBUTING.html>Contributing</a><li><a href=tutorial-DEVELOPMENT.html>DEVELOPMENT</a><li><a href=tutorial-EXAMPLES.html>EXAMPLES</a><li><a href=tutorial-SECURITY.html>Security</a></ul></nav><br class=clear><footer>Documentation generated by <a href=https://github.com/jsdoc/jsdoc>JSDoc 4.0.0</a></footer><script>prettyPrint()</script><script src=scripts/linenumber.js></script>

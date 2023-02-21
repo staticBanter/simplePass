@@ -1,17 +1,46 @@
 "use strict";
 
-import simplePass from "../simplePass/browser/simplePass.js";
+import simplePass from "../javascript/bundle/simplePass.bundle.js";
 
 (()=>{
 
+    // const sp = new simplePass;
+    // sp.formSetup();
+
     // Create a default password to display on load up.
     const displayPassword = document.body.querySelector("#displayPassword");
-    displayPassword.innerText = simplePass();
+    const passwordEntropy = document.body.querySelector('#passwordEntropy');
+
+    const initialPassword = simplePass(
+        {
+            length:22,
+            lowercase:true,
+            uppercase:true,
+            numbers:true,
+            punctuation:true
+        },
+        {
+            styleTarget:displayPassword,
+            styleType:"inline"
+        }
+    );
+
+    displayPassword.innerText = initialPassword.password;
+    passwordEntropy.innerText = Math.round(initialPassword.entropy);
+
 
     // When the user submits the form, call simplePass and display the new form.
-    document.body.querySelector("#passwordForm").addEventListener('submit',function(event){
+    document.body.querySelector("#sp_form").addEventListener('submit',function(event){
         event.preventDefault();
-        displayPassword.innerText = simplePass(new FormData(this));
+        const password = simplePass(
+            new FormData(this),
+            {
+                styleTarget:displayPassword,
+                styleType:"inline"
+            }
+        );
+        displayPassword.innerText = password.password;
+        passwordEntropy.innerText = Math.round(password.entropy);
     });
 
     // Copy the password to clipboard when copy button is clicked
@@ -28,7 +57,8 @@ import simplePass from "../simplePass/browser/simplePass.js";
         })
         .catch((error)=>{
             console.error(error.message);
-        })
+        });
+
     });
 
     function toggleAttributes(){
@@ -37,7 +67,7 @@ import simplePass from "../simplePass/browser/simplePass.js";
             !this.dataset.target
             || !this.dataset.toggle
         ){
-            throw new Error(`Toggle Element (${this}) was missing the proper data attributes`)
+            throw new Error(`Toggle Element (${this}) was missing the proper data attributes`);
         }
 
         this.dataset.target.split(' ').forEach((target)=>{

@@ -11,16 +11,16 @@ const path = require('path');
 module.exports = [
     // Config for the application.
 	{
-        context:path.resolve(__dirname,'simplePass/src'),
-		name: "app",
+        context:path.resolve(__dirname,'javascript/module'),
+		name: "bundle",
 		entry:{
             app:{
                 import:"./simplePass.js"
             }
         },
         output:{
-            path:path.resolve(__dirname, './simplePass/browser/'),
-            filename:"simplePass.js",
+            path:path.resolve(__dirname, './javascript/bundle/'),
+            filename:"simplePass.bundle.js",
             module:true,
             libraryTarget:'module'
         },

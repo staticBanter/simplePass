@@ -202,7 +202,7 @@ This Guide is meant to ensure the code looks as uniform as possible.
    1. Must have each attribute declared on a new line.
    2. If an objects attribute declares a new scope that scope must be indented.
 8. Use appropriate TypeScript declarations where necessary.
-9. Files should be named after the module they export and should be suffixed with a ```.module-type``` before the file type identifier. For example ```errors.enum.ts``` exports a module named *errors* it is of type ```enum``` and is a TypeScript file.
+9. Files should be named after the module they export and should be suffixed with a ```.module-type``` before the file extension identifier. For example ```errors.enum.ts``` exports a module named 'errors' it is of type ```enum``` and is a TypeScript file.
 
 ### Limiting Phrases
 

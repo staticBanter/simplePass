@@ -31,6 +31,7 @@ Please note that if you are planning to contribute to the project you will be re
   - [Webpack & Webpack-CLI](https://webpack.js.org/)
   - [JSDoc](https://jsdoc.app/)
   - [HTML-Minifier](https://github.com/kangax/html-minifier)
+  - [SASS](https://sass-lang.com/)
 - A Web Browser (Preferably):
   - [FireFox](https://www.mozilla.org/en-CA/firefox/new/)
   - [Chrome](https://www.google.com/intl/en_ca/chrome/)
@@ -120,12 +121,12 @@ We will outline some key files and directories here. For more information please
 +-- .github/ - Contains files related to GitHub (configs, workflows).
 +-- docs/ - Contains the projects documentation files.
 | +-- site_template/ - The JSDoc template files used to generate the site.
-+-- simplePass/ - Contains the JavaScript version of the project.
-| +-- browser/ - Contains the bundled version of the project.
-| +-- src/ - Contains the module version of the project.
++-- javascript/ - Contains the JavaScript version of the project.
+| +-- bundle/ - Contains the bundled version of the project.
+| +-- module/ - Contains the module version of the project.
 +-- site/ - Contains the files that make up the programs PWA
 +-- site_src/ - Contains source files for the PWA 
-+-- src/ - Contains the TypeScript source files for the program.
++-- typescript/ - Contains the TypeScript source files for the program.
 +-- test/ - Contains the Test files for the program.
 +-- html-minifier.config.json - Config for 'HTML-Minifier`.
 +-- jsdoc.config.json - Config for 'JSDoc'
@@ -144,7 +145,7 @@ To begin you will only need the following files and directories:
 
 - ```/.github```
 - ```/docs```
-- ```/simplePass```
+- ```/javascript```
 - ```/site```
 - ```/site_src```
 - ```/test```
@@ -215,7 +216,7 @@ This tool is used to generate documentation files from Markdown and JavaScript d
 }
 
 "scripts":{
-  "docs-build": "jsdoc ./simplePass/src/ --tutorials ./docs --configure ./jsdoc.config.json", // Remove This Line.
+  "docs-build": "jsdoc ./javascript/module/ --tutorials ./docs --configure ./jsdoc.config.json", // Remove This Line.
   "production": "npm run tsc && npm run docs-build && npm run webpack-build && npm run html-min" // Remove The ```npm run docs-build``` Command From This Line.
 }
 ```
@@ -255,13 +256,14 @@ Once you have made your necessary modifications, if there are any tools that you
 
 We will briefly outline the development pipeline used to create the program.
 
-1. Code is written and commented in TypeScript. This code is saved in the ```/src``` directory.
-2. The TypeScript code  is transpiled to JavaScript and saved to the ```/simplePass/src``` directory.
-3. JSDoc inspects the JavaScript code comments in the ```/simplePass/src``` directory and various Markdown files (specified in the ```jsdoc.config.json```). It then generates the PWA documentation pages from this and saves these files to ```/site/docs```.
+1. Code is written and commented in TypeScript. This code is saved in the ```/typescript``` directory.
+2. The TypeScript code  is transpiled to JavaScript and saved to the ```/javascript/module``` directory.
+3. JSDoc inspects the JavaScript code comments in the ```/javascript/module``` directory and various Markdown files (specified in the ```jsdoc.config.json```). It then generates the PWA documentation pages from this and saves these files to ```/site/docs```.
 4. WebPack bundles two things:
-   1. It bundles and minimizes the modular JavaScript files from the ```/simplePass/src``` and saves the bundle to ```/simplePass/browser```.
-   2. It bundles and minimizes a version of the program for the PWA. It takes the ```/site_src/main.js``` and bundles the ```/simplePass/browser``` version with it and saves this bundle to ```/site```
+   1. It bundles and minimizes the modular JavaScript files from the ```/javascript/module``` and saves the bundle to ```/javascript/bundle```.
+   2. It bundles and minimizes a version of the program for the PWA. It takes the ```/site_src/main.js``` and bundles the ```/javascript/bundle``` version with it and saves this bundle to ```/site```
 5. HTML-Minifier minifies the PWA HTML files located in ```/site/docs```.
+6. SASS takes the SASS fils from ```site_src/``` and transpiles them into the ```site/main.css``` file.
 
 #### Command List
 
@@ -274,12 +276,15 @@ This is a description of the following commands that can be used with the ```npm
 - ```tsc``` - Run the TypeScript transpiler.
 - ```tsc-watch``` - Run the TypeScript transpiler in watch mode.
 - ```docs-build``` - Run JSDoc to generate the documentation.
+- ```sass-build``` - Run the SASS *build* command.
+- ```sass-watch``` - Run the SASS *build* command in watch mode.
 - ```html-min``` - Run HTML-Minifier to minify the PWA HTML files.
 - ```production``` | ```prod``` - Runs the following commands:
   1. ```tsc```
   2. ```docs-build```
   3. ```webpack-build```
   4. ```html-min```
+  5. ```sass-build```
 
 ### Running The Demo
 

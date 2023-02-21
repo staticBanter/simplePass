@@ -1,15 +1,27 @@
-- [Browser/Javascript](#browserjavascript)
-- [Typescript](#typescript)
+- [Including In Your Project](#including-in-your-project)
+  - [Browser/Javascript Version](#browserjavascript-version)
+    - [Bundle](#bundle)
+    - [Module](#module)
+  - [Typescript Version](#typescript-version)
+- [Examples](#examples)
+  - [Importing](#importing)
+  - [Default \& Basic Passwords](#default--basic-passwords)
+  - [Complex Passwords](#complex-passwords)
+  - [Strength Checker Styling With Entropy Score](#strength-checker-styling-with-entropy-score)
 
 simplePass is currently only available through its GitHub at [GitHub | staticBanter | simplePass](https://github.com/staticBanter/simplePass), there you can download the entire project repo.
 
 simplePass is built using *ESNext* modules so you will need deployed it in a server environment.
 
-## Browser/Javascript
+## Including In Your Project
 
-For usage inside of a Web Browser it is recommend that you grab the bundled version of the project located at ```simplePass/simplePass/browser/simplePass.js```. Once you have the file you may include it in you project like so:
+### Browser/Javascript Version
 
-Directory structure after downloading the *simplePass.js* file.
+#### Bundle
+
+For usage inside of a Web Browser it is recommend that you grab the bundled version of the project located at ```simplePass/javascript/bundle/simplePass.bundle.js```. Once you have the file you may include it in you project like so:
+
+Directory structure after downloading the *simplePass.bundle.js* file.
 
 ```text
 .
@@ -18,67 +30,26 @@ Directory structure after downloading the *simplePass.js* file.
 | +-- css
 | +-- js
 | | +-- yourProjectScript.js
-| | +-- simplePass.js
+| | +-- simplePass.bundle.js
 ```
 
-Including *simplePass.js* in *yourProjectScript.js*
+You may then import simplePass into your project like so.
 
 ```javascript
 // yourProjectScript.js
 
 // Import simplePass
-import simplePass from "simplePass.js";
+import simplePass from "./simplePass/simplePass.bundle.js";
 
 // Generate the default password.
-const defaultPass = simplePass();
-
-console.log(defaultPass)
-// outputs: mrxkfera
-
-// Generate password using only lowercase.
-const uppercasePass = simplePass({
-  length:16,
-  lowercase:true
-});
-
-console.log(uppercasePass)
-// outputs: UZYQRLLFKHLFASQV
-
-// Generate more 'random' password.
-const randomPass = simplePass({
-  length:20,
-  lowercase:true,
-  uppercase:true,
-  numbers:true,
-  punctuation:true,
-});
-
-console.log(randomPass)
-// outputs: ;4]TOV`10sB8>m0nf;OP
-
-// Generate a more complex 'random' password.
-const complexPass  = simplePass({
-    length: 20,
-    lowercase: true,
-    uppercase: true,
-    numbers: true,
-    punctuation: true,
-    w_beginning: true,
-    w_beginning_required: true,
-    w_end: true,
-    w_end_required: true,
-    w_between: true,
-    w_between_limit: 4,
-    excludeCharacters: 'abc'
-});
-
-console.log(complexPass)
-// outputs (double quotes are being used to represent the password boundaries): " Im>e >9   g1R{1AD8 "
+console.log(simplePass());
 ```
 
-If you would like to use the unbundled version (usually for personal development) you should take the entire ```simplePass/simplePass/src``` directory, and rename it to something more unique (ie: *simplePass*). Once you have the directory you may include it in your project like so:
+#### Module
 
-Directory structure after downloading and renaming the ```src``` directory (for this example we renamed ```src``` to ```simplePass```).
+If you would like to use the unbundled version (usually for personal development) you should take the entire ```simplePass/javascript/module``` directory, and rename it to something more unique (ie: *simplePass*). Once you have the directory you may include it in your project like so:
+
+Directory structure after downloading and renaming the ```module``` directory (for this example we renamed ```module``` to ```simplePass```).
 
 ```text
 .
@@ -88,83 +59,34 @@ Directory structure after downloading and renaming the ```src``` directory (for 
 | +-- js/
 | | +-- simplePass/
 | | | +-- data/
-| | | +-- helpers/
-| | | +-- config.simplePass.js
+| | | +-- functions/
+| | | +-- simplePass.config.js
 | | | +-- simplePass.js
 | | +-- yourProjectScript.js
 ```
 
-Including *simplePass.js* in *yourProjectScript.js*
+You may then import simplePass into your project like so.
+
+This version will also let import specific modules from the project as well.
 
 ```javascript
 // yourProjectScript.js
 
-// Import simplePass
+// Import modules
 import simplePass from "./simplePass/simplePass.js";
+import spConfig from './simplePass/simplePass.config.js'
 
 // Generate the default password.
-const defaultPass = simplePass();
-
-console.log(defaultPass)
-// outputs: mrxkfera
-
-// Generate password using only lowercase.
-const uppercasePass = simplePass({
-  length:16,
-  lowercase:true
-});
-
-console.log(uppercasePass)
-// outputs: UZYQRLLFKHLFASQV
-
-// Generate more 'random' password.
-const randomPass = simplePass({
-  length:20,
-  lowercase:true,
-  uppercase:true,
-  numbers:true,
-  punctuation:true,
-});
-
-console.log(randomPass)
-// outputs: ;4]TOV`10sB8>m0nf;OP
-
-// Generate a more complex 'random' password.
-const complexPass  = simplePass({
-    length: 20,
-    lowercase: true,
-    uppercase: true,
-    numbers: true,
-    punctuation: true,
-    w_beginning: true,
-    w_beginning_required: true,
-    w_end: true,
-    w_end_required: true,
-    w_between: true,
-    w_between_limit: 4,
-    excludeCharacters: 'abc'
-});
-
-console.log(complexPass)
-// outputs (double quotes are being used to represent the password boundaries): " Im>e >9   g1R{1AD8 "
+console.log(simplePass());
 ```
 
-This version also allows you to include individual simplePass modules
-
-```javascript
-import config from "./simplePass/config.simplePass.js";
-
-console.log(config.passwordLengthMin)
-
-```
-
-## Typescript
+### Typescript Version
 
 Installing the TypeScript version of the project is similar to installing the Browser/JavaScript versions only we need to grab a different directory.
 
-If you would like to use the TypeScript versions of simplePass (usually for personal development) you should take the entire ```simplePass/src``` directory, and rename it to something more unique (ie: *simplePass*). Once you have the directory you may include it in your project like so:
+If you would like to use the TypeScript versions of simplePass (usually for personal development) you should take the entire ```simplePass/typescript``` directory, and rename it to something more unique (ie: *simplePass*). Once you have the directory you may include it in your project like so:
 
-Directory structure after downloading and renaming the ```src``` directory (for this example we renamed ```src``` to ```simplePass```).
+Directory structure after downloading and renaming the ```typescript``` directory (for this example we renamed ```typescript``` to ```simplePass```).
 
 ```text
 .
@@ -174,27 +96,51 @@ Directory structure after downloading and renaming the ```src``` directory (for 
 | +-- ts/
 | | +-- simplePass/
 | | | +-- data/
-| | | +-- helpers/
+| | | +-- functions/
 | | | +-- config.simplePass.ts
 | | | +-- simplePass.ts
 | | +-- yourProjectScript.ts
 ```
 
-Including *simplePass.ts* in *yourProjectScript.ts*
+You may then import simplePass into your project like so.
+
+> **Note**: Depending on your development pipeline you may need to change the file extension too ```.ts``
 
 ```javascript
 // yourProjectScript.js
 
 // Import simplePass
-import simplePass from "./simplePass/simplePass.ts";
+import simplePass from "./simplePass/simplePass.bundle.js";
 
+// Generate the default password.
+console.log(simplePass());
+```
+
+## Examples
+
+For these examples we will be using the bundled version of simplePass.
+
+### Importing
+
+```javascript
+// yourProjectScript.js
+
+// Import simplePass
+import simplePass from "simplePass.bundle.js";
+```
+
+### Default & Basic Passwords
+
+```javascript
 // Generate the default password.
 const defaultPass = simplePass();
 
 console.log(defaultPass)
-// outputs: mrxkfera
+// outputs: jl6x03/%1A&CnM-(uIY47>
+```
 
-// Generate password using only lowercase.
+```javascript
+// Generate password using only Basic Latin Uppercase Alpha Characters.
 const uppercasePass = simplePass({
   length:16,
   lowercase:true
@@ -202,8 +148,12 @@ const uppercasePass = simplePass({
 
 console.log(uppercasePass)
 // outputs: UZYQRLLFKHLFASQV
+```
 
-// Generate more 'random' password.
+### Complex Passwords
+
+```javascript
+// Generate more random password.
 const randomPass = simplePass({
   length:20,
   lowercase:true,
@@ -214,33 +164,54 @@ const randomPass = simplePass({
 
 console.log(randomPass)
 // outputs: ;4]TOV`10sB8>m0nf;OP
+```
 
-// Generate a more complex 'random' password.
+```javascript
+// Generate a more complex random password.
 const complexPass  = simplePass({
-    length: 20,
+    length: 26,
     lowercase: true,
     uppercase: true,
     numbers: true,
     punctuation: true,
-    w_beginning: true,
-    w_beginning_required: true,
-    w_end: true,
-    w_end_required: true,
-    w_between: true,
-    w_between_limit: 4,
+    lowercase_supplement:true
     excludeCharacters: 'abc'
 });
 
 console.log(complexPass)
-// outputs (double quotes are being used to represent the password boundaries): " Im>e >9   g1R{1AD8 "
+// outputs: tsøû}BpWe:o]M6õ1þJ4D$þ/84ù
 ```
 
-This version also allows you to include individual simplePass modules
+### Strength Checker Styling With Entropy Score
 
 ```javascript
-import config from "./simplePass/config.simplePass.ts";
+// Get an element to display our password
+const displayPassword = document.body.querySelector("#displayPassword");
+// Get an element to display our entropy score.
+const passwordEntropy = document.body.querySelector('#passwordEntropy');
 
-console.log(config.passwordLengthMin)
+// Create our password
+const initialPassword = simplePass(
+    {
+        length:22,
+        lowercase:true,
+        uppercase:true,
+        numbers:true,
+        punctuation:true
+    },
+    {
+        // We are going to style the 'display password' element using inline styling.
+        styleTarget:displayPassword,
+        styleType:"inline"
+    }
+);
+
+// Set our 'display element' text to the password.
+displayPassword.innerText = initialPassword.password;
+// Set the 'password entropy' elements inner text to our passwords entropy.
+passwordEntropy.innerText = Math.round(initialPassword.entropy);
+
+// You should also note that simplePass has styled the targeted element according to the passwords score.
 ```
 
 ---

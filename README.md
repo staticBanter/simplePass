@@ -84,7 +84,7 @@ Positions filled with a * (asterisk) have not be personally tested.
 
 ## Resources
 
-- [Visit The GitHup Repository](https://github.com/staticBanter/simplePass)
+- [Visit The GitHub Repository](https://github.com/staticBanter/simplePass)
 - [Use The Program](https://staticbanter.github.io/simplePass/)
 
 ---
