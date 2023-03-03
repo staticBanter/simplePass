@@ -91,12 +91,6 @@ export default function simplePass(modifier = config.defaultPasswordModifier, st
         }
     }
     /**
-     * If the password limit drops below zero the password will not be able to contain all the characters.
-     */
-    if (passwordLimit <= (-1)) {
-        throw new Error('The password length can not contain the selected amount of characters');
-    }
-    /**
      * If the whitespace between attribute is set,
      * we need to lower the password limit
      * to make room for the whitespace.
@@ -104,6 +98,12 @@ export default function simplePass(modifier = config.defaultPasswordModifier, st
     if (modifier.whitespaceBetween
         && modifier.max_whitespaceBetween) {
         passwordLimit = passwordLimit - modifier.max_whitespaceBetween;
+    }
+    /**
+     * If the password limit drops below zero the password will not be able to contain all the characters.
+     */
+    if (passwordLimit <= (-1)) {
+        throw new Error('The password length can not contain the selected amount of characters');
     }
     /**
      * If our character attributes list is greater than one,
