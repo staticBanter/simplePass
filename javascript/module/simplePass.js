@@ -11,6 +11,7 @@ import errors from "./data/enums/errors.enum.js";
 import ensureRepeatingCharacters from "./functions/ensureRepeatingCharacters.function.js";
 import strengthChecker from "./functions/strengthChecker.function.js";
 import useableAttributes from "./data/lists/useableAttributes.list.js";
+import passwordPreConfigs from "./data/objects/passwordPreConfigs.object.js";
 /**
  * @file
  * @module simplePass
@@ -56,6 +57,15 @@ export default function simplePass(modifier = config.defaultPasswordModifier, st
     modifier = cleanModifier(modifier);
     // Ensure certain values are set and set properly.
     validateModifier(modifier);
+    if (modifier.preConfig) {
+        const preConfig = passwordPreConfigs[modifier.preConfig];
+        modifier = {
+            length: modifier.length
+        };
+        if (preConfig) {
+            Object.assign(modifier, preConfig);
+        }
+    }
     // Get the attributes that can affect the character type
     const characterAttributes = Object.keys(modifier).filter((item) => {
         return requiredAttributes.includes(item);

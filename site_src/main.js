@@ -4,12 +4,13 @@ import simplePass from "../javascript/bundle/simplePass.bundle.js";
 
 (()=>{
 
-    // const sp = new simplePass;
-    // sp.formSetup();
 
     // Create a default password to display on load up.
-    const displayPassword = document.body.querySelector("#displayPassword");
+    // const displayPassword = document.body.querySelector("#displayPassword");
+    const passwordContainer = document.body.querySelector("#passwordContainer")
     const passwordEntropy = document.body.querySelector('#passwordEntropy');
+    let displayPassword = document.createElement('P');
+    displayPassword.id = 'displayPassword';
 
     const initialPassword = simplePass(
         {
@@ -26,38 +27,144 @@ import simplePass from "../javascript/bundle/simplePass.bundle.js";
     );
 
     displayPassword.innerText = initialPassword.password;
+    passwordContainer.appendChild(displayPassword)
     passwordEntropy.innerText = Math.round(initialPassword.entropy);
 
 
     // When the user submits the form, call simplePass and display the new form.
     document.body.querySelector("#sp_form").addEventListener('submit',function(event){
         event.preventDefault();
-        const password = simplePass(
-            new FormData(this),
-            {
-                styleTarget:displayPassword,
-                styleType:"inline"
+
+        const batchInput = document.body.querySelector("#passwordBatchAmount");
+
+        let password;
+
+        if(batchInput.value){
+
+            let batch = batchInput.value;
+
+            if(parseInt(batch) !== Number(batch)){
+                throw new Error("Requested Password Batch Amount Was Not A Valid Number");
             }
-        );
-        displayPassword.innerText = password.password;
-        passwordEntropy.innerText = Math.round(password.entropy);
+
+            batch = parseInt(batch)
+
+            if(
+                batch < 1
+                || batch > 256
+            ){
+                throw new Error("Request Password Batch Amount Was Out Of Bounds.");
+            }
+
+            passwordContainer.querySelector('#passwordList')?.remove();
+            passwordEntropy?.parentElement?.remove();
+            displayPassword?.remove();
+
+            const OL = document.createElement("OL");
+            OL.id = "passwordList"
+
+
+            while(batch--){
+
+                const LI = document.createElement("LI");
+
+                const listedPassword = document.createElement("P");
+                listedPassword.classList.add('listedPassword');
+
+                const listedPasswordEntropy = document.createElement("P");
+
+                const password = simplePass(
+                    new FormData(this),
+                    {
+                        styleTarget:listedPassword,
+                        styleType:"inline"
+                    }
+                );
+
+                listedPassword.innerText = password.password;
+                listedPasswordEntropy.innerText = `Bits of Entropy : ~${Math.floor(password.entropy)}`
+
+                LI.appendChild(listedPassword);
+                LI.appendChild(listedPasswordEntropy);
+                OL.appendChild(LI)
+            }
+
+            passwordContainer.appendChild(OL);
+            passwordContainer.dataset.batchType = 'list'
+
+        }else{
+
+            password = simplePass(
+                new FormData(this),
+                {
+                    styleTarget:displayPassword,
+                    styleType:"inline"
+                }
+            );
+
+            passwordContainer.querySelector('#passwordList')?.remove();
+
+            if(!passwordContainer.querySelector('#displayPassword')){
+
+                let displayEntropy = document.createElement("P");
+                displayEntropy.innerText = 'Bits of Entropy: ~';
+
+                passwordContainer.appendChild(displayPassword);
+                displayEntropy.appendChild(passwordEntropy);
+                passwordContainer.appendChild(displayEntropy);
+            }
+
+            displayPassword.innerText = password.password;
+            passwordEntropy.innerText = Math.floor(password.entropy);
+            passwordEntropy.parentElement.removeAttribute('style');
+            passwordContainer.dataset.batchType = 'single'
+        }
+
     });
 
     // Copy the password to clipboard when copy button is clicked
-    document.body.querySelector("#copyPassword").addEventListener('click',function(event){
+    document.body.querySelector("#copyPasswordButton").addEventListener('click',function(event){
         event.preventDefault();
 
-        navigator.clipboard.writeText(displayPassword.innerText).then(()=>{
-            this.style.backgroundColor = `green`;
-            this.innerText = 'Copied!';
-            setTimeout(()=>{
-                this.toggleAttribute('style');
-                this.innerText = 'Copy';
-            },5000);
-        })
-        .catch((error)=>{
-            console.error(error.message);
-        });
+        switch(passwordContainer.dataset.batchType){
+            default:
+            case 'single':
+
+                navigator.clipboard.writeText(displayPassword.innerText).then(()=>{
+                    this.style.backgroundColor = `green`;
+                    this.innerText = 'Copied!';
+                    setTimeout(()=>{
+                        this.toggleAttribute('style');
+                        this.innerText = 'Copy';
+                    },5000);
+                })
+                .catch((error)=>{
+                    console.error(error.message);
+                });
+
+            break;
+            case 'list':
+
+                let copyString = '';
+
+                passwordContainer.querySelectorAll("LI").forEach((element)=>{
+                    copyString += `${element.firstChild.innerText}\n`;
+                });
+
+                navigator.clipboard.writeText(copyString).then(()=>{
+                    this.style.backgroundColor = `green`;
+                    this.innerText = 'Copied!';
+                    setTimeout(()=>{
+                        this.toggleAttribute('style');
+                        this.innerText = 'Copy';
+                    },5000);
+                })
+                .catch((error)=>{
+                    console.error(error.message);
+                });
+
+            break;
+        }
 
     });
 
@@ -89,8 +196,12 @@ import simplePass from "../javascript/bundle/simplePass.bundle.js";
 
         toggle.addEventListener('click',toggleAttributes);
 
-        toggleAttributes.apply(toggle);
+    });
 
+    document.body.querySelectorAll('.sp_preConfig').forEach((element)=>{
+        element.addEventListener('click',function(){
+
+        });
     })
 
     /**
@@ -109,7 +220,7 @@ import simplePass from "../javascript/bundle/simplePass.bundle.js";
         deferredPrompt = e;
         // Update UI to notify the user they can add to home screen
         addBtn.style.display = "block";
-      
+
         addBtn.addEventListener("click", (e) => {
           // hide our user interface that shows our A2HS button
           addBtn.style.display = "none";
@@ -141,5 +252,5 @@ import simplePass from "../javascript/bundle/simplePass.bundle.js";
     if ("serviceWorker" in navigator) {
         navigator.serviceWorker.register("/simplePass/sw.js");
     }
-        
+
 })();

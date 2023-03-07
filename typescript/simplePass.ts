@@ -15,6 +15,7 @@ import strengthChecker from "./functions/strengthChecker.function.js";
 import useableAttributes from "./data/lists/useableAttributes.list.js";
 import strengthCheckerStyling from "./data/interfaces/strengthCheckerStyling.interface.js";
 import strengthCheckedPassword from "./data/interfaces/strengthCheckedPassword.interface.js";
+import passwordPreConfigs from "./data/objects/passwordPreConfigs.object.js";
 
 /**
  * @file
@@ -68,6 +69,16 @@ export default function simplePass(modifier:passwordModifier|FormData = config.d
 
     // Ensure certain values are set and set properly.
     validateModifier(modifier);
+
+    if(modifier.preConfig){
+        const preConfig:object|undefined = passwordPreConfigs[modifier.preConfig];
+        modifier = {
+            length:modifier.length
+        };
+        if(preConfig){
+            Object.assign(modifier,preConfig);
+        }
+    }
 
     // Get the attributes that can affect the character type
     const characterAttributes:Array<string> = Object.keys(modifier).filter((item:string)=>{

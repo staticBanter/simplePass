@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="A JavaScript password generator" />
-    <meta name="theme-color" content="#636980"/>
+    <meta name="theme-color" content="#130E1E"/>
 
     <!--Open Graph Protocol Meta Data-->
     <meta property="og:title" content="simplePass | Demo" />
@@ -17,9 +17,9 @@
 
     <!--iOS/Safari-->
     <link type="image/png" rel="apple-touch-icon" href="./storage/icons/simplePass-Logo-512.png" />
-    <meta name="apple-mobile-web-app-status-bar" content="#636980" />
+    <meta name="apple-mobile-web-app-status-bar" content="#130E1E" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="#636980" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="#130E1E" />
     <meta name="apple-mobile-web-app-title" content="simplePass" />
     <meta name="format-detection" content="telephone=no">
     <meta name="format-detection" content="address=no">
@@ -29,7 +29,7 @@
     <meta name="application-name" content="simplePass" />
 
     <!--Win8 Support-->
-    <meta name="msapplication-TileColor" content="#636980" />
+    <meta name="msapplication-TileColor" content="#130E1E" />
     <meta name="msapplication-TileImage" content="./storage/icons/simplePass-Logo-512.png" />
 
     <title>simplePass | Demo</title>
@@ -40,24 +40,30 @@
 </head>
 <body>
     <header>
-        <div>
-            <h1>simplePass</h1>
-        </div>
+        <h1>simplePass</h1>
         <nav>
             <a href="./docs/index.html">Read The Documentation</a>
         </nav>
     </header>
     <main>
         <div id="passwordBox">
-            <p>
-                <b>Password:</b>
-            </p>
-            <p id="displayPassword"></p>
-            <p>
-                Bits of Entropy: ~<span id="passwordEntropy"></span>
-            </p>
-            <button id="copyPassword" type="button">Copy</button>
-            <button id="generateButton" type="submit" form="sp_form">Generate</button>
+            <div>
+                <p>
+                    <b>Password:</b>
+                </p>
+                <div id="passwordContainer">
+                </div>
+                <p>
+                    Bits of Entropy: ~<span id="passwordEntropy"></span>
+                </p>
+            </div>
+            <div>
+                <button id="generatePasswordButton" type="submit" form="sp_form">Generate</button>
+                <button id="copyPasswordButton" type="button">Copy</button>
+                <label>Batch Amount:
+                    <input type="number" name="passwordBatchAmount" id="passwordBatchAmount" min="2" max="256" />
+                </label>
+            </div>
         </div>
         <form id="sp_form">
             <h2>Modifiers</h2>
@@ -68,8 +74,76 @@
                 <li>and <a href="https://www.unicode.org/charts/">Unicode | Code Charts</a> (Though you may need to convert the hexadecimal representation to decimal)</li>
             </ul>
             </div>
-            <label>Length:
-                <input type="number" form="sp_form" name="length" max="256" min="1" step="1" value="8" required/>
+            <fieldset>
+                <legend>Pre-Configs</legend>
+                <div>
+                    <p>* <strong>Note</strong>: Pre-Configs will override any similar modifiers that are set, and remove unrelated modifiers.</p>
+                </div>
+                <div>
+                    <label>Default:
+                        <input type="radio" name="preConfig" value="default" class="sp_preConfig"/>
+                    </label>
+                    <div>
+                        <p>Configuration:</p>
+                        <ul>
+                            <li>Length: 22</li>
+                            <li>Basic Latin Lowercase</li>
+                            <li>Basic Latin Uppercase</li>
+                            <li>Basic Latin Numbers</li>
+                            <li>Basic Latin Punctuation</li>
+                        </ul>
+                    </div>
+                </div>
+                <div>
+                    <label>4 Digit Pin:
+                        <input type="radio" name="preConfig" value="fourDigitPin" class="sp_preConfig"/>
+                    </label>
+                    <div>
+                        <p>Configuration:</p>
+                        <ul>
+                            <li>Length: 4</li>
+                            <li>Basic Latin Numbers</li>
+                        </ul>
+                    </div>
+                </div>
+                <div>
+                    <label>Default (Latin Supplement):
+                        <input type="radio" name="preConfig" value="defaultSupplement1" class="sp_preConfig"/>
+                    </label>
+                    <div>
+                        <p>Configuration:</p>
+                        <ul>
+                            <li>Length: 22</li>
+                            <li>Basic Latin Supplement Lowercase</li>
+                            <li>Basic Latin Supplement Uppercase</li>
+                            <li>Basic Latin Numbers</li>
+                            <li>Basic Latin Supplement Punctuation</li>
+                        </ul>
+                    </div>
+                </div>
+                <div>
+                    <label>Extreme:
+                        <input type="radio" name="preConfig" value="extreme" class="sp_preConfig"/>
+                    </label>
+                    <div>
+                        <p>Configuration:</p>
+                        <ul>
+                            <li>Length: 256</li>
+                            <li>Basic Latin Lowercase</li>
+                            <li>Basic Latin Uppercase</li>
+                            <li>Basic Latin Numbers</li>
+                            <li>Basic Latin Punctuation</li>
+                            <li>5 - 13 Repeating Characters</li>
+                            <li>2 - 10 Whitespace Characters</li>
+                            <li>Basic Latin Supplement Lowercase</li>
+                            <li>Basic Latin Supplement Uppercase</li>
+                            <li>Basic Latin Supplement Punctuation</li>
+                        </ul>
+                    </div>
+                </div>
+            </fieldset>
+            <label>Character Length:
+                <input type="number" form="sp_form" name="length" max="256" min="1" step="1" value="22" required/>
             </label>
             <fieldset>
                 <legend>Repeat Characters</legend>
@@ -81,7 +155,7 @@
                 </div>
                 <div>
                     <label>Repeating Character Limit:
-                        <input type="number" form="sp_form" name="max_repeatingCharacter" id="max_repeatingCharacter" min="1" max="256" step="1" value="1" disabled/>
+                        <input type="number" form="sp_form" name="max_repeatingCharacter" id="max_repeatingCharacter" min="1" max="256" step="1"/>
                     </label>
                     <p>Specify the number of characters that should be repeated in the password.</p>
                 </div>
@@ -107,13 +181,13 @@
                     <input type="checkbox" form="sp_form" name="lowercase" checked/>
                 </label>
                 <label>Uppercase Alpha; Character Codes (65-90):
-                    <input type="checkbox" form="sp_form" name="uppercase" />
+                    <input type="checkbox" form="sp_form" name="uppercase" checked/>
                 </label>
-                <label>Numbers; Character Codes (48-57): 
-                    <input type="checkbox" form="sp_form" name="numbers" />
+                <label>Numbers; Character Codes (48-57):
+                    <input type="checkbox" form="sp_form" name="numbers" checked/>
                 </label>
-                <label>Punctuation; Character Codes (33-47, 58-64, 91-96, 123-126): 
-                    <input type="checkbox" form="sp_form" name="punctuation" />
+                <label>Punctuation; Character Codes (33-47, 58-64, 91-96, 123-126):
+                    <input type="checkbox" form="sp_form" name="punctuation" checked/>
                 </label>
             </fieldset>
             <fieldset id="whitespaceOptions" name="whitespaceOptions" form="sp_form">
@@ -121,7 +195,7 @@
                 <fieldset>
                     <legend>Beginning of Password:</legend>
                     <label>Yes:
-                        <input type="checkbox" form="sp_form" name="whitespaceBeginning" class="toggle" data-toggle="disabled" data-target="#required_whitespaceBeginning" />
+                        <input type="checkbox" form="sp_form" name="whitespaceBeginning" class="toggle" />
                     </label>
                     <label>Required:
                         <input type="checkbox" form="sp_form" name="required_whitespaceBeginning" id="required_whitespaceBeginning"/>
@@ -130,7 +204,7 @@
                 <fieldset>
                     <legend>End of Password:</legend>
                     <label>Yes:
-                        <input type="checkbox" form="sp_form" name="whitespaceEnd" class="toggle" data-toggle="disabled" data-target="#required_whitespaceEnd" />
+                        <input type="checkbox" form="sp_form" name="whitespaceEnd" class="toggle" />
                     </label>
                     <label>Required:
                         <input type="checkbox" form="sp_form" name="required_whitespaceEnd" id="required_whitespaceEnd" />
@@ -138,10 +212,10 @@
                 </fieldset>
                 <fieldset>
                     <label>Between:
-                        <input class="toggle" data-target="#max_whitespaceBetween" data-toggle="disabled" type="checkbox" form="sp_form" name="whitespaceBetween" />
+                        <input class="toggle" type="checkbox" form="sp_form" name="whitespaceBetween" />
                     </label>
                     <label>Limit:
-                        <input type="number" step="1" min="1" max="252" value="1" form="sp_form" id="max_whitespaceBetween" name="max_whitespaceBetween" />
+                        <input type="number" step="1" min="1" max="252" form="sp_form" id="max_whitespaceBetween" name="max_whitespaceBetween" />
                     </label>
                 </fieldset>
             </fieldset>

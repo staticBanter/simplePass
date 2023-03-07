@@ -9,7 +9,7 @@
   },
   "name": "simplepass",
   "description": "simplePass is a Javascript password generator.",
-  "version": "4.0.0-Beta",
+  "version": "4.1.0-Beta",
   "browser": "./simplePass/browser/simplePass.js",
   "directories": {
     "test": "test",
@@ -51,5 +51,8 @@
     "sass-watch": "sass site_src/main.scss:site/main.css --style=compressed --no-source-map --watch --update",
     "prod": "npm run production",
     "production": "npm run tsc && npm run docs-build && npm run webpack-build && npm run html-min && npm run sass-build"
+  },
+  "dependencies": {
+    "normalize.css": "^8.0.1"
   }
 }

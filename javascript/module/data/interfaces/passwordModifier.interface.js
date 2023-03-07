@@ -23,6 +23,7 @@
  * @property {boolean} [lowercase_supplement] If the password should contain Latin(1) Supplement Lowercase characters.
  * @property {boolean} [uppercase_supplement] If the password should contain Latin(1) Supplement Uppercase characters.
  * @property {boolean} [symbols_supplement] If the password should contain Latin(1) Supplement Symbol characters.
+ * @property {string} [preConfig] If the password should follow a set of pre-configured rules.
  */
 'use strict';
 export {};

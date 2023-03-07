@@ -25,6 +25,7 @@
  * - ```lowercase_supplement```
  * - ```uppercase_supplement```
  * - ```symbols_supplement```
+ * - ```preConfig```
  *
  * @const {Array<string>} allowedModifiers
  */
@@ -46,7 +47,8 @@ const allowedModifiers:Array<string> = [
     'customRepeatingCharacters',
     'lowercase_supplement',
     'uppercase_supplement',
-    'symbols_supplement'
+    'symbols_supplement',
+    'preConfig'
 ];
 
 export default allowedModifiers;

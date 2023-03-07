@@ -41,6 +41,21 @@ export default function validateModifier(modifier:passwordModifier):void{
     })
     .length;
 
+    if(modifier.preConfig){
+
+        if(typeof(modifier.preConfig) !== 'string'){
+            throw new Error(createMessage(errors.invalidAttributeType,[config.errorMessagePrefix,'vM','16','preConfig','string']));
+        }
+
+        if(
+            !modifier.preConfig.length
+            || modifier.preConfig.length <= 0
+            || modifier.preConfig.length >= 256
+        ){
+            throw new Error(createMessage(errors.outOfBoundsAttributeValue,[config.errorMessagePrefix,'vM','17','preConfig']));
+        }
+    }
+
     // Check if the password should contain repeating characters
     if(modifier.repeatingCharacter){
 
@@ -56,7 +71,7 @@ export default function validateModifier(modifier:passwordModifier):void{
 
             // No string, bye bye...
             if(typeof(modifier.customRepeatingCharacters) !== 'string'){
-                throw new Error(createMessage(errors.invalidAttributeType,[config.errorMessagePrefix,'vM','15','string or list']));
+                throw new Error(createMessage(errors.invalidAttributeType,[config.errorMessagePrefix,'vM','15','customRepeatingCharacters','string']));
             }
 
             // Trim any leading and trailing whitespace.

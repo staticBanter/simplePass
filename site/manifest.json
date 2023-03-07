@@ -1,6 +1,6 @@
 {
     "$schema": "https://json.schemastore.org/web-manifest-combined.json",
-    "background_color": "#636980",
+    "background_color": "#130E1E",
     "categories": [
         "security",
         "password-generator",
