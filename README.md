@@ -8,6 +8,7 @@
   - [Basic Latin Modifiers](#basic-latin-modifiers)
   - [Latin(1) Supplement](#latin1-supplement)
   - [White-space Modifiers](#white-space-modifiers)
+  - [Pre-Configs](#pre-configs)
 - [Support](#support)
   - [Browser Support](#browser-support)
   - [OS Support](#os-support)
@@ -58,6 +59,35 @@ Uses character code: 32. For whitespace.
   - White Beginning Required - Require whitespace characters at the beginning of the password.
 - Whitespace End - Chance for password to contain whitespace at the end.
   - White End Required - Require whitespace characters in the end of the password.
+
+### Pre-Configs
+
+Quickly generate passwords of a given type or requirement with pre-configured modifiers.
+
+- Default - Contains:
+  - A Length Of: 22 Characters,
+  - Basic Latin Lowercase,
+  - Basic Latin Uppercase,
+  - Basic Latin Numbers,
+  - Basic Latin Punctuation.
+- Four Digit Pin.
+- Default (Latin 1 Supplement) - Contains:
+  - A Length Of: 22 Characters,
+  - Basic Latin Supplement Lowercase,
+  - Basic Latin Supplement Uppercase,
+  - Basic Latin Numbers,
+  - Basic Latin Supplement Punctuation.
+- Extreme - Contains:
+  - Length: 256,
+  - Basic Latin Lowercase,
+  - Basic Latin Uppercase,
+  - Basic Latin Numbers,
+  - Basic Latin Punctuation,
+  - 5 - 13 Repeating Characters,
+  - 2 - 10 Whitespace Characters,
+  - Basic Latin Supplement Lowercase,
+  - Basic Latin Supplement Uppercase,
+  - Basic Latin Supplement Punctuation.
 
 ## Support
 
