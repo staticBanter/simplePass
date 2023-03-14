@@ -30,9 +30,11 @@ import simplePass from "../javascript/bundle/simplePass.bundle.js";
     passwordContainer.appendChild(displayPassword)
     passwordEntropy.innerText = Math.round(initialPassword.entropy);
 
+    const passwordForm = document.body.querySelector("#sp_form");
+
 
     // When the user submits the form, call simplePass and display the new form.
-    document.body.querySelector("#sp_form").addEventListener('submit',function(event){
+    passwordForm.addEventListener('submit',function(event){
         event.preventDefault();
 
         const batchInput = document.body.querySelector("#passwordBatchAmount");
@@ -122,6 +124,26 @@ import simplePass from "../javascript/bundle/simplePass.bundle.js";
 
     });
 
+
+    /**
+     * Event listeners for "Radio Checkboxes".
+     * Just loops through all the checkboxes and unchecks and box that does not have the same value as the
+     * currently clicked box.
+     */
+    const radioCheckboxes = passwordForm.querySelectorAll('input[data-radioCheckbox]');
+
+    radioCheckboxes.forEach((input)=>{
+        input.addEventListener('click',function(){
+            radioCheckboxes.forEach((input)=>{
+                if(input.value !== this.value){
+                    if(input.checked){
+                        input.checked=false;
+                    }
+                }
+            });
+        });
+    });
+
     // Copy the password to clipboard when copy button is clicked
     document.body.querySelector("#copyPasswordButton").addEventListener('click',function(event){
         event.preventDefault();
@@ -197,6 +219,8 @@ import simplePass from "../javascript/bundle/simplePass.bundle.js";
         toggle.addEventListener('click',toggleAttributes);
 
     });
+
+
 
     document.body.querySelectorAll('.sp_preConfig').forEach((element)=>{
         element.addEventListener('click',function(){
