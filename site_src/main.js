@@ -6,7 +6,6 @@ import simplePass from "../javascript/bundle/simplePass.bundle.js";
 
 
     // Create a default password to display on load up.
-    // const displayPassword = document.body.querySelector("#displayPassword");
     const passwordContainer = document.body.querySelector("#passwordContainer")
     const passwordEntropy = document.body.querySelector('#passwordEntropy');
     let displayPassword = document.createElement('P');
@@ -28,7 +27,7 @@ import simplePass from "../javascript/bundle/simplePass.bundle.js";
 
     displayPassword.innerText = initialPassword.password;
     passwordContainer.appendChild(displayPassword)
-    passwordEntropy.innerText = Math.round(initialPassword.entropy);
+    passwordEntropy.innerText = Math.floor(initialPassword.entropy);
 
     const passwordForm = document.body.querySelector("#sp_form");
 

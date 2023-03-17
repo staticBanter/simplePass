@@ -16,13 +16,14 @@ import createMessage from "./createMessage.function.js";
  * @param {charCodeGenerationFlag} [flags] A flag object used to give more information about what stage of password generation we are at.
  * @requires characterCodeConstraints
  * @requires createMessage
+ * @requires characterCodeConstraintsAttributes
  * @throws {errors.nonGenerableCharacterType} Will throw an error if the requested character code type
  * is not found within the character code constraints object.
  * @returns {number} An integer representing a UTF-16 character code unit. The integer will be within range of the defined character code request constraints.
  */
 export default function generateCharCode(charCodeRequest, flags) {
     // Generate our random number.
-    const charCode = self.crypto.getRandomValues(new Uint8Array(1))[0];
+    let charCode = self.crypto.getRandomValues(new Uint8Array(1))[0];
     /**
      * If the 'excluded characters' attribute is set,
      * If the 'excluded characters' contains the newly generated string,
@@ -80,66 +81,71 @@ export default function generateCharCode(charCodeRequest, flags) {
      * want.
      * Else throw an error, we can not check for the requested character type.
      */
-    if (characterCodeConstraints[charCodeRequest.charType]) {
-        /**
-         * If the character code we are requesting only has a single constraint,
-         * we can preform a direct comparison on it to determine if it's the one
-         * we want.
-         * Else continue as the constraint may have more attributes that we can
-         * test for.
-         */
-        if (characterCodeConstraints[charCodeRequest.charType]?.single
-            && characterCodeConstraints[charCodeRequest.charType]?.single === charCode) {
-            return charCode;
-        }
-        /**
-         * Initialize these three attributes as they are used in a combination of
-         * comparisons.
-         */
-        const min = characterCodeConstraints[charCodeRequest.charType]?.min;
-        const max = characterCodeConstraints[charCodeRequest.charType]?.max;
-        const range = characterCodeConstraints[charCodeRequest.charType]?.range;
-        /**
-         * If the character code we are looking for exists in a range of codes.
-         * If the generated charCode is within the min or max of that range.
-         * If the generated charCode is equal to our min or max, we can just return it.
-         * Iterate over our range;
-         *  If our generated charCode exists somewhere in there, return it.
-         */
-        if (range) {
-            if ((min
-                && max)
-                && (charCode >= min
-                    && charCode <= max)) {
-                if (charCode === min
-                    || charCode === max) {
-                    return charCode;
-                }
-                for (let i = 0; i < range.length; i++) {
-                    if ((range[i][0]
-                        && range[i][1])
-                        && (charCode >= range[i][0]
-                            && charCode <= range[i][1])) {
-                        return charCode;
-                    }
-                    else if (range[i][0]
-                        && charCode === range[i][0]) {
-                        return charCode;
-                    }
-                }
-            }
-        }
-        else if (
-        // ^ Else there was no range attribute and we only need to check the min and max.
-        (min
+    const constraint = characterCodeConstraints[charCodeRequest.charType];
+    if (!constraint) {
+        throw new Error(createMessage(errors.nonGenerableCharacterType, [config.errorMessagePrefix, 'gCC', '1', charCodeRequest.charType]));
+    }
+    if (constraint.offset) {
+        charCode += constraint.offset;
+    }
+    /**
+     * If the character code we are requesting only has a single constraint,
+     * we can preform a direct comparison on it to determine if it's the one
+     * we want.
+     * Else continue as the constraint may have more attributes that we can
+     * test for.
+     */
+    if (constraint.single
+        && constraint.single === charCode) {
+        return charCode;
+    }
+    /**
+     * Initialize these three attributes as they are used in a combination of
+     * comparisons.
+     */
+    const min = constraint.min;
+    const max = constraint.max;
+    const range = constraint.range;
+    // if(range){
+    //     console.debug(range,range[0][0]);
+    // }
+    /**
+     * If the character code we are looking for exists in a range of codes.
+     * If the generated charCode is within the min or max of that range.
+     * If the generated charCode is equal to our min or max, we can just return it.
+     * Iterate over our range;
+     *  If our generated charCode exists somewhere in there, return it.
+     */
+    if (range) {
+        if ((min
             && max)
             && (charCode >= min
                 && charCode <= max)) {
-            return charCode;
+            if (charCode === min
+                || charCode === max) {
+                return charCode;
+            }
+            for (let i = 0; i < range.length; i++) {
+                if ((range[i][0]
+                    && range[i][1])
+                    && (charCode >= range[i][0]
+                        && charCode <= range[i][1])) {
+                    return charCode;
+                }
+                else if (range[i][0]
+                    && charCode === range[i][0]) {
+                    return charCode;
+                }
+            }
         }
     }
-    else {
-        throw new Error(createMessage(errors.nonGenerableCharacterType, [config.errorMessagePrefix, 'gCC', '1', charCodeRequest.charType]));
+    else if (
+    // ^ Else there was no range attribute and we only need to check the min and max.
+    (min
+        && max)
+        && (charCode >= min
+            && charCode <= max)) {
+        return charCode;
     }
     /**
      * We did not find our character.

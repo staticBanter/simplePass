@@ -14,6 +14,9 @@
  * - ```lowercase_supplement```
  * - ```uppercase_supplement```
  * - ```symbols_supplement```
+ * - ```lowercase_extended_a```
+ * - ```uppercase_extended_a```
+ * - ```ligature_extended_a```
  * > Note: Only 1 of these modifiers is required for the program to function.
  *
  * @const {Array<string>} requiredAttributes
@@ -25,7 +28,10 @@ const requiredAttributes:Array<string> = [
     'punctuation',
     'lowercase_supplement',
     'uppercase_supplement',
-    'symbols_supplement'
+    'symbols_supplement',
+    'lowercase_extended_a',
+    'uppercase_extended_a',
+    'ligature_extended_a'
 ];
 
 export default requiredAttributes;

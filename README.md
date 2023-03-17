@@ -5,8 +5,7 @@
 - [About](#about)
 - [Available Modifiers](#available-modifiers)
   - [General Modifiers](#general-modifiers)
-  - [Basic Latin Modifiers](#basic-latin-modifiers)
-  - [Latin(1) Supplement](#latin1-supplement)
+  - [Character Modifiers](#character-modifiers)
   - [White-space Modifiers](#white-space-modifiers)
   - [Pre-Configs](#pre-configs)
 - [Support](#support)
@@ -18,7 +17,7 @@
 
 simplePass is a JavaScript password generator.
 
-PWA Size: ~1.7MB
+PWA Size: ~1.8MB
 
 ## Available Modifiers
 
@@ -36,18 +35,11 @@ Character Codes displayed as the decimal value(s) for the character(s). A helpfu
   - Repeating Character Limit - Ensure the password contains at least the set amount of repeating characters.
   - Custom Repeating Characters - Ensure the password contains at least the specified repeating characters. Can be formatted to specify how many times each character can be repeated.
 
-### Basic Latin Modifiers
+### Character Modifiers
 
-- Lowercase Alpha - Includes Basic Latin lowercase alpha characters. Ranges from character codes: 95-122.
-- Uppercase Alpha - Includes Basic Latin uppercase characters. Ranges from character codes: 65-90.
-- Numbers - Includes Basic Latin numerals. Ranges from character codes: 48-57.
-- Punctuation - Includes Basic Latin punctuation. Ranges from character codes: 33-47, 58-64, 91-96, 123-126.
-
-### Latin(1) Supplement
-
-- Lowercase Characters - Includes Latin(1) Supplement lowercase characters. Ranges from character codes: 223-246, 248-255.
-- Uppercase Characters - Includes Latin(1) Supplement uppercase characters. Ranges from character codes: 192-214, 216-222.
-- Symbols - Includes Latin(1) Supplement symbols. Ranges from character codes: 161-191, 215, 247.
+- Latin Basic
+- Latin(1) Supplement
+- Latin Extended A
 
 ### White-space Modifiers
 

@@ -145,6 +145,10 @@
             <label>Character Length:
                 <input type="number" form="sp_form" name="length" max="256" min="1" step="1" value="22" required/>
             </label>
+            <label>Exclude Characters:
+                <input type="text" form="sp_form" name="excludeCharacters" />
+                <p>* <strong>Warning</strong>: Excessive use of this feature may result in degraded performance or non-performance of the program. *</p>
+            </label>
             <fieldset>
                 <legend>Repeat Characters</legend>
                 <div>
@@ -176,22 +180,21 @@
             </fieldset>
             <fieldset>
                 <legend>Latin Basic</legend>
-                <p>This does not include Control Characters (0-31, 127)</p>
-                <label>Lowercase Alpha; Character Codes (95-122):
+                <label>Lowercase Alpha:
                     <input type="checkbox" form="sp_form" name="lowercase" checked/>
                 </label>
-                <label>Uppercase Alpha; Character Codes (65-90):
+                <label>Uppercase Alpha:
                     <input type="checkbox" form="sp_form" name="uppercase" checked/>
                 </label>
-                <label>Numbers; Character Codes (48-57):
+                <label>Numbers:
                     <input type="checkbox" form="sp_form" name="numbers" checked/>
                 </label>
-                <label>Punctuation; Character Codes (33-47, 58-64, 91-96, 123-126):
+                <label>Signs, Symbols, and Punctuation:
                     <input type="checkbox" form="sp_form" name="punctuation" checked/>
                 </label>
             </fieldset>
             <fieldset id="whitespaceOptions" name="whitespaceOptions" form="sp_form">
-                <legend>Whitespace Options; Character Code (32)</legend>
+                <legend>Whitespace Options</legend>
                 <fieldset>
                     <legend>Beginning of Password:</legend>
                     <label>Yes:
@@ -221,20 +224,28 @@
             </fieldset>
             <fieldset>
                 <legend>Latin Supplement</legend>
-                <label>Lowercase Characters; Character Codes (223-246, 248-255):
+                <label>Lowercase Characters:
                     <input type="checkbox" form="sp_form" name="lowercase_supplement" />
                 </label>
-                <label>Uppercase Characters; Character Codes (192-214, 216-222):
+                <label>Uppercase Characters:
                     <input type="checkbox" form="sp_form" name="uppercase_supplement" />
                 </label>
-                <label>Symbols: Character Codes (161-191, 215, 247):
+                <label>Signs, Symbols, and Punctuation:
                     <input type="checkbox" form="sp_form" name="symbols_supplement" />
                 </label>
             </fieldset>
-            <label>Exclude Characters:
-                <input type="text" form="sp_form" name="excludeCharacters" />
-                <p>* <strong>Warning</strong>: Excessive use of this feature may result in degraded performance or non-performance of the program. *</p>
-            </label>
+            <fieldset>
+                <legend>Latin Extended A</legend>
+                <label>Lowercase Characters:
+                    <input type="checkbox" form="sp_form" name="lowercase_extended_a" />
+                </label>
+                <label>Uppercase Characters:
+                    <input type="checkbox" form="sp_form" name="uppercase_extended_a" />
+                </label>
+                <label>Ligatures:
+                    <input type="checkbox" form="sp_form" name="ligature_extended_a" />
+                </label>
+            </fieldset>
         </form>
         <button class="add-button">Add to home screen</button>
     </main>

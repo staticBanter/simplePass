@@ -24,6 +24,9 @@
  * - ```uppercase_supplement```
  * - ```symbols_supplement```
  * - ```preConfig```
+ * - ```lowercase_extended_a```
+ * - ```uppercase_extended_a```
+ * - ```ligature_extended_a```
  *
  * @const {Array<string>} allowedModifiers
  */
@@ -46,6 +49,9 @@ const allowedModifiers = [
     'lowercase_supplement',
     'uppercase_supplement',
     'symbols_supplement',
-    'preConfig'
+    'preConfig',
+    'lowercase_extended_a',
+    'uppercase_extended_a',
+    'ligature_extended_a',
 ];
 export default allowedModifiers;

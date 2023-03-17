@@ -1,4 +1,5 @@
 'use strict';
+import range from "../../functions/range.function.js";
 /**
  * @file
  * @module characterCodeConstraints
@@ -12,7 +13,14 @@
  * @property {object} [numbers] Basic Latin Numeric character code constraints.
  * @property {object} [punctuation] Basic Latin Punctuation character code constraints.
  * @property {object} [whitespace]  Whitespace character code constraint.
+ * @property {object} [lowercase_supplement] Basic Latin(1) Supplement Lowercase character code constraints.
+ * @property {object} [uppercase_supplement] Basic Latin(1) Supplement Uppercase character code constraints.
+ * @property {object} [symbols_supplement] Basic Latin(1) Supplement Signs, Symbols and Punctuation character code constraints.
+ * @property {object} [lowercase_extended_a] Latin Extended A Lowercase character code constraints.
+ * @property {object} [uppercase_extended_a] Latin Extended A Uppercase character code constraints.
+ * @property {object} [ligature_extended_a] Latin Extended A Ligature character code constraints.
  * @implements {characterCodeConstraintsAttributes}
+ * @requires range
  *
  */
 const characterCodeConstraints = {
@@ -65,6 +73,38 @@ const characterCodeConstraints = {
             [215],
             [247]
         ]
+    },
+    lowercase_extended_a: {
+        min: 257,
+        max: 383,
+        range: range(257, 312, 2, [306, 307])
+            .concat(range(314, 329, 2))
+            .concat(range(331, 375, 2, [338, 339]))
+            .concat(range(378, 383, 2))
+            .map((element) => element = [element]),
+        offset: 256
+    },
+    uppercase_extended_a: {
+        min: 256,
+        max: 382,
+        range: range(256, 310, 2, [306, 307])
+            .concat(range(313, 327, 2))
+            .concat(range(330, 374, 2, [338, 339]))
+            .concat([376])
+            .concat(range(377, 381, 2))
+            .map((element) => element = [element]),
+        offset: 256
+    },
+    ligature_extended_a: {
+        min: 306,
+        max: 339,
+        range: [
+            [306],
+            [307],
+            [338],
+            [339]
+        ],
+        offset: 256
     }
 };
 export default characterCodeConstraints;
