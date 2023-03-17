@@ -19,7 +19,7 @@
  * console.log(range(1,10,2));
  * @param {Array<number>} [exclude] A list of numbers that should not be in the range
  * @example <caption>Example usage of the 'range' function with excluded numbers</caption>
- * // returns [1,3,4,5,6,8,9,10]
+ * // returns [1,3,4,5,6,9,10]
  * console.log(range(1,10,1,[2,7,8]))
  * @returns {Array<number>} A list of numbers within the start and end values
  */
