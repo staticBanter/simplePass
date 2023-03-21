@@ -42,6 +42,21 @@ module.exports = [
                 import:"./main.js"
             }
         },
+        devServer:{
+            static: './site/prod',
+            bonjour: false,
+            client:{
+                overlay: true,
+                progress: true
+            },
+            headers:[
+                {
+                    key: 'X-Webpack-Server',
+                    value: 'TRUE',
+                }
+            ],
+            magicHtml: false
+        },
         output:{
             path:path.resolve(__dirname, './site/prod/'),
             filename:"main.js",
@@ -50,6 +65,7 @@ module.exports = [
         },
         optimization: {
             minimize: true,
+            // runtimeChunk: 'single'
         },
         mode:"production",
         cache:false,
