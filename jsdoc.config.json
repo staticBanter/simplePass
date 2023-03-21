@@ -23,7 +23,7 @@
         "idInHeadings":true
     },
     "opts":{
-        "destination":"./site",
+        "destination":"./site/prod",
         "package":"./package.json",
         "readme":"README.md",
         "recurse":true,

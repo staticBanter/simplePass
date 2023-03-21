@@ -1,6 +1,6 @@
 "use strict";
 
-import simplePass from "../javascript/bundle/simplePass.bundle.js";
+import simplePass from "../../javascript/bundle/simplePass.bundle.js";
 
 (()=>{
 

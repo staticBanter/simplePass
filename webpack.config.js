@@ -35,7 +35,7 @@ module.exports = [
 	},
     // Config for the site.
 	{
-        context:path.resolve(__dirname,'site_src/'),
+        context:path.resolve(__dirname,'site/src/'),
 		name: "site",
 		entry:{
             site:{
@@ -43,7 +43,7 @@ module.exports = [
             }
         },
         output:{
-            path:path.resolve(__dirname, './site/'),
+            path:path.resolve(__dirname, './site/prod/'),
             filename:"main.js",
             module:true,
             libraryTarget:'module'

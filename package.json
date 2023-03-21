@@ -9,7 +9,7 @@
   },
   "name": "simplepass",
   "description": "simplePass is a Javascript password generator.",
-  "version": "4.2.0-Beta",
+  "version": "5.0.0-Beta",
   "browser": "./simplePass/browser/simplePass.js",
   "directories": {
     "test": "test",
@@ -46,9 +46,9 @@
     "tsc": "tsc --project .",
     "tsc-watch": "tsc --watch --project .",
     "docs-build": "jsdoc ./javascript/module/ --tutorials ./docs --configure ./jsdoc.config.json",
-    "html-min": "html-minifier --config-file html-minifier.config.json --input-dir ./site/docs --output-dir ./site/docs --file-ext html",
-    "sass-build": "sass site_src/main.scss:site/main.css --style=compressed --no-source-map",
-    "sass-watch": "sass site_src/main.scss:site/main.css --style=compressed --no-source-map --watch --update",
+    "html-min": "html-minifier --config-file html-minifier.config.json --input-dir ./site/prod/docs/ --output-dir ./site/prod/docs/ --file-ext html",
+    "sass-build": "sass site/src/main.scss:site/prod/main.css --style=compressed --no-source-map",
+    "sass-watch": "sass site/src/main.scss:site/prod/main.css --style=compressed --no-source-map --watch --update",
     "prod": "npm run production",
     "production": "npm run tsc && npm run docs-build && npm run webpack-build && npm run html-min && npm run sass-build"
   },
