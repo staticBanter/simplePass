@@ -1,6 +1,6 @@
 const appShellFiles = [
     // Base
-    "/simplePass",
+    "/simplePass/",
     "./index.html",
     "./offline.html",
     "./main.css",
