@@ -1,5 +1,6 @@
 {
   "devDependencies": {
+    "copy-webpack-plugin": "^11.0.0",
     "html-minifier": "^4.0.0",
     "jsdoc": "^4.0.0",
     "sass": "^1.58.3",
@@ -42,8 +43,9 @@
   "homepage": "https://github.com/staticBanter/simplePass#readme",
   "private": true,
   "scripts": {
-    "webpack-build": "webpack build --config webpack.config.js",
-    "webpack-watch": "webpack build --config webpack.config.js --watch",
+    "webpack-build": "webpack build --env production --config webpack.config.js",
+    "webpack-dev-build": "webpack build --env development --config webpack.config.js",
+    "webpack-watch": "webpack build --env development --config webpack.config.js --watch",
     "start": "webpack serve",
     "tsc": "tsc --project .",
     "tsc-watch": "tsc --watch --project .",

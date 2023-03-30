@@ -1,0 +1,45 @@
+{
+    "$schema": "https://json.schemastore.org/web-manifest-combined.json",
+    "background_color": "#130E1E",
+    "categories": [
+        "security",
+        "password-generator",
+        "javascript"
+    ],
+    "display":"minimal-ui",
+    "name": "simplePass",
+    "short_name": "simplePass",
+    "start_url": "$START_URL$",
+    "id": "/",
+    "prefer_related_applications": false,
+    "description": "A JavaScript password generator.",
+    "icons": [
+        {
+        "src": "./storage/icons/simplePass-Logo-1080.svg",
+        "sizes":"1080x1080",
+        "type": "image/svg+xml",
+        "purpose": "maskable"
+        },
+        {
+            "src": "./storage/icons/simplePass-Logo-1080.svg",
+            "sizes":"1080x1080",
+            "type": "image/svg+xml",
+            "purpose": "any"
+        },
+        {
+            "src": "./storage/icons/simplePass-Logo-512.png",
+            "sizes":"512x512",
+            "type": "image/png",
+            "purpose": "any"
+        }
+    ],
+    "shortcuts": [
+        {
+            "name": "Documentation",
+            "description": "Read the simplePass documentation.",
+            "url": "./docs/index.html",
+            "icons": [{"src": "./storage/icons/simplePass-Logo-512.png","sizes":"512x512"}]
+        }
+    ],
+    "theme_color": "grey"
+}

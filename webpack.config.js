@@ -3,12 +3,14 @@
  */
 
 const path = require('path');
+const {EnvironmentPlugin} = require('webpack');
+const CopyPlugin = require("copy-webpack-plugin");
 
 /**
  * Because we need to bundle the browser version of simplePass with the main page, we create a second directory bundle our files and include it in the site.
  * So we have to webpack complilations, one to bundle the source javascript (application) and one to bundle the PWA javascript (site).
  */
-module.exports = [
+module.exports = (env) => [
     // Config for the application.
 	{
         context:path.resolve(__dirname,'javascript/module'),
@@ -65,9 +67,49 @@ module.exports = [
         },
         optimization: {
             minimize: true,
-            // runtimeChunk: 'single'
         },
         mode:"production",
+        plugins: [
+            new EnvironmentPlugin({
+                serviceWorkerURL: env.production?'/simplePass/sw.js':(env.customServiceWorkerURL??'/sw.js')
+            }),
+            new CopyPlugin({
+                patterns: [
+                // Assume `./site/src` is root dir here
+                    {
+                        from: "./manifest.json",
+                        to: "../prod/manifest.json",
+                        transform(content) {
+                            return content
+                              .toString()
+                              .replace('$START_URL$',
+                                (env.production)
+                                ?'https://staticbanter.github.io/simplePass/'
+                                :(env.customManifestStartURL??'http://localhost:8080/')
+                            )
+                        },
+                    },
+                    {
+                        from: "./sw.js",
+                        to: "../prod/sw.js",
+                        transform(content) {
+                            return content
+                            .toString()
+                            .replace('$BASE_URL$',
+                                (env.production)
+                                ?'/simplePass/'
+                                :(env.customBaseURL??'/')
+                            )
+                            .replace('$serviceWorkerCacheName$',
+                                (env.production)
+                                ?'simplePass_PWA_Cache_v1'
+                                :(env.customServiceWorkerCacheName??'simplePass_DEVELOPMENT_PWA_Cache_v1')
+                            )
+                        },
+                    },
+                ],
+            }),
+        ],
         cache:false,
         experiments: {
             outputModule: true,
