@@ -2,8 +2,6 @@
 import useableAttributes from "../data/lists/useableAttributes.list.js";
 import requiredAttributes from "../data/lists/requiredAttributes.list.js";
 import config from "../simplePass.config.js";
-import createMessage from "./createMessage.function.js";
-import errors from "../data/enums/errors.enum.js";
 /**
  * @file
  * @module validateModifier
@@ -35,14 +33,16 @@ export default function validateModifier(modifier) {
         return useableAttributes.includes(item);
     })
         .length;
-    if (modifier.preConfig) {
+    if (modifier.preConfig
+        &&
+            (typeof (modifier.preConfig) !== 'string'
+                || (!modifier.preConfig.length
+                    || modifier.preConfig.length <= 0))) {
         if (typeof (modifier.preConfig) !== 'string') {
-            throw new Error(createMessage(errors.invalidAttributeType, [config.errorMessagePrefix, 'vM', '16', 'preConfig', 'string']));
-        }
-        if (!modifier.preConfig.length
-            || modifier.preConfig.length <= 0
-            || modifier.preConfig.length >= 256) {
-            throw new Error(createMessage(errors.outOfBoundsAttributeValue, [config.errorMessagePrefix, 'vM', '17', 'preConfig']));
+            throw {
+                errorKey: 'invalidAttributeType',
+                replacements: ['vM', '16', 'preConfig', 'string']
+            };
         }
     }
     // Check if the password should contain repeating characters
@@ -58,7 +58,15 @@ export default function validateModifier(modifier) {
             // ^ Custom Repeating Characters
             // No string, bye bye...
             if (typeof (modifier.customRepeatingCharacters) !== 'string') {
-                throw new Error(createMessage(errors.invalidAttributeType, [config.errorMessagePrefix, 'vM', '15', 'customRepeatingCharacters', 'string']));
+                throw {
+                    errorKey: 'invalidAttributeType',
+                    replacements: [
+                        'vM',
+                        '15',
+                        'customRepeatingCharacters',
+                        'string'
+                    ]
+                };
             }
             // Trim any leading and trailing whitespace.
             modifier.customRepeatingCharacters = modifier.customRepeatingCharacters.trim();
@@ -194,7 +202,10 @@ export default function validateModifier(modifier) {
             // If our Repeating Character Limit is not a string or a number throw an error.
             if (typeof (modifier.max_repeatingCharacter) !== 'number'
                 && typeof (modifier.max_repeatingCharacter) !== 'string') {
-                throw new Error(createMessage(errors.invalidAttributeType, [config.errorMessagePrefix, 'vM', '13', 'max_repeatingCharacter', 'number or string']));
+                throw {
+                    errorKey: 'invalidAttributeType',
+                    replacements: ['vM', '13', 'max_repeatingCharacter', 'number or string']
+                };
             }
             // Convert strings to ints.
             if (typeof (modifier.max_repeatingCharacter) === 'string') {
@@ -207,11 +218,16 @@ export default function validateModifier(modifier) {
             // Ensure the Repeating Character Limit is within a reasonable range.
             if (modifier.max_repeatingCharacter < 1
                 || modifier.max_repeatingCharacter > 255) {
-                throw new Error(createMessage(errors.outOfBoundsAttributeValue, [config.errorMessagePrefix, 'vM', '14', 'max_repeatingCharacter']));
+                throw {
+                    errorKey: 'outOfBoundsAttributeValue',
+                    replacements: ['vM', '14', 'max_repeatingCharacter']
+                };
             }
             // Check if the requested password length can contain the amount of repeated characters.
             if (modifier.length < (modifier.max_repeatingCharacter * 2)) {
-                throw new Error('The password can not contain the requested amount of repeating characters.');
+                throw {
+                    errorKey: 'The password can not contain the requested amount of repeating characters.'
+                };
             }
             /**
              * Every repeating character replaces a potential password modification that can be added,
@@ -232,24 +248,36 @@ export default function validateModifier(modifier) {
     if (!modifier.length
         || (typeof (modifier.length) !== 'string'
             && typeof (modifier.length) !== 'number')) {
-        throw new Error(createMessage(errors.invalidAttributeType, [config.errorMessagePrefix, 'vM', '1', 'length', 'string or number']));
+        throw {
+            errorKey: 'invalidAttributeType',
+            replacements: ['vM', '1', 'length', 'string or number']
+        };
     }
     else {
         if (typeof (modifier.length) === 'string') {
             const length = parseInt(modifier.length);
             if (length > config.max_passwordLength
                 || length < config.min_passwordLength) {
-                throw new Error(createMessage(errors.invalidAttributeType, [config.errorMessagePrefix, 'vM', '1', 'length', 'string or number']));
+                throw {
+                    errorKey: 'invalidAttributeType',
+                    replacements: ['vM', '1', 'length', 'string or number']
+                };
             }
         }
         else {
             if (modifier.length > config.max_passwordLength
                 || modifier.length < config.min_passwordLength) {
-                throw new Error(createMessage(errors.outOfBoundsAttributeValue, [config.errorMessagePrefix, 'vM', '2', 'length']));
+                throw {
+                    errorKey: 'outOfBoundsAttributeValue',
+                    replacements: ['vM', '2', 'length']
+                };
             }
         }
         if (modifierCount > modifier.length) {
-            throw new Error(createMessage(errors.toManyAttributes, [config.errorMessagePrefix, 'vM', '3', `${modifier.length}`, `${modifierCount}`]));
+            throw {
+                errorKey: 'toManyAttributes',
+                replacements: ['vM', '3', `${modifier.length}`, `${modifierCount}`]
+            };
         }
     }
     /**
@@ -259,7 +287,10 @@ export default function validateModifier(modifier) {
      */
     if (modifier.w_between) {
         if (!modifier.max_whitespaceBetween) {
-            throw new Error(createMessage(errors.missingRequiredAttribute, [config.errorMessagePrefix, 'vM', '11', 'max_whitespaceBetween', 'w_between']));
+            throw {
+                errorKey: 'missingRequiredAttribute',
+                replacements: ['vM', '11', 'max_whitespaceBetween', 'w_between']
+            };
         }
         /**
          * Ensure the 'white-space between limit' attribute is proper type
@@ -267,20 +298,29 @@ export default function validateModifier(modifier) {
          */
         if (typeof (modifier.max_whitespaceBetween) !== 'string'
             && typeof (modifier.max_whitespaceBetween) !== 'number') {
-            throw new Error(createMessage(errors.invalidAttributeType, [config.errorMessagePrefix, 'vM', '4', 'max_whitespaceBetween', 'string or number']));
+            throw {
+                errorKey: 'invalidAttributeType',
+                replacements: ['vM', '4', 'max_whitespaceBetween', 'string or number']
+            };
         }
         else {
             if (typeof (modifier.max_whitespaceBetween) === 'string') {
                 const max_whitespaceBetween = parseInt(modifier.max_whitespaceBetween);
                 if (max_whitespaceBetween > config.max_whitespaceBetween()
                     || max_whitespaceBetween < config.min_whitespaceBetween()) {
-                    throw new Error(createMessage(errors.outOfBoundsAttributeValue, [config.errorMessagePrefix, 'vM', '5', 'max_whitespaceBetween']));
+                    throw {
+                        errorKey: 'outOfBoundsAttributeValue',
+                        replacements: ['vM', '5', 'max_whitespaceBetween']
+                    };
                 }
             }
             else {
                 if (modifier.max_whitespaceBetween > config.max_whitespaceBetween()
                     || modifier.max_whitespaceBetween < config.min_whitespaceBetween()) {
-                    throw new Error(createMessage(errors.outOfBoundsAttributeValue, [config.errorMessagePrefix, 'vM', '6', 'max_whitespaceBetween']));
+                    throw {
+                        errorKey: 'outOfBoundsAttributeValue',
+                        replacements: ['vM', '6', 'max_whitespaceBetween']
+                    };
                 }
             }
         }
@@ -292,7 +332,10 @@ export default function validateModifier(modifier) {
         .some(function (array) {
         return requiredAttributes.includes(array);
     })) {
-        throw new Error(createMessage(errors.missingRequiredAttributes, [config.errorMessagePrefix, 'vM', '7', requiredAttributes.toString()]));
+        throw {
+            errorKey: 'missingRequiredAttributes',
+            replacements: ['vM', '7', requiredAttributes.toString()]
+        };
     }
     /**
      * If the 'exclude characters' attributes is set,
@@ -303,14 +346,23 @@ export default function validateModifier(modifier) {
      */
     if (modifier.excludeCharacters) {
         if (typeof (modifier.excludeCharacters) !== 'string') {
-            throw new Error(createMessage(errors.invalidAttributeType, [config.errorMessagePrefix, 'vM', '8', 'excludeCharacters', 'string']));
+            throw {
+                errorKey: 'invalidAttributeType',
+                replacements: ['vM', '8', 'excludeCharacters', 'string']
+            };
         }
         if (!modifier.excludeCharacters.length
             && modifier.excludeCharacters.length <= 0) {
-            throw new Error(createMessage(errors.outOfBoundsAttributeValue, [config.errorMessagePrefix, 'vM', '9', 'excludeCharacters']));
+            throw {
+                errorKey: 'outOfBoundsAttributeValue',
+                replacements: ['vM', '9', 'excludeCharacters']
+            };
         }
-        if (new RegExp('/[\s]/g').test(modifier.excludeCharacters)) {
-            throw new Error(createMessage(errors.excludeCharactersContainedWhitespace, [config.errorMessagePrefix, 'vM', '10']));
+        if (new RegExp(/[\s]/g).test(modifier.excludeCharacters)) {
+            throw {
+                errorKey: 'excludeCharactersContainedWhitespace',
+                replacements: ['vM', '10']
+            };
         }
     }
 }

@@ -25,6 +25,10 @@ html > body {
         padding: 0.5rem;
     }
 
+    p{
+        margin: 0.5rem auto;
+    }
+
     /**
      * Class Styles.
      */
@@ -57,6 +61,56 @@ html > body {
         }
     }
 
+    // Message Boxes
+    .sp_messageBox{
+        padding: 0.5rem;
+        border-radius: 10px;
+        width: auto;
+        word-break: break-all;
+        margin: 0.5rem;
+    }
+
+
+    .sp_messageBox {
+
+
+        &[data-message-level='INFO']{
+            border: 1px solid black;
+            box-shadow: 0 0 5px;
+            box-sizing: border-box;
+        }
+
+        &[data-message-level='ERROR']{
+            background-color: red;
+            color: white;
+            font-weight: bold;
+        }
+
+        &[data-message-level='WARNING']{
+            background-color: yellow;
+            color: black;
+            border: 1px solid;
+            box-sizing: border-box;
+        }
+
+
+        > div:first-of-type {
+
+            > strong{
+                float: left;
+            }
+
+            > button{
+                float: right;
+            }
+
+        }
+
+        > p{
+            clear: both;
+        }
+    }
+
     /**
      * ID Styles.
      */
@@ -72,7 +126,7 @@ html > body {
 
     #passwordBox{
 
-        div{
+        > div{
             display: block;
             width: 100%;
         }

@@ -4,8 +4,6 @@ import passwordModifier from "../data/interfaces/passwordModifier.interface.js";
 import useableAttributes from "../data/lists/useableAttributes.list.js";
 import requiredAttributes from "../data/lists/requiredAttributes.list.js";
 import config from "../simplePass.config.js";
-import createMessage from "./createMessage.function.js";
-import errors from "../data/enums/errors.enum.js";
 
 /**
  * @file
@@ -32,27 +30,34 @@ import errors from "../data/enums/errors.enum.js";
  * @throws {errors.excludeCharactersContainedWhitespace} Will throw an error if the ```excludeCharacters``` attribute contains a whitespace.
  * @returns {void}
  */
-export default function validateModifier(modifier:passwordModifier):void{
+export default function validateModifier(
+    modifier: passwordModifier,
+): void {
 
     // Check if the password will be long enough to contain all the attributes.
-    let modifierCount:number = Object.keys(modifier)
-    .filter((item:string)=>{
-        return useableAttributes.includes(item);
-    })
-    .length;
+    let modifierCount: number = Object.keys(modifier)
+        .filter((item: string) => {
+            return useableAttributes.includes(item);
+        })
+        .length;
 
-    if(modifier.preConfig){
+    if (
+        modifier.preConfig
+        &&
+        (
+            typeof (modifier.preConfig) !== 'string'
+            || (
+                !modifier.preConfig.length
+                || modifier.preConfig.length <= 0
+            )
+        )
+    ) {
 
-        if(typeof(modifier.preConfig) !== 'string'){
-            throw new Error(createMessage(errors.invalidAttributeType,[config.errorMessagePrefix,'vM','16','preConfig','string']));
-        }
-
-        if(
-            !modifier.preConfig.length
-            || modifier.preConfig.length <= 0
-            || modifier.preConfig.length >= 256
-        ){
-            throw new Error(createMessage(errors.outOfBoundsAttributeValue,[config.errorMessagePrefix,'vM','17','preConfig']));
+        if (typeof (modifier.preConfig) !== 'string') {
+            throw {
+                errorKey: 'invalidAttributeType',
+                replacements:['vM','16','preConfig','string']
+            }
         }
     }
 
@@ -70,8 +75,16 @@ export default function validateModifier(modifier:passwordModifier):void{
         // ^ Custom Repeating Characters
 
             // No string, bye bye...
-            if(typeof(modifier.customRepeatingCharacters) !== 'string'){
-                throw new Error(createMessage(errors.invalidAttributeType,[config.errorMessagePrefix,'vM','15','customRepeatingCharacters','string']));
+            if (typeof (modifier.customRepeatingCharacters) !== 'string') {
+                throw {
+                    errorKey:'invalidAttributeType',
+                    replacements: [
+                        'vM',
+                        '15',
+                        'customRepeatingCharacters',
+                        'string'
+                    ]
+                };
             }
 
             // Trim any leading and trailing whitespace.
@@ -253,8 +266,11 @@ export default function validateModifier(modifier:passwordModifier):void{
             if(
                 typeof(modifier.max_repeatingCharacter) !== 'number'
                 && typeof(modifier.max_repeatingCharacter) !== 'string'
-            ){
-                throw new Error(createMessage(errors.invalidAttributeType,[config.errorMessagePrefix,'vM','13','max_repeatingCharacter','number or string']));
+            ) {
+                throw {
+                    errorKey:'invalidAttributeType',
+                    replacements:['vM','13','max_repeatingCharacter','number or string']
+                };
             }
 
             // Convert strings to ints.
@@ -270,13 +286,18 @@ export default function validateModifier(modifier:passwordModifier):void{
             if(
                 modifier.max_repeatingCharacter < 1
                 || modifier.max_repeatingCharacter > 255
-            ){
-                throw new Error(createMessage(errors.outOfBoundsAttributeValue,[config.errorMessagePrefix,'vM','14','max_repeatingCharacter']));
+            ) {
+                throw {
+                    errorKey:'outOfBoundsAttributeValue',
+                    replacements:['vM','14','max_repeatingCharacter']
+                };
             }
 
             // Check if the requested password length can contain the amount of repeated characters.
-            if(modifier.length < (modifier.max_repeatingCharacter * 2)){
-                throw new Error('The password can not contain the requested amount of repeating characters.');
+            if (modifier.length < (modifier.max_repeatingCharacter * 2)) {
+                throw {
+                    errorKey:'The password can not contain the requested amount of repeating characters.'
+                };
             }
 
             /**
@@ -306,7 +327,11 @@ export default function validateModifier(modifier:passwordModifier):void{
             && typeof(modifier.length) !== 'number'
         )
     ){
-        throw new Error(createMessage(errors.invalidAttributeType,[config.errorMessagePrefix,'vM','1','length','string or number']));
+        throw {
+            errorKey:'invalidAttributeType',
+            replacements:['vM','1','length','string or number']
+        };
+
     }else{
 
         if(typeof(modifier.length) === 'string'){
@@ -316,22 +341,37 @@ export default function validateModifier(modifier:passwordModifier):void{
             if(
                 length > config.max_passwordLength
                 || length < config.min_passwordLength
-            ){
-                throw new Error(createMessage(errors.invalidAttributeType,[config.errorMessagePrefix,'vM','1','length','string or number']));
+            ) {
+
+                throw {
+                    errorKey:'invalidAttributeType',
+                    replacements:['vM','1','length','string or number']
+                };
+
             }
         }else{
 
             if(
                 modifier.length > config.max_passwordLength
                 || modifier.length < config.min_passwordLength
-            ){
-                throw new Error(createMessage(errors.outOfBoundsAttributeValue,[config.errorMessagePrefix,'vM','2','length']));
+            ) {
+
+                throw {
+                    errorKey:'outOfBoundsAttributeValue',
+                    replacements:['vM','2','length']
+                };
+
             }
 
         }
 
-        if(modifierCount > modifier.length){
-            throw new Error(createMessage(errors.toManyAttributes,[config.errorMessagePrefix,'vM','3',`${modifier.length}`,`${modifierCount}`]));
+        if (modifierCount > modifier.length) {
+
+            throw {
+                errorKey: 'toManyAttributes',
+                replacements: ['vM','3',`${modifier.length}`,`${modifierCount}`]
+            }
+
         }
     }
 
@@ -342,8 +382,13 @@ export default function validateModifier(modifier:passwordModifier):void{
      */
     if(modifier.w_between){
 
-        if(!modifier.max_whitespaceBetween){
-            throw new Error(createMessage(errors.missingRequiredAttribute,[config.errorMessagePrefix,'vM','11','max_whitespaceBetween','w_between']));
+        if (!modifier.max_whitespaceBetween) {
+
+            throw {
+                errorKey:'missingRequiredAttribute',
+                replacements:['vM','11','max_whitespaceBetween','w_between']
+            };
+
         }
 
         /**
@@ -353,8 +398,13 @@ export default function validateModifier(modifier:passwordModifier):void{
         if(
             typeof(modifier.max_whitespaceBetween) !== 'string'
             && typeof(modifier.max_whitespaceBetween) !== 'number'
-        ){
-            throw new Error(createMessage(errors.invalidAttributeType,[config.errorMessagePrefix,'vM','4','max_whitespaceBetween','string or number']));
+        ) {
+
+            throw {
+                errorKey:'invalidAttributeType',
+                replacements:['vM','4','max_whitespaceBetween','string or number']
+            };
+
         }else{
 
             if(typeof(modifier.max_whitespaceBetween) === 'string'){
@@ -364,8 +414,13 @@ export default function validateModifier(modifier:passwordModifier):void{
                 if(
                     max_whitespaceBetween > config.max_whitespaceBetween()
                     || max_whitespaceBetween < config.min_whitespaceBetween()
-                ){
-                    throw new Error(createMessage(errors.outOfBoundsAttributeValue,[config.errorMessagePrefix,'vM','5','max_whitespaceBetween']));
+                ) {
+
+                    throw {
+                        errorKey:'outOfBoundsAttributeValue',
+                        replacements:['vM','5','max_whitespaceBetween']
+                    };
+
                 }
 
             }else{
@@ -373,8 +428,12 @@ export default function validateModifier(modifier:passwordModifier):void{
                 if(
                     modifier.max_whitespaceBetween > config.max_whitespaceBetween()
                     || modifier.max_whitespaceBetween < config.min_whitespaceBetween()
-                ){
-                    throw new Error(createMessage(errors.outOfBoundsAttributeValue,[config.errorMessagePrefix,'vM','6','max_whitespaceBetween']));
+                ) {
+                    throw {
+                        errorKey:'outOfBoundsAttributeValue',
+                        replacements:['vM','6','max_whitespaceBetween']
+                    };
+
                 }
 
             }
@@ -390,8 +449,11 @@ export default function validateModifier(modifier:passwordModifier):void{
         .some(function(array){
             return requiredAttributes.includes(array);
         })
-    ){
-        throw new Error(createMessage(errors.missingRequiredAttributes,[config.errorMessagePrefix,'vM','7',requiredAttributes.toString()]));
+    ) {
+        throw {
+            errorKey: 'missingRequiredAttributes',
+            replacements:['vM','7',requiredAttributes.toString()]
+        }
     }
 
     /**
@@ -401,23 +463,36 @@ export default function validateModifier(modifier:passwordModifier):void{
      * its length is within proper range,
      * and does not contain any whitespace.
      */
-    if(modifier.excludeCharacters){
+    if (modifier.excludeCharacters) {
 
-        if(
-            typeof(modifier.excludeCharacters) !== 'string'
-        ){
-            throw new Error(createMessage(errors.invalidAttributeType,[config.errorMessagePrefix,'vM','8','excludeCharacters','string']));
+        if (
+            typeof (modifier.excludeCharacters) !== 'string'
+        ) {
+            throw {
+                errorKey: 'invalidAttributeType',
+                replacements:['vM','8','excludeCharacters','string']
+            }
         }
 
         if(
             !modifier.excludeCharacters.length
             && modifier.excludeCharacters.length <= 0
-        ){
-            throw new Error(createMessage(errors.outOfBoundsAttributeValue,[config.errorMessagePrefix,'vM','9','excludeCharacters']));
+        ) {
+
+            throw {
+                errorKey: 'outOfBoundsAttributeValue',
+                replacements:['vM','9','excludeCharacters']
+            }
+
         }
 
-        if(new RegExp('/[\s]/g').test(modifier.excludeCharacters)){
-            throw new Error(createMessage(errors.excludeCharactersContainedWhitespace,[config.errorMessagePrefix,'vM','10']));
+        if (new RegExp(/[\s]/g).test(modifier.excludeCharacters)) {
+
+            throw {
+                errorKey: 'excludeCharactersContainedWhitespace',
+                replacements:['vM','10']
+            }
+
         }
 
     }

@@ -65,7 +65,7 @@ const config:{
         const min_possibleWhitespaceCharacters = (this.max_passwordLength - this.max_whitespaceCharactersOffset);
         return (min_possibleWhitespaceCharacters >= 1) ? 1 : 0
     },
-    "errorMessagePrefix":"-=sP",
+    "errorMessagePrefix":"sP",
     "templateMessageMarker":"~",
     "htmlForm":{
         "id":"#sp_form",

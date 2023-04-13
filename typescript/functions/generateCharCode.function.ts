@@ -1,7 +1,7 @@
 'use strict';
 
 import config from "../simplePass.config.js";
-import errors from "../data/enums/errors.enum.js";
+import errors from "../data/objects/errors.object.js";
 import charCodeGenerationFlag from "../data/interfaces/charCodeGenerationFlag.interface.js";
 import charCodeRequest from "../data/interfaces/charCodeRequest.interface.js";
 import characterCodeConstraints from "../data/objects/characterCodeConstraints.object.js";
@@ -101,9 +101,19 @@ export default function generateCharCode(charCodeRequest:charCodeRequest,flags?:
      * want.
      * Else throw an error, we can not check for the requested character type.
      */
-    const constraint:characterCodeConstraintsAttributes|undefined = characterCodeConstraints[charCodeRequest.charType];
-    if(!constraint){
-        throw new Error(createMessage(errors.nonGenerableCharacterType,[config.errorMessagePrefix,'gCC','1',charCodeRequest.charType]));
+    const constraint: characterCodeConstraintsAttributes | undefined = characterCodeConstraints[charCodeRequest.charType];
+
+    if (!constraint) {
+
+        throw {
+            errorKey: errors.nonGenerableCharacterType,
+            replacements: [
+                'gCC',
+                '1',
+                charCodeRequest.charType
+            ]
+        }
+
     }
 
     if(constraint.offset){

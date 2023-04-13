@@ -17,7 +17,7 @@
 
 simplePass is a JavaScript password generator.
 
-PWA Size: ~1.8MB
+PWA Size: ~2MB
 
 ## Available Modifiers
 

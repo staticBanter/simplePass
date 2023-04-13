@@ -48,7 +48,7 @@
     <header>
         <h1>simplePass</h1>
         <nav>
-            <a href="./docs/index.html">Read The Documentation</a>
+            <a href="./docs/index.html">Documentation</a>
         </nav>
     </header>
     <main>
@@ -159,7 +159,7 @@
                 <legend>Repeat Characters</legend>
                 <div>
                     <label>Repeating Character:
-                        <input type="checkbox" form="sp_form" name="repeatingCharacter" class="toggle" data-toggle="disabled" data-target="#repeatingCharacter_limit #customRepeatingCharacters"/>
+                        <input type="checkbox" form="sp_form" name="repeatingCharacter" />
                     </label>
                     <p>Ensure at least one character in the password will be repeated.</p>
                 </div>
@@ -204,7 +204,7 @@
                 <fieldset>
                     <legend>Beginning of Password:</legend>
                     <label>Yes:
-                        <input type="checkbox" form="sp_form" name="whitespaceBeginning" class="toggle" />
+                        <input type="checkbox" form="sp_form" name="whitespaceBeginning" />
                     </label>
                     <label>Required:
                         <input type="checkbox" form="sp_form" name="required_whitespaceBeginning" id="required_whitespaceBeginning"/>
@@ -213,7 +213,7 @@
                 <fieldset>
                     <legend>End of Password:</legend>
                     <label>Yes:
-                        <input type="checkbox" form="sp_form" name="whitespaceEnd" class="toggle" />
+                        <input type="checkbox" form="sp_form" name="whitespaceEnd" />
                     </label>
                     <label>Required:
                         <input type="checkbox" form="sp_form" name="required_whitespaceEnd" id="required_whitespaceEnd" />
@@ -221,7 +221,7 @@
                 </fieldset>
                 <fieldset>
                     <label>Between:
-                        <input class="toggle" type="checkbox" form="sp_form" name="whitespaceBetween" />
+                        <input type="checkbox" form="sp_form" name="whitespaceBetween" />
                     </label>
                     <label>Limit:
                         <input type="number" step="1" min="1" max="252" form="sp_form" id="max_whitespaceBetween" name="max_whitespaceBetween" />
@@ -253,7 +253,7 @@
                 </label>
             </fieldset>
         </form>
-        <button class="add-button">Add to home screen</button>
+        <!-- <button class="add-button">Add to home screen</button> -->
     </main>
 </body>
 </html>
