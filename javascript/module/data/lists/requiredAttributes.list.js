@@ -19,6 +19,8 @@
  * - ```uppercase_extended_b```
  * - ```mixedcase_extended_b```
  * - ```insensitivecase_extended_b```
+ * - ```character_modifier_letters```
+ * - ```symbol_modifier_letters'```
  * > Note: Only 1 of these modifiers is required for the program to function.
  *
  * @const {Array<string>} requiredAttributes
@@ -37,6 +39,8 @@ const requiredAttributes = [
     'lowercase_extended_b',
     'uppercase_extended_b',
     'mixedcase_extended_b',
-    'insensitivecase_extended_b'
+    'insensitivecase_extended_b',
+    'character_modifier_letters',
+    'symbol_modifier_letters'
 ];
 export default requiredAttributes;

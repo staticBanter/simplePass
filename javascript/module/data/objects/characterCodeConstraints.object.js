@@ -221,6 +221,24 @@ const characterCodeConstraints = {
             [446, 451]
         ],
         offset: 422,
+    },
+    character_modifier_letters: {
+        min: 688,
+        max: 739,
+        range: [
+            [688, 696],
+            [737, 739]
+        ],
+        offset: 688,
+    },
+    symbol_modifier_letters: {
+        min: 697,
+        max: 767,
+        range: [
+            [697, 736],
+            [740, 767],
+        ],
+        offset: 697,
     }
 };
 export default characterCodeConstraints;

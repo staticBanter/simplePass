@@ -45,6 +45,7 @@ Fully Supported Character Sets:
 - Latin(1) Supplement
 - Latin Extended A
 - Latin Extended B
+- Modifier Letters
 
 ### White-space Modifiers
 
