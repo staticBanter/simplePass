@@ -167,6 +167,8 @@ html > body {
         overflow: scroll;
         padding-bottom: 1rem;
         text-rendering: optimizeLegibility;
+        font-kerning: none;
+        font-variant-ligatures: no-common-ligatures;
     }
 
     #passwordForm{

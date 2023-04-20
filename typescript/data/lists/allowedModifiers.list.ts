@@ -34,7 +34,11 @@
  * - ```mixedcase_extended_b```
  * - ```insensitivecase_extended_b```
  * - ```character_modifier_letters```
- * - ```symbol_modifier_letters'```
+ * - ```symbol_modifier_letters```
+ * - ```lowercase_greek_coptic```
+ * - ```uppercase_greek_coptic```
+ * - ```insensitivecase_greek_coptic```
+ * - ```symbol_greek_coptic```
  *
  * @const {Array<string>} allowedModifiers
  */
@@ -66,7 +70,11 @@ const allowedModifiers:Array<string> = [
     'mixedcase_extended_b',
     'insensitivecase_extended_b',
     'character_modifier_letters',
-    'symbol_modifier_letters'
+    'symbol_modifier_letters',
+    'lowercase_greek_coptic',
+    'uppercase_greek_coptic',
+    'insensitivecase_greek_coptic',
+    'symbol_greek_coptic'
 ];
 
 export default allowedModifiers;

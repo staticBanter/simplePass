@@ -46,6 +46,7 @@ Fully Supported Character Sets:
 - Latin Extended A
 - Latin Extended B
 - Modifier Letters
+- Greek And Coptic
 
 ### White-space Modifiers
 

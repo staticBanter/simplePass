@@ -304,6 +304,61 @@ const characterCodeConstraints:{
             [740,767],
         ],
         offset: 697,
+    },
+    lowercase_greek_coptic: {
+        min: 881,
+        max: 1019,
+        range: [
+            [881],
+            [883],
+            [887],
+            [912],
+            [940, 974],
+            [1016],
+            [1019]
+        ].concat(range(985, 107, 2, undefined, true)),
+        offset: 881,
+    },
+    uppercase_greek_coptic: {
+        min: 880,
+        max: 1018,
+        range: [
+            [880],
+            [882],
+            [886],
+            [902],
+            [904, 906],
+            [908],
+            [910, 911],
+            [913, 929],
+            [931, 939],
+            [1015],
+            [1018]
+        ].concat(range(994,1004,2,undefined,true)),
+        offset:880,
+    },
+    insensitivecase_greek_coptic: {
+        min: 984,
+        max: 1011,
+        range: [
+            [1011]
+        ].concat(range(984,992,2,undefined,true)),
+        offset: 984
+    },
+    symbol_greek_coptic: {
+        min: 884,
+        max: 1020,
+        range: [
+            [884, 885],
+            [890, 894],
+            [900,901],
+            [903],
+            [975, 983],
+            [988],
+            [1008, 1014],
+            [1020,1023]
+        ],
+        offset: 884,
     }
 };
 
