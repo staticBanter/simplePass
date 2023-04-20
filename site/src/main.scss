@@ -163,8 +163,10 @@ html > body {
         white-space: pre;
         font-family: 'Liberation Mono';
         text-decoration: underline;
+        text-underline-position: under;
         overflow: scroll;
         padding-bottom: 1rem;
+        text-rendering: optimizeLegibility;
     }
 
     #passwordForm{
