@@ -122,6 +122,170 @@ const characterCodeConstraints:{
            [339]
         ],
         offset:256
+    },
+    lowercase_extended_b: {
+        min:384,
+        max:591,
+        range: [
+            [384],
+            [387],
+            [389],
+            [392],
+            [396, 397],
+            [402],
+            [405],
+            [409, 411],
+            [414],
+            [417],
+            [419],
+            [421],
+            [427],
+            [432],
+            [436],
+            [438],
+            [441, 442],
+            [445],
+            [454],
+            [457],
+            [460],
+            [496],
+            [499],
+            [501],
+            [572],
+            [589],
+            [591],
+            [578],
+            [563, 569],
+            [575, 576],
+            [585],
+            [587],
+            [583]
+        ]
+        .concat(range(462, 476, 2, undefined, true))
+        .concat(range(479, 495, 2, undefined, true))
+        .concat(range(505, 561, 2, undefined, true)),
+        offset:384,
+    },
+    uppercase_extended_b: {
+        min: 385,
+        max: 590,
+        range: [
+            [444]
+        ].concat(range(
+            385,
+            408,
+            1,
+            [
+                387,
+                389,
+                392,
+                396,
+                397,
+                402,
+                405
+            ],
+            true
+        ))
+            .concat(range(
+                412,
+                440,
+                1,
+                [
+                    414,
+                    417,
+                    419,
+                    421,
+                    422,
+                    424,
+                    426,
+                    427,
+                    429,
+                    432,
+                    436,
+                    438
+                ],
+                true
+            ))
+            .concat(range(
+                452,
+                458,
+                1,
+                [
+                    453,
+                    454,
+                    456,
+                    459
+                ],
+                true
+            ))
+            .concat(range(
+                461,
+                475,
+                2,
+                undefined,
+                true,
+            ))
+            .concat(range(
+                478,
+                494,
+                2,
+                undefined,
+                true
+            )).concat(range(
+                497,
+                504,
+                1,
+                [
+                    498,
+                    499,
+                    501
+                ],
+                true
+            )).concat(range(
+                506,
+                562,
+                2,
+                undefined,
+                true
+            )).concat(range(
+                570,
+                590,
+                1,
+                [
+                    572,
+                    575,
+                    576,
+                    578,
+                    583,
+                    585,
+                    587,
+                    589
+                ],
+                true,
+            )),
+        offset: 385,
+    },
+    mixedcase_extended_b: {
+        min: 453,
+        max: 498,
+        range: [
+            [453],
+            [456],
+            [459],
+            [498],
+        ],
+        offset:453,
+    },
+    insensitivecase_extended_b: {
+        min: 422,
+        max: 451,
+        range: [
+            [422],
+            [426],
+            [443],
+            [446,451]
+        ],
+        offset: 422,
     }
 };
 

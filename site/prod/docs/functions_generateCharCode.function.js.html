@@ -111,9 +111,6 @@ export default function generateCharCode(charCodeRequest, flags) {
     const min = constraint.min;
     const max = constraint.max;
     const range = constraint.range;
-    // if(range){
-    //     console.debug(range,range[0][0]);
-    // }
     /**
      * If the character code we are looking for exists in a range of codes.
      * If the generated charCode is within the min or max of that range.

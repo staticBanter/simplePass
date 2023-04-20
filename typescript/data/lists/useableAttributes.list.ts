@@ -21,6 +21,11 @@
  * - ```lowercase_extended_a```
  * - ```uppercase_extended_a```
  * - ```ligature_extended_a```
+ * - ```lowercase_extended_b```
+ * - ```uppercase_extended_b```
+ * - ```mixedcase_extended_b```
+ * - ```insensitivecase_extended_b```
+ *
  * @const {Array<string>} useableAttributes
  */
 const useableAttributes:Array<string> = [
@@ -38,6 +43,10 @@ const useableAttributes:Array<string> = [
     'lowercase_extended_a',
     'uppercase_extended_a',
     'ligature_extended_a',
+    'lowercase_extended_b',
+    'uppercase_extended_b',
+    'mixedcase_extended_b',
+    'insensitivecase_extended_b'
 ];
 
 export default useableAttributes;
