@@ -48,6 +48,10 @@ Fully Supported Character Sets:
 - Modifier Letters
 - Greek And Coptic
 
+Partially Supported Character Sets:
+
+- Cyrillic
+
 ### White-space Modifiers
 
 Uses character code: 32. For whitespace.

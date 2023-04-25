@@ -359,6 +359,104 @@ const characterCodeConstraints:{
             [1020,1023]
         ],
         offset: 884,
+    },
+    lowercase_cyrillic: {
+        min: 1072,
+        max: 1279,
+        range: [
+            [1072, 1119]
+        ]
+        .concat(
+            range(
+                1121,
+                1153,
+                2,
+                undefined,
+                true
+            )
+        )
+        .concat(
+            range(
+                1163,
+                1215,
+                2,
+                [
+                    1189,
+                    1205,
+                ],
+                true
+            )
+        ).concat(
+            range(
+                1218,
+                1230,
+                2,
+                undefined,
+                true,
+            )
+        )
+        .concat(
+            range(
+                1231,
+                1279,
+                2,
+                [
+                    1237,
+                ],
+                true
+            )
+        ),
+        offset:1072
+    },
+    uppercase_cyrillic: {
+        min: 1024,
+        max: 1278,
+        range: [
+            [1024, 1071],
+        ]
+        .concat(range(
+            1120,
+            1214,
+            2,
+            [
+                1154,
+                1156,
+                1158,
+                1160,
+                1188,
+                1204,
+            ],
+            true
+        ))
+        .concat(range(
+            1217,
+            1229,
+            2,
+            undefined,
+            true
+        ))
+        .concat(range(
+            1232,
+            1278,
+            2,
+            [
+                1236,
+
+            ],
+            true
+        )),
+        offset: 1024,
+    },
+    symbols_cyrillic: {
+        min: 1154,
+        max: 1237,
+        range: [
+            [1154],
+            [1188, 1189],
+            [1204, 1205],
+            [1236, 1237]
+        ],
+        offset: 1154,
     }
 };
 

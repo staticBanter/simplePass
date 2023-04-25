@@ -39,6 +39,9 @@
  * - ```uppercase_greek_coptic```
  * - ```insensitivecase_greek_coptic```
  * - ```symbol_greek_coptic```
+ * - ```lowercase_cyrillic```
+ * - ```uppercase_cyrillic```
+ * - ```symbols_cyrillic```
  *
  * @const {Array<string>} allowedModifiers
  */
@@ -74,7 +77,10 @@ const allowedModifiers:Array<string> = [
     'lowercase_greek_coptic',
     'uppercase_greek_coptic',
     'insensitivecase_greek_coptic',
-    'symbol_greek_coptic'
+    'symbol_greek_coptic',
+    'lowercase_cyrillic',
+    'uppercase_cyrillic',
+    'symbols_cyrillic'
 ];
 
 export default allowedModifiers;

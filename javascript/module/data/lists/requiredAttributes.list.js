@@ -25,6 +25,9 @@
  * - ```uppercase_greek_coptic```
  * - ```insensitivecase_greek_coptic```
  * - ```symbol_greek_coptic```
+ * - ```lowercase_cyrillic```
+ * - ```uppercase_cyrillic```
+ * - ```symbols_cyrillic```
  * > Note: Only 1 of these modifiers is required for the program to function.
  *
  * @const {Array<string>} requiredAttributes
@@ -49,6 +52,9 @@ const requiredAttributes = [
     'lowercase_greek_coptic',
     'uppercase_greek_coptic',
     'insensitivecase_greek_coptic',
-    'symbol_greek_coptic'
+    'symbol_greek_coptic',
+    'lowercase_cyrillic',
+    'uppercase_cyrillic',
+    'symbols_cyrillic'
 ];
 export default requiredAttributes;
