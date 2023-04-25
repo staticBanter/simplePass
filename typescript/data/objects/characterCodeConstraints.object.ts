@@ -457,6 +457,23 @@ const characterCodeConstraints:{
             [1236, 1237]
         ],
         offset: 1154,
+    },
+    lowercase_cyrillic_supplement: {
+        min:1281,
+        max:1319,
+        range: range(1281,1319,2,undefined,true),
+        offset:1281
+    },
+    uppercase_cyrillic_supplement: {
+        min:1280,
+        max:1319,
+        range: range(1280,1319,2,undefined,true),
+        offset:1280,
+    },
+    misc_cyrillic_supplement: {
+        min:1320,
+        max:1327,
+        offset:1320,
     }
 };
 

@@ -47,6 +47,7 @@ Fully Supported Character Sets:
 - Latin Extended B
 - Modifier Letters
 - Greek And Coptic
+- Cyrillic Supplement
 
 Partially Supported Character Sets:
 

@@ -40,6 +40,9 @@
  * - ```lowercase_cyrillic```
  * - ```uppercase_cyrillic```
  * - ```symbols_cyrillic```
+ * - ```lowercase_cyrillic_supplement```
+ * - ```uppercase_cyrillic_supplement```
+ * - ```misc_cyrillic_supplement```
  *
  * @const {Array<string>} allowedModifiers
  */
@@ -78,6 +81,9 @@ const allowedModifiers = [
     'symbol_greek_coptic',
     'lowercase_cyrillic',
     'uppercase_cyrillic',
-    'symbols_cyrillic'
+    'symbols_cyrillic',
+    'lowercase_cyrillic_supplement',
+    'uppercase_cyrillic_supplement',
+    'misc_cyrillic_supplement'
 ];
 export default allowedModifiers;
