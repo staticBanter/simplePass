@@ -47,7 +47,7 @@ const characterCodeConstraints = {
         ]
     },
     whitespace: {
-        single: 32
+        min: 32
     },
     lowercase_supplement: {
         min: 223,
@@ -82,7 +82,6 @@ const characterCodeConstraints = {
             .concat(range(331, 375, 2, [338, 339]))
             .concat(range(378, 383, 2))
             .map((element) => element = [element]),
-        offset: 256
     },
     uppercase_extended_a: {
         min: 256,
@@ -93,7 +92,6 @@ const characterCodeConstraints = {
             .concat([376])
             .concat(range(377, 381, 2))
             .map((element) => element = [element]),
-        offset: 256
     },
     ligature_extended_a: {
         min: 306,
@@ -103,8 +101,7 @@ const characterCodeConstraints = {
             [307],
             [338],
             [339]
-        ],
-        offset: 256
+        ]
     },
     lowercase_extended_b: {
         min: 384,
@@ -146,8 +143,7 @@ const characterCodeConstraints = {
         ]
             .concat(range(462, 476, 2, undefined, true))
             .concat(range(479, 495, 2, undefined, true))
-            .concat(range(505, 561, 2, undefined, true)),
-        offset: 384,
+            .concat(range(505, 561, 2, undefined, true))
     },
     uppercase_extended_b: {
         min: 385,
@@ -197,8 +193,7 @@ const characterCodeConstraints = {
             585,
             587,
             589
-        ], true)),
-        offset: 385,
+        ], true))
     },
     mixedcase_extended_b: {
         min: 453,
@@ -208,8 +203,7 @@ const characterCodeConstraints = {
             [456],
             [459],
             [498],
-        ],
-        offset: 453,
+        ]
     },
     insensitivecase_extended_b: {
         min: 422,
@@ -219,8 +213,7 @@ const characterCodeConstraints = {
             [426],
             [443],
             [446, 451]
-        ],
-        offset: 422,
+        ]
     },
     character_modifier_letters: {
         min: 688,
@@ -228,8 +221,7 @@ const characterCodeConstraints = {
         range: [
             [688, 696],
             [737, 739]
-        ],
-        offset: 688,
+        ]
     },
     symbol_modifier_letters: {
         min: 697,
@@ -237,8 +229,7 @@ const characterCodeConstraints = {
         range: [
             [697, 736],
             [740, 767],
-        ],
-        offset: 697,
+        ]
     },
     lowercase_greek_coptic: {
         min: 881,
@@ -251,8 +242,7 @@ const characterCodeConstraints = {
             [940, 974],
             [1016],
             [1019]
-        ].concat(range(985, 107, 2, undefined, true)),
-        offset: 881,
+        ].concat(range(985, 107, 2, undefined, true))
     },
     uppercase_greek_coptic: {
         min: 880,
@@ -269,16 +259,14 @@ const characterCodeConstraints = {
             [931, 939],
             [1015],
             [1018]
-        ].concat(range(994, 1004, 2, undefined, true)),
-        offset: 880,
+        ].concat(range(994, 1004, 2, undefined, true))
     },
     insensitivecase_greek_coptic: {
         min: 984,
         max: 1011,
         range: [
             [1011]
-        ].concat(range(984, 992, 2, undefined, true)),
-        offset: 984
+        ].concat(range(984, 992, 2, undefined, true))
     },
     symbol_greek_coptic: {
         min: 884,
@@ -292,8 +280,7 @@ const characterCodeConstraints = {
             [988],
             [1008, 1014],
             [1020, 1023]
-        ],
-        offset: 884,
+        ]
     },
     lowercase_cyrillic: {
         min: 1072,
@@ -308,8 +295,7 @@ const characterCodeConstraints = {
         ], true)).concat(range(1218, 1230, 2, undefined, true))
             .concat(range(1231, 1279, 2, [
             1237,
-        ], true)),
-        offset: 1072
+        ], true))
     },
     uppercase_cyrillic: {
         min: 1024,
@@ -328,8 +314,7 @@ const characterCodeConstraints = {
             .concat(range(1217, 1229, 2, undefined, true))
             .concat(range(1232, 1278, 2, [
             1236,
-        ], true)),
-        offset: 1024,
+        ], true))
     },
     symbols_cyrillic: {
         min: 1154,
@@ -339,25 +324,21 @@ const characterCodeConstraints = {
             [1188, 1189],
             [1204, 1205],
             [1236, 1237]
-        ],
-        offset: 1154,
+        ]
     },
     lowercase_cyrillic_supplement: {
         min: 1281,
         max: 1319,
-        range: range(1281, 1319, 2, undefined, true),
-        offset: 1281
+        range: range(1281, 1319, 2, undefined, true)
     },
     uppercase_cyrillic_supplement: {
         min: 1280,
         max: 1319,
-        range: range(1280, 1319, 2, undefined, true),
-        offset: 1280,
+        range: range(1280, 1319, 2, undefined, true)
     },
     misc_cyrillic_supplement: {
         min: 1320,
-        max: 1327,
-        offset: 1320,
+        max: 1327
     }
 };
 export default characterCodeConstraints;

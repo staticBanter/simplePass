@@ -116,31 +116,17 @@ export default function generateCharCode(charCodeRequest:charCodeRequest,flags?:
 
     }
 
-    if(constraint.offset){
-        charCode += constraint.offset
+    if (constraint.min > 256) {
+        charCode += constraint.min;
     }
 
-    /**
-     * If the character code we are requesting only has a single constraint,
-     * we can preform a direct comparison on it to determine if it's the one
-     * we want.
-     * Else continue as the constraint may have more attributes that we can
-     * test for.
-     */
-    if(
-        constraint.single
-        && constraint.single === charCode
-    ){
+    if (
+        !constraint.max
+        && !constraint.range
+        && charCode === constraint.min
+    ) {
         return charCode;
     }
-
-    /**
-     * Initialize these three attributes as they are used in a combination of
-     * comparisons.
-     */
-    const min:number|undefined = constraint.min
-    const max:number|undefined = constraint.max
-    const range:Array<Array<number>>|undefined = constraint.range
 
     /**
      * If the character code we are looking for exists in a range of codes.
@@ -149,40 +135,40 @@ export default function generateCharCode(charCodeRequest:charCodeRequest,flags?:
      * Iterate over our range;
      *  If our generated charCode exists somewhere in there, return it.
      */
-    if(range){
+    if(constraint.range){
         if(
             (
-                min
-                && max
+                constraint.min
+                && constraint.max
             )
             && (
-                charCode >= min
-                && charCode <= max
+                charCode >= constraint.min
+                && charCode <= constraint.max
             )
         ){
             if(
-                charCode === min
-                || charCode === max
+                charCode === constraint.min
+                || charCode === constraint.max
             ){
                 return charCode;
             }
 
-            for(let i = 0; i < range.length; i++){
+            for(let i = 0; i < constraint.range.length; i++){
 
                 if(
                     (
-                        range[i][0]
-                        && range[i][1]
+                        constraint.range[i][0]
+                        && constraint.range[i][1]
                     )
                     && (
-                        charCode >= range[i][0]
-                        && charCode <= range[i][1]
+                        charCode >= constraint.range[i][0]
+                        && charCode <= constraint.range[i][1]
                     )
                 ){
                     return charCode;
                 }else if(
-                    range[i][0]
-                    && charCode === range[i][0]
+                    constraint.range[i][0]
+                    && charCode === constraint.range[i][0]
                 ){
                     return charCode;
                 }
@@ -191,12 +177,12 @@ export default function generateCharCode(charCodeRequest:charCodeRequest,flags?:
     }else if(
     // ^ Else there was no range attribute and we only need to check the min and max.
         (
-            min
-            && max
+            constraint.min
+            && constraint.max
         )
         && (
-            charCode >= min
-            && charCode <= max
+            charCode >= constraint.min
+            && charCode <= constraint.max
         )
     ){
         return charCode;

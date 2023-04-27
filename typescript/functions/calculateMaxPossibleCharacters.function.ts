@@ -60,8 +60,6 @@ export default function calculateMaxPossibleCharacters(characterSetObject:charac
                     && constraint.max
                 ){
                     maxPossibleCharacters += (constraint.max-constraint.min);
-                }else if(constraint.single){
-                    maxPossibleCharacters++;
                 }
             }
         }
