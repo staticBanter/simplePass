@@ -1,0 +1,246 @@
+<!doctypehtml><html lang=en><meta charset=utf-8><meta content="A JavaScript password generator"name=description><meta content=#636980 name=theme-color><meta content="simplePass | Source: functions/initializer.function.js"property=og:title><meta content=website property=og:type><meta content=https://staticbanter.github.io/simplePass/ property=og:url><meta content="simplePass documentation page for Source: functions/initializer.function.js"property=og:description><meta content=en_CA property=og:locale><meta content=GitHub property=og:site_name><link href=../storage/icons/simplePass-Logo-1080.png rel=apple-touch-icon><link href=../manifest.json rel=manifest><link href=../storage/icons/simplePass-Logo-512.png rel=icon type=image/png><title>simplePass Docs: Source: functions/initializer.function.js</title><script src=scripts/prettify/prettify.js></script><script src=scripts/prettify/lang-css.js></script><!--[if lt IE 9]><script src=//html5shiv.googlecode.com/svn/trunk/html5.js></script><![endif]--><link href=styles/prettify-tomorrow.css rel=stylesheet><link href=styles/jsdoc-default.css rel=stylesheet><div id=main><h1 class=page-title>Source: functions/initializer.function.js</h1><section><article><pre class="linenums prettyprint source"><code>import config from "../simplePass.config.js";
+import messageHandler from "./messageHandler.function.js";
+import simplePass from "../simplePass.js";
+/**
+ * @file
+ * @module initializer
+ */
+/**
+ * Initialize the simplePass form and its inputs.
+ *
+ *
+ * @function initializer
+ * @param cFig A [simplePass configuration]{@link config} object
+ * @returns {void}
+ */
+export default function initializer(cFig = config) {
+    if (typeof (cFig) !== 'object') {
+        messageHandler({
+            messageKey: 'ERROR.simplePass-Init.2: Initializer Configuration argument must be of type "object".',
+        }, {
+            htmlMessage: {
+                messageBoard: document.body
+            },
+            consoleMessage: true,
+            level: "ERROR",
+        }, cFig);
+        return;
+    }
+    // Get the base form element.
+    const spForm = document.querySelector(cFig.htmlElements.forms);
+    if (!spForm) {
+        messageHandler({
+            messageKey: 'ERROR.simplePass-Init.1: Could not find the form',
+        }, {
+            htmlMessage: {
+                messageBoard: document.body
+            },
+            consoleMessage: true,
+            level: "ERROR",
+        }, cFig);
+        return;
+    }
+    // Password length
+    const passwordLengthIn = spForm.querySelector('input[name=length]');
+    passwordLengthIn.min = cFig.min_passwordLength.toString();
+    passwordLengthIn.max = cFig.max_passwordLength.toString();
+    passwordLengthIn.step = "1";
+    passwordLengthIn.required = true;
+    // Exclude Characters
+    const excludeCharactersIn = spForm.querySelector('input[name=excludeCharacters]');
+    const excludeCharactersInMinLength = (config.max_passwordLength - 6); // TODO: Move this.
+    excludeCharactersIn.minLength = 1;
+    excludeCharactersIn.maxLength = excludeCharactersInMinLength;
+    excludeCharactersIn.pattern = '/[\s]/g';
+    // Repeating Characters Input
+    const maxRepeatingCharacterIn = spForm.querySelector('input[name=max_repeatingCharacter]');
+    maxRepeatingCharacterIn.min = "1";
+    maxRepeatingCharacterIn.max = "100";
+    maxRepeatingCharacterIn.step = "1";
+    // Custom Repeating Characters Input
+    const customRepeatingCharactersIn = spForm.querySelector('input[name=customRepeatingCharacters]');
+    customRepeatingCharactersIn.minLength = 1;
+    customRepeatingCharactersIn.maxLength = 100;
+    // Batch Password Input
+    const batchInput = document.body.querySelector(cFig.htmlElements.batchPasswordInput);
+    batchInput.min = '1';
+    batchInput.max = '256';
+    batchInput.step = '1';
+    // Set Values For Default Password Inputs
+    Object.entries(cFig.defaultPasswordModifier).forEach(([key, value]) => {
+        const defaultIn = spForm.querySelector(`input[name=${key}]`);
+        const defaultInType = defaultIn.getAttribute('type');
+        if (value) {
+            if (!defaultInType
+                || defaultInType === 'input'
+                || defaultInType === 'number') {
+                defaultIn.value = value.toString();
+            }
+            else {
+                defaultIn.checked = true;
+            }
+        }
+    });
+    // Find Password Box Elements
+    const passwordBox = document.body.querySelector(cFig.htmlElements.passwordBox);
+    const passwordContainer = passwordBox.querySelector(cFig.htmlElements.passwordContainer);
+    const passwordParagraph = passwordBox.querySelector(cFig.htmlElements.passwordParagraph);
+    const passwordEntropy = passwordBox.querySelector(cFig.htmlElements.entropyContainer);
+    // Set the first password.
+    const password = simplePass({
+        length: 22,
+        lowercase: true,
+        uppercase: true,
+        numbers: true,
+        punctuation: true
+    }, {
+        styleTarget: passwordParagraph,
+        styleType: "inline"
+    }, {
+        messageBoard: passwordBox,
+    });
+    if (typeof (password) === 'string') {
+        passwordParagraph.innerText = password;
+    }
+    else {
+        passwordParagraph.innerText = password.password;
+        passwordEntropy.innerText = Math.floor(password.entropy).toString();
+    }
+    // Event Listener For The Form
+    spForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        let password;
+        const passwordListID = "sp_passwordList";
+        if (batchInput.value) {
+            let batch = parseInt(batchInput.value);
+            if (batch &lt; 1
+                || batch > 256) {
+                throw new Error("Request Password Batch Amount Was Out Of Bounds.");
+            }
+            passwordContainer.querySelector(`#${passwordListID}`)?.remove();
+            passwordEntropy.parentElement?.remove();
+            passwordParagraph.remove();
+            const OL = document.createElement("OL");
+            OL.id = passwordListID;
+            while (batch--) {
+                const LI = document.createElement("LI");
+                const listedPassword = document.createElement("P");
+                listedPassword.classList.add('listedPassword');
+                const listedPasswordEntropy = document.createElement("P");
+                const password = simplePass(new FormData(this), {
+                    styleTarget: listedPassword,
+                    styleType: "inline"
+                }, {
+                    messageBoard: passwordBox,
+                });
+                if (typeof (password) !== 'object') {
+                    messageHandler({
+                        messageKey: 'ERROR.simplePass-Init.7: The password was not an object',
+                    }, {
+                        htmlMessage: {
+                            messageBoard: document.body
+                        },
+                        consoleMessage: true,
+                        level: "ERROR",
+                    }, cFig);
+                    return;
+                }
+                listedPassword.innerText = password.password;
+                listedPasswordEntropy.innerText = `Bits of Entropy : ~${Math.floor(password.entropy)}`;
+                LI.appendChild(listedPassword);
+                LI.appendChild(listedPasswordEntropy);
+                OL.appendChild(LI);
+            }
+            passwordContainer.appendChild(OL);
+            passwordContainer.dataset.batchType = 'list';
+        }
+        else {
+            password = simplePass(new FormData(this), {
+                styleTarget: passwordParagraph,
+                styleType: "inline"
+            }, {
+                messageBoard: passwordContainer,
+            });
+            passwordContainer.querySelector(`#${passwordListID}`)?.remove();
+            if (!passwordContainer.querySelector(cFig.htmlElements.passwordParagraph)) {
+                let displayEntropy = document.createElement("P");
+                displayEntropy.innerText = 'Bits of Entropy: ~';
+                passwordContainer.appendChild(passwordParagraph);
+                console.debug(passwordEntropy);
+                displayEntropy.appendChild(passwordEntropy);
+                passwordContainer.appendChild(displayEntropy);
+            }
+            if (typeof (password) !== 'object') {
+                messageHandler({
+                    messageKey: 'ERROR.simplePass-Init.8: The password was not an object',
+                }, {
+                    htmlMessage: {
+                        messageBoard: document.body
+                    },
+                    consoleMessage: true,
+                    level: "ERROR",
+                }, cFig);
+                return;
+            }
+            passwordParagraph.innerText = password.password;
+            passwordEntropy.innerText = Math.floor(password.entropy).toString();
+            passwordEntropy.parentElement.removeAttribute('style');
+            passwordContainer.dataset.batchType = 'single';
+        }
+    });
+    /**
+     * Event listeners for "Radio Checkboxes".
+     * Just loops through all the checkboxes and unchecks and box that does not have the same value as the
+     * currently clicked box.
+     */
+    const radioCheckboxes = spForm.querySelectorAll('input[data-radioCheckbox]');
+    radioCheckboxes.forEach((input) => {
+        input.addEventListener('click', function () {
+            radioCheckboxes.forEach((input) => {
+                if (input.value !== this.value) {
+                    if (input.checked) {
+                        input.checked = false;
+                    }
+                }
+            });
+        });
+    });
+    // Copy the password to clipboard when copy button is clicked
+    document.body.querySelector(cFig.htmlElements.copyButton)?.addEventListener('click', function (event) {
+        event.preventDefault();
+        switch (passwordContainer.dataset.batchType) {
+            default:
+            case 'single':
+                navigator.clipboard.writeText(passwordParagraph.innerText).then(() => {
+                    this.style.backgroundColor = `green`;
+                    this.innerText = 'Copied!';
+                    setTimeout(() => {
+                        this.toggleAttribute('style');
+                        this.innerText = 'Copy';
+                    }, 5000);
+                })
+                    .catch((error) => {
+                    console.error(error.message);
+                });
+                break;
+            case 'list':
+                let copyString = '';
+                passwordContainer.querySelectorAll("LI").forEach((element) => {
+                    copyString += `${element.querySelector('p')?.innerText}\n`;
+                });
+                navigator.clipboard.writeText(copyString).then(() => {
+                    this.style.backgroundColor = `green`;
+                    this.innerText = 'Copied!';
+                    setTimeout(() => {
+                        this.toggleAttribute('style');
+                        this.innerText = 'Copy';
+                    }, 5000);
+                })
+                    .catch((error) => {
+                    console.error(error.message);
+                });
+                break;
+        }
+    });
+}
+</code></pre></article></section></div><nav><b><a href=../index.html>simplePass Program</a></b><h3><a href=index.html>README</a></h3><h3>Modules</h3><ul><li><a href=module-allowedModifiers.html>allowedModifiers</a><li><a href=module-calculateMaxPossibleCharacters.html>calculateMaxPossibleCharacters</a><li><a href=module-characterCodeConstraints.html>characterCodeConstraints</a><li><a href=module-characterStrengthCheck.html>characterStrengthCheck</a><li><a href=module-cleanModifier.html>cleanModifier</a><li><a href=module-config.html>config</a><li><a href=module-createMessage.html>createMessage</a><li><a href=module-createModifierList.html>createModifierList</a><li><a href=module-ensureRepeatingCharacters.html>ensureRepeatingCharacters</a><li><a href=module-errors.html>errors</a><li><a href=module-generateCharCode.html>generateCharCode</a><li><a href=module-initializer.html>initializer</a><li><a href=module-messageHandler.html>messageHandler</a><li><a href=module-passwordPreConfigs.html>passwordPreConfigs</a><li><a href=module-range.html>range</a><li><a href=module-requiredAttributes.html>requiredAttributes</a><li><a href=module-shuffle.html>shuffle</a><li><a href=module-simplePass.html>simplePass</a><li><a href=module-strengthChecker.html>strengthChecker</a><li><a href=module-strengthScores.html>strengthScores</a><li><a href=module-useableAttributes.html>useableAttributes</a><li><a href=module-validateModifier.html>validateModifier</a><li><a href=module-whitespaceAttributes.html>whitespaceAttributes</a></ul><h3>Interfaces</h3><ul><li><a href=charCodeGenerationFlag.html>charCodeGenerationFlag</a><li><a href=charCodeOptions.html>charCodeOptions</a><li><a href=charCodeRequest.html>charCodeRequest</a><li><a href=characterCodeConstraintsAttributes.html>characterCodeConstraintsAttributes</a><li><a href=characterSetObject.html>characterSetObject</a><li><a href=characterStrengthCheckConstraints.html>characterStrengthCheckConstraints</a><li><a href=configHTMLElement.html>configHTMLElement</a><li><a href=ensureRepeatingCharacterOptions.html>ensureRepeatingCharacterOptions</a><li><a href=messageBoxObject.html>messageBoxObject</a><li><a href=messageObject.html>messageObject</a><li><a href=messageTypes.html>messageTypes</a><li><a href=passwordModifier.html>passwordModifier</a><li><a href=repeatingCharacterOptionsPreservations.html>repeatingCharacterOptionsPreservations</a><li><a href=strengthCheckedPassword.html>strengthCheckedPassword</a><li><a href=strengthCheckerConstraints.html>strengthCheckerConstraints</a><li><a href=strengthCheckerStyling.html>strengthCheckerStyling</a><li><a href=strengthScoreAttributes.html>strengthScoreAttributes</a></ul><h3>Other Resources</h3><ul><li><a href=tutorial-CODE_OF_CONDUCT.html>Code Of Conduct</a><li><a href=tutorial-CONTRIBUTING.html>Contributing</a><li><a href=tutorial-DEVELOPMENT.html>DEVELOPMENT</a><li><a href=tutorial-EXAMPLES.html>EXAMPLES</a><li><a href=tutorial-SECURITY.html>Security</a></ul></nav><br class=clear><footer>Documentation generated by <a href=https://github.com/jsdoc/jsdoc>JSDoc 4.0.0</a></footer><script>prettyPrint()</script><script src=scripts/linenumber.js></script>

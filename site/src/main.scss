@@ -114,7 +114,7 @@ html > body {
     /**
      * ID Styles.
      */
-     #passwordBox{
+     #sp_passwordBox{
         display: flex;
         flex-wrap: wrap;
         border: 1px solid;
@@ -124,7 +124,7 @@ html > body {
         box-shadow: 0 -1px 5px;
     }
 
-    #passwordBox{
+    #sp_passwordBox{
 
         > div{
             display: block;
@@ -155,7 +155,7 @@ html > body {
 
     }
 
-    #displayPassword,
+    #sp_displayPassword,
     .listedPassword{
         word-wrap: anywhere;
         width: 80%;
@@ -171,7 +171,7 @@ html > body {
         font-variant-ligatures: no-common-ligatures;
     }
 
-    #passwordForm{
+    #sp_form{
         box-sizing: border-box;
         padding: 0.5rem;
         border: 1px solid;

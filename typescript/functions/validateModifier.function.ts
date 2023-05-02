@@ -32,6 +32,7 @@ import config from "../simplePass.config.js";
  */
 export default function validateModifier(
     modifier: passwordModifier,
+    cFig: typeof config,
 ): void {
 
     // Check if the password will be long enough to contain all the attributes.
@@ -285,7 +286,7 @@ export default function validateModifier(
             // Ensure the Repeating Character Limit is within a reasonable range.
             if(
                 modifier.max_repeatingCharacter < 1
-                || modifier.max_repeatingCharacter > 255
+                || modifier.max_repeatingCharacter > 100
             ) {
                 throw {
                     errorKey:'outOfBoundsAttributeValue',
@@ -339,8 +340,8 @@ export default function validateModifier(
             const length = parseInt(modifier.length);
 
             if(
-                length > config.max_passwordLength
-                || length < config.min_passwordLength
+                length > cFig.max_passwordLength
+                || length < cFig.min_passwordLength
             ) {
 
                 throw {
@@ -352,8 +353,8 @@ export default function validateModifier(
         }else{
 
             if(
-                modifier.length > config.max_passwordLength
-                || modifier.length < config.min_passwordLength
+                modifier.length > cFig.max_passwordLength
+                || modifier.length < cFig.min_passwordLength
             ) {
 
                 throw {
@@ -412,8 +413,8 @@ export default function validateModifier(
                 const max_whitespaceBetween = parseInt(modifier.max_whitespaceBetween);
 
                 if(
-                    max_whitespaceBetween > config.max_whitespaceBetween()
-                    || max_whitespaceBetween < config.min_whitespaceBetween()
+                    max_whitespaceBetween > cFig.max_whitespaceBetween()
+                    || max_whitespaceBetween < cFig.min_whitespaceBetween()
                 ) {
 
                     throw {
@@ -426,8 +427,8 @@ export default function validateModifier(
             }else{
 
                 if(
-                    modifier.max_whitespaceBetween > config.max_whitespaceBetween()
-                    || modifier.max_whitespaceBetween < config.min_whitespaceBetween()
+                    modifier.max_whitespaceBetween > cFig.max_whitespaceBetween()
+                    || modifier.max_whitespaceBetween < cFig.min_whitespaceBetween()
                 ) {
                     throw {
                         errorKey:'outOfBoundsAttributeValue',

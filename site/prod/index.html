@@ -52,22 +52,23 @@
         </nav>
     </header>
     <main>
-        <div id="passwordBox">
+        <div id="sp_passwordBox">
             <div>
                 <p>
                     <b>Password:</b>
                 </p>
-                <div id="passwordContainer">
+                <div id="sp_passwordContainer">
+                    <p id="sp_passwordParagraph"></p>
                 </div>
                 <p>
-                    Bits of Entropy: ~<span id="passwordEntropy"></span>
+                    Bits of Entropy: ~<span id="sp_passwordEntropy"></span>
                 </p>
             </div>
             <div>
-                <button id="generatePasswordButton" type="submit" form="sp_form">Generate</button>
-                <button id="copyPasswordButton" type="button">Copy</button>
+                <button id="sp_generatePasswordButton" type="submit" form="sp_form">Generate</button>
+                <button id="sp_copyPasswordButton" type="button">Copy</button>
                 <label>Batch Amount:
-                    <input type="number" name="passwordBatchAmount" id="passwordBatchAmount" min="2" max="256" />
+                    <input type="number" name="passwordBatchAmount" id="sp_batchPasswordInput" min="2" max="256" />
                 </label>
             </div>
         </div>
@@ -128,6 +129,18 @@
                     </div>
                 </div>
                 <div>
+                    <label>BIOS:
+                        <input type="checkbox" data-radioCheckbox name="preConfig" value="bios" class="sp_preConfig" autocomplete="off" />
+                    </label>
+                    <p>Configuration</p>
+                    <ul>
+                        <li>Length: 20</li>
+                        <li>Basic Latin Lowercase</li>
+                        <li>Basic Latin Uppercase</li>
+                        <li>Basic Latin Numbers</li>
+                    </ul>
+                </div>
+                <div>
                     <label>Extreme:
                         <input type="checkbox" data-radioCheckbox name="preConfig" value="extreme" class="sp_preConfig" autocomplete="off"/>
                     </label>
@@ -149,7 +162,7 @@
                 </div>
             </fieldset>
             <label>Character Length:
-                <input type="number" form="sp_form" name="length" max="256" min="1" step="1" value="22" required/>
+                <input type="number" form="sp_form" name="length"/>
             </label>
             <label>Exclude Characters:
                 <input type="text" form="sp_form" name="excludeCharacters" />
@@ -165,13 +178,13 @@
                 </div>
                 <div>
                     <label>Repeating Character Limit:
-                        <input type="number" form="sp_form" name="max_repeatingCharacter" id="max_repeatingCharacter" min="1" max="256" step="1"/>
+                        <input type="number" form="sp_form" name="max_repeatingCharacter" min="1" max="256" step="1"/>
                     </label>
                     <p>Specify the number of characters that should be repeated in the password.</p>
                 </div>
                 <div>
                     <label>Custom Repeats:
-                        <input type="text" form="sp_form" name="customRepeatingCharacters" id="customRepeatingCharacters" minlength="1" maxlength="256" />
+                        <input type="text" form="sp_form" name="customRepeatingCharacters" minlength="1" maxlength="256" />
                     </label>
                     <p>Specify the exact characters that should be repeated in the password, as-well as indicate the number of times the character should repeat.</p>
                     <p>The input either needs to be a single string containing all characters wished to be repeated (abcd). Or it can be formatted to define the amount each character should be repeated (b a:3 \::4);</p>
@@ -187,19 +200,19 @@
             <fieldset>
                 <legend>Latin Basic</legend>
                 <label>Lowercase Alpha:
-                    <input type="checkbox" form="sp_form" name="lowercase" checked/>
+                    <input type="checkbox" form="sp_form" name="lowercase"/>
                 </label>
                 <label>Uppercase Alpha:
-                    <input type="checkbox" form="sp_form" name="uppercase" checked/>
+                    <input type="checkbox" form="sp_form" name="uppercase"/>
                 </label>
                 <label>Numbers:
-                    <input type="checkbox" form="sp_form" name="numbers" checked/>
+                    <input type="checkbox" form="sp_form" name="numbers"/>
                 </label>
                 <label>Signs, Symbols, and Punctuation:
-                    <input type="checkbox" form="sp_form" name="punctuation" checked/>
+                    <input type="checkbox" form="sp_form" name="punctuation"/>
                 </label>
             </fieldset>
-            <fieldset id="whitespaceOptions" name="whitespaceOptions" form="sp_form">
+            <fieldset name="whitespaceOptions" form="sp_form">
                 <legend>Whitespace Options</legend>
                 <fieldset>
                     <legend>Beginning of Password:</legend>
@@ -207,7 +220,7 @@
                         <input type="checkbox" form="sp_form" name="whitespaceBeginning" />
                     </label>
                     <label>Required:
-                        <input type="checkbox" form="sp_form" name="required_whitespaceBeginning" id="required_whitespaceBeginning"/>
+                        <input type="checkbox" form="sp_form" name="required_whitespaceBeginning"/>
                     </label>
                 </fieldset>
                 <fieldset>
@@ -216,7 +229,7 @@
                         <input type="checkbox" form="sp_form" name="whitespaceEnd" />
                     </label>
                     <label>Required:
-                        <input type="checkbox" form="sp_form" name="required_whitespaceEnd" id="required_whitespaceEnd" />
+                        <input type="checkbox" form="sp_form" name="required_whitespaceEnd" />
                     </label>
                 </fieldset>
                 <fieldset>
@@ -224,7 +237,7 @@
                         <input type="checkbox" form="sp_form" name="whitespaceBetween" />
                     </label>
                     <label>Limit:
-                        <input type="number" step="1" min="1" max="252" form="sp_form" id="max_whitespaceBetween" name="max_whitespaceBetween" />
+                        <input type="number" step="1" min="1" max="252" form="sp_form" name="max_whitespaceBetween" />
                     </label>
                 </fieldset>
             </fieldset>

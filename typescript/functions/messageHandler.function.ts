@@ -4,6 +4,7 @@ import createMessage from "./createMessage.function.js";
 import messageTypes from "../data/interfaces/messageTypes.interface.js";
 import createMessageBox from "./createMessageBox.function.js";
 import messageObject from "../data/interfaces/messageObject.interface.js";
+import config from "../simplePass.config.js";
 
 /**
  * @file
@@ -27,8 +28,9 @@ export default function messageHandler(
     messageTypes: messageTypes = {
         consoleMessage: true,
         level:"ERROR"
-    }
-):void {
+    },
+    cFig: typeof config = config
+): void {
 
     if (
         message === 'CLEAR'
@@ -74,7 +76,7 @@ export default function messageHandler(
                 && message.templateMessages.replacements.length >= 1
             )
         ) {
-            message = createMessage(message.templateMessages!.templates[message.messageKey], message.templateMessages!.replacements);
+            message = createMessage(message.templateMessages!.templates[message.messageKey], message.templateMessages!.replacements,cFig);
         } else {
             message = message.messageKey;
         }

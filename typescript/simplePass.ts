@@ -16,6 +16,7 @@ import strengthCheckerStyling from "./data/interfaces/strengthCheckerStyling.int
 import strengthCheckedPassword from "./data/interfaces/strengthCheckedPassword.interface.js";
 import passwordPreConfigs from "./data/objects/passwordPreConfigs.object.js";
 import messageHandler from "./functions/messageHandler.function.js";
+import initializer from "./functions/initializer.function.js";
 
 /**
  * @file
@@ -49,7 +50,11 @@ import messageHandler from "./functions/messageHandler.function.js";
 export default function simplePass(
     modifier:passwordModifier|FormData = config.defaultPasswordModifier,
     strengthCheck?:boolean|strengthCheckerStyling,
-    displayMessages?:HTMLElement
+    displayMessages?: {
+        messageBoard: HTMLElement,
+        clearConsole?:boolean
+    },
+    cFig: typeof config = config,
 ) {
 
 
@@ -57,16 +62,17 @@ export default function simplePass(
         'CLEAR',
         {
             htmlMessage: (
-                displayMessages ? {
-                    messageBoard: displayMessages,
+                displayMessages!.messageBoard ? {
+                    messageBoard: displayMessages!.messageBoard,
                     clear:true,
                 } :undefined
             ),
             consoleMessage: {
-                clear: true,
+                clear: displayMessages!.clearConsole,
             },
             level:"CLEAR"
-        }
+        },
+        cFig
     )
 
     /**
@@ -90,14 +96,15 @@ export default function simplePass(
             },
             {
                 htmlMessage: (
-                    displayMessages ? {
-                        messageBoard: displayMessages,
+                    displayMessages!.messageBoard ? {
+                        messageBoard: displayMessages!.messageBoard,
                     } :
                     undefined
                 ),
                 consoleMessage: true,
                 level: "ERROR",
-            }
+            },
+            cFig
         )
     }
 
@@ -114,7 +121,7 @@ export default function simplePass(
 
     // Ensure certain values are set and set properly.
     try {
-        validateModifier(modifier);
+        validateModifier(modifier,cFig);
 
     } catch (caught: any) {
 
@@ -128,18 +135,18 @@ export default function simplePass(
             },
             {
                 htmlMessage: (
-                    displayMessages ? {
-                        messageBoard: displayMessages,
+                    displayMessages!.messageBoard ? {
+                        messageBoard: displayMessages!.messageBoard,
                     } :
                     undefined
                 ),
                 consoleMessage: true,
                 level:"ERROR",
-            }
+            },
+            cFig
         );
 
     }
-
 
     if(modifier.preConfig){
         const preConfig:object|undefined = passwordPreConfigs[modifier.preConfig];
@@ -209,14 +216,15 @@ export default function simplePass(
                 },
                 {
                     htmlMessage: (
-                        displayMessages ? {
-                            messageBoard: displayMessages,
+                        displayMessages!.messageBoard ? {
+                            messageBoard: displayMessages!.messageBoard,
                         } :
                         undefined
                     ),
                     consoleMessage: true,
                     level: "ERROR",
-                }
+                },
+                cFig
             );
 
         }
@@ -235,14 +243,15 @@ export default function simplePass(
             },
             {
                 htmlMessage: (
-                    displayMessages ? {
-                        messageBoard: displayMessages,
+                    displayMessages!.messageBoard ? {
+                        messageBoard: displayMessages!.messageBoard,
                     } :
                     undefined
                 ),
                 consoleMessage: true,
                 level: "ERROR",
-            }
+            },
+            cFig
         );
 
     }
@@ -307,14 +316,15 @@ export default function simplePass(
                         },
                         {
                             htmlMessage: (
-                                displayMessages ? {
-                                    messageBoard: displayMessages,
+                                displayMessages!.messageBoard ? {
+                                    messageBoard: displayMessages!.messageBoard,
                                 } :
                                 undefined
                             ),
                             consoleMessage: true,
                             level: "ERROR",
-                        }
+                        },
+                        cFig
                     );
 
                 }
@@ -370,14 +380,15 @@ export default function simplePass(
                         },
                         {
                             htmlMessage: (
-                                displayMessages ? {
-                                    messageBoard: displayMessages
+                                displayMessages!.messageBoard ? {
+                                    messageBoard: displayMessages!.messageBoard
                                 } :
                                 undefined
                             ),
                             consoleMessage:  true,
                             level: "ERROR",
-                        }
+                        },
+                        cFig
                     );
 
                 }
@@ -452,14 +463,15 @@ export default function simplePass(
                         },
                         {
                             htmlMessage: (
-                                displayMessages ? {
-                                    messageBoard: displayMessages
+                                displayMessages!.messageBoard ? {
+                                    messageBoard: displayMessages!.messageBoard
                                 } :
                                 undefined
                             ),
                             consoleMessage:  true,
                             level: "ERROR",
-                        }
+                        },
+                        cFig
                     );
 
                 }
@@ -552,14 +564,15 @@ export default function simplePass(
                                 },
                                 {
                                     htmlMessage: (
-                                        displayMessages ? {
-                                            messageBoard: displayMessages
+                                        displayMessages!.messageBoard ? {
+                                            messageBoard: displayMessages!.messageBoard
                                         } :
                                         undefined
                                     ),
                                     consoleMessage: true,
                                     level: "ERROR",
-                                }
+                                },
+                                cFig
                             );
 
                         }
@@ -611,14 +624,15 @@ export default function simplePass(
                     },
                     {
                         htmlMessage: (
-                            displayMessages ? {
-                                messageBoard: displayMessages
+                            displayMessages!.messageBoard ? {
+                                messageBoard: displayMessages!.messageBoard
                             } :
                             undefined
                         ),
                         consoleMessage: true,
                         level: "ERROR",
-                    }
+                    },
+                    cFig
                 );
 
             }
@@ -651,14 +665,15 @@ export default function simplePass(
                     },
                     {
                         htmlMessage: (
-                            displayMessages ? {
-                                messageBoard: displayMessages
+                            displayMessages!.messageBoard ? {
+                                messageBoard: displayMessages!.messageBoard
                             } :
                             undefined
                         ),
                         consoleMessage: true,
                         level: "ERROR",
-                    }
+                    },
+                    cFig
                 );
             }
 
@@ -711,14 +726,15 @@ export default function simplePass(
                     },
                     {
                         htmlMessage: (
-                            displayMessages ? {
-                                messageBoard: displayMessages
+                            displayMessages!.messageBoard ? {
+                                messageBoard: displayMessages!.messageBoard
                             } :
                             undefined
                         ),
                         consoleMessage: true,
                         level: "ERROR",
-                    }
+                    },
+                    cFig
                 );
 
             }
@@ -789,14 +805,15 @@ export default function simplePass(
                             },
                             {
                                 htmlMessage: (
-                                    displayMessages ? {
-                                        messageBoard: displayMessages,
+                                    displayMessages!.messageBoard ? {
+                                        messageBoard: displayMessages!.messageBoard,
                                     } :
                                     undefined
                                 ),
                                 consoleMessage: true,
                                 level: "ERROR",
-                            }
+                            },
+                            cFig
                         );
                     }
 
@@ -827,8 +844,8 @@ export default function simplePass(
                         available:useableAttributes
                     },
                     excludeCharacters:modifier.excludeCharacters,
-                    min_length:config.min_passwordLength,
-                    max_length:config.max_passwordLength
+                    min_length:cFig.min_passwordLength,
+                    max_length:cFig.max_passwordLength
                 },
                 {
                     styleTarget:strengthCheck.styleTarget,
@@ -845,8 +862,8 @@ export default function simplePass(
                     available:useableAttributes
                 },
                 excludeCharacters:modifier.excludeCharacters,
-                min_length:config.min_passwordLength,
-                max_length:config.max_passwordLength
+                min_length:cFig.min_passwordLength,
+                max_length:cFig.max_passwordLength
             }
         );
     }
@@ -854,3 +871,5 @@ export default function simplePass(
     // Return the password.
     return password;
 }
+
+simplePass.init = initializer;

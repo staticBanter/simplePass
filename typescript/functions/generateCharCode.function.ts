@@ -1,11 +1,9 @@
 'use strict';
 
-import config from "../simplePass.config.js";
 import errors from "../data/objects/errors.object.js";
 import charCodeGenerationFlag from "../data/interfaces/charCodeGenerationFlag.interface.js";
 import charCodeRequest from "../data/interfaces/charCodeRequest.interface.js";
 import characterCodeConstraints from "../data/objects/characterCodeConstraints.object.js";
-import createMessage from "./createMessage.function.js";
 import characterCodeConstraintsAttributes from "../data/interfaces/characterCodeConstraintsAttributes.interface.js";
 
 /**

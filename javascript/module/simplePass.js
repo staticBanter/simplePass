@@ -12,6 +12,7 @@ import strengthChecker from "./functions/strengthChecker.function.js";
 import useableAttributes from "./data/lists/useableAttributes.list.js";
 import passwordPreConfigs from "./data/objects/passwordPreConfigs.object.js";
 import messageHandler from "./functions/messageHandler.function.js";
+import initializer from "./functions/initializer.function.js";
 /**
  * @file
  * @module simplePass
@@ -40,17 +41,17 @@ import messageHandler from "./functions/messageHandler.function.js";
  * @throws {errors.invalidModifier} Will throw an Error if the [modifier]{@link passwordModifier} is ```null```, ```undefined``` or not a JavaScript Object.
  * @returns {string | strengthCheckedPassword} The generated password or strength checked password object.
  */
-export default function simplePass(modifier = config.defaultPasswordModifier, strengthCheck, displayMessages) {
+export default function simplePass(modifier = config.defaultPasswordModifier, strengthCheck, displayMessages, cFig = config) {
     messageHandler('CLEAR', {
-        htmlMessage: (displayMessages ? {
-            messageBoard: displayMessages,
+        htmlMessage: (displayMessages.messageBoard ? {
+            messageBoard: displayMessages.messageBoard,
             clear: true,
         } : undefined),
         consoleMessage: {
-            clear: true,
+            clear: displayMessages.clearConsole,
         },
         level: "CLEAR"
-    });
+    }, cFig);
     /**
      * If the modifier is not an object
      * throw an error.
@@ -67,13 +68,13 @@ export default function simplePass(modifier = config.defaultPasswordModifier, st
                 templates: errors
             }
         }, {
-            htmlMessage: (displayMessages ? {
-                messageBoard: displayMessages,
+            htmlMessage: (displayMessages.messageBoard ? {
+                messageBoard: displayMessages.messageBoard,
             } :
                 undefined),
             consoleMessage: true,
             level: "ERROR",
-        });
+        }, cFig);
     }
     // Initialize the password.
     let password = '';
@@ -85,7 +86,7 @@ export default function simplePass(modifier = config.defaultPasswordModifier, st
     modifier = cleanModifier(modifier);
     // Ensure certain values are set and set properly.
     try {
-        validateModifier(modifier);
+        validateModifier(modifier, cFig);
     }
     catch (caught) {
         messageHandler({
@@ -95,13 +96,13 @@ export default function simplePass(modifier = config.defaultPasswordModifier, st
                 templates: errors,
             }
         }, {
-            htmlMessage: (displayMessages ? {
-                messageBoard: displayMessages,
+            htmlMessage: (displayMessages.messageBoard ? {
+                messageBoard: displayMessages.messageBoard,
             } :
                 undefined),
             consoleMessage: true,
             level: "ERROR",
-        });
+        }, cFig);
     }
     if (modifier.preConfig) {
         const preConfig = passwordPreConfigs[modifier.preConfig];
@@ -157,13 +158,13 @@ export default function simplePass(modifier = config.defaultPasswordModifier, st
             messageHandler({
                 messageKey: 'ERROR: The password length can not contain the selected amount of characters',
             }, {
-                htmlMessage: (displayMessages ? {
-                    messageBoard: displayMessages,
+                htmlMessage: (displayMessages.messageBoard ? {
+                    messageBoard: displayMessages.messageBoard,
                 } :
                     undefined),
                 consoleMessage: true,
                 level: "ERROR",
-            });
+            }, cFig);
         }
         passwordLimit = passwordLimit - modifier.max_whitespaceBetween;
     }
@@ -174,13 +175,13 @@ export default function simplePass(modifier = config.defaultPasswordModifier, st
         messageHandler({
             messageKey: 'ERROR: The password length can not contain the selected amount of characters',
         }, {
-            htmlMessage: (displayMessages ? {
-                messageBoard: displayMessages,
+            htmlMessage: (displayMessages.messageBoard ? {
+                messageBoard: displayMessages.messageBoard,
             } :
                 undefined),
             consoleMessage: true,
             level: "ERROR",
-        });
+        }, cFig);
     }
     /**
      * If our character attributes list is greater than one,
@@ -229,13 +230,13 @@ export default function simplePass(modifier = config.defaultPasswordModifier, st
                             templates: errors,
                         }
                     }, {
-                        htmlMessage: (displayMessages ? {
-                            messageBoard: displayMessages,
+                        htmlMessage: (displayMessages.messageBoard ? {
+                            messageBoard: displayMessages.messageBoard,
                         } :
                             undefined),
                         consoleMessage: true,
                         level: "ERROR",
-                    });
+                    }, cFig);
                 }
             }
         }
@@ -272,13 +273,13 @@ export default function simplePass(modifier = config.defaultPasswordModifier, st
                             templates: errors,
                         }
                     }, {
-                        htmlMessage: (displayMessages ? {
-                            messageBoard: displayMessages
+                        htmlMessage: (displayMessages.messageBoard ? {
+                            messageBoard: displayMessages.messageBoard
                         } :
                             undefined),
                         consoleMessage: true,
                         level: "ERROR",
-                    });
+                    }, cFig);
                 }
             }
         }
@@ -331,13 +332,13 @@ export default function simplePass(modifier = config.defaultPasswordModifier, st
                             templates: errors,
                         }
                     }, {
-                        htmlMessage: (displayMessages ? {
-                            messageBoard: displayMessages
+                        htmlMessage: (displayMessages.messageBoard ? {
+                            messageBoard: displayMessages.messageBoard
                         } :
                             undefined),
                         consoleMessage: true,
                         level: "ERROR",
-                    });
+                    }, cFig);
                 }
             }
         }
@@ -405,13 +406,13 @@ export default function simplePass(modifier = config.defaultPasswordModifier, st
                                     templates: errors,
                                 }
                             }, {
-                                htmlMessage: (displayMessages ? {
-                                    messageBoard: displayMessages
+                                htmlMessage: (displayMessages.messageBoard ? {
+                                    messageBoard: displayMessages.messageBoard
                                 } :
                                     undefined),
                                 consoleMessage: true,
                                 level: "ERROR",
-                            });
+                            }, cFig);
                         }
                     }
                 }
@@ -449,13 +450,13 @@ export default function simplePass(modifier = config.defaultPasswordModifier, st
                         templates: errors,
                     }
                 }, {
-                    htmlMessage: (displayMessages ? {
-                        messageBoard: displayMessages
+                    htmlMessage: (displayMessages.messageBoard ? {
+                        messageBoard: displayMessages.messageBoard
                     } :
                         undefined),
                     consoleMessage: true,
                     level: "ERROR",
-                });
+                }, cFig);
             }
         }
         /**
@@ -479,13 +480,13 @@ export default function simplePass(modifier = config.defaultPasswordModifier, st
                         templates: errors,
                     }
                 }, {
-                    htmlMessage: (displayMessages ? {
-                        messageBoard: displayMessages
+                    htmlMessage: (displayMessages.messageBoard ? {
+                        messageBoard: displayMessages.messageBoard
                     } :
                         undefined),
                     consoleMessage: true,
                     level: "ERROR",
-                });
+                }, cFig);
             }
         }
         // Add any needed whitespace characters.
@@ -524,13 +525,13 @@ export default function simplePass(modifier = config.defaultPasswordModifier, st
                         templates: errors,
                     }
                 }, {
-                    htmlMessage: (displayMessages ? {
-                        messageBoard: displayMessages
+                    htmlMessage: (displayMessages.messageBoard ? {
+                        messageBoard: displayMessages.messageBoard
                     } :
                         undefined),
                     consoleMessage: true,
                     level: "ERROR",
-                });
+                }, cFig);
             }
         }
         // Check if we need to repeat any characters.
@@ -583,13 +584,13 @@ export default function simplePass(modifier = config.defaultPasswordModifier, st
                                 templates: errors,
                             }
                         }, {
-                            htmlMessage: (displayMessages ? {
-                                messageBoard: displayMessages,
+                            htmlMessage: (displayMessages.messageBoard ? {
+                                messageBoard: displayMessages.messageBoard,
                             } :
                                 undefined),
                             consoleMessage: true,
                             level: "ERROR",
-                        });
+                        }, cFig);
                     }
                 }
                 // Recreate our password.
@@ -607,8 +608,8 @@ export default function simplePass(modifier = config.defaultPasswordModifier, st
                     available: useableAttributes
                 },
                 excludeCharacters: modifier.excludeCharacters,
-                min_length: config.min_passwordLength,
-                max_length: config.max_passwordLength
+                min_length: cFig.min_passwordLength,
+                max_length: cFig.max_passwordLength
             }, {
                 styleTarget: strengthCheck.styleTarget,
                 styleType: strengthCheck.styleType
@@ -620,10 +621,11 @@ export default function simplePass(modifier = config.defaultPasswordModifier, st
                 available: useableAttributes
             },
             excludeCharacters: modifier.excludeCharacters,
-            min_length: config.min_passwordLength,
-            max_length: config.max_passwordLength
+            min_length: cFig.min_passwordLength,
+            max_length: cFig.max_passwordLength
         });
     }
     // Return the password.
     return password;
 }
+simplePass.init = initializer;

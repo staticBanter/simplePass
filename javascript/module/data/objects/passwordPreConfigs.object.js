@@ -31,6 +31,12 @@ const passwordPreConfigs = {
         lowercase_supplement: true,
         uppercase_supplement: true,
     },
+    bios: {
+        length: 20,
+        lowercase: true,
+        uppercase: true,
+        numbers: true,
+    },
     extreme: {
         length: 256,
         numbers: true,

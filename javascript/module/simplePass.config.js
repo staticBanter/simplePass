@@ -22,7 +22,6 @@
  * @property {number} errorMessagePrefix Prefix used at the beginning of an error message.
  * @property {number} templateMessageMarker The marker to look for inside of error message template strings
  * to swap out for dynamic error properties.
- * @property {configHTMLForm} htmlForm An [object]{@link configHTMLForm} describing what HTML form(s) simplePass should use.
  * @property {passwordModifier} defaultPasswordModifier A default ['Password Modifier' object]{@link module:passwordModifier}.
  */
 const config = {
@@ -46,11 +45,19 @@ const config = {
         const min_possibleWhitespaceCharacters = (this.max_passwordLength - this.max_whitespaceCharactersOffset);
         return (min_possibleWhitespaceCharacters >= 1) ? 1 : 0;
     },
-    "errorMessagePrefix": "sP",
-    "templateMessageMarker": "~",
-    "htmlForm": {
-        "id": "#sp_form",
-        "class": ".sp_form"
+    "messages": {
+        "prefix": "ERROR.simplePass-~.~:",
+        "templateMarker": "~"
+    },
+    "htmlElements": {
+        "forms": "#sp_form",
+        "passwordBox": "#sp_passwordBox",
+        "passwordContainer": "#sp_passwordContainer",
+        "entropyContainer": "#sp_passwordEntropy",
+        "passwordParagraph": "#sp_passwordParagraph",
+        "batchPasswordInput": "#sp_batchPasswordInput",
+        "copyButton": "#sp_copyPasswordButton",
+        "generateButton": "#sp_generatePasswordButton",
     }
 };
 export default config;

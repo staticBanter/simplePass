@@ -1,10 +1,8 @@
 'use strict';
-import config from "../../simplePass.config.js";
 /**
  * @file
  * @module errors
  */
-const errorMessagePrefix = `ERROR.${config.errorMessagePrefix}-~_E.~:`;
 /**
  * Object representing possible error codes and their message template strings.
  * Anything wrapped in braces, [example], is meant to be a substitution for
@@ -22,13 +20,13 @@ const errorMessagePrefix = `ERROR.${config.errorMessagePrefix}-~_E.~:`;
  * @property {string} excludeCharactersContainedWhitespace - Exclude Characters contained whitespace.
  */
 const errors = {
-    invalidModifier: `${errorMessagePrefix} Invalid Modifier. The password modifier must be a valid JavaScript Object or JavaScript \'FormData\' Object.`,
-    toManyAttributes: `${errorMessagePrefix} To Many Attributes. The requested password may only contain ~ attributes, ~ attributes were selected.`,
-    nonGenerableCharacterType: `${errorMessagePrefix} Non Generable Character Type. Attempted to generate a character of type ~`,
-    invalidAttributeType: `${errorMessagePrefix}InvalidAttribute Type. Attribute ~ is supposed to be of type ~`,
-    outOfBoundsAttributeValue: `${errorMessagePrefix} Out Of Bounds Attribute Type. Attribute type ~ is out of its value bounds.`,
-    missingRequiredAttributes: `${errorMessagePrefix} Missing Required Attribute. The attribute \'~\' requires attribute \'~\' to be set before it can be used.`,
-    missingRequiredModifier: `${errorMessagePrefix} Missing Required Attributes. The Password Modifier must contain one of the following attributes ~.`,
-    excludeCharactersContainedWhitespace: `${errorMessagePrefix} \'Exclude Characters\' contained whitespace`
+    invalidModifier: `Invalid Modifier. The password modifier must be a valid JavaScript Object or JavaScript \'FormData\' Object.`,
+    toManyAttributes: `To Many Attributes. The requested password may only contain ~ attributes, ~ attributes were selected.`,
+    nonGenerableCharacterType: `Non Generable Character Type. Attempted to generate a character of type ~`,
+    invalidAttributeType: `InvalidAttribute Type. Attribute ~ is supposed to be of type ~`,
+    outOfBoundsAttributeValue: `Out Of Bounds Attribute Type. Attribute type ~ is out of its value bounds.`,
+    missingRequiredAttributes: `Missing Required Attribute. The attribute \'~\' requires attribute \'~\' to be set before it can be used.`,
+    missingRequiredModifier: `Missing Required Attributes. The Password Modifier must contain one of the following attributes ~.`,
+    excludeCharactersContainedWhitespace: `\'Exclude Characters\' contained whitespace`
 };
 export default errors;

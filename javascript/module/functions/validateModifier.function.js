@@ -1,7 +1,6 @@
 'use strict';
 import useableAttributes from "../data/lists/useableAttributes.list.js";
 import requiredAttributes from "../data/lists/requiredAttributes.list.js";
-import config from "../simplePass.config.js";
 /**
  * @file
  * @module validateModifier
@@ -26,7 +25,7 @@ import config from "../simplePass.config.js";
  * @throws {errors.excludeCharactersContainedWhitespace} Will throw an error if the ```excludeCharacters``` attribute contains a whitespace.
  * @returns {void}
  */
-export default function validateModifier(modifier) {
+export default function validateModifier(modifier, cFig) {
     // Check if the password will be long enough to contain all the attributes.
     let modifierCount = Object.keys(modifier)
         .filter((item) => {
@@ -217,7 +216,7 @@ export default function validateModifier(modifier) {
              */
             // Ensure the Repeating Character Limit is within a reasonable range.
             if (modifier.max_repeatingCharacter < 1
-                || modifier.max_repeatingCharacter > 255) {
+                || modifier.max_repeatingCharacter > 100) {
                 throw {
                     errorKey: 'outOfBoundsAttributeValue',
                     replacements: ['vM', '14', 'max_repeatingCharacter']
@@ -256,8 +255,8 @@ export default function validateModifier(modifier) {
     else {
         if (typeof (modifier.length) === 'string') {
             const length = parseInt(modifier.length);
-            if (length > config.max_passwordLength
-                || length < config.min_passwordLength) {
+            if (length > cFig.max_passwordLength
+                || length < cFig.min_passwordLength) {
                 throw {
                     errorKey: 'invalidAttributeType',
                     replacements: ['vM', '1', 'length', 'string or number']
@@ -265,8 +264,8 @@ export default function validateModifier(modifier) {
             }
         }
         else {
-            if (modifier.length > config.max_passwordLength
-                || modifier.length < config.min_passwordLength) {
+            if (modifier.length > cFig.max_passwordLength
+                || modifier.length < cFig.min_passwordLength) {
                 throw {
                     errorKey: 'outOfBoundsAttributeValue',
                     replacements: ['vM', '2', 'length']
@@ -306,8 +305,8 @@ export default function validateModifier(modifier) {
         else {
             if (typeof (modifier.max_whitespaceBetween) === 'string') {
                 const max_whitespaceBetween = parseInt(modifier.max_whitespaceBetween);
-                if (max_whitespaceBetween > config.max_whitespaceBetween()
-                    || max_whitespaceBetween < config.min_whitespaceBetween()) {
+                if (max_whitespaceBetween > cFig.max_whitespaceBetween()
+                    || max_whitespaceBetween < cFig.min_whitespaceBetween()) {
                     throw {
                         errorKey: 'outOfBoundsAttributeValue',
                         replacements: ['vM', '5', 'max_whitespaceBetween']
@@ -315,8 +314,8 @@ export default function validateModifier(modifier) {
                 }
             }
             else {
-                if (modifier.max_whitespaceBetween > config.max_whitespaceBetween()
-                    || modifier.max_whitespaceBetween < config.min_whitespaceBetween()) {
+                if (modifier.max_whitespaceBetween > cFig.max_whitespaceBetween()
+                    || modifier.max_whitespaceBetween < cFig.min_whitespaceBetween()) {
                     throw {
                         errorKey: 'outOfBoundsAttributeValue',
                         replacements: ['vM', '6', 'max_whitespaceBetween']

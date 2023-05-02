@@ -1,6 +1,7 @@
 'use strict';
 import createMessage from "./createMessage.function.js";
 import createMessageBox from "./createMessageBox.function.js";
+import config from "../simplePass.config.js";
 /**
  * @file
  * @module messageHandler
@@ -20,7 +21,7 @@ import createMessageBox from "./createMessageBox.function.js";
 export default function messageHandler(message, messageTypes = {
     consoleMessage: true,
     level: "ERROR"
-}) {
+}, cFig = config) {
     if (message === 'CLEAR') {
         if (typeof (messageTypes.consoleMessage) === 'object'
             && messageTypes.consoleMessage.clear) {
@@ -44,7 +45,7 @@ export default function messageHandler(message, messageTypes = {
             && (message.templateMessages.replacements
                 && message.templateMessages.replacements.length
                 && message.templateMessages.replacements.length >= 1)) {
-            message = createMessage(message.templateMessages.templates[message.messageKey], message.templateMessages.replacements);
+            message = createMessage(message.templateMessages.templates[message.messageKey], message.templateMessages.replacements, cFig);
         }
         else {
             message = message.messageKey;

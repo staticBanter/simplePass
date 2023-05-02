@@ -1,7 +1,7 @@
 'use strict';
 
 import passwordModifier from "./data/interfaces/passwordModifier.interface.js";
-import configHTMLForm from "./data/interfaces/configHTMLForm.interface.js";
+import configHTMLElement from "./data/interfaces/configHTMLElements.interface.js";
 
 /**
  * @file
@@ -27,23 +27,24 @@ import configHTMLForm from "./data/interfaces/configHTMLForm.interface.js";
  * @property {number} errorMessagePrefix Prefix used at the beginning of an error message.
  * @property {number} templateMessageMarker The marker to look for inside of error message template strings
  * to swap out for dynamic error properties.
- * @property {configHTMLForm} htmlForm An [object]{@link configHTMLForm} describing what HTML form(s) simplePass should use.
  * @property {passwordModifier} defaultPasswordModifier A default ['Password Modifier' object]{@link module:passwordModifier}.
  */
-const config:{
-    [index: string]:number|string|boolean|passwordModifier|Array<string>|undefined|configHTMLForm|(()=>number);
+const config: {
+    [index: string]:any;
 
-    min_passwordLength:number,
-    max_passwordLength:number,
-    min_excludeCharactersLength:number,
-    max_excludeCharactersLength:number,
-    defaultPasswordModifier:passwordModifier
-    max_whitespaceCharactersOffset:number,
-    max_whitespaceBetween:(()=>number),
-    min_whitespaceBetween:(()=>number),
-    errorMessagePrefix:string,
-    templateMessageMarker:string,
-    htmlForm:configHTMLForm
+    min_passwordLength: number,
+    max_passwordLength: number,
+    min_excludeCharactersLength: number,
+    max_excludeCharactersLength: number,
+    defaultPasswordModifier: passwordModifier;
+    max_whitespaceCharactersOffset: number,
+    max_whitespaceBetween: (() => number),
+    min_whitespaceBetween: (() => number),
+    messages: {
+        prefix: string,
+        templateMarker:string
+    },
+    htmlElements: configHTMLElement
 } = {
     "min_passwordLength":3,
     "max_passwordLength":256,
@@ -65,11 +66,19 @@ const config:{
         const min_possibleWhitespaceCharacters = (this.max_passwordLength - this.max_whitespaceCharactersOffset);
         return (min_possibleWhitespaceCharacters >= 1) ? 1 : 0
     },
-    "errorMessagePrefix":"sP",
-    "templateMessageMarker":"~",
-    "htmlForm":{
-        "id":"#sp_form",
-        "class":".sp_form"
+    "messages": {
+        "prefix": "ERROR.simplePass-~.~:",
+        "templateMarker": "~"
+    },
+    "htmlElements": {
+        "forms": "#sp_form",
+        "passwordBox": "#sp_passwordBox",
+        "passwordContainer": "#sp_passwordContainer",
+        "entropyContainer": "#sp_passwordEntropy",
+        "passwordParagraph": "#sp_passwordParagraph",
+        "batchPasswordInput": "#sp_batchPasswordInput",
+        "copyButton": "#sp_copyPasswordButton",
+        "generateButton": "#sp_generatePasswordButton",
     }
 }
 

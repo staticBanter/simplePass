@@ -18,7 +18,7 @@ export default interface messageTypes{
         clear?: boolean,
     },
     consoleMessage?:boolean|{
-        clear: boolean,
+        clear?: boolean,
     };
     level:"ERROR"|"WARNING"|"INFO"|"LOG"|"DEBUG"|"CLEAR"
 }
