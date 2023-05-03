@@ -1,7 +1,7 @@
 'use strict';
 
-import passwordModifier from "./data/interfaces/passwordModifier.interface.js";
-import configHTMLElement from "./data/interfaces/configHTMLElements.interface.js";
+import passwordModifier from "./data/interfaces/passwordModifier.js";
+import configHTMLElement from "./data/interfaces/configHTMLElements.js";
 
 /**
  * @file

@@ -1,22 +1,22 @@
 'use strict';
 
-import passwordModifier from "./data/interfaces/passwordModifier.interface.js";
-import cleanModifier from "./functions/cleanModifier.function.js";
-import validateModifier from "./functions/validateModifier.function.js";
+import passwordModifier from "./data/interfaces/passwordModifier.js";
+import cleanModifier from "./functions/cleanModifier.js";
+import validateModifier from "./functions/validateModifier.js";
 import config from "./simplePass.config.js"
-import requiredAttributes from "./data/lists/requiredAttributes.list.js";
-import whitespaceAttributes from "./data/lists/whitespaceAttributes.list.js";
-import shuffle from "./functions/shuffle.function.js";
-import generateCharCode from "./functions/generateCharCode.function.js";
-import errors from "./data/objects/errors.object.js";
-import ensureRepeatingCharacters from "./functions/ensureRepeatingCharacters.function.js";
-import strengthChecker from "./functions/strengthChecker.function.js";
-import useableAttributes from "./data/lists/useableAttributes.list.js";
-import strengthCheckerStyling from "./data/interfaces/strengthCheckerStyling.interface.js";
-import strengthCheckedPassword from "./data/interfaces/strengthCheckedPassword.interface.js";
-import passwordPreConfigs from "./data/objects/passwordPreConfigs.object.js";
-import messageHandler from "./functions/messageHandler.function.js";
-import initializer from "./functions/initializer.function.js";
+import requiredAttributes from "./data/lists/requiredAttributes.js";
+import whitespaceAttributes from "./data/lists/whitespaceAttributes.js";
+import shuffle from "./functions/shuffle.js";
+import generateCharCode from "./functions/generateCharCode.js";
+import errors from "./data/objects/errors.js";
+import ensureRepeatingCharacters from "./functions/ensureRepeatingCharacters.js";
+import strengthChecker from "./functions/strengthChecker.js";
+import useableAttributes from "./data/lists/useableAttributes.js";
+import strengthCheckerStyling from "./data/interfaces/strengthCheckerStyling.js";
+import strengthCheckedPassword from "./data/interfaces/strengthCheckedPassword.js";
+import passwordPreConfigs from "./data/objects/passwordPreConfigs.js";
+import messageHandler from "./functions/messageHandler.js";
+import initializer from "./functions/initializer.js";
 
 /**
  * @file

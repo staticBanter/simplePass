@@ -1,18 +1,18 @@
 <!doctypehtml><html lang=en><meta charset=utf-8><meta content="A JavaScript password generator"name=description><meta content=#636980 name=theme-color><meta content="simplePass | Source: simplePass.js"property=og:title><meta content=website property=og:type><meta content=https://staticbanter.github.io/simplePass/ property=og:url><meta content="simplePass documentation page for Source: simplePass.js"property=og:description><meta content=en_CA property=og:locale><meta content=GitHub property=og:site_name><link href=../storage/icons/simplePass-Logo-1080.png rel=apple-touch-icon><link href=../manifest.json rel=manifest><link href=../storage/icons/simplePass-Logo-512.png rel=icon type=image/png><title>simplePass Docs: Source: simplePass.js</title><script src=scripts/prettify/prettify.js></script><script src=scripts/prettify/lang-css.js></script><!--[if lt IE 9]><script src=//html5shiv.googlecode.com/svn/trunk/html5.js></script><![endif]--><link href=styles/prettify-tomorrow.css rel=stylesheet><link href=styles/jsdoc-default.css rel=stylesheet><div id=main><h1 class=page-title>Source: simplePass.js</h1><section><article><pre class="linenums prettyprint source"><code>'use strict';
-import cleanModifier from "./functions/cleanModifier.function.js";
-import validateModifier from "./functions/validateModifier.function.js";
+import cleanModifier from "./functions/cleanModifier.js";
+import validateModifier from "./functions/validateModifier.js";
 import config from "./simplePass.config.js";
-import requiredAttributes from "./data/lists/requiredAttributes.list.js";
-import whitespaceAttributes from "./data/lists/whitespaceAttributes.list.js";
-import shuffle from "./functions/shuffle.function.js";
-import generateCharCode from "./functions/generateCharCode.function.js";
-import errors from "./data/objects/errors.object.js";
-import ensureRepeatingCharacters from "./functions/ensureRepeatingCharacters.function.js";
-import strengthChecker from "./functions/strengthChecker.function.js";
-import useableAttributes from "./data/lists/useableAttributes.list.js";
-import passwordPreConfigs from "./data/objects/passwordPreConfigs.object.js";
-import messageHandler from "./functions/messageHandler.function.js";
-import initializer from "./functions/initializer.function.js";
+import requiredAttributes from "./data/lists/requiredAttributes.js";
+import whitespaceAttributes from "./data/lists/whitespaceAttributes.js";
+import shuffle from "./functions/shuffle.js";
+import generateCharCode from "./functions/generateCharCode.js";
+import errors from "./data/objects/errors.js";
+import ensureRepeatingCharacters from "./functions/ensureRepeatingCharacters.js";
+import strengthChecker from "./functions/strengthChecker.js";
+import useableAttributes from "./data/lists/useableAttributes.js";
+import passwordPreConfigs from "./data/objects/passwordPreConfigs.js";
+import messageHandler from "./functions/messageHandler.js";
+import initializer from "./functions/initializer.js";
 /**
  * @file
  * @module simplePass

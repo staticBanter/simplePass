@@ -1,0 +1,345 @@
+<!doctypehtml><html lang=en><meta charset=utf-8><meta content="A JavaScript password generator"name=description><meta content=#636980 name=theme-color><meta content="simplePass | Source: data/objects/characterCodeConstraints.js"property=og:title><meta content=website property=og:type><meta content=https://staticbanter.github.io/simplePass/ property=og:url><meta content="simplePass documentation page for Source: data/objects/characterCodeConstraints.js"property=og:description><meta content=en_CA property=og:locale><meta content=GitHub property=og:site_name><link href=../storage/icons/simplePass-Logo-1080.png rel=apple-touch-icon><link href=../manifest.json rel=manifest><link href=../storage/icons/simplePass-Logo-512.png rel=icon type=image/png><title>simplePass Docs: Source: data/objects/characterCodeConstraints.js</title><script src=scripts/prettify/prettify.js></script><script src=scripts/prettify/lang-css.js></script><!--[if lt IE 9]><script src=//html5shiv.googlecode.com/svn/trunk/html5.js></script><![endif]--><link href=styles/prettify-tomorrow.css rel=stylesheet><link href=styles/jsdoc-default.css rel=stylesheet><div id=main><h1 class=page-title>Source: data/objects/characterCodeConstraints.js</h1><section><article><pre class="linenums prettyprint source"><code>'use strict';
+import range from "../../functions/range.js";
+/**
+ * @file
+ * @module characterCodeConstraints
+ */
+/**
+ * Character-code constraint object. Defines the bounds that each character code type exists in.
+ *
+ * @const {object} characterCodeConstraints
+ * @property {object} [lowercase] Basic Latin Lower Alpha character code constraints.
+ * @property {object} [uppercase] Basic Latin Upper Alpha character code constraints.
+ * @property {object} [numbers] Basic Latin Numeric character code constraints.
+ * @property {object} [punctuation] Basic Latin Punctuation character code constraints.
+ * @property {object} [whitespace]  Whitespace character code constraint.
+ * @property {object} [lowercase_supplement] Basic Latin(1) Supplement Lowercase character code constraints.
+ * @property {object} [uppercase_supplement] Basic Latin(1) Supplement Uppercase character code constraints.
+ * @property {object} [symbols_supplement] Basic Latin(1) Supplement Signs, Symbols and Punctuation character code constraints.
+ * @property {object} [lowercase_extended_a] Latin Extended A Lowercase character code constraints.
+ * @property {object} [uppercase_extended_a] Latin Extended A Uppercase character code constraints.
+ * @property {object} [ligature_extended_a] Latin Extended A Ligature character code constraints.
+ * @implements {characterCodeConstraintsAttributes}
+ * @requires range
+ *
+ */
+const characterCodeConstraints = {
+    lowercase: {
+        min: 97,
+        max: 122,
+    },
+    uppercase: {
+        min: 65,
+        max: 90,
+    },
+    numbers: {
+        min: 48,
+        max: 57,
+    },
+    punctuation: {
+        min: 33,
+        max: 126,
+        range: [
+            [33, 47],
+            [58, 64],
+            [91, 96],
+            [123, 126]
+        ]
+    },
+    whitespace: {
+        min: 32
+    },
+    lowercase_supplement: {
+        min: 223,
+        max: 255,
+        range: [
+            [233, 246],
+            [248, 255]
+        ]
+    },
+    uppercase_supplement: {
+        min: 192,
+        max: 222,
+        range: [
+            [192, 214],
+            [216, 222]
+        ]
+    },
+    symbols_supplement: {
+        min: 161,
+        max: 247,
+        range: [
+            [161, 191],
+            [215],
+            [247]
+        ]
+    },
+    lowercase_extended_a: {
+        min: 257,
+        max: 383,
+        range: range(257, 312, 2, [306, 307])
+            .concat(range(314, 329, 2))
+            .concat(range(331, 375, 2, [338, 339]))
+            .concat(range(378, 383, 2))
+            .map((element) => element = [element]),
+    },
+    uppercase_extended_a: {
+        min: 256,
+        max: 382,
+        range: range(256, 310, 2, [306, 307])
+            .concat(range(313, 327, 2))
+            .concat(range(330, 374, 2, [338, 339]))
+            .concat([376])
+            .concat(range(377, 381, 2))
+            .map((element) => element = [element]),
+    },
+    ligature_extended_a: {
+        min: 306,
+        max: 339,
+        range: [
+            [306],
+            [307],
+            [338],
+            [339]
+        ]
+    },
+    lowercase_extended_b: {
+        min: 384,
+        max: 591,
+        range: [
+            [384],
+            [387],
+            [389],
+            [392],
+            [396, 397],
+            [402],
+            [405],
+            [409, 411],
+            [414],
+            [417],
+            [419],
+            [421],
+            [427],
+            [432],
+            [436],
+            [438],
+            [441, 442],
+            [445],
+            [454],
+            [457],
+            [460],
+            [496],
+            [499],
+            [501],
+            [572],
+            [589],
+            [591],
+            [578],
+            [563, 569],
+            [575, 576],
+            [585],
+            [587],
+            [583]
+        ]
+            .concat(range(462, 476, 2, undefined, true))
+            .concat(range(479, 495, 2, undefined, true))
+            .concat(range(505, 561, 2, undefined, true))
+    },
+    uppercase_extended_b: {
+        min: 385,
+        max: 590,
+        range: [
+            [444]
+        ].concat(range(385, 408, 1, [
+            387,
+            389,
+            392,
+            396,
+            397,
+            402,
+            405
+        ], true))
+            .concat(range(412, 440, 1, [
+            414,
+            417,
+            419,
+            421,
+            422,
+            424,
+            426,
+            427,
+            429,
+            432,
+            436,
+            438
+        ], true))
+            .concat(range(452, 458, 1, [
+            453,
+            454,
+            456,
+            459
+        ], true))
+            .concat(range(461, 475, 2, undefined, true))
+            .concat(range(478, 494, 2, undefined, true)).concat(range(497, 504, 1, [
+            498,
+            499,
+            501
+        ], true)).concat(range(506, 562, 2, undefined, true)).concat(range(570, 590, 1, [
+            572,
+            575,
+            576,
+            578,
+            583,
+            585,
+            587,
+            589
+        ], true))
+    },
+    mixedcase_extended_b: {
+        min: 453,
+        max: 498,
+        range: [
+            [453],
+            [456],
+            [459],
+            [498],
+        ]
+    },
+    insensitivecase_extended_b: {
+        min: 422,
+        max: 451,
+        range: [
+            [422],
+            [426],
+            [443],
+            [446, 451]
+        ]
+    },
+    character_modifier_letters: {
+        min: 688,
+        max: 739,
+        range: [
+            [688, 696],
+            [737, 739]
+        ]
+    },
+    symbol_modifier_letters: {
+        min: 697,
+        max: 767,
+        range: [
+            [697, 736],
+            [740, 767],
+        ]
+    },
+    lowercase_greek_coptic: {
+        min: 881,
+        max: 1019,
+        range: [
+            [881],
+            [883],
+            [887],
+            [912],
+            [940, 974],
+            [1016],
+            [1019]
+        ].concat(range(985, 107, 2, undefined, true))
+    },
+    uppercase_greek_coptic: {
+        min: 880,
+        max: 1018,
+        range: [
+            [880],
+            [882],
+            [886],
+            [902],
+            [904, 906],
+            [908],
+            [910, 911],
+            [913, 929],
+            [931, 939],
+            [1015],
+            [1018]
+        ].concat(range(994, 1004, 2, undefined, true))
+    },
+    insensitivecase_greek_coptic: {
+        min: 984,
+        max: 1011,
+        range: [
+            [1011]
+        ].concat(range(984, 992, 2, undefined, true))
+    },
+    symbol_greek_coptic: {
+        min: 884,
+        max: 1020,
+        range: [
+            [884, 885],
+            [890, 894],
+            [900, 901],
+            [903],
+            [975, 983],
+            [988],
+            [1008, 1014],
+            [1020, 1023]
+        ]
+    },
+    lowercase_cyrillic: {
+        min: 1072,
+        max: 1279,
+        range: [
+            [1072, 1119]
+        ]
+            .concat(range(1121, 1153, 2, undefined, true))
+            .concat(range(1163, 1215, 2, [
+            1189,
+            1205,
+        ], true)).concat(range(1218, 1230, 2, undefined, true))
+            .concat(range(1231, 1279, 2, [
+            1237,
+        ], true))
+    },
+    uppercase_cyrillic: {
+        min: 1024,
+        max: 1278,
+        range: [
+            [1024, 1071],
+        ]
+            .concat(range(1120, 1214, 2, [
+            1154,
+            1156,
+            1158,
+            1160,
+            1188,
+            1204,
+        ], true))
+            .concat(range(1217, 1229, 2, undefined, true))
+            .concat(range(1232, 1278, 2, [
+            1236,
+        ], true))
+    },
+    symbols_cyrillic: {
+        min: 1154,
+        max: 1237,
+        range: [
+            [1154],
+            [1188, 1189],
+            [1204, 1205],
+            [1236, 1237]
+        ]
+    },
+    lowercase_cyrillic_supplement: {
+        min: 1281,
+        max: 1319,
+        range: range(1281, 1319, 2, undefined, true)
+    },
+    uppercase_cyrillic_supplement: {
+        min: 1280,
+        max: 1319,
+        range: range(1280, 1319, 2, undefined, true)
+    },
+    misc_cyrillic_supplement: {
+        min: 1320,
+        max: 1327
+    }
+};
+export default characterCodeConstraints;
+</code></pre></article></section></div><nav><b><a href=../index.html>simplePass Program</a></b><h3><a href=index.html>README</a></h3><h3>Modules</h3><ul><li><a href=module-allowedModifiers.html>allowedModifiers</a><li><a href=module-calculateMaxPossibleCharacters.html>calculateMaxPossibleCharacters</a><li><a href=module-characterCodeConstraints.html>characterCodeConstraints</a><li><a href=module-characterStrengthCheck.html>characterStrengthCheck</a><li><a href=module-cleanModifier.html>cleanModifier</a><li><a href=module-config.html>config</a><li><a href=module-createMessage.html>createMessage</a><li><a href=module-createModifierList.html>createModifierList</a><li><a href=module-ensureRepeatingCharacters.html>ensureRepeatingCharacters</a><li><a href=module-errors.html>errors</a><li><a href=module-generateCharCode.html>generateCharCode</a><li><a href=module-initializer.html>initializer</a><li><a href=module-messageHandler.html>messageHandler</a><li><a href=module-passwordPreConfigs.html>passwordPreConfigs</a><li><a href=module-range.html>range</a><li><a href=module-requiredAttributes.html>requiredAttributes</a><li><a href=module-shuffle.html>shuffle</a><li><a href=module-simplePass.html>simplePass</a><li><a href=module-strengthChecker.html>strengthChecker</a><li><a href=module-strengthScores.html>strengthScores</a><li><a href=module-useableAttributes.html>useableAttributes</a><li><a href=module-validateModifier.html>validateModifier</a><li><a href=module-whitespaceAttributes.html>whitespaceAttributes</a></ul><h3>Interfaces</h3><ul><li><a href=charCodeGenerationFlag.html>charCodeGenerationFlag</a><li><a href=charCodeOptions.html>charCodeOptions</a><li><a href=charCodeRequest.html>charCodeRequest</a><li><a href=characterCodeConstraintsAttributes.html>characterCodeConstraintsAttributes</a><li><a href=characterSetObject.html>characterSetObject</a><li><a href=characterStrengthCheckConstraints.html>characterStrengthCheckConstraints</a><li><a href=configHTMLElement.html>configHTMLElement</a><li><a href=ensureRepeatingCharacterOptions.html>ensureRepeatingCharacterOptions</a><li><a href=messageBoxObject.html>messageBoxObject</a><li><a href=messageObject.html>messageObject</a><li><a href=messageTypes.html>messageTypes</a><li><a href=passwordModifier.html>passwordModifier</a><li><a href=repeatingCharacterOptionsPreservations.html>repeatingCharacterOptionsPreservations</a><li><a href=strengthCheckedPassword.html>strengthCheckedPassword</a><li><a href=strengthCheckerConstraints.html>strengthCheckerConstraints</a><li><a href=strengthCheckerStyling.html>strengthCheckerStyling</a><li><a href=strengthScoreAttributes.html>strengthScoreAttributes</a></ul><h3>Other Resources</h3><ul><li><a href=tutorial-CODE_OF_CONDUCT.html>Code Of Conduct</a><li><a href=tutorial-CONTRIBUTING.html>Contributing</a><li><a href=tutorial-DEVELOPMENT.html>DEVELOPMENT</a><li><a href=tutorial-EXAMPLES.html>EXAMPLES</a><li><a href=tutorial-SECURITY.html>Security</a></ul></nav><br class=clear><footer>Documentation generated by <a href=https://github.com/jsdoc/jsdoc>JSDoc 4.0.0</a></footer><script>prettyPrint()</script><script src=scripts/linenumber.js></script>

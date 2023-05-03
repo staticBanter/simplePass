@@ -1,0 +1,368 @@
+<!doctypehtml><html lang=en><meta charset=utf-8><meta content="A JavaScript password generator"name=description><meta content=#636980 name=theme-color><meta content="simplePass | Source: functions/validateModifier.js"property=og:title><meta content=website property=og:type><meta content=https://staticbanter.github.io/simplePass/ property=og:url><meta content="simplePass documentation page for Source: functions/validateModifier.js"property=og:description><meta content=en_CA property=og:locale><meta content=GitHub property=og:site_name><link href=../storage/icons/simplePass-Logo-1080.png rel=apple-touch-icon><link href=../manifest.json rel=manifest><link href=../storage/icons/simplePass-Logo-512.png rel=icon type=image/png><title>simplePass Docs: Source: functions/validateModifier.js</title><script src=scripts/prettify/prettify.js></script><script src=scripts/prettify/lang-css.js></script><!--[if lt IE 9]><script src=//html5shiv.googlecode.com/svn/trunk/html5.js></script><![endif]--><link href=styles/prettify-tomorrow.css rel=stylesheet><link href=styles/jsdoc-default.css rel=stylesheet><div id=main><h1 class=page-title>Source: functions/validateModifier.js</h1><section><article><pre class="linenums prettyprint source"><code>'use strict';
+import useableAttributes from "../data/lists/useableAttributes.js";
+import requiredAttributes from "../data/lists/requiredAttributes.js";
+/**
+ * @file
+ * @module validateModifier
+ */
+/**
+ * A basic validation function used to ensure the set [simplePass modifier object]{@link passwordModifier} attributes are usable.
+ * This function will throw an error if the object is not usable, else the function will return ```void```.
+ *
+ * **WARNING!** simplePass does not preform comprehensive input sanitization/validation,
+ * please ensure you are sanitizing and validating any inputs before they reach your server/application!
+ *
+ * @function validateModifier
+ * @param {passwordModifier} modifier The [password modifier]{@link passwordModifier} object to validate.
+ * @requires createMessage
+ * @requires config
+ * @requires useableAttributes
+ * @requires requiredAttributes
+ * @throws {errors.invalidAttributeType} Will throw an error if a modifier attribute is not a valid type.
+ * @throws {errors.outOfBoundsAttributeValue} Will throw an error if a modifier attribute is out of its allowed value bounds.
+ * @throws {errors.toManyAttributes} Will throw an error if the modifier contains more attributes than the password can contain.
+ * @throws {errors.missingRequiredAttribute} Will throw an error if a modifier attribute is missing another attribute that needs to be present.
+ * @throws {errors.excludeCharactersContainedWhitespace} Will throw an error if the ```excludeCharacters``` attribute contains a whitespace.
+ * @returns {void}
+ */
+export default function validateModifier(modifier, cFig) {
+    // Check if the password will be long enough to contain all the attributes.
+    let modifierCount = Object.keys(modifier)
+        .filter((item) => {
+        return useableAttributes.includes(item);
+    })
+        .length;
+    if (modifier.preConfig
+        &&
+            (typeof (modifier.preConfig) !== 'string'
+                || (!modifier.preConfig.length
+                    || modifier.preConfig.length &lt;= 0))) {
+        if (typeof (modifier.preConfig) !== 'string') {
+            throw {
+                errorKey: 'invalidAttributeType',
+                replacements: ['vM', '16', 'preConfig', 'string']
+            };
+        }
+    }
+    // Check if the password should contain repeating characters
+    if (modifier.repeatingCharacter) {
+        /**
+         * Determine if we are:
+         *  Custom Repeating Characters
+         *  Repeating random characters in the already generated password.
+         *  Repeating a single character in the password.
+         * * Note: It needs to be checked in this order.
+         */
+        if (modifier.customRepeatingCharacters) {
+            // ^ Custom Repeating Characters
+            // No string, bye bye...
+            if (typeof (modifier.customRepeatingCharacters) !== 'string') {
+                throw {
+                    errorKey: 'invalidAttributeType',
+                    replacements: [
+                        'vM',
+                        '15',
+                        'customRepeatingCharacters',
+                        'string'
+                    ]
+                };
+            }
+            // Trim any leading and trailing whitespace.
+            modifier.customRepeatingCharacters = modifier.customRepeatingCharacters.trim();
+            /**
+             * IF the custom repeats contains spaces it must be a set of repeats.
+             * ELSE IF it still contains a ":" (colon) it must be a single custom repeat.
+             * ELSE it's just a string of requested repeating characters.
+             * We must preform these checks in this order.
+             */
+            if (modifier.customRepeatingCharacters.includes(' ')) {
+                // Initialize a holding array.
+                const repeatingSets = [];
+                // Split the string along the spaces.
+                modifier.customRepeatingCharacters.split(' ').forEach((set) => {
+                    /**
+                     * IF any sets contains a literal character identifier "\" or ":".
+                     * ELSE we shouldn't need to worry about splitting the string along the wrong character.
+                     */
+                    if (set.includes('\\')) {
+                        /**
+                         * Extract the character.
+                         * * Note: only the second character in the string is being sliced.
+                         * * We are assuming that the first character will be our identifier "\",
+                         * * the second character will be our literal.
+                         */
+                        const literal = set.slice(1, 2);
+                        // Remove the first instance of our literal character.
+                        set = set.replace(literal, '');
+                        const pieces = set.split(':');
+                        if (pieces.length > 2) {
+                            throw new Error('Custom Repeating Characters contain more than one ":" (colon) literal.');
+                        }
+                        /**
+                         * Add the literal character and it's repeats to the holding array.
+                         */
+                        repeatingSets.push([literal, pieces[1]]);
+                    }
+                    else {
+                        // ^ There shouldn't be a literal ":" (colon) in the string.
+                        let pieces = set.split(':');
+                        if (pieces.length > 2) {
+                            throw new Error('Custom Repeating Characters contain more than one ":" (colon) literal.');
+                        }
+                        // Push the set to the array.
+                        repeatingSets.push([pieces[0], pieces[1]]);
+                    }
+                });
+                // Set the modifiers custom repeating characters to the holding array.
+                modifier.customRepeatingCharacters = repeatingSets;
+                modifier.customRepeatingCharacters.forEach((set) => {
+                    /**
+                     * If the repeats wasn't their or less than 1,
+                     * Set repeats too 2.
+                     * * Note
+                     */
+                    if (!set[1]
+                        || parseInt(set[1]) &lt;= 1) {
+                        set[1] = '2';
+                    }
+                    /**
+                     * Every repeating character replaces a potential password modification that can be added,
+                     * therefore we need to increase the modifier count accordingly
+                     * @ignore
+                     */
+                    modifierCount += parseInt(set[1]);
+                });
+            }
+            else if (modifier.customRepeatingCharacters.includes(':')) {
+                // ^ Single custom repeat.
+                // Initialize a holding array.
+                const repeatingSets = [];
+                /**
+                 * IF any sets contains a literal character identifier "\" or ":".
+                 * ELSE we shouldn't need to worry about splitting the string along the wrong character.
+                 */
+                if (modifier.customRepeatingCharacters.includes('\\')) {
+                    /**
+                     * Extract the character.
+                     * * Note: only the second character in the string is being sliced.
+                     * * We are assuming that the first character will be our identifier "\",
+                     * * the second character will be our literal.
+                     */
+                    const literal = modifier.customRepeatingCharacters.slice(1, 2);
+                    // Remove the first instance of our literal character.
+                    modifier.customRepeatingCharacters = modifier.customRepeatingCharacters.replace(literal, '');
+                    const pieces = modifier.customRepeatingCharacters.split(':');
+                    if (pieces.length > 2) {
+                        throw new Error('Custom Repeating Characters contain more than one ":" (colon) literal.');
+                    }
+                    // Push the set to the array.
+                    repeatingSets.push([literal, pieces[1]]);
+                }
+                else {
+                    // ^ There shouldn't be a literal ":" (colon) in the string.
+                    const pieces = modifier.customRepeatingCharacters.split(':');
+                    if (pieces.length > 2) {
+                        throw new Error('Custom Character Repeats contained an unescaped ":" (colon).');
+                    }
+                    // Push the set to the array.
+                    repeatingSets.push([pieces[0], pieces[1]]);
+                }
+                // Set the modifiers custom repeating characters to the holding array.
+                modifier.customRepeatingCharacters = repeatingSets;
+                modifier.customRepeatingCharacters.forEach((set) => {
+                    /**
+                     * If the repeats wasn't their or less than 1,
+                     * Set repeats too 2.
+                     */
+                    if (!set[1]
+                        || parseInt(set[1]) &lt;= 1) {
+                        set[1] = '2';
+                    }
+                    /**
+                     * Every repeating character replaces a potential password modification that can be added,
+                     * therefore we need to increase the modifier count accordingly
+                     * @ignore
+                     */
+                    modifierCount += parseInt(set[1]);
+                });
+            }
+            else {
+                // ^ String of repeating characters.
+                /**
+                 * Every repeating character replaces a potential password modification that can be added,
+                 * therefore we need to increase the modifier count accordingly
+                 * @ignore
+                 */
+                modifierCount += (modifier.customRepeatingCharacters.length * 2);
+            }
+        }
+        else if (modifier.max_repeatingCharacter) {
+            // ^ Repeating random characters in the already generated password.
+            // If our Repeating Character Limit is not a string or a number throw an error.
+            if (typeof (modifier.max_repeatingCharacter) !== 'number'
+                && typeof (modifier.max_repeatingCharacter) !== 'string') {
+                throw {
+                    errorKey: 'invalidAttributeType',
+                    replacements: ['vM', '13', 'max_repeatingCharacter', 'number or string']
+                };
+            }
+            // Convert strings to ints.
+            if (typeof (modifier.max_repeatingCharacter) === 'string') {
+                modifier.max_repeatingCharacter = parseInt(modifier.max_repeatingCharacter);
+            }
+            /**
+             * TODO: check the min and max values for the repeating character limit
+             * this values should be dynamic based on the min and max password length values.
+             */
+            // Ensure the Repeating Character Limit is within a reasonable range.
+            if (modifier.max_repeatingCharacter &lt; 1
+                || modifier.max_repeatingCharacter > 100) {
+                throw {
+                    errorKey: 'outOfBoundsAttributeValue',
+                    replacements: ['vM', '14', 'max_repeatingCharacter']
+                };
+            }
+            // Check if the requested password length can contain the amount of repeated characters.
+            if (modifier.length &lt; (modifier.max_repeatingCharacter * 2)) {
+                throw {
+                    errorKey: 'The password can not contain the requested amount of repeating characters.'
+                };
+            }
+            /**
+             * Every repeating character replaces a potential password modification that can be added,
+             * therefore we need to increase the modifier count accordingly
+             * @ignore
+             */
+            modifierCount += modifier.max_repeatingCharacter;
+        }
+        else {
+            // ^ Repeating a single character in the password.
+            modifierCount++;
+        }
+    }
+    /**
+     * Ensure the length attribute is proper type
+     * and within acceptable values.
+     */
+    if (!modifier.length
+        || (typeof (modifier.length) !== 'string'
+            && typeof (modifier.length) !== 'number')) {
+        throw {
+            errorKey: 'invalidAttributeType',
+            replacements: ['vM', '1', 'length', 'string or number']
+        };
+    }
+    else {
+        if (typeof (modifier.length) === 'string') {
+            const length = parseInt(modifier.length);
+            if (length > cFig.max_passwordLength
+                || length &lt; cFig.min_passwordLength) {
+                throw {
+                    errorKey: 'invalidAttributeType',
+                    replacements: ['vM', '1', 'length', 'string or number']
+                };
+            }
+        }
+        else {
+            if (modifier.length > cFig.max_passwordLength
+                || modifier.length &lt; cFig.min_passwordLength) {
+                throw {
+                    errorKey: 'outOfBoundsAttributeValue',
+                    replacements: ['vM', '2', 'length']
+                };
+            }
+        }
+        if (modifierCount > modifier.length) {
+            throw {
+                errorKey: 'toManyAttributes',
+                replacements: ['vM', '3', `${modifier.length}`, `${modifierCount}`]
+            };
+        }
+    }
+    /**
+     * If the 'white-space between' attribute is set,
+     * and if the 'white-space between limit' attribute is not set,
+     * throw an error.
+     */
+    if (modifier.w_between) {
+        if (!modifier.max_whitespaceBetween) {
+            throw {
+                errorKey: 'missingRequiredAttribute',
+                replacements: ['vM', '11', 'max_whitespaceBetween', 'w_between']
+            };
+        }
+        /**
+         * Ensure the 'white-space between limit' attribute is proper type
+         * and within acceptable values.
+         */
+        if (typeof (modifier.max_whitespaceBetween) !== 'string'
+            && typeof (modifier.max_whitespaceBetween) !== 'number') {
+            throw {
+                errorKey: 'invalidAttributeType',
+                replacements: ['vM', '4', 'max_whitespaceBetween', 'string or number']
+            };
+        }
+        else {
+            if (typeof (modifier.max_whitespaceBetween) === 'string') {
+                const max_whitespaceBetween = parseInt(modifier.max_whitespaceBetween);
+                if (max_whitespaceBetween > cFig.max_whitespaceBetween()
+                    || max_whitespaceBetween &lt; cFig.min_whitespaceBetween()) {
+                    throw {
+                        errorKey: 'outOfBoundsAttributeValue',
+                        replacements: ['vM', '5', 'max_whitespaceBetween']
+                    };
+                }
+            }
+            else {
+                if (modifier.max_whitespaceBetween > cFig.max_whitespaceBetween()
+                    || modifier.max_whitespaceBetween &lt; cFig.min_whitespaceBetween()) {
+                    throw {
+                        errorKey: 'outOfBoundsAttributeValue',
+                        replacements: ['vM', '6', 'max_whitespaceBetween']
+                    };
+                }
+            }
+        }
+    }
+    /**
+     * Ensure the modifier contains at least one of these attributes.
+     */
+    if (!Object.keys(modifier)
+        .some(function (array) {
+        return requiredAttributes.includes(array);
+    })) {
+        throw {
+            errorKey: 'missingRequiredAttributes',
+            replacements: ['vM', '7', requiredAttributes.toString()]
+        };
+    }
+    /**
+     * If the 'exclude characters' attributes is set,
+     * ensure it is the proper type,
+     * is not blank,
+     * its length is within proper range,
+     * and does not contain any whitespace.
+     */
+    if (modifier.excludeCharacters) {
+        if (typeof (modifier.excludeCharacters) !== 'string') {
+            throw {
+                errorKey: 'invalidAttributeType',
+                replacements: ['vM', '8', 'excludeCharacters', 'string']
+            };
+        }
+        if (!modifier.excludeCharacters.length
+            && modifier.excludeCharacters.length &lt;= 0) {
+            throw {
+                errorKey: 'outOfBoundsAttributeValue',
+                replacements: ['vM', '9', 'excludeCharacters']
+            };
+        }
+        if (new RegExp(/[\s]/g).test(modifier.excludeCharacters)) {
+            throw {
+                errorKey: 'excludeCharactersContainedWhitespace',
+                replacements: ['vM', '10']
+            };
+        }
+    }
+}
+</code></pre></article></section></div><nav><b><a href=../index.html>simplePass Program</a></b><h3><a href=index.html>README</a></h3><h3>Modules</h3><ul><li><a href=module-allowedModifiers.html>allowedModifiers</a><li><a href=module-calculateMaxPossibleCharacters.html>calculateMaxPossibleCharacters</a><li><a href=module-characterCodeConstraints.html>characterCodeConstraints</a><li><a href=module-characterStrengthCheck.html>characterStrengthCheck</a><li><a href=module-cleanModifier.html>cleanModifier</a><li><a href=module-config.html>config</a><li><a href=module-createMessage.html>createMessage</a><li><a href=module-createModifierList.html>createModifierList</a><li><a href=module-ensureRepeatingCharacters.html>ensureRepeatingCharacters</a><li><a href=module-errors.html>errors</a><li><a href=module-generateCharCode.html>generateCharCode</a><li><a href=module-initializer.html>initializer</a><li><a href=module-messageHandler.html>messageHandler</a><li><a href=module-passwordPreConfigs.html>passwordPreConfigs</a><li><a href=module-range.html>range</a><li><a href=module-requiredAttributes.html>requiredAttributes</a><li><a href=module-shuffle.html>shuffle</a><li><a href=module-simplePass.html>simplePass</a><li><a href=module-strengthChecker.html>strengthChecker</a><li><a href=module-strengthScores.html>strengthScores</a><li><a href=module-useableAttributes.html>useableAttributes</a><li><a href=module-validateModifier.html>validateModifier</a><li><a href=module-whitespaceAttributes.html>whitespaceAttributes</a></ul><h3>Interfaces</h3><ul><li><a href=charCodeGenerationFlag.html>charCodeGenerationFlag</a><li><a href=charCodeOptions.html>charCodeOptions</a><li><a href=charCodeRequest.html>charCodeRequest</a><li><a href=characterCodeConstraintsAttributes.html>characterCodeConstraintsAttributes</a><li><a href=characterSetObject.html>characterSetObject</a><li><a href=characterStrengthCheckConstraints.html>characterStrengthCheckConstraints</a><li><a href=configHTMLElement.html>configHTMLElement</a><li><a href=ensureRepeatingCharacterOptions.html>ensureRepeatingCharacterOptions</a><li><a href=messageBoxObject.html>messageBoxObject</a><li><a href=messageObject.html>messageObject</a><li><a href=messageTypes.html>messageTypes</a><li><a href=passwordModifier.html>passwordModifier</a><li><a href=repeatingCharacterOptionsPreservations.html>repeatingCharacterOptionsPreservations</a><li><a href=strengthCheckedPassword.html>strengthCheckedPassword</a><li><a href=strengthCheckerConstraints.html>strengthCheckerConstraints</a><li><a href=strengthCheckerStyling.html>strengthCheckerStyling</a><li><a href=strengthScoreAttributes.html>strengthScoreAttributes</a></ul><h3>Other Resources</h3><ul><li><a href=tutorial-CODE_OF_CONDUCT.html>Code Of Conduct</a><li><a href=tutorial-CONTRIBUTING.html>Contributing</a><li><a href=tutorial-DEVELOPMENT.html>DEVELOPMENT</a><li><a href=tutorial-EXAMPLES.html>EXAMPLES</a><li><a href=tutorial-SECURITY.html>Security</a></ul></nav><br class=clear><footer>Documentation generated by <a href=https://github.com/jsdoc/jsdoc>JSDoc 4.0.0</a></footer><script>prettyPrint()</script><script src=scripts/linenumber.js></script>
