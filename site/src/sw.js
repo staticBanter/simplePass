@@ -1,24 +1,26 @@
 const appShellFiles = [
   "$BASE_URL$",
   "./index.html",
-  "./offline.html",
   "./main.css",
   "./main.js",
-  "./sw.js",
   "./manifest.json",
+  "./offline.html",
+  "./robots.txt",
+  "./storage",
+  "./sw.js",
   "./docs/characterCodeConstraintsAttributes.html",
   "./docs/characterSetObject.html",
   "./docs/characterStrengthCheckConstraints.html",
   "./docs/charCodeGenerationFlag.html",
   "./docs/charCodeOptions.html",
   "./docs/charCodeRequest.html",
-  "./docs/configHTMLForm.html",
+  "./docs/configHTMLElement.html",
   "./docs/data_interfaces_characterCodeConstraintsAttributes.interface.js.html",
   "./docs/data_interfaces_characterSetObject.interface.js.html",
   "./docs/data_interfaces_characterStrengthCheckConstraints.interface.js.html",
   "./docs/data_interfaces_charCodeGenerationFlag.interface.js.html",
   "./docs/data_interfaces_charCodeRequest.interface.js.html",
-  "./docs/data_interfaces_configHTMLForm.interface.js.html",
+  "./docs/data_interfaces_configHTMLElements.interface.js.html",
   "./docs/data_interfaces_ensureRepeatingCharacterOptions.interface.js.html",
   "./docs/data_interfaces_messageBoxObject.interface.js.html",
   "./docs/data_interfaces_messageObject.interface.js.html",
@@ -45,6 +47,7 @@ const appShellFiles = [
   "./docs/functions_createModifierList.function.js.html",
   "./docs/functions_ensureRepeatingCharacters.function.js.html",
   "./docs/functions_generateCharCode.function.js.html",
+  "./docs/functions_initializer.function.js.html",
   "./docs/functions_messageHandler.function.js.html",
   "./docs/functions_range.function.js.html",
   "./docs/functions_shuffle.function.js.html",
@@ -65,6 +68,7 @@ const appShellFiles = [
   "./docs/module-ensureRepeatingCharacters.html",
   "./docs/module-errors.html",
   "./docs/module-generateCharCode.html",
+  "./docs/module-initializer.html",
   "./docs/module-messageHandler.html",
   "./docs/module-passwordPreConfigs.html",
   "./docs/module-range.html",
@@ -117,6 +121,7 @@ const appShellFiles = [
   "./storage/icons/simplePass-Logo-1080.png",
   "./storage/icons/simplePass-Logo-1080.svg",
   "./storage/icons/simplePass-Logo-512.png",
+
 ];
 
 /*
@@ -166,6 +171,24 @@ self.addEventListener("activate", (event) => {
       }
     })()
   );
+
+  // Clear any old cache files or data.
+  event.waitUntil(
+    (async () => {
+      await caches.open(CACHE_NAME).then((cache) => {
+        cache.keys().then((keys) => {
+          keys.forEach((request) => {
+            if (!appShellFiles.includes(`.${new URL(request.url).pathname.replace('site/prod/', '')}`)) {
+              cache.delete(request);
+            }
+          });
+        });
+      }).catch((errors) => {
+        console.error(errors)
+      })
+    })()
+  );
+
 
   // Tell the active service worker to take control of the page immediately.
   self.clients.claim();
