@@ -7,6 +7,7 @@ const path = require('jsdoc/path');
 const { taffy } = require('@jsdoc/salty');
 const template = require('jsdoc/template');
 const util = require('util');
+const { couldStartTrivia } = require('typescript');
 
 const htmlsafe = helper.htmlsafe;
 const linkto = helper.linkto;
@@ -27,7 +28,7 @@ function tutoriallink(tutorial) {
         tag: 'em',
         classname: 'disabled',
         prefix: ''
-    });
+    }).replace('tutorial-','');
 }
 
 function getAncestorLinks(doclet) {
@@ -666,6 +667,7 @@ exports.publish = (taffyData, opts, tutorials) => {
 
     // TODO: move the tutorial functions to templateHelper.js
     function generateTutorial(title, tutorial, filename) {
+        filename = filename.replace('tutorial-','');
         const tutorialData = {
             title: title,
             header: tutorial.title,
