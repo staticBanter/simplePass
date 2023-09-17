@@ -17,6 +17,7 @@
  * @property {boolean} [whitespaceBetween] If the password can contain white-space in the middle.
  * @property {boolean} [max_whitespaceBetween] The number of white-spaces to insert in the middle of the password.
  * @property {boolean} [repeatingCharacter] If the password is required to contain a repeating character.
+ * @property {boolean} [uniqueCharacters] If the password should only contain unique characters.
  * @property {number} [max_repeatingCharacter] The number of repeating character sets the password requires.
  * @property {string|Array<Array<string>>} [customRepeatingCharacters] A string input of repeating characters that should be repeated in the password. This can also
  * include how many times the character should be repeated in the password; if so, the property will be converted to a list.
@@ -43,6 +44,7 @@ export default interface passwordModifier {
     whitespaceBetween?:boolean,
     max_whitespaceBetween?:number,
     excludeCharacters?:string,
+    uniqueCharacters?:boolean,
     repeatingCharacter?:boolean,
     max_repeatingCharacter?:number,
     customRepeatingCharacters?:string|Array<Array<string>>,

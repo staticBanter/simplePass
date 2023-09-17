@@ -175,6 +175,27 @@ export default function simplePass(
     let passwordLimit = (modifier.length - 2);
 
     /**
+     * Prevent ```uniqueCharacters``` begin set
+     * with modifiers that conflict with it.
+     */
+
+    if(
+        modifier.uniqueCharacters
+        && (
+            modifier.repeatingCharacter
+            || modifier.whitespaceBeginning
+            || modifier.whitespaceEnd
+            || modifier.whitespaceEnd
+            || modifier.required_whitespaceEnd
+            || modifier.required_whitespaceBeginning
+            || modifier.max_whitespaceBetween
+            || modifier.preConfig
+        )
+    ){
+        messageHandler(`ERROR.simplePass-M_E.2: Unique modifier was set with clashing modifiers.`)
+    }
+
+    /**
      * If the repeating characters attribute is set we need to generate less characters.
      */
     if (modifier.repeatingCharacter){
@@ -360,13 +381,24 @@ export default function simplePass(
 
                 try {
 
-                    middleCharacters += String.fromCharCode(generateCharCode({
+                    const generatedCharacter:string = String.fromCharCode(generateCharCode({
                         charType: currentCharType,
                         charCodeOptions: {
                             whitespaceOptions: setWhitespaceAttributes,
                             excludeCharacters: modifier.excludeCharacters
                         }
                     }));
+
+                    if(modifier.uniqueCharacters){
+                        if(
+                            password.includes(generatedCharacter)
+                            || middleCharacters.includes(generatedCharacter)
+                        ){
+                            continue;
+                        }
+                    };
+
+                    middleCharacters += generatedCharacter;
 
                 } catch (caught: any) {
 
@@ -443,13 +475,37 @@ export default function simplePass(
 
                 try {
 
-                    password += String.fromCharCode(generateCharCode({
+                    let generatedCharacter:string = String.fromCharCode(generateCharCode({
                         charType: currentCharType,
                         charCodeOptions: {
                             whitespaceOptions: setWhitespaceAttributes,
                             excludeCharacters: modifier.excludeCharacters
                         }
                     }, { end: true }));
+
+                    if(modifier.uniqueCharacters){
+
+                        if(
+                            password.includes(generatedCharacter)
+                        ){
+
+                            while(password.includes(generatedCharacter)){
+
+                                generatedCharacter = String.fromCharCode(generateCharCode({
+                                    charType: currentCharType,
+                                    charCodeOptions: {
+                                        whitespaceOptions: setWhitespaceAttributes,
+                                        excludeCharacters: modifier.excludeCharacters
+                                    }
+                                }, { end: true }));
+
+                            }
+
+                        }
+
+                    }
+
+                    password += generatedCharacter;
 
                 } catch (caught: any) {
 
@@ -645,13 +701,22 @@ export default function simplePass(
 
             try {
 
-                middleCharacters += String.fromCharCode(generateCharCode({
+                const generatedCharacter:string = String.fromCharCode(generateCharCode({
                     charType: characterAttributes[0],
                     charCodeOptions: {
                         whitespaceOptions: setWhitespaceAttributes,
                         excludeCharacters: modifier.excludeCharacters
                     }
                 }));
+
+                if(
+                    password.includes(generatedCharacter)
+                    || middleCharacters.includes(generatedCharacter)
+                ){
+                    continue;
+                }
+
+                middleCharacters += generatedCharacter;
 
             } catch (caught: any) {
 
@@ -706,13 +771,37 @@ export default function simplePass(
 
             try {
 
-                password += String.fromCharCode(generateCharCode({
+                let generatedCharacter:string = String.fromCharCode(generateCharCode({
                     charType: characterAttributes[0],
                     charCodeOptions: {
                         whitespaceOptions: setWhitespaceAttributes,
                         excludeCharacters: modifier.excludeCharacters
                     }
                 }, { end: true }));
+
+                if(modifier.uniqueCharacters){
+
+                    if(
+                        password.includes(generatedCharacter)
+                    ){
+
+                        while(password.includes(generatedCharacter)){
+
+                            generatedCharacter = String.fromCharCode(generateCharCode({
+                                charType: characterAttributes[0],
+                                charCodeOptions: {
+                                    whitespaceOptions: setWhitespaceAttributes,
+                                    excludeCharacters: modifier.excludeCharacters
+                                }
+                            }, { end: true }));
+
+                        }
+
+                    }
+
+                }
+
+                password += generatedCharacter
 
             } catch (caught: any) {
 

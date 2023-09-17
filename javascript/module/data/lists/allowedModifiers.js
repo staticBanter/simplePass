@@ -17,6 +17,7 @@
  * - ```required_whitespaceEnd```
  * - ```required_whitespaceBeginning```
  * - ```excludeCharacters```
+ * - ```uniqueCharacters```
  * - ```repeatingCharacter```
  * - ```max_repeatingCharacter```
  * - ```customRepeatingCharacters```
@@ -59,6 +60,7 @@ const allowedModifiers = [
     'required_whitespaceEnd',
     'required_whitespaceBeginning',
     'excludeCharacters',
+    'uniqueCharacters',
     'repeatingCharacter',
     'max_repeatingCharacter',
     'customRepeatingCharacters',
