@@ -36,22 +36,8 @@ Note that no [Control Characters](https://en.wikipedia.org/wiki/Control_characte
   - Repeating Character - Ensure the password contains at least one repeating character.
   - Repeating Character Limit - Ensure the password contains at least the set amount of repeating characters.
   - Custom Repeating Characters - Ensure the password contains at least the specified repeating characters. Can be formatted to specify how many times each character can be repeated.
-
-### Character Modifiers
-
-Fully Supported Character Sets:
-
-- Latin Basic
-- Latin(1) Supplement
-- Latin Extended A
-- Latin Extended B
-- Modifier Letters
-- Greek And Coptic
-- Cyrillic Supplement
-
-Partially Supported Character Sets:
-
-- Cyrillic
+- Batch Password Generation.
+- Unique Characters Only
 
 ### White-space Modifiers
 
@@ -93,14 +79,37 @@ Quickly generate passwords of a given type or requirement with pre-configured mo
   - Basic Latin Supplement Uppercase,
   - Basic Latin Supplement Punctuation.
 
+
+### Character Modifiers
+
+Fully Supported Character Sets:
+
+- Latin Basic
+- Latin(1) Supplement
+- Latin Extended A
+- Latin Extended B
+- Modifier Letters
+- Greek And Coptic
+- Cyrillic Supplement
+
+Partially Supported Character Sets:
+
+- Cyrillic
+
 ## Support
 
 ### Browser Support
 
-| Feature | [Firefox](https://www.mozilla.org/en-CA/firefox/)* | [Google Chrome](https://www.google.com/intl/en_ca/chrome/) | [GNome Web](https://wiki.gnome.org/Apps/Web) | [Falkon](https://www.falkon.org/) | [Edge](https://www.microsoft.com/en-us/edge) | [Opera](https://www.opera.com/)
-| --- | --- | --- | --- | --- | --- | --- |
-| [JavaScript Web.crypto.getRandomValues()](https://developer.mozilla.org/en-US/docs/Web/API/Crypto/getRandomValues) | + | + | + | + | * | * |
-| PWA Installation  | ~ | + | - | - | * | * |
+| Feature | [Firefox](https://www.mozilla.org/en-CA/firefox/)* | [Firefox (Android)](https://www.mozilla.org/en-CA/firefox/browsers/mobile/android/) | [Google Chrome](https://www.google.com/intl/en_ca/chrome/) | [Google Chrome (Android)](https://www.google.com/chrome/go-mobile/) | [GNome Web](https://wiki.gnome.org/Apps/Web) | [Edge](https://www.microsoft.com/en-us/edge) | [Opera](https://www.opera.com/) | [Safari](https://www.apple.com/ca/safari/) | [Safari (iOS)](https://www.apple.com/ca/safari/) | [Samsung Internet](https://www.samsung.com/ca/apps/samsung-internet/) | [Webview Android](https://play.google.com/store/apps/details?id=com.google.android.webview) |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Minimum Version (In Browser Use): | 63 | 63 | 66 | 66 | 44.6 | 79 | 53 | 13.1 | 13.4 | 9.0 | 66 |
+| Minimum Version (PWA Use): | 99 | 99 | ^ | ^ | * | ^ | ^ | 15.4 | 15.4 | ^ | ^ |
+
+\* Numbers are acquired using the Mozilla Developer *Browser Compatibility* section.
+
+**Hold Back Functions**: The following functions prevent further backwards compatibility.
+- In Browser: [navigator.clipboard.writeText()](https://developer.mozilla.org/en-US/docs/Web/API/Clipboard/writeText)
+- PWA: [self.registration.navigationPreload.enable()](https://developer.mozilla.org/en-US/docs/Web/API/NavigationPreloadManager/enable)
 
 \* Firefox currently only supports PWA installation on mobile.
 
