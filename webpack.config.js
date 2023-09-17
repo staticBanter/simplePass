@@ -45,7 +45,13 @@ module.exports = (env) => [
             }
         },
         devServer:{
-            static: './site/prod',
+            // static: './site/prod',
+            static:{
+                directory: './site/prod',
+                staticOptions:{
+                    extensions:['html'],
+                }
+            },
             bonjour: false,
             client:{
                 overlay: true,
@@ -57,10 +63,10 @@ module.exports = (env) => [
                     value: 'TRUE',
                 }
             ],
-            magicHtml: false
+            magicHtml: false,
         },
         output:{
-            path:path.resolve(__dirname, './site/prod/'),
+            path:path.resolve(__dirname, './site/prod'),
             filename:"main.js",
             module:true,
             libraryTarget:'module'
