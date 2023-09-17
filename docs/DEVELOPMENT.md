@@ -125,7 +125,7 @@ We will outline some key files and directories here. For more information please
 | +-- bundle/ - Contains the bundled version of the project.
 | +-- module/ - Contains the module version of the project.
 +-- site/ - Contains the files that make up the programs PWA
-+-- site_src/ - Contains source files for the PWA 
++-- site_src/ - Contains source files for the PWA
 +-- typescript/ - Contains the TypeScript source files for the program.
 +-- test/ - Contains the Test files for the program.
 +-- html-minifier.config.json - Config for 'HTML-Minifier`.
@@ -195,7 +195,7 @@ This tool is used to minify the HTML documentation files. To remove this tool pl
 
 "scripts":{
   "html-min": "html-minifier --config-file html-minifier.config.json --input-dir ./site/docs --output-dir ./site/docs --file-ext html", // Remove This Line.
-  "production": "npm run tsc && npm run docs-build && npm run webpack-build && npm run html-min" // Remove The ```npm run html-min``` Command From This Line. 
+  "production": "npm run tsc && npm run docs-build && npm run webpack-build && npm run html-min" // Remove The ```npm run html-min``` Command From This Line.
 }
 ```
 
@@ -292,7 +292,7 @@ Because simplePass is developed using JavaScript modules, you will need a local 
 
 > **Note**: The setup and configuration of these tools is out of the scope of this documentation.
 
-We recommend you try the following methods or tools for setting up a local development server:
+We highly recommend you use the pre-bundled Webpack development server when developing for this project as it is already configured for the development pipeline. However if you would like to use a different local server, or you are unable to use webpack, we recommend the following other options:
 
 - [Browser-Sync](https://browsersync.io/) (NPM-Tool)
 - [Live Preview](https://marketplace.visualstudio.com/items?itemName=ms-vscode.live-server) (VS-Code Extension)
