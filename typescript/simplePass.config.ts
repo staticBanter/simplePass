@@ -24,10 +24,10 @@ import configHTMLElement from "./data/interfaces/configHTMLElements.js";
  * **Dynamic** : based on passwords length.
  * @property {Function} min_whitespaceBetween The minimum amount of white-space to allow between a password.
  * **Dynamic** : based on passwords length.
- * @property {number} errorMessagePrefix Prefix used at the beginning of an error message.
- * @property {number} templateMessageMarker The marker to look for inside of error message template strings
+ * @property {object} messages An object to customize simplePass error messages.
  * to swap out for dynamic error properties.
  * @property {passwordModifier} defaultPasswordModifier A default ['Password Modifier' object]{@link module:passwordModifier}.
+ * @property {configHTMLElement} htmlElements An object defining the HTML IDs used by the program.
  */
 const config: {
     [index: string]:any;
