@@ -62,10 +62,8 @@
             <div>
                 <p>
                     <b>Password:</b>
+                    <span id="sp_passwordParagraph"></span>
                 </p>
-                <div id="sp_passwordContainer">
-                    <p id="sp_passwordParagraph"></p>
-                </div>
                 <p>
                     Bits of Entropy: ~<span id="sp_passwordEntropy"></span>
                 </p>
@@ -81,11 +79,11 @@
         <form id="sp_form">
             <h2>Modifiers</h2>
             <div>
-            <p>Character Codes that are displayed are shown as the decimal value(s) for the character(s). A helpful list of these resources can be found at:</p>
-            <ul>
-                <li><a href="https://www.w3schools.com/charsets/">W3Schools | HTML Character Sets</a>)</li>
-                <li>and <a href="https://www.unicode.org/charts/">Unicode | Code Charts</a> (Though you may need to convert the hexadecimal representation to decimal)</li>
-            </ul>
+                <p>Character Codes that are displayed are shown as the decimal value(s) for the character(s). A helpful list of these resources can be found at:</p>
+                <ul>
+                    <li><a href="https://www.w3schools.com/charsets/">W3Schools | HTML Character Sets</a>)</li>
+                    <li>and <a href="https://www.unicode.org/charts/">Unicode | Code Charts</a> (Though you may need to convert the hexadecimal representation to decimal)</li>
+                </ul>
             </div>
             <fieldset>
                 <legend>Pre-Configs</legend>
@@ -170,12 +168,16 @@
             <label>Character Length:
                 <input type="number" form="sp_form" name="length"/>
             </label>
-            <label>Exclude Characters:
-                <input type="text" form="sp_form" name="excludeCharacters" />
-                <p>* <strong>Warning</strong>: Excessive use of this feature may result in degraded performance or non-performance of the program. *</p>
-            </label>
-            <label>Unique Characters Only
-                <input type="checkbox" form="sp_form" name="uniqueCharacters" >
+            <div>
+                <label>Exclude Characters:
+                    <input type="text" form="sp_form" name="excludeCharacters" />
+                </label>
+                <p>* <strong>Warning</strong>: Excessive use of this feature may result in degraded performance or non-performance of the program.</p>
+            </div>
+            <div>
+                <label>Unique Characters Only
+                    <input type="checkbox" form="sp_form" name="uniqueCharacters" >
+                </label>
                 <p>* This option can not be combined with the following modifiers:</p>
                 <ul>
                     <li>Repeating Characters</li>
@@ -184,7 +186,7 @@
                     <li>Pre-Configurations</li>
                 </ul>
                 <p>* <strong>Warning</strong> This option will lower your passwords Entropy.</p>
-            </label>
+            </div>
             <fieldset>
                 <legend>Repeat Characters</legend>
                 <div>
