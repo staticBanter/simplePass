@@ -68,12 +68,33 @@ typings/
 # Yarn Integrity file
 .yarn-integrity
 
-# dotenv environment variables file
+# Private & Sensitive Files
 .env
 .env.test
+.env.backup
+.env.testing
+*.key
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
+
+# Maps
+*.map
+
+# IDEs and editors
+/.idea
+.editorconfig
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+/.vscode
+
+# System Files
+.DS_Store
+Thumbs.db
 
 # Next.js build output
 .next
