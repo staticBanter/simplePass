@@ -54,8 +54,10 @@ module.exports = (env) => [
             },
             bonjour: false,
             client:{
+                logging: "none",
                 overlay: true,
-                progress: true
+                progress: false,
+                reconnect: false,
             },
             headers:[
                 {
