@@ -43,12 +43,12 @@ import initializer from "./functions/initializer.js";
  */
 export default function simplePass(modifier = config.defaultPasswordModifier, strengthCheck, displayMessages, cFig = config) {
     messageHandler('CLEAR', {
-        htmlMessage: (displayMessages.messageBoard ? {
+        htmlMessage: (displayMessages?.messageBoard ? {
             messageBoard: displayMessages.messageBoard,
             clear: true,
         } : undefined),
         consoleMessage: {
-            clear: displayMessages.clearConsole,
+            clear: displayMessages?.clearConsole,
         },
         level: "CLEAR"
     }, cFig);
@@ -68,7 +68,7 @@ export default function simplePass(modifier = config.defaultPasswordModifier, st
                 templates: errors
             }
         }, {
-            htmlMessage: (displayMessages.messageBoard ? {
+            htmlMessage: (displayMessages?.messageBoard ? {
                 messageBoard: displayMessages.messageBoard,
             } :
                 undefined),
@@ -96,7 +96,7 @@ export default function simplePass(modifier = config.defaultPasswordModifier, st
                 templates: errors,
             }
         }, {
-            htmlMessage: (displayMessages.messageBoard ? {
+            htmlMessage: (displayMessages?.messageBoard ? {
                 messageBoard: displayMessages.messageBoard,
             } :
                 undefined),
@@ -173,7 +173,7 @@ export default function simplePass(modifier = config.defaultPasswordModifier, st
             messageHandler({
                 messageKey: 'ERROR: The password length can not contain the selected amount of characters',
             }, {
-                htmlMessage: (displayMessages.messageBoard ? {
+                htmlMessage: (displayMessages?.messageBoard ? {
                     messageBoard: displayMessages.messageBoard,
                 } :
                     undefined),
@@ -190,7 +190,7 @@ export default function simplePass(modifier = config.defaultPasswordModifier, st
         messageHandler({
             messageKey: 'ERROR: The password length can not contain the selected amount of characters',
         }, {
-            htmlMessage: (displayMessages.messageBoard ? {
+            htmlMessage: (displayMessages?.messageBoard ? {
                 messageBoard: displayMessages.messageBoard,
             } :
                 undefined),
@@ -245,7 +245,7 @@ export default function simplePass(modifier = config.defaultPasswordModifier, st
                             templates: errors,
                         }
                     }, {
-                        htmlMessage: (displayMessages.messageBoard ? {
+                        htmlMessage: (displayMessages?.messageBoard ? {
                             messageBoard: displayMessages.messageBoard,
                         } :
                             undefined),
@@ -296,7 +296,7 @@ export default function simplePass(modifier = config.defaultPasswordModifier, st
                             templates: errors,
                         }
                     }, {
-                        htmlMessage: (displayMessages.messageBoard ? {
+                        htmlMessage: (displayMessages?.messageBoard ? {
                             messageBoard: displayMessages.messageBoard
                         } :
                             undefined),
@@ -369,7 +369,7 @@ export default function simplePass(modifier = config.defaultPasswordModifier, st
                             templates: errors,
                         }
                     }, {
-                        htmlMessage: (displayMessages.messageBoard ? {
+                        htmlMessage: (displayMessages?.messageBoard ? {
                             messageBoard: displayMessages.messageBoard
                         } :
                             undefined),
@@ -443,7 +443,7 @@ export default function simplePass(modifier = config.defaultPasswordModifier, st
                                     templates: errors,
                                 }
                             }, {
-                                htmlMessage: (displayMessages.messageBoard ? {
+                                htmlMessage: (displayMessages?.messageBoard ? {
                                     messageBoard: displayMessages.messageBoard
                                 } :
                                     undefined),
@@ -487,7 +487,7 @@ export default function simplePass(modifier = config.defaultPasswordModifier, st
                         templates: errors,
                     }
                 }, {
-                    htmlMessage: (displayMessages.messageBoard ? {
+                    htmlMessage: (displayMessages?.messageBoard ? {
                         messageBoard: displayMessages.messageBoard
                     } :
                         undefined),
@@ -524,7 +524,7 @@ export default function simplePass(modifier = config.defaultPasswordModifier, st
                         templates: errors,
                     }
                 }, {
-                    htmlMessage: (displayMessages.messageBoard ? {
+                    htmlMessage: (displayMessages?.messageBoard ? {
                         messageBoard: displayMessages.messageBoard
                     } :
                         undefined),
@@ -583,7 +583,7 @@ export default function simplePass(modifier = config.defaultPasswordModifier, st
                         templates: errors,
                     }
                 }, {
-                    htmlMessage: (displayMessages.messageBoard ? {
+                    htmlMessage: (displayMessages?.messageBoard ? {
                         messageBoard: displayMessages.messageBoard
                     } :
                         undefined),
@@ -642,7 +642,7 @@ export default function simplePass(modifier = config.defaultPasswordModifier, st
                                 templates: errors,
                             }
                         }, {
-                            htmlMessage: (displayMessages.messageBoard ? {
+                            htmlMessage: (displayMessages?.messageBoard ? {
                                 messageBoard: displayMessages.messageBoard,
                             } :
                                 undefined),

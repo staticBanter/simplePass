@@ -57,18 +57,17 @@ export default function simplePass(
     cFig: typeof config = config,
 ) {
 
-
     messageHandler(
         'CLEAR',
         {
             htmlMessage: (
-                displayMessages!.messageBoard ? {
+                displayMessages?.messageBoard ? {
                     messageBoard: displayMessages!.messageBoard,
                     clear:true,
                 } :undefined
             ),
             consoleMessage: {
-                clear: displayMessages!.clearConsole,
+                clear: displayMessages?.clearConsole,
             },
             level:"CLEAR"
         },
@@ -96,7 +95,7 @@ export default function simplePass(
             },
             {
                 htmlMessage: (
-                    displayMessages!.messageBoard ? {
+                    displayMessages?.messageBoard ? {
                         messageBoard: displayMessages!.messageBoard,
                     } :
                     undefined
@@ -135,7 +134,7 @@ export default function simplePass(
             },
             {
                 htmlMessage: (
-                    displayMessages!.messageBoard ? {
+                    displayMessages?.messageBoard ? {
                         messageBoard: displayMessages!.messageBoard,
                     } :
                     undefined
@@ -237,7 +236,7 @@ export default function simplePass(
                 },
                 {
                     htmlMessage: (
-                        displayMessages!.messageBoard ? {
+                        displayMessages?.messageBoard ? {
                             messageBoard: displayMessages!.messageBoard,
                         } :
                         undefined
@@ -264,7 +263,7 @@ export default function simplePass(
             },
             {
                 htmlMessage: (
-                    displayMessages!.messageBoard ? {
+                    displayMessages?.messageBoard ? {
                         messageBoard: displayMessages!.messageBoard,
                     } :
                     undefined
@@ -337,7 +336,7 @@ export default function simplePass(
                         },
                         {
                             htmlMessage: (
-                                displayMessages!.messageBoard ? {
+                                displayMessages?.messageBoard ? {
                                     messageBoard: displayMessages!.messageBoard,
                                 } :
                                 undefined
@@ -412,7 +411,7 @@ export default function simplePass(
                         },
                         {
                             htmlMessage: (
-                                displayMessages!.messageBoard ? {
+                                displayMessages?.messageBoard ? {
                                     messageBoard: displayMessages!.messageBoard
                                 } :
                                 undefined
@@ -519,7 +518,7 @@ export default function simplePass(
                         },
                         {
                             htmlMessage: (
-                                displayMessages!.messageBoard ? {
+                                displayMessages?.messageBoard ? {
                                     messageBoard: displayMessages!.messageBoard
                                 } :
                                 undefined
@@ -620,7 +619,7 @@ export default function simplePass(
                                 },
                                 {
                                     htmlMessage: (
-                                        displayMessages!.messageBoard ? {
+                                        displayMessages?.messageBoard ? {
                                             messageBoard: displayMessages!.messageBoard
                                         } :
                                         undefined
@@ -680,7 +679,7 @@ export default function simplePass(
                     },
                     {
                         htmlMessage: (
-                            displayMessages!.messageBoard ? {
+                            displayMessages?.messageBoard ? {
                                 messageBoard: displayMessages!.messageBoard
                             } :
                             undefined
@@ -735,7 +734,7 @@ export default function simplePass(
                     },
                     {
                         htmlMessage: (
-                            displayMessages!.messageBoard ? {
+                            displayMessages?.messageBoard ? {
                                 messageBoard: displayMessages!.messageBoard
                             } :
                             undefined
@@ -820,7 +819,7 @@ export default function simplePass(
                     },
                     {
                         htmlMessage: (
-                            displayMessages!.messageBoard ? {
+                            displayMessages?.messageBoard ? {
                                 messageBoard: displayMessages!.messageBoard
                             } :
                             undefined
@@ -899,7 +898,7 @@ export default function simplePass(
                             },
                             {
                                 htmlMessage: (
-                                    displayMessages!.messageBoard ? {
+                                    displayMessages?.messageBoard ? {
                                         messageBoard: displayMessages!.messageBoard,
                                     } :
                                     undefined

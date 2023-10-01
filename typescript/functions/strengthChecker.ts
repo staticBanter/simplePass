@@ -99,8 +99,6 @@ export default function strengthChecker(password:string,constraints:strengthChec
             score = 'excellent';
         }
 
-        console.log(colour);
-
         styling.styleType==="inline"?
             styling.styleTarget.setAttribute('style',(
                 (styling.styleTarget.getAttribute('style')??'')+`
