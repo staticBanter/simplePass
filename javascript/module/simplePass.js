@@ -508,9 +508,11 @@ export default function simplePass(modifier = config.defaultPasswordModifier, st
                         excludeCharacters: modifier.excludeCharacters
                     }
                 }));
-                if (password.includes(generatedCharacter)
-                    || middleCharacters.includes(generatedCharacter)) {
-                    continue;
+                if (modifier.uniqueCharacters) {
+                    if (password.includes(generatedCharacter)
+                        || middleCharacters.includes(generatedCharacter)) {
+                        continue;
+                    }
                 }
                 middleCharacters += generatedCharacter;
             }

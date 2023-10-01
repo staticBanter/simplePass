@@ -34,6 +34,8 @@
  * - ```uppercase_extended_b```
  * - ```mixedcase_extended_b```
  * - ```insensitivecase_extended_b```
+ * - ```lowercase_ipa_extension```
+ * - ```uppercase_ipa_extension```
  * - ```character_modifier_letters```
  * - ```symbol_modifier_letters```
  * - ```lowercase_greek_coptic```
@@ -77,6 +79,8 @@ const allowedModifiers: Array<string> = [
     'uppercase_extended_b',
     'mixedcase_extended_b',
     'insensitivecase_extended_b',
+    'lowercase_ipa_extension',
+    'uppercase_ipa_extension',
     'character_modifier_letters',
     'symbol_modifier_letters',
     'lowercase_greek_coptic',

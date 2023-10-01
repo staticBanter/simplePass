@@ -25,6 +25,8 @@
  * - ```uppercase_extended_b```
  * - ```mixedcase_extended_b```
  * - ```insensitivecase_extended_b```
+ * - ```lowercase_ipa_extension```
+ * - ```uppercase_ipa_extension```
  * - ```character_modifier_letters```
  * - ```symbol_modifier_letters```
  * - ```lowercase_greek_coptic```
@@ -58,6 +60,8 @@ const useableAttributes:Array<string> = [
     'lowercase_extended_b',
     'uppercase_extended_b',
     'mixedcase_extended_b',
+    'lowercase_ipa_extension',
+    'uppercase_ipa_extension',
     'insensitivecase_extended_b',
     'character_modifier_letters',
     'symbol_modifier_letters',

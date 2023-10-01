@@ -709,11 +709,16 @@ export default function simplePass(
                     }
                 }));
 
-                if(
-                    password.includes(generatedCharacter)
-                    || middleCharacters.includes(generatedCharacter)
-                ){
-                    continue;
+
+                if(modifier.uniqueCharacters){
+
+                    if(
+                        password.includes(generatedCharacter)
+                        || middleCharacters.includes(generatedCharacter)
+                    ){
+                        continue;
+                    }
+
                 }
 
                 middleCharacters += generatedCharacter;

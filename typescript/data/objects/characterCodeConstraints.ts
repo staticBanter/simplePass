@@ -280,6 +280,24 @@ const characterCodeConstraints:{
             [446,451]
         ]
     },
+    lowercase_ipa_extension:{
+        min: 592,
+        max: 683,
+        range: [
+            [592,659],
+            [665,672],
+            [675,683]
+        ]
+    },
+    uppercase_ipa_extension:{
+        min:660,
+        max:685,
+        range:[
+            [660,664],
+            [673,674],
+            [684,685]
+        ]
+    },
     character_modifier_letters: {
         min: 688,
         max: 739,
