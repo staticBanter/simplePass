@@ -11,7 +11,7 @@
   },
   "name": "simplepass",
   "description": "simplePass is a Javascript password generator.",
-  "version": "8.1.0-Beta",
+  "version": "8.1.1-Beta",
   "browser": "./simplePass/browser/simplePass.js",
   "directories": {
     "test": "test",

@@ -190,9 +190,10 @@ export default function initializer(cFig: typeof config = config): void{
             while (batch--) {
 
                 const LI = document.createElement("LI");
+                LI.classList.add('sp_listedPassword')
 
                 const listedPassword = document.createElement("P");
-                listedPassword.classList.add('listedPassword');
+                listedPassword.classList.add('sp_password');
 
                 const listedPasswordEntropy = document.createElement("P");
 
@@ -257,8 +258,8 @@ export default function initializer(cFig: typeof config = config): void{
                 let displayEntropy = document.createElement("P");
                 displayEntropy.innerText = 'Bits of Entropy: ~';
 
-                passwordContainer!.appendChild(passwordParagraph!);
-                console.debug(passwordEntropy)
+                passwordContainer!.firstElementChild!.appendChild(passwordParagraph!);
+
                 displayEntropy.appendChild(passwordEntropy!);
                 passwordContainer!.appendChild(displayEntropy);
             }

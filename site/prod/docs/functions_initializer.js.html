@@ -124,8 +124,9 @@ export default function initializer(cFig = config) {
             OL.id = passwordListID;
             while (batch--) {
                 const LI = document.createElement("LI");
+                LI.classList.add('sp_listedPassword');
                 const listedPassword = document.createElement("P");
-                listedPassword.classList.add('listedPassword');
+                listedPassword.classList.add('sp_password');
                 const listedPasswordEntropy = document.createElement("P");
                 const password = simplePass(new FormData(this), {
                     styleTarget: listedPassword,
@@ -165,8 +166,7 @@ export default function initializer(cFig = config) {
             if (!passwordContainer.querySelector(cFig.htmlElements.passwordParagraph)) {
                 let displayEntropy = document.createElement("P");
                 displayEntropy.innerText = 'Bits of Entropy: ~';
-                passwordContainer.appendChild(passwordParagraph);
-                console.debug(passwordEntropy);
+                passwordContainer.firstElementChild.appendChild(passwordParagraph);
                 displayEntropy.appendChild(passwordEntropy);
                 passwordContainer.appendChild(displayEntropy);
             }
