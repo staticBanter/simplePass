@@ -45,15 +45,15 @@ html > body {
         }
 
         &[data-score="modest"]{
-            color: yellowgreen;
+            color: orange;
         }
 
         &[data-score="ok"]{
-            color: limegreen;
+            color: gold;
         }
 
         &[data-score="good"]{
-            color: green;
+            color: yellowgreen;
         }
 
         &[data-score="excellent"]{

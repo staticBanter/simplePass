@@ -30,18 +30,18 @@ const strengthScores:{
 } = {
     bad:{
         colour: "red",
-        score: 50
+        score: 60
     },
     modest:{
-        colour: "yellowgreen",
+        colour: "orange",
         score:75
     },
     ok:{
-        colour:"limegreen",
+        colour:"gold",
         score:80,
     },
     good:{
-        colour:"green",
+        colour:"yellowgreen",
         score:95
     },
     excellent:{

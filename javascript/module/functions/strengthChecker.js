@@ -76,8 +76,11 @@ export default function strengthChecker(password, constraints, styling) {
             colour = strengthScores.excellent.colour;
             score = 'excellent';
         }
+        console.log(colour);
         styling.styleType === "inline" ?
-            styling.styleTarget.style.color = colour :
+            styling.styleTarget.setAttribute('style', ((styling.styleTarget.getAttribute('style') ?? '') + `
+                    color: ${colour};
+                `)) :
             (styling.styleTarget.classList.add('strengthChecked'),
                 styling.styleTarget.dataset.score = score);
     }

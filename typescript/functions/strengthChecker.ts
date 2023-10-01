@@ -99,12 +99,19 @@ export default function strengthChecker(password:string,constraints:strengthChec
             score = 'excellent';
         }
 
-        styling.styleType === "inline"?
-            styling.styleTarget.style.color = colour:
-            (
-                styling.styleTarget.classList.add('strengthChecked'),
-                styling.styleTarget.dataset.score = score
-            );
+        console.log(colour);
+
+        styling.styleType==="inline"?
+            styling.styleTarget.setAttribute('style',(
+                (styling.styleTarget.getAttribute('style')??'')+`
+                    color: ${colour};
+                `
+            )
+        ):
+        (
+            styling.styleTarget.classList.add('strengthChecked'),
+            styling.styleTarget.dataset.score = score
+        );
 
     }
 
@@ -114,5 +121,3 @@ export default function strengthChecker(password:string,constraints:strengthChec
         entropy:entropy,
     }
 }
-
-
