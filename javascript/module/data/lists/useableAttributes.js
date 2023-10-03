@@ -37,6 +37,13 @@
  * - ```lowercase_cyrillic_supplement```
  * - ```uppercase_cyrillic_supplement```
  * - ```misc_cyrillic_supplement```
+ * - ```general_punctuation```
+ * - ```currency_symbols```
+ * - ```misc_technical```
+ * - ```box_drawings```
+ * - ```block_elements```
+ * - ```misc_symbols```
+ * - ```dingbats```
  *
  * @const {Array<string>} useableAttributes
  */
@@ -72,6 +79,13 @@ const useableAttributes = [
     'symbols_cyrillic',
     'lowercase_cyrillic_supplement',
     'uppercase_cyrillic_supplement',
-    'misc_cyrillic_supplement'
+    'misc_cyrillic_supplement',
+    'general_punctuation',
+    'currency_symbols',
+    'misc_technical',
+    'box_drawings',
+    'block_elements',
+    'misc_symbols',
+    'dingbats',
 ];
 export default useableAttributes;

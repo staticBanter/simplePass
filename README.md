@@ -88,9 +88,17 @@ Fully Supported Character Sets:
 - Latin(1) Supplement
 - Latin Extended A
 - Latin Extended B
+- Latin IPA Extensions
 - Modifier Letters
 - Greek And Coptic
 - Cyrillic Supplement
+- General Punctuation
+- Currency Symbols
+- Miscellaneous Technical
+- Box Drawings
+- Block Elements
+- Miscellaneous Symbols
+- Dingbats.
 
 Partially Supported Character Sets:
 

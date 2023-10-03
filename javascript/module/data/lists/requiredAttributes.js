@@ -33,6 +33,13 @@
  * - ```lowercase_cyrillic_supplement```
  * - ```uppercase_cyrillic_supplement```
  * - ```misc_cyrillic_supplement```
+ * - ```general_punctuation```
+ * - ```currency_symbols```
+ * - ```misc_technical```
+ * - ```box_drawings```
+ * - ```block_elements```
+ * - ```misc_symbols```
+ * - ```dingbats```
  * > Note: Only 1 of these modifiers is required for the program to function.
  *
  * @const {Array<string>} requiredAttributes
@@ -65,6 +72,13 @@ const requiredAttributes = [
     'symbols_cyrillic',
     'lowercase_cyrillic_supplement',
     'uppercase_cyrillic_supplement',
-    'misc_cyrillic_supplement'
+    'misc_cyrillic_supplement',
+    'general_punctuation',
+    'currency_symbols',
+    'misc_technical',
+    'box_drawings',
+    'block_elements',
+    'misc_symbols',
+    'dingbats',
 ];
 export default requiredAttributes;

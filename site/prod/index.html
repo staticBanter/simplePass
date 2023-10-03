@@ -335,7 +335,7 @@
             <fieldset>
                 <legend>Cyrillic</legend>
                 <p>
-                    <strong>Note</strong>: This set excludes '<em>Combination Characters</em>' (decimal values: 1155-1161), because they are illegible when they are the only characters selected and can be hard to decern when combined with other characters.
+                    * <strong>Note</strong>: This set excludes '<em>Combination Characters</em>' (decimal values: 1155-1161), because they are illegible when they are the only characters selected and can be hard to decern when combined with other characters.
                 </p>
                 <label>Lowercase Characters:
                     <input type="checkbox" form="sp_form" name="lowercase_cyrillic" >
@@ -359,6 +359,47 @@
                     <input type="checkbox" form="sp_form" name="misc_cyrillic_supplement" >
                 </label>
             </fieldset>
+            <div>
+                <label>General Punctuation
+                    <input type="checkbox" form="sp_form" name="general_punctuation" >
+                </label>
+                <p>
+                    * <strong>Note</strong>: This does not include the following character-codes/character-code-sets; [8192-8207], [8232-8239], [8287-8303].
+                </p>
+            </div>
+            <div>
+                <label>Currency Symbols
+                    <input type="checkbox" form="sp_form" name="currency_symbols" >
+                </label>
+                <p>
+                    * <strong>Note</strong>: This does not include the following character-codes/character-code-sets; [8372].
+                </p>
+            </div>
+            <div>
+                <label>Miscellaneous Technical
+                    <input type="checkbox" form="sp_form" name="misc_technical" >
+                </label>
+            </div>
+            <div>
+                <label>Box Drawings
+                    <input type="checkbox" form="sp_form" name="Box Drawings" >
+                </label>
+            </div>
+            <div>
+                <label>Block Elements
+                    <input type="checkbox" form="sp_form" name="block_elements" >
+                </label>
+            </div>
+            <div>
+                <label>Miscellaneous Symbols
+                    <input type="checkbox" form="sp_form" name="misc_symbols" >
+                </label>
+            </div>
+            <div>
+                <label>Dingbats
+                    <input type="checkbox" form="sp_form" name="dingbats" >
+                </label>
+            </div>
         </form>
         <!-- <button class="add-button">Add to home screen</button> -->
     </main>

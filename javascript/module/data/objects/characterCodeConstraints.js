@@ -357,6 +357,46 @@ const characterCodeConstraints = {
     misc_cyrillic_supplement: {
         min: 1320,
         max: 1327
-    }
+    },
+    general_punctuation: {
+        min: 8208,
+        max: 8286,
+        range: [
+            [8208, 8231],
+            [8240, 8286]
+        ]
+    },
+    currency_symbols: {
+        min: 8352,
+        max: 8383,
+        range: [
+            [8352, 8371],
+            [8373, 8383]
+        ]
+    },
+    misc_technical: {
+        min: 8960,
+        max: 9215,
+    },
+    box_drawings: {
+        min: 9472,
+        max: 9599
+    },
+    block_elements: {
+        min: 9600,
+        max: 9631
+    },
+    misc_symbols: {
+        min: 9728,
+        max: 9983,
+        range: [
+            [9728, 9897],
+            [9899, 9983]
+        ]
+    },
+    dingbats: {
+        min: 9984,
+        max: 10175
+    },
 };
 export default characterCodeConstraints;
