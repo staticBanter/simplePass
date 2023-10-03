@@ -1,6 +1,6 @@
 'use strict';
 import useableAttributes from "../data/lists/useableAttributes.js";
-import requiredAttributes from "../data/lists/requiredAttributes.js";
+import characterCodeConstraints from "../data/objects/characterCodeConstraints.js";
 /**
  * @file
  * @module validateModifier
@@ -329,11 +329,12 @@ export default function validateModifier(modifier, cFig) {
      */
     if (!Object.keys(modifier)
         .some(function (array) {
-        return requiredAttributes.includes(array);
+        return Object.keys(characterCodeConstraints).includes(array);
+        // return requiredAttributes.includes(array);
     })) {
         throw {
             errorKey: 'missingRequiredAttributes',
-            replacements: ['vM', '7', requiredAttributes.toString()]
+            replacements: ['vM', '7', Object.keys(characterCodeConstraints).toString()]
         };
     }
     /**

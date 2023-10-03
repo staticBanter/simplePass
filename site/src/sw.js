@@ -30,7 +30,6 @@ const appShellFiles = [
   "./docs/data_interfaces_strengthCheckerStyling.js.html",
   "./docs/data_interfaces_strengthScoreAttributes.js.html",
   "./docs/data_lists_allowedModifiers.js.html",
-  "./docs/data_lists_requiredAttributes.js.html",
   "./docs/data_lists_useableAttributes.js.html",
   "./docs/data_lists_whitespaceAttributes.js.html",
   "./docs/data_objects_characterCodeConstraints.js.html",

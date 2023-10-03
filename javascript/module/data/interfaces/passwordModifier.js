@@ -1,7 +1,7 @@
 /**
  * Interface for object that represents a 'Password Modifier' object used by the [simplePass main function]{@link simplePass}.
  *
- * > Note: 1 attribute from the [list of required attributes]{@link module:requiredAttributes} is required for the program to function.
+ * > Note: 1 attribute from the [Character Code Constraints]{@link module:characterCodeConstraints} object is required for the program to function.
  *
  * @interface passwordModifier
  * @property {number} length The length the password should be.

@@ -2,7 +2,6 @@
 import cleanModifier from "./functions/cleanModifier.js";
 import validateModifier from "./functions/validateModifier.js";
 import config from "./simplePass.config.js";
-import requiredAttributes from "./data/lists/requiredAttributes.js";
 import whitespaceAttributes from "./data/lists/whitespaceAttributes.js";
 import shuffle from "./functions/shuffle.js";
 import generateCharCode from "./functions/generateCharCode.js";
@@ -13,6 +12,7 @@ import useableAttributes from "./data/lists/useableAttributes.js";
 import passwordPreConfigs from "./data/objects/passwordPreConfigs.js";
 import messageHandler from "./functions/messageHandler.js";
 import initializer from "./functions/initializer.js";
+import characterCodeConstraints from "./data/objects/characterCodeConstraints.js";
 /**
  * @file
  * @module simplePass
@@ -115,7 +115,7 @@ export default function simplePass(modifier = config.defaultPasswordModifier, st
     }
     // Get the attributes that can affect the character type
     const characterAttributes = Object.keys(modifier).filter((item) => {
-        return requiredAttributes.includes(item);
+        return Object.keys(characterCodeConstraints).includes(item);
     });
     // Get the attributes that can set whitespace
     const setWhitespaceAttributes = Object.keys(modifier).filter((item) => {
