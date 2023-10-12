@@ -1,3 +1,20 @@
+/**
+* simplePass - A JavaScript password generator.
+* Copyright (C) 2023  Jordan Vezina(staticBanter)
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
 'use strict';
 
 import calculateMaxPossibleCharacters from "./calculateMaxPossibleCharacters.js";
@@ -14,9 +31,10 @@ import strengthCheckerConstraints from "../data/interfaces/strengthCheckerConstr
 
 /**
  * A function to determine the strength of a password. Preforms 2 types of checks:
- * - Bits of entropy calculated as ```(pL(log(tC)))/log(2)```; where:
- *  - *pL* = Password length
- *  - *tC* = Total amount of characters that can be used.
+ * - Bits of entropy calculated as ```E =(Pl(log(Pc)))/log(2)```; where:
+ *  - *E* = Entropy
+ *  - *Pl* = Password length
+ *  - *Pc* = Total amount of characters that can be used.
  * - Character length and uniques check.
  *  - Ensures the password is long enough
  *  - Ensure the password is using a good amount of repeating and unique characters.
@@ -32,18 +50,29 @@ import strengthCheckerConstraints from "../data/interfaces/strengthCheckerConstr
  * @requires characterStrengthCheck
  * @returns {strengthCheckedPassword} An [object]{@link module:strengthCheckedPassword} containing the strength checked password, its strength score, and the bit entropy of the password.
  */
-export default function strengthChecker(password:string,constraints:strengthCheckerConstraints,styling?:strengthCheckerStyling):strengthCheckedPassword{
+export default function strengthChecker(
+    password:string,
+    constraints:strengthCheckerConstraints,
+    styling?:strengthCheckerStyling
+):strengthCheckedPassword{
 
     let strengthScore = 0;
 
     // Entropy Check.
-    const entropy = (password.length*Math.log(calculateMaxPossibleCharacters({
-        characterSets:constraints.characterSets.used
-        .filter((item)=>{
-            return constraints.characterSets.available.includes(item);
-        }),
-        excludeCharacters:constraints.excludeCharacters
-    }))/Math.log(2));
+    const entropy = (
+        password.length*Math.log(
+            calculateMaxPossibleCharacters(
+                {
+                    characterSets:constraints.characterSets.used
+                    .filter((item)=>{
+                        return constraints.characterSets.available.includes(item);
+                    }),
+                    excludeCharacters:constraints.excludeCharacters
+                }
+            )
+        )
+        /Math.log(2)
+    );
 
     strengthScore += entropy;
 

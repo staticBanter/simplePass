@@ -1,3 +1,20 @@
+/**
+* simplePass - A JavaScript password generator.
+* Copyright (C) 2023  Jordan Vezina(staticBanter)
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
 'use strict';
 import range from "../../functions/range.js";
 /**
@@ -7,18 +24,43 @@ import range from "../../functions/range.js";
 /**
  * Character-code constraint object. Defines the bounds that each character code type exists in.
  *
- * @const {object} characterCodeConstraints
- * @property {object} [lowercase] Basic Latin Lower Alpha character code constraints.
- * @property {object} [uppercase] Basic Latin Upper Alpha character code constraints.
- * @property {object} [numbers] Basic Latin Numeric character code constraints.
- * @property {object} [punctuation] Basic Latin Punctuation character code constraints.
- * @property {object} [whitespace]  Whitespace character code constraint.
- * @property {object} [lowercase_supplement] Basic Latin(1) Supplement Lowercase character code constraints.
- * @property {object} [uppercase_supplement] Basic Latin(1) Supplement Uppercase character code constraints.
- * @property {object} [symbols_supplement] Basic Latin(1) Supplement Signs, Symbols and Punctuation character code constraints.
- * @property {object} [lowercase_extended_a] Latin Extended A Lowercase character code constraints.
- * @property {object} [uppercase_extended_a] Latin Extended A Uppercase character code constraints.
- * @property {object} [ligature_extended_a] Latin Extended A Ligature character code constraints.
+ * @const {characterCodeConstraintsAttributes} characterCodeConstraints
+ * @property {characterCodeConstraintsAttributes} [lowercase] Basic Latin Lower Alpha character code constraints.
+ * @property {characterCodeConstraintsAttributes} [uppercase] Basic Latin Upper Alpha character code constraints.
+ * @property {characterCodeConstraintsAttributes} [numbers] Basic Latin Numeric character code constraints.
+ * @property {characterCodeConstraintsAttributes} [punctuation] Basic Latin Punctuation character code constraints.
+ * @property {characterCodeConstraintsAttributes} [whitespace]  Whitespace character code constraint.
+ * @property {characterCodeConstraintsAttributes} [lowercase_supplement] Basic Latin(1) Supplement Lowercase character code constraints.
+ * @property {characterCodeConstraintsAttributes} [uppercase_supplement] Basic Latin(1) Supplement Uppercase character code constraints.
+ * @property {characterCodeConstraintsAttributes} [symbols_supplement] Basic Latin(1) Supplement Signs, Symbols and Punctuation character code constraints.
+ * @property {characterCodeConstraintsAttributes} [lowercase_extended_a] Latin Extended A Lowercase character code constraints.
+ * @property {characterCodeConstraintsAttributes} [uppercase_extended_a] Latin Extended A Uppercase character code constraints.
+ * @property {characterCodeConstraintsAttributes} [ligature_extended_a] Latin Extended A Ligature character code constraints.
+ * @property {characterCodeConstraintsAttributes} [lowercase_extended_b] Latin Extended B Lowercase character code constraints.
+ * @property {characterCodeConstraintsAttributes} [uppercase_extended_b] Latin Extended B Uppercase character code constraints.
+ * @property {characterCodeConstraintsAttributes} [mixedcase_extended_b] Latin Extended B Mixed-case character code constraints.
+ * @property {characterCodeConstraintsAttributes} [insensitivecase_extended_b] Latin Extended B Case Insensitive character code constraints.
+ * @property {characterCodeConstraintsAttributes} [lowercase_ipa_extension] Latin IPA Lowercase character code constraints.
+ * @property {characterCodeConstraintsAttributes} [uppercase_ipa_extension] Latin IPA Uppercase character code constraints.
+ * @property {characterCodeConstraintsAttributes} [character_modifier_letters] Character Modifier Letter code constraints.
+ * @property {characterCodeConstraintsAttributes} [symbol_modifier_letters] Symbol Modifier Letter code constraints.
+ * @property {characterCodeConstraintsAttributes} [lowercase_greek_coptic] Greek Coptic Lowercase character code constraints.
+ * @property {characterCodeConstraintsAttributes} [uppercase_greek_coptic] Greek Coptic Uppercase character code constraints.
+ * @property {characterCodeConstraintsAttributes} [insensitivecase_greek_coptic] Greek Coptic Case Insensitive character code constraints.
+ * @property {characterCodeConstraintsAttributes} [symbol_greek_coptic] Greek Coptic Symbol character code constraints.
+ * @property {characterCodeConstraintsAttributes} [lowercase_cyrillic] Cyrillic Lowercase character code constraints.
+ * @property {characterCodeConstraintsAttributes} [uppercase_cyrillic] Cyrillic Uppercase character code constraints.
+ * @property {characterCodeConstraintsAttributes} [symbols_cyrillic] Cyrillic Symbol character code constraints.
+ * @property {characterCodeConstraintsAttributes} [lowercase_cyrillic_supplement] Cyrillic Lowercase Supplement character code constraints.
+ * @property {characterCodeConstraintsAttributes} [uppercase_cyrillic_supplement] Cyrillic Uppercase Supplement character code constraints.
+ * @property {characterCodeConstraintsAttributes} [misc_cyrillic_supplement] Cyrillic Supplement Symbol character code constraints.
+ * @property {characterCodeConstraintsAttributes} [general_punctuation] General Punctuation character code constraints.
+ * @property {characterCodeConstraintsAttributes} [currency_symbols] Currency Symbol character code constraints.
+ * @property {characterCodeConstraintsAttributes} [misc_technical] Miscellaneous Technical character code constraints.
+ * @property {characterCodeConstraintsAttributes} [box_drawings] Box Drawing character code constraints.
+ * @property {characterCodeConstraintsAttributes} [block_elements] Block Element character code constraints.
+ * @property {characterCodeConstraintsAttributes} [misc_symbols] Miscellaneous Symbol character code constraints.
+ * @property {characterCodeConstraintsAttributes} [dingbats] Dingbat character code constraints.
  * @implements {characterCodeConstraintsAttributes}
  * @requires range
  *

@@ -4,6 +4,7 @@
     "html-minifier": "^4.0.0",
     "jsdoc": "^4.0.0",
     "sass": "^1.58.3",
+    "terser-webpack-plugin": "^5.3.9",
     "typescript": "^4.7.4",
     "webpack": "^5.75.0",
     "webpack-cli": "^5.0.0",
@@ -11,7 +12,7 @@
   },
   "name": "simplepass",
   "description": "simplePass is a Javascript password generator.",
-  "version": "8.3.1-Beta",
+  "version": "9.0.0-Beta",
   "browser": "./simplePass/browser/simplePass.js",
   "directories": {
     "test": "test",

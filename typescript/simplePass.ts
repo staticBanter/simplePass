@@ -1,3 +1,21 @@
+/**
+* simplePass - A JavaScript password generator.
+* Copyright (C) 2023  Jordan Vezina(staticBanter)
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
 'use strict';
 
 import passwordModifier from "./data/interfaces/passwordModifier.js";
@@ -27,15 +45,12 @@ import characterCodeConstraints from "./data/objects/characterCodeConstraints.js
  * Main program function. Can return a password string or an [object]{@link strengthCheckedPassword} describing a strength checked password.
  *
  * @function simplePass
- * @param {passwordModifier | FormData} modifier The available password modifications. See README.md for more information about modifiers.
- * @param {boolean | strengthCheckerStyling} strengthCheck If set a strength score will also be calculated and an object containing the password and a strength score will be returned.
- * Can also be a ['Strength Checker Styling' Object]{@link module:strengthCheckerStyling}, if set simplePass will also attempt to style the target element.
+ * @param {passwordModifier | FormData} [modifier] The available [password modifiers]{@link module:passwordModifier} that can be used to create the password. Defaults to *[config.defaultPasswordModifier]{@link module:config}*.
+ * @param {boolean | strengthCheckerStyling} [strengthCheck] An optional boolean or [Strength Checker Styling Object]{@link module:strengthCheckerStyling} instructing simplePass if and how to style the password as well as include an Entropy Score.
  * @requires config
  * @requires errors
- * @requires createMessage
  * @requires cleanModifier
  * @requires validateModifier
- * @requires requiredAttributes
  * @requires whitespaceAttributes
  * @requires generateCharCode
  * @requires ensureRepeatingCharacters
@@ -50,24 +65,31 @@ import characterCodeConstraints from "./data/objects/characterCodeConstraints.js
 export default function simplePass(
     modifier:passwordModifier|FormData = config.defaultPasswordModifier,
     strengthCheck?:boolean|strengthCheckerStyling,
-    displayMessages?: {
-        messageBoard: HTMLElement,
-        clearConsole?:boolean
-    },
     cFig: typeof config = config,
 ) {
+
+    let messageBoard:HTMLElement|null = null;
+
+    if(
+        cFig.messages
+        && cFig.messages.messageBoard
+    ){
+
+        messageBoard = document.body.querySelector<HTMLElement>(cFig.messages.messageBoard);
+
+    }
 
     messageHandler(
         'CLEAR',
         {
             htmlMessage: (
-                displayMessages?.messageBoard ? {
-                    messageBoard: displayMessages!.messageBoard,
+                messageBoard ? {
+                    messageBoard: messageBoard,
                     clear:true,
                 } :undefined
             ),
             consoleMessage: {
-                clear: displayMessages?.clearConsole,
+                clear: cFig.messages?.clearConsole,
             },
             level:"CLEAR"
         },
@@ -95,8 +117,8 @@ export default function simplePass(
             },
             {
                 htmlMessage: (
-                    displayMessages?.messageBoard ? {
-                        messageBoard: displayMessages!.messageBoard,
+                    messageBoard ? {
+                        messageBoard: messageBoard,
                     } :
                     undefined
                 ),
@@ -134,8 +156,8 @@ export default function simplePass(
             },
             {
                 htmlMessage: (
-                    displayMessages?.messageBoard ? {
-                        messageBoard: displayMessages!.messageBoard,
+                    messageBoard ? {
+                        messageBoard: messageBoard
                     } :
                     undefined
                 ),
@@ -236,8 +258,8 @@ export default function simplePass(
                 },
                 {
                     htmlMessage: (
-                        displayMessages?.messageBoard ? {
-                            messageBoard: displayMessages!.messageBoard,
+                        messageBoard ? {
+                            messageBoard: messageBoard,
                         } :
                         undefined
                     ),
@@ -263,8 +285,8 @@ export default function simplePass(
             },
             {
                 htmlMessage: (
-                    displayMessages?.messageBoard ? {
-                        messageBoard: displayMessages!.messageBoard,
+                    messageBoard ? {
+                        messageBoard: messageBoard,
                     } :
                     undefined
                 ),
@@ -336,8 +358,8 @@ export default function simplePass(
                         },
                         {
                             htmlMessage: (
-                                displayMessages?.messageBoard ? {
-                                    messageBoard: displayMessages!.messageBoard,
+                                messageBoard ? {
+                                    messageBoard: messageBoard,
                                 } :
                                 undefined
                             ),
@@ -411,8 +433,8 @@ export default function simplePass(
                         },
                         {
                             htmlMessage: (
-                                displayMessages?.messageBoard ? {
-                                    messageBoard: displayMessages!.messageBoard
+                                messageBoard ? {
+                                    messageBoard: messageBoard
                                 } :
                                 undefined
                             ),
@@ -518,8 +540,8 @@ export default function simplePass(
                         },
                         {
                             htmlMessage: (
-                                displayMessages?.messageBoard ? {
-                                    messageBoard: displayMessages!.messageBoard
+                                messageBoard ? {
+                                    messageBoard: messageBoard
                                 } :
                                 undefined
                             ),
@@ -619,8 +641,8 @@ export default function simplePass(
                                 },
                                 {
                                     htmlMessage: (
-                                        displayMessages?.messageBoard ? {
-                                            messageBoard: displayMessages!.messageBoard
+                                        messageBoard ? {
+                                            messageBoard: messageBoard
                                         } :
                                         undefined
                                     ),
@@ -679,8 +701,8 @@ export default function simplePass(
                     },
                     {
                         htmlMessage: (
-                            displayMessages?.messageBoard ? {
-                                messageBoard: displayMessages!.messageBoard
+                            messageBoard ? {
+                                messageBoard: messageBoard
                             } :
                             undefined
                         ),
@@ -734,8 +756,8 @@ export default function simplePass(
                     },
                     {
                         htmlMessage: (
-                            displayMessages?.messageBoard ? {
-                                messageBoard: displayMessages!.messageBoard
+                            messageBoard ? {
+                                messageBoard: messageBoard
                             } :
                             undefined
                         ),
@@ -819,8 +841,8 @@ export default function simplePass(
                     },
                     {
                         htmlMessage: (
-                            displayMessages?.messageBoard ? {
-                                messageBoard: displayMessages!.messageBoard
+                            messageBoard ? {
+                                messageBoard: messageBoard
                             } :
                             undefined
                         ),
@@ -898,8 +920,8 @@ export default function simplePass(
                             },
                             {
                                 htmlMessage: (
-                                    displayMessages?.messageBoard ? {
-                                        messageBoard: displayMessages!.messageBoard,
+                                    messageBoard? {
+                                        messageBoard: messageBoard,
                                     } :
                                     undefined
                                 ),
@@ -937,8 +959,8 @@ export default function simplePass(
                         available:useableAttributes
                     },
                     excludeCharacters:modifier.excludeCharacters,
-                    min_length:cFig.min_passwordLength,
-                    max_length:cFig.max_passwordLength
+                    min_length:cFig.passwordConstraints.min_length,
+                    max_length:cFig.passwordConstraints.max_length
                 },
                 {
                     styleTarget:strengthCheck.styleTarget,
@@ -955,8 +977,8 @@ export default function simplePass(
                     available:useableAttributes
                 },
                 excludeCharacters:modifier.excludeCharacters,
-                min_length:cFig.min_passwordLength,
-                max_length:cFig.max_passwordLength
+                min_length:cFig.passwordConstraints.min_length,
+                max_length:cFig.passwordConstraints.max_length
             }
         );
     }

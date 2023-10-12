@@ -3,8 +3,28 @@
  */
 
 const path = require('path');
-const {EnvironmentPlugin} = require('webpack');
+const {EnvironmentPlugin, BannerPlugin} = require('webpack');
+const TerserPlugin = require('terser-webpack-plugin');
 const CopyPlugin = require("copy-webpack-plugin");
+
+
+const licenseBanner = `
+simplePass - A JavaScript password generator.
+Copyright (C) 2023  Jordan Vezina(staticBanter)
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+`;
 
 /**
  * Because we need to bundle the browser version of simplePass with the main page, we create a second directory bundle our files and include it in the site.
@@ -28,12 +48,22 @@ module.exports = (env) => [
         },
         optimization: {
             minimize: true,
+            minimizer: [
+                new TerserPlugin({
+                    extractComments: false,
+                })
+            ],
         },
         mode:"production",
         cache:false,
         experiments: {
             outputModule: true,
-        }
+        },
+        plugins:[
+            new BannerPlugin({
+                banner:licenseBanner
+            })
+        ]
 	},
     // Config for the site.
 	{
@@ -75,6 +105,11 @@ module.exports = (env) => [
         },
         optimization: {
             minimize: true,
+            minimizer: [
+                new TerserPlugin({
+                    extractComments: false,
+                })
+            ],
         },
         mode:"production",
         plugins: [

@@ -1,3 +1,21 @@
+/**
+* simplePass - A JavaScript password generator.
+* Copyright (C) 2023  Jordan Vezina(staticBanter)
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
 'use strict';
 
 import passwordModifier from "../interfaces/passwordModifier";
@@ -15,6 +33,7 @@ import passwordModifier from "../interfaces/passwordModifier";
  * @property {object} [fourDigitPin] A pre-config for four digit pins.
  * @property {object} [defaultSupplement1] An alternate version of the default pre-config using Basic Latin 1 Supplement characters.
  * @property {object} [extreme] A pre-config that utilize a large portion of the simplePass feature set while generating the largest possible password.
+ * @property {object} [bios] A pre-config that should generate passwords compatible with all motherboard bios.
  */
 const passwordPreConfigs:{
     [index:string]:object|undefined

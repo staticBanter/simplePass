@@ -1,3 +1,20 @@
+/**
+* simplePass - A JavaScript password generator.
+* Copyright (C) 2023  Jordan Vezina(staticBanter)
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
 'use strict';
 import cleanModifier from "./functions/cleanModifier.js";
 import validateModifier from "./functions/validateModifier.js";
@@ -21,15 +38,12 @@ import characterCodeConstraints from "./data/objects/characterCodeConstraints.js
  * Main program function. Can return a password string or an [object]{@link strengthCheckedPassword} describing a strength checked password.
  *
  * @function simplePass
- * @param {passwordModifier | FormData} modifier The available password modifications. See README.md for more information about modifiers.
- * @param {boolean | strengthCheckerStyling} strengthCheck If set a strength score will also be calculated and an object containing the password and a strength score will be returned.
- * Can also be a ['Strength Checker Styling' Object]{@link module:strengthCheckerStyling}, if set simplePass will also attempt to style the target element.
+ * @param {passwordModifier | FormData} [modifier] The available [password modifiers]{@link module:passwordModifier} that can be used to create the password. Defaults to *[config.defaultPasswordModifier]{@link module:config}*.
+ * @param {boolean | strengthCheckerStyling} [strengthCheck] An optional boolean or [Strength Checker Styling Object]{@link module:strengthCheckerStyling} instructing simplePass if and how to style the password as well as include an Entropy Score.
  * @requires config
  * @requires errors
- * @requires createMessage
  * @requires cleanModifier
  * @requires validateModifier
- * @requires requiredAttributes
  * @requires whitespaceAttributes
  * @requires generateCharCode
  * @requires ensureRepeatingCharacters
@@ -41,14 +55,19 @@ import characterCodeConstraints from "./data/objects/characterCodeConstraints.js
  * @throws {errors.invalidModifier} Will throw an Error if the [modifier]{@link passwordModifier} is ```null```, ```undefined``` or not a JavaScript Object.
  * @returns {string | strengthCheckedPassword} The generated password or strength checked password object.
  */
-export default function simplePass(modifier = config.defaultPasswordModifier, strengthCheck, displayMessages, cFig = config) {
+export default function simplePass(modifier = config.defaultPasswordModifier, strengthCheck, cFig = config) {
+    let messageBoard = null;
+    if (cFig.messages
+        && cFig.messages.messageBoard) {
+        messageBoard = document.body.querySelector(cFig.messages.messageBoard);
+    }
     messageHandler('CLEAR', {
-        htmlMessage: (displayMessages?.messageBoard ? {
-            messageBoard: displayMessages.messageBoard,
+        htmlMessage: (messageBoard ? {
+            messageBoard: messageBoard,
             clear: true,
         } : undefined),
         consoleMessage: {
-            clear: displayMessages?.clearConsole,
+            clear: cFig.messages?.clearConsole,
         },
         level: "CLEAR"
     }, cFig);
@@ -68,8 +87,8 @@ export default function simplePass(modifier = config.defaultPasswordModifier, st
                 templates: errors
             }
         }, {
-            htmlMessage: (displayMessages?.messageBoard ? {
-                messageBoard: displayMessages.messageBoard,
+            htmlMessage: (messageBoard ? {
+                messageBoard: messageBoard,
             } :
                 undefined),
             consoleMessage: true,
@@ -96,8 +115,8 @@ export default function simplePass(modifier = config.defaultPasswordModifier, st
                 templates: errors,
             }
         }, {
-            htmlMessage: (displayMessages?.messageBoard ? {
-                messageBoard: displayMessages.messageBoard,
+            htmlMessage: (messageBoard ? {
+                messageBoard: messageBoard
             } :
                 undefined),
             consoleMessage: true,
@@ -173,8 +192,8 @@ export default function simplePass(modifier = config.defaultPasswordModifier, st
             messageHandler({
                 messageKey: 'ERROR: The password length can not contain the selected amount of characters',
             }, {
-                htmlMessage: (displayMessages?.messageBoard ? {
-                    messageBoard: displayMessages.messageBoard,
+                htmlMessage: (messageBoard ? {
+                    messageBoard: messageBoard,
                 } :
                     undefined),
                 consoleMessage: true,
@@ -190,8 +209,8 @@ export default function simplePass(modifier = config.defaultPasswordModifier, st
         messageHandler({
             messageKey: 'ERROR: The password length can not contain the selected amount of characters',
         }, {
-            htmlMessage: (displayMessages?.messageBoard ? {
-                messageBoard: displayMessages.messageBoard,
+            htmlMessage: (messageBoard ? {
+                messageBoard: messageBoard,
             } :
                 undefined),
             consoleMessage: true,
@@ -245,8 +264,8 @@ export default function simplePass(modifier = config.defaultPasswordModifier, st
                             templates: errors,
                         }
                     }, {
-                        htmlMessage: (displayMessages?.messageBoard ? {
-                            messageBoard: displayMessages.messageBoard,
+                        htmlMessage: (messageBoard ? {
+                            messageBoard: messageBoard,
                         } :
                             undefined),
                         consoleMessage: true,
@@ -296,8 +315,8 @@ export default function simplePass(modifier = config.defaultPasswordModifier, st
                             templates: errors,
                         }
                     }, {
-                        htmlMessage: (displayMessages?.messageBoard ? {
-                            messageBoard: displayMessages.messageBoard
+                        htmlMessage: (messageBoard ? {
+                            messageBoard: messageBoard
                         } :
                             undefined),
                         consoleMessage: true,
@@ -369,8 +388,8 @@ export default function simplePass(modifier = config.defaultPasswordModifier, st
                             templates: errors,
                         }
                     }, {
-                        htmlMessage: (displayMessages?.messageBoard ? {
-                            messageBoard: displayMessages.messageBoard
+                        htmlMessage: (messageBoard ? {
+                            messageBoard: messageBoard
                         } :
                             undefined),
                         consoleMessage: true,
@@ -443,8 +462,8 @@ export default function simplePass(modifier = config.defaultPasswordModifier, st
                                     templates: errors,
                                 }
                             }, {
-                                htmlMessage: (displayMessages?.messageBoard ? {
-                                    messageBoard: displayMessages.messageBoard
+                                htmlMessage: (messageBoard ? {
+                                    messageBoard: messageBoard
                                 } :
                                     undefined),
                                 consoleMessage: true,
@@ -487,8 +506,8 @@ export default function simplePass(modifier = config.defaultPasswordModifier, st
                         templates: errors,
                     }
                 }, {
-                    htmlMessage: (displayMessages?.messageBoard ? {
-                        messageBoard: displayMessages.messageBoard
+                    htmlMessage: (messageBoard ? {
+                        messageBoard: messageBoard
                     } :
                         undefined),
                     consoleMessage: true,
@@ -524,8 +543,8 @@ export default function simplePass(modifier = config.defaultPasswordModifier, st
                         templates: errors,
                     }
                 }, {
-                    htmlMessage: (displayMessages?.messageBoard ? {
-                        messageBoard: displayMessages.messageBoard
+                    htmlMessage: (messageBoard ? {
+                        messageBoard: messageBoard
                     } :
                         undefined),
                     consoleMessage: true,
@@ -583,8 +602,8 @@ export default function simplePass(modifier = config.defaultPasswordModifier, st
                         templates: errors,
                     }
                 }, {
-                    htmlMessage: (displayMessages?.messageBoard ? {
-                        messageBoard: displayMessages.messageBoard
+                    htmlMessage: (messageBoard ? {
+                        messageBoard: messageBoard
                     } :
                         undefined),
                     consoleMessage: true,
@@ -642,8 +661,8 @@ export default function simplePass(modifier = config.defaultPasswordModifier, st
                                 templates: errors,
                             }
                         }, {
-                            htmlMessage: (displayMessages?.messageBoard ? {
-                                messageBoard: displayMessages.messageBoard,
+                            htmlMessage: (messageBoard ? {
+                                messageBoard: messageBoard,
                             } :
                                 undefined),
                             consoleMessage: true,
@@ -666,8 +685,8 @@ export default function simplePass(modifier = config.defaultPasswordModifier, st
                     available: useableAttributes
                 },
                 excludeCharacters: modifier.excludeCharacters,
-                min_length: cFig.min_passwordLength,
-                max_length: cFig.max_passwordLength
+                min_length: cFig.passwordConstraints.min_length,
+                max_length: cFig.passwordConstraints.max_length
             }, {
                 styleTarget: strengthCheck.styleTarget,
                 styleType: strengthCheck.styleType
@@ -679,8 +698,8 @@ export default function simplePass(modifier = config.defaultPasswordModifier, st
                 available: useableAttributes
             },
             excludeCharacters: modifier.excludeCharacters,
-            min_length: cFig.min_passwordLength,
-            max_length: cFig.max_passwordLength
+            min_length: cFig.passwordConstraints.min_length,
+            max_length: cFig.passwordConstraints.max_length
         });
     }
     // Return the password.

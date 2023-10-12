@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8" >
     <meta http-equiv="X-UA-Compatible" content="IE=edge" >
@@ -12,6 +12,23 @@
     <meta name="theme-color" content="#130E1E">
     <meta name="robots" content="index, follow, max-snippet:30" >
     <meta name="thumbnail" content="./storage/icons/simplePass-Logo-1080.png" >
+    <!--
+        simplePass - A JavaScript password generator.
+        Copyright (C) 2023  Jordan Vezina(staticBanter)
+
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with this program.  If not, see <https://www.gnu.org/licenses/>.
+    -->
 
     <!--Open Graph Protocol Meta Data-->
     <meta property="og:title" content="simplePass | Demo" >
@@ -48,35 +65,36 @@
     <script type="module" src="./main.js"></script>
     <link type="text/css" href="./main.css" rel="stylesheet" >
     <link rel="manifest" href="./manifest.json" >
-    <link type="image/png" rel="icon" href="./storage/icons/simplePass-Logo-512.png">
+    <link type="image/png" type="image/png" rel="icon" href="./storage/icons/simplePass-Logo-512.png">
 </head>
 <body>
     <header>
         <h1>simplePass</h1>
         <nav>
+            <a href="./EXAMPLES-AND-INTEGRATION.html">Examples & Integration</a>
             <a href="./docs/index.html">Documentation</a>
         </nav>
     </header>
     <main>
         <div id="sp_passwordBox">
-            <div id="sp_passwordContainer">
+            <div class="simplePass_passwordContainer">
                 <p>
                     <b>Password:</b>
-                    <span id="sp_passwordParagraph" class="sp_password"></span>
+                    <span class="sp_password simplePass_passwordTarget"></span>
                 </p>
                 <p>
-                    Bits of Entropy: ~<span id="sp_passwordEntropy"></span>
+                    Bits of Entropy: ~<span class="simplePass_entropyTarget"></span>
                 </p>
             </div>
             <div>
-                <button id="sp_generatePasswordButton" type="submit" form="sp_form">Generate</button>
-                <button id="sp_copyPasswordButton" type="button">Copy</button>
+                <button class="simplePass_generator" type="submit" form="simplePass_form">Generate</button>
+                <button class="simplePass_copier" type="button">Copy</button>
                 <label>Batch Amount:
-                    <input type="number" name="passwordBatchAmount" id="sp_batchPasswordInput" min="2" max="256" >
+                    <input type="number" name="passwordBatchAmount" form="simplePass_form" id="sp_batchPasswordInput" min="2" max="256" >
                 </label>
             </div>
         </div>
-        <form id="sp_form">
+        <form id="simplePass_form">
             <h2>Modifiers</h2>
             <div>
                 <p>Character Codes that are displayed are shown as the decimal value(s) for the character(s). A helpful list of these resources can be found at:</p>
@@ -166,17 +184,17 @@
                 </div>
             </fieldset>
             <label>Character Length:
-                <input type="number" form="sp_form" name="length">
+                <input type="number" form="simplePass_form" name="length">
             </label>
             <div>
                 <label>Exclude Characters:
-                    <input type="text" form="sp_form" name="excludeCharacters" >
+                    <input type="text" form="simplePass_form" name="excludeCharacters" >
                 </label>
                 <p>* <strong>Warning</strong>: Excessive use of this feature may result in degraded performance or non-performance of the program.</p>
             </div>
             <div>
                 <label>Unique Characters Only
-                    <input type="checkbox" form="sp_form" name="uniqueCharacters" >
+                    <input type="checkbox" form="simplePass_form" name="uniqueCharacters" >
                 </label>
                 <p>* This option can not be combined with the following modifiers:</p>
                 <ul>
@@ -191,19 +209,19 @@
                 <legend>Repeat Characters</legend>
                 <div>
                     <label>Repeating Character:
-                        <input type="checkbox" form="sp_form" name="repeatingCharacter" >
+                        <input type="checkbox" form="simplePass_form" name="repeatingCharacter" >
                     </label>
                     <p>Ensure at least one character in the password will be repeated.</p>
                 </div>
                 <div>
                     <label>Repeating Character Limit:
-                        <input type="number" form="sp_form" name="max_repeatingCharacter" min="1" max="256" step="1">
+                        <input type="number" form="simplePass_form" name="max_repeatingCharacter" min="1" max="256" step="1">
                     </label>
                     <p>Specify the number of characters that should be repeated in the password.</p>
                 </div>
                 <div>
                     <label>Custom Repeats:
-                        <input type="text" form="sp_form" name="customRepeatingCharacters" minlength="1" maxlength="256" >
+                        <input type="text" form="simplePass_form" name="customRepeatingCharacters" minlength="1" maxlength="256" >
                     </label>
                     <p>Specify the exact characters that should be repeated in the password, as-well as indicate the number of times the character should repeat.</p>
                     <p>The input either needs to be a single string containing all characters wished to be repeated (abcd). Or it can be formatted to define the amount each character should be repeated (b a:3 \::4);</p>
@@ -219,117 +237,117 @@
             <fieldset>
                 <legend>Latin Basic</legend>
                 <label>Lowercase Alpha:
-                    <input type="checkbox" form="sp_form" name="lowercase">
+                    <input type="checkbox" form="simplePass_form" name="lowercase">
                 </label>
                 <label>Uppercase Alpha:
-                    <input type="checkbox" form="sp_form" name="uppercase">
+                    <input type="checkbox" form="simplePass_form" name="uppercase">
                 </label>
                 <label>Numbers:
-                    <input type="checkbox" form="sp_form" name="numbers">
+                    <input type="checkbox" form="simplePass_form" name="numbers">
                 </label>
                 <label>Signs, Symbols, and Punctuation:
-                    <input type="checkbox" form="sp_form" name="punctuation">
+                    <input type="checkbox" form="simplePass_form" name="punctuation">
                 </label>
             </fieldset>
-            <fieldset name="whitespaceOptions" form="sp_form">
+            <fieldset name="whitespaceOptions" form="simplePass_form">
                 <legend>Whitespace Options</legend>
                 <fieldset>
                     <legend>Beginning of Password:</legend>
                     <label>Yes:
-                        <input type="checkbox" form="sp_form" name="whitespaceBeginning" >
+                        <input type="checkbox" form="simplePass_form" name="whitespaceBeginning" >
                     </label>
                     <label>Required:
-                        <input type="checkbox" form="sp_form" name="required_whitespaceBeginning">
+                        <input type="checkbox" form="simplePass_form" name="required_whitespaceBeginning">
                     </label>
                 </fieldset>
                 <fieldset>
                     <legend>End of Password:</legend>
                     <label>Yes:
-                        <input type="checkbox" form="sp_form" name="whitespaceEnd" >
+                        <input type="checkbox" form="simplePass_form" name="whitespaceEnd" >
                     </label>
                     <label>Required:
-                        <input type="checkbox" form="sp_form" name="required_whitespaceEnd" >
+                        <input type="checkbox" form="simplePass_form" name="required_whitespaceEnd" >
                     </label>
                 </fieldset>
                 <fieldset>
                     <label>Between:
-                        <input type="checkbox" form="sp_form" name="whitespaceBetween" >
+                        <input type="checkbox" form="simplePass_form" name="whitespaceBetween" >
                     </label>
                     <label>Limit:
-                        <input type="number" step="1" min="1" max="252" form="sp_form" name="max_whitespaceBetween" >
+                        <input type="number" step="1" min="1" max="252" form="simplePass_form" name="max_whitespaceBetween" >
                     </label>
                 </fieldset>
             </fieldset>
             <fieldset>
                 <legend>Latin Supplement</legend>
                 <label>Lowercase Characters:
-                    <input type="checkbox" form="sp_form" name="lowercase_supplement" >
+                    <input type="checkbox" form="simplePass_form" name="lowercase_supplement" >
                 </label>
                 <label>Uppercase Characters:
-                    <input type="checkbox" form="sp_form" name="uppercase_supplement" >
+                    <input type="checkbox" form="simplePass_form" name="uppercase_supplement" >
                 </label>
                 <label>Signs, Symbols, and Punctuation:
-                    <input type="checkbox" form="sp_form" name="symbols_supplement" >
+                    <input type="checkbox" form="simplePass_form" name="symbols_supplement" >
                 </label>
             </fieldset>
             <fieldset>
                 <legend>Latin Extended A</legend>
                 <label>Lowercase Characters:
-                    <input type="checkbox" form="sp_form" name="lowercase_extended_a" >
+                    <input type="checkbox" form="simplePass_form" name="lowercase_extended_a" >
                 </label>
                 <label>Uppercase Characters:
-                    <input type="checkbox" form="sp_form" name="uppercase_extended_a" >
+                    <input type="checkbox" form="simplePass_form" name="uppercase_extended_a" >
                 </label>
                 <label>Ligatures:
-                    <input type="checkbox" form="sp_form" name="ligature_extended_a" >
+                    <input type="checkbox" form="simplePass_form" name="ligature_extended_a" >
                 </label>
             </fieldset>
             <fieldset>
                 <legend>Latin Extended B</legend>
                 <label> Lowercase Characters:
-                    <input type="checkbox" form="sp_form" name="lowercase_extended_b" >
+                    <input type="checkbox" form="simplePass_form" name="lowercase_extended_b" >
                 </label>
                 <label> Uppercase Characters:
-                    <input type="checkbox" form="sp_form" name="uppercase_extended_b" >
+                    <input type="checkbox" form="simplePass_form" name="uppercase_extended_b" >
                 </label>
                 <label> Mixed-Case Characters:
-                    <input type="checkbox" form="sp_form" name="mixedcase_extended_b" >
+                    <input type="checkbox" form="simplePass_form" name="mixedcase_extended_b" >
                 </label>
                 <label> Insensitive-Case Characters:
-                    <input type="checkbox" form="sp_form" name="insensitivecase_extended_b" >
+                    <input type="checkbox" form="simplePass_form" name="insensitivecase_extended_b" >
                 </label>
             </fieldset>
             <fieldset>
                 <legend>Latin IPA Extension</legend>
                 <label> Lowercase Characters:
-                    <input type="checkbox" form="sp_form" name="lowercase_ipa_extension" >
+                    <input type="checkbox" form="simplePass_form" name="lowercase_ipa_extension" >
                 </label>
                 <label> Uppercase Characters:
-                    <input type="checkbox" form="sp_form" name="uppercase_ipa_extension" >
+                    <input type="checkbox" form="simplePass_form" name="uppercase_ipa_extension" >
                 </label>
             </fieldset>
             <fieldset>
                 <legend>Modifier Letters</legend>
                 <label>Characters:
-                    <input type="checkbox" form="sp_form" name="character_modifier_letters">
+                    <input type="checkbox" form="simplePass_form" name="character_modifier_letters">
                 </label>
                 <label>Symbols:
-                    <input type="checkbox" form="sp_form" name="symbol_modifier_letters">
+                    <input type="checkbox" form="simplePass_form" name="symbol_modifier_letters">
                 </label>
             </fieldset>
             <fieldset>
                 <legend>Greek And Coptic</legend>
                 <label>Lowercase Characters:
-                    <input type="checkbox" form="sp_form" name="lowercase_greek_coptic" >
+                    <input type="checkbox" form="simplePass_form" name="lowercase_greek_coptic" >
                 </label>
                 <label>Uppercase Characters:
-                    <input type="checkbox" form="sp_form" name="uppercase_greek_coptic" >
+                    <input type="checkbox" form="simplePass_form" name="uppercase_greek_coptic" >
                 </label>
                 <label> Insensitive-Case Characters:
-                    <input type="checkbox" form="sp_form" name="insensitivecase_greek_coptic" >
+                    <input type="checkbox" form="simplePass_form" name="insensitivecase_greek_coptic" >
                 </label>
                 <label>Symbols:
-                    <input type="checkbox" form="sp_form" name="symbol_greek_coptic" >
+                    <input type="checkbox" form="simplePass_form" name="symbol_greek_coptic" >
                 </label>
             </fieldset>
             <fieldset>
@@ -338,30 +356,30 @@
                     * <strong>Note</strong>: This set excludes '<em>Combination Characters</em>' (decimal values: 1155-1161), because they are illegible when they are the only characters selected and can be hard to decern when combined with other characters.
                 </p>
                 <label>Lowercase Characters:
-                    <input type="checkbox" form="sp_form" name="lowercase_cyrillic" >
+                    <input type="checkbox" form="simplePass_form" name="lowercase_cyrillic" >
                 </label>
                 <label>Uppercase Characters:
-                    <input type="checkbox" form="sp_form" name="uppercase_cyrillic" >
+                    <input type="checkbox" form="simplePass_form" name="uppercase_cyrillic" >
                 </label>
                 <label>Symbols:
-                    <input type="checkbox" form="sp_form" name="symbols_cyrillic" >
+                    <input type="checkbox" form="simplePass_form" name="symbols_cyrillic" >
                 </label>
             </fieldset>
             <fieldset>
                 <legend>Cyrillic Supplement</legend>
                 <label>Lowercase Characters:
-                    <input type="checkbox" form="sp_form" name="lowercase_cyrillic_supplement" >
+                    <input type="checkbox" form="simplePass_form" name="lowercase_cyrillic_supplement" >
                 </label>
                 <label>Uppercase Characters:
-                    <input type="checkbox" form="sp_form" name="uppercase_cyrillic_supplement" >
+                    <input type="checkbox" form="simplePass_form" name="uppercase_cyrillic_supplement" >
                 </label>
                 <label>Miscellaneous Characters:
-                    <input type="checkbox" form="sp_form" name="misc_cyrillic_supplement" >
+                    <input type="checkbox" form="simplePass_form" name="misc_cyrillic_supplement" >
                 </label>
             </fieldset>
             <div>
                 <label>General Punctuation
-                    <input type="checkbox" form="sp_form" name="general_punctuation" >
+                    <input type="checkbox" form="simplePass_form" name="general_punctuation" >
                 </label>
                 <p>
                     * <strong>Note</strong>: This does not include the following character-codes/character-code-sets; [8192-8207], [8232-8239], [8287-8303].
@@ -369,7 +387,7 @@
             </div>
             <div>
                 <label>Currency Symbols
-                    <input type="checkbox" form="sp_form" name="currency_symbols" >
+                    <input type="checkbox" form="simplePass_form" name="currency_symbols" >
                 </label>
                 <p>
                     * <strong>Note</strong>: This does not include the following character-codes/character-code-sets; [8372].
@@ -377,27 +395,27 @@
             </div>
             <div>
                 <label>Miscellaneous Technical
-                    <input type="checkbox" form="sp_form" name="misc_technical" >
+                    <input type="checkbox" form="simplePass_form" name="misc_technical" >
                 </label>
             </div>
             <div>
                 <label>Box Drawings
-                    <input type="checkbox" form="sp_form" name="Box Drawings" >
+                    <input type="checkbox" form="simplePass_form" name="Box Drawings" >
                 </label>
             </div>
             <div>
                 <label>Block Elements
-                    <input type="checkbox" form="sp_form" name="block_elements" >
+                    <input type="checkbox" form="simplePass_form" name="block_elements" >
                 </label>
             </div>
             <div>
                 <label>Miscellaneous Symbols
-                    <input type="checkbox" form="sp_form" name="misc_symbols" >
+                    <input type="checkbox" form="simplePass_form" name="misc_symbols" >
                 </label>
             </div>
             <div>
                 <label>Dingbats
-                    <input type="checkbox" form="sp_form" name="dingbats" >
+                    <input type="checkbox" form="simplePass_form" name="dingbats" >
                 </label>
             </div>
         </form>

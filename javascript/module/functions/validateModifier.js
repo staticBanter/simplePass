@@ -1,3 +1,20 @@
+/**
+* simplePass - A JavaScript password generator.
+* Copyright (C) 2023  Jordan Vezina(staticBanter)
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
 'use strict';
 import useableAttributes from "../data/lists/useableAttributes.js";
 import characterCodeConstraints from "../data/objects/characterCodeConstraints.js";
@@ -14,10 +31,8 @@ import characterCodeConstraints from "../data/objects/characterCodeConstraints.j
  *
  * @function validateModifier
  * @param {passwordModifier} modifier The [password modifier]{@link passwordModifier} object to validate.
- * @requires createMessage
  * @requires config
  * @requires useableAttributes
- * @requires requiredAttributes
  * @throws {errors.invalidAttributeType} Will throw an error if a modifier attribute is not a valid type.
  * @throws {errors.outOfBoundsAttributeValue} Will throw an error if a modifier attribute is out of its allowed value bounds.
  * @throws {errors.toManyAttributes} Will throw an error if the modifier contains more attributes than the password can contain.
@@ -255,8 +270,8 @@ export default function validateModifier(modifier, cFig) {
     else {
         if (typeof (modifier.length) === 'string') {
             const length = parseInt(modifier.length);
-            if (length > cFig.max_passwordLength
-                || length < cFig.min_passwordLength) {
+            if (length > cFig.passwordConstraints.max_length
+                || length < cFig.passwordConstraints.min_length) {
                 throw {
                     errorKey: 'invalidAttributeType',
                     replacements: ['vM', '1', 'length', 'string or number']
@@ -264,8 +279,8 @@ export default function validateModifier(modifier, cFig) {
             }
         }
         else {
-            if (modifier.length > cFig.max_passwordLength
-                || modifier.length < cFig.min_passwordLength) {
+            if (modifier.length > cFig.passwordConstraints.max_length
+                || modifier.length < cFig.passwordConstraints.min_length) {
                 throw {
                     errorKey: 'outOfBoundsAttributeValue',
                     replacements: ['vM', '2', 'length']
@@ -305,8 +320,8 @@ export default function validateModifier(modifier, cFig) {
         else {
             if (typeof (modifier.max_whitespaceBetween) === 'string') {
                 const max_whitespaceBetween = parseInt(modifier.max_whitespaceBetween);
-                if (max_whitespaceBetween > cFig.max_whitespaceBetween()
-                    || max_whitespaceBetween < cFig.min_whitespaceBetween()) {
+                if (max_whitespaceBetween > cFig.passwordConstraints.max_whitespaceBetween()
+                    || max_whitespaceBetween < cFig.passwordConstraints.min_whitespaceBetween()) {
                     throw {
                         errorKey: 'outOfBoundsAttributeValue',
                         replacements: ['vM', '5', 'max_whitespaceBetween']
@@ -314,8 +329,8 @@ export default function validateModifier(modifier, cFig) {
                 }
             }
             else {
-                if (modifier.max_whitespaceBetween > cFig.max_whitespaceBetween()
-                    || modifier.max_whitespaceBetween < cFig.min_whitespaceBetween()) {
+                if (modifier.max_whitespaceBetween > cFig.passwordConstraints.max_whitespaceBetween()
+                    || modifier.max_whitespaceBetween < cFig.passwordConstraints.min_whitespaceBetween()) {
                     throw {
                         errorKey: 'outOfBoundsAttributeValue',
                         replacements: ['vM', '6', 'max_whitespaceBetween']
@@ -330,7 +345,6 @@ export default function validateModifier(modifier, cFig) {
     if (!Object.keys(modifier)
         .some(function (array) {
         return Object.keys(characterCodeConstraints).includes(array);
-        // return requiredAttributes.includes(array);
     })) {
         throw {
             errorKey: 'missingRequiredAttributes',
