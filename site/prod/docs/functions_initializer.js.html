@@ -75,7 +75,6 @@ function injectSimplePass(passwordTarget, password, entropyTarget = null) {
  * @returns {void}
  */
 export default function initializer(cFig = config) {
-    console.log('Initializer Call');
     /**
      * Ensure these default values are always present.
      */
@@ -92,7 +91,6 @@ export default function initializer(cFig = config) {
      * We will query for them here and initialize their variables.
      */
     const passwordTarget = document.body.querySelector(cFig.htmlElements.passwordTarget);
-    console.log(passwordTarget);
     /**
      * If we have no target stop here.
      * We have nothing else to do.

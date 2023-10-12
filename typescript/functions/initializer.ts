@@ -96,7 +96,6 @@ function injectSimplePass(
  */
 
 export default function initializer(cFig: typeof config = config):void{
-    console.log('Initializer Call')
 
     /**
      * Ensure these default values are always present.
@@ -120,7 +119,6 @@ export default function initializer(cFig: typeof config = config):void{
      */
     const passwordTarget:HTMLElement|HTMLInputElement|null = document.body.querySelector<HTMLElement|HTMLInputElement>(cFig.htmlElements.passwordTarget);
 
-    console.log(passwordTarget);
     /**
      * If we have no target stop here.
      * We have nothing else to do.
