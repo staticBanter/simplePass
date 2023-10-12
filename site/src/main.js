@@ -24,7 +24,7 @@ import simplePass from "../../javascript/bundle/simplePass.bundle.js";
 
 (()=>{
 
-    if(window.location.pathname === '/EXAMPLES-AND-INTEGRATION.html'){
+    if(window.location.pathname === process.env.examplesAndIntegrationURL){
 
         // Get an element to display our password
         const displayPassword = document.body.querySelector(".simplePass_passwordTarget_6");
@@ -138,14 +138,6 @@ import simplePass from "../../javascript/bundle/simplePass.bundle.js";
                 passwordContainer:".simplePass_passwordContainer_2",
             }
         });
-
-        simplePass.init({
-            htmlElements:{
-                passwordTarget:".simplePass_passwordTarget_6",
-                entropyTarget:".simplePass_entropyTarget_3",
-            }
-        });
-
 
     }else{
         simplePass.init();
