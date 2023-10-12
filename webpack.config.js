@@ -114,7 +114,8 @@ module.exports = (env) => [
         mode:"production",
         plugins: [
             new EnvironmentPlugin({
-                serviceWorkerURL: env.production?'/simplePass/sw.js':(env.customServiceWorkerURL??'/sw.js')
+                serviceWorkerURL: env.production?'/simplePass/sw.js':(env.customServiceWorkerURL??'/sw.js'),
+                examplesAndIntegrationURL:env.production?'/simplePass/EXAMPLES-AND-INTEGRATION.html':'/EXAMPLES-AND-INTEGRATION.html'
             }),
             new CopyPlugin({
                 patterns: [
