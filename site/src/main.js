@@ -139,6 +139,13 @@ import simplePass from "../../javascript/bundle/simplePass.bundle.js";
             }
         });
 
+        simplePass.init({
+            htmlElements:{
+                passwordTarget:".simplePass_passwordTarget_6",
+                entropyTarget:".simplePass_entropyTarget_3",
+            }
+        });
+
 
     }else{
         simplePass.init();
