@@ -6,7 +6,7 @@ The following table outlines our supported versions for security fixes and repor
 
 | Version | Supported |
 | ---------- | ------------------ |
-| >=9.0.3-Beta | :white_check_mark: |
+| >=9.1.0-Beta | :white_check_mark: |
 
 ## Reporting a Vulnerability
 
