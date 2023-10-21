@@ -59,6 +59,8 @@ interface Messages {
     prefix: string,
     templateMarker:string
     messageBoard?:string,
+    messageBoxes?:string,
+    messageBackdrop?:string,
     clearConsole?:boolean,
 }
 
@@ -115,6 +117,8 @@ const config: {
         prefix: "ERROR.simplePass-~.~:",
         templateMarker: "~",
         messageBoard:'.simplePass_messageBoard',
+        messageBoxes:'.simplePass_messageBox',
+        messageBackdrop:'.simplePass_messageBackdrop',
         clearConsole:false,
     },
     htmlElements:{

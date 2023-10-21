@@ -1,220 +1,148 @@
+@use "sass:math";
+
 @import "../../node_modules/normalize.css/normalize";
 
+$padding: 1rem;
+$padding-small: math.div($padding,2);
+$margin: 1rem;
+$margin-small: math.div($margin,2);
+
 /**
- * Global Styles.
- */
-*[hidden]{
-    display: none;
+* Generics
+**/
+*[class^="simplePass_passwordTarget"]{
+    display: inline-block;
+    width: 100%;
+    overflow: auto;
+    vertical-align: bottom;
+    white-space: break-spaces;
+    text-wrap: nowrap;
+    text-rendering: optimizeLegibility;
+    font-family: 'Courier New', Courier, monospace;
 }
 
-html > body {
+/**
+* Elements
+**/
+html > body >{
 
-    /**
-     * General Styles.
-     */
-    header{
-        display: flex;
-        align-items: center;
-    }
-
-    header > nav{
-        margin-left: auto;
-    }
-
-    main{
-        padding: 0.5rem;
-    }
-
-    p{
-        margin: 0.5rem auto;
-    }
-
-    /**
-     * Class Styles.
-     */
-    .add-button {
-        position: absolute;
-        top: 1px;
-        left: 1px;
-    }
-
-    .strengthChecked{
-
-        &[data-score="bad"]{
-            color: red;
-        }
-
-        &[data-score="modest"]{
-            color: orange;
-        }
-
-        &[data-score="ok"]{
-            color: gold;
-        }
-
-        &[data-score="good"]{
-            color: yellowgreen;
-        }
-
-        &[data-score="excellent"]{
-            color: darkgreen;
-        }
-    }
-
-    // Message Boxes
-    .sp_messageBox{
-        padding: 0.5rem;
-        border-radius: 10px;
-        width: auto;
-        word-break: break-all;
-        margin: 0.5rem;
-    }
-
-
-    .sp_messageBox {
-
-
-        &[data-message-level='INFO']{
-            border: 1px solid black;
-            box-shadow: 0 0 5px;
-            box-sizing: border-box;
-        }
-
-        &[data-message-level='ERROR']{
-            background-color: red;
-            color: white;
-            font-weight: bold;
-        }
-
-        &[data-message-level='WARNING']{
-            background-color: yellow;
-            color: black;
-            border: 1px solid;
-            box-sizing: border-box;
-        }
-
-
-        > div:first-of-type {
-
-            > strong{
-                float: left;
-            }
-
-            > button{
-                float: right;
-            }
-
-        }
-
-        > p{
-            clear: both;
-        }
-    }
-
-    /**
-     * ID Styles.
-     */
-     #sp_passwordBox{
+    header {
         display: flex;
         flex-wrap: wrap;
-        border: 1px solid;
-        border-radius: 10px 10px 0 0;
-        box-sizing: border-box;
-        padding: 0.5rem;
-        box-shadow: 0 -1px 5px;
+        align-items: center;
+        justify-content: center;
+        padding: $padding;
     }
 
-    #sp_passwordBox{
-
-        > div{
-            display: block;
-            width: 100%;
-        }
-
-        > div:last-of-type{
-            display: flex;
-            flex-wrap: wrap;
-        }
-
-        > div:last-of-type{
-            > *{
-                width: 48%;
-                margin: 0.5rem auto;
-                height: 38px;
-            }
-
-            > label{
-                margin-left:  0;
-            }
-
-            > label input {
-                width: 100%;
-            }
-
-        }
-
+    header > * + * {
+        margin: auto $margin;
     }
 
-    .sp_password{
-        word-wrap: anywhere;
-        width: 80%;
-        margin-left: 0.5rem;
-        white-space: pre;
-        font-family: 'Liberation Mono';
-        overflow: auto;
-        padding-bottom: 1rem;
-        text-rendering: optimizeLegibility;
-        font-kerning: none;
-        font-variant-ligatures: no-common-ligatures;
-        vertical-align: middle;
+}
+
+main{
+    padding-bottom: 1rem;
+}
+
+form{
+    border-radius: 10px;
+}
+
+label{
+    display: inline-block;
+    width: calc(100% - $padding-small);
+    margin: $margin-small auto;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+label {
+
+    > input:not([type="checkbox"],[type="radio"]){
+        width: 100%;
     }
 
-    #sp_form{
-        box-sizing: border-box;
-        padding: 0.5rem;
-        border: 1px solid;
-        border-radius: 0 0 10px 10px;
-        box-shadow: 0 1px 5px;
+    > input[type="checkbox"],
+    > input[type="radio"]{
+        margin: auto $margin;
+    }
+
+}
+
+button{
+    min-height: 44px;
+    min-width: 44px;
+}
+
+pre{
+    border: 2px solid;
+    box-sizing: border-box;
+    padding: 0.5rem;
+    overflow: auto;
+    background-color: lightgray;
+}
+
+/**
+* Classes
+**/
+.simplePass_messageBoard{
+    border-radius: 10px 10px 0 0;
+    display: flex;
+    flex-flow: column;
+}
+
+.simplePass_messageBox{
+    background-color: rgb(255, 79, 79);
+    border: 1px solid;
+    border-radius: 10px;
+    box-sizing: border-box;
+    padding: $padding-small;
+    margin: $margin-small;
+    width: max-content;
+    height: max-content;
+}
+
+.simplePass_messageBox{
+
+    > *:first-child{
         display: flex;
-        flex-flow: column;
+        flex-wrap: wrap;
+        align-items: baseline;
     }
 
-    #sp_form{
-
-        > * + *{
-            margin-top: 0.5rem;
-        }
-
-        > fieldset{
-            display: flex;
-            flex-flow: column;
-        }
-
-        label{
-            display: flex;
-            flex-wrap: wrap;
-            width: 100%;
-        }
-
-        label + label{
-            margin-top: 0.5rem;
-        }
-
-        label > input{
-            width: 100%;
-            max-width: 750px;
-        }
-
-        label > {
-            input[type='checkbox'],
-            input[type='radio']{
-                width: auto;
-                margin-left: 1rem;
-            }
-        }
-
-
+    > *:first-child > *:first-child{
+        margin-right: auto;
     }
 
+}
 
+.simplePass_messageBackdrop{
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.5);
+    top:0;
+    left: 0;
+}
+
+.simplePass_messageBackdrop > .simplePass_messageBox{
+    max-width: 100%;
+    margin: $margin-small auto;
+}
+
+/**
+* IDs
+**/
+#simplePass_form{
+    border-radius: 0 0 10px 10px;
+}
+
+/**
+* Lists
+*/
+.simplePass_messageBoard,
+form{
+    border: 1px solid;
+    box-sizing: border-box;
+    padding: $padding-small;
+    margin: 0 $margin-small;
 }

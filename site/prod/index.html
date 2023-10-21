@@ -83,6 +83,16 @@
     </script>
 </head>
 <body>
+    <noscript>
+        <p>
+            <strong>Notice!</strong>
+        </p>
+        <p>
+            This site requires JavaScript to be enabled in order to function.
+            If you do not have JavaScript enabled you may experience a degraded version of this website or may not be able to use this website entierly.
+            We strongly recommend you enable JavaScript and restart your browser before continuing to use this website.
+        </p>
+    </noscript>
     <header>
         <h1>simplePass</h1>
         <nav>
@@ -91,22 +101,37 @@
         </nav>
     </header>
     <main>
-        <div id="sp_passwordBox">
+        <div class="simplePass_messageBoard">
             <div class="simplePass_passwordContainer">
                 <p>
                     <b>Password:</b>
-                    <span class="sp_password simplePass_passwordTarget"></span>
+                    <span class="simplePass_passwordTarget">
+                        <noscript>
+                            <p>
+                                <strong>Notice:</strong>
+                                JavaScript is disabled!
+                            </p>
+                        </noscript>
+                    </span>
                 </p>
                 <p>
-                    Bits of Entropy: ~<span class="simplePass_entropyTarget"></span>
+                    <b>Bits of Entropy: ~</b>
+                    <span class="simplePass_entropyTarget">
+                        <noscript>
+                            <p>
+                                <strong>Notice:</strong>
+                                JavaScript is disabled!
+                            </p>
+                        </noscript>
+                    </span>
                 </p>
             </div>
             <div>
-                <button class="simplePass_generator" type="submit" form="simplePass_form">Generate</button>
-                <button class="simplePass_copier" type="button">Copy</button>
                 <label>Batch Amount:
                     <input type="number" name="passwordBatchAmount" form="simplePass_form" id="sp_batchPasswordInput" min="2" max="256" >
                 </label>
+                <button class="simplePass_generator" type="submit" form="simplePass_form">Generate</button>
+                <button class="simplePass_copier" type="button">Copy</button>
             </div>
         </div>
         <form id="simplePass_form">
@@ -114,7 +139,7 @@
             <div>
                 <p>Character Codes that are displayed are shown as the decimal value(s) for the character(s). A helpful list of these resources can be found at:</p>
                 <ul>
-                    <li><a href="https://www.w3schools.com/charsets/">W3Schools | HTML Character Sets</a>)</li>
+                    <li><a href="https://www.w3schools.com/charsets/">W3Schools | HTML Character Sets</a></li>
                     <li>and <a href="https://www.unicode.org/charts/">Unicode | Code Charts</a> (Though you may need to convert the hexadecimal representation to decimal)</li>
                 </ul>
             </div>
@@ -436,5 +461,15 @@
         </form>
         <!-- <button class="add-button">Add to home screen</button> -->
     </main>
+    <noscript>
+        <p>
+            <strong>Notice!</strong>
+        </p>
+        <p>
+            This site requires JavaScript to be enabled in order to function.
+            If you do not have JavaScript enabled you may experience a degraded version of this website or may not be able to use this website entierly.
+            We strongly recommend you enable JavaScript and restart your browser before continuing to use this website.
+        </p>
+    </noscript>
 </body>
 </html>

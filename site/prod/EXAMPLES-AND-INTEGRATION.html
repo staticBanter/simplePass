@@ -66,42 +66,36 @@
     <link type="text/css" href="./main.css" rel="stylesheet" >
     <link rel="manifest" href="./manifest.json" >
     <link type="image/png" rel="icon" href="./storage/icons/simplePass-Logo-512.png">
-    <style>
+    <style type="text/css">
 
-        pre{
-            border: 2px solid;
-            box-sizing: border-box;
-            padding: 0.5rem;
-            overflow: auto;
-            background-color: lightgray;
+        main{
+            padding: 0 0.5rem;
         }
 
-        form,
-        .multiForm{
-            border: 1px solid;
+        .simplePass_exampleContainer{
+            display: block;
+            border:1px solid;
             box-sizing: border-box;
             border-radius: 10px;
+            margin: 0 0.5rem;
+            padding: 1rem;
         }
 
-        form{
-            text-align: center;
-            padding: 0.5rem;
-        }
-
-        form > label{
-            display: block;
-            width: 100%;
-            margin: 0.5rem auto;
-        }
-
-        form > div > label{
-            margin: 0.25rem;
-            white-space: nowrap;
+        .simplePass_messageBoard{
+            border: none;
+            box-sizing: content-box;
         }
 
         .multiForm > form{
-            border:none;
+            border: none;
             box-sizing: content-box;
+        }
+
+        .multiForm{
+            display: block;
+            border: 1px solid;
+            border-radius: 10px;
+            box-sizing: border-box;
         }
 
     </style>
@@ -528,6 +522,7 @@ simplePass.init();
                         <button type="button" class="simplePass_copier_2">Copy Password</button>
                         <button type="submit" form="registration_1">Register</button>
                     </form>
+                    <hr>
                     <!-- simplePass Password Form -->
                     <form id="simplePass_form">
                         <p>
@@ -629,7 +624,7 @@ simplePass.init();
                 <p>
                     Should produce the following:
                 </p>
-                <div class="simplePass_passwordContainer">
+                <div class="simplePass_passwordContainer simplePass_exampleContainer">
                     <p>
                         <b>Password:</b>
                         <span class="simplePass_passwordTarget_3"></span>
@@ -777,7 +772,7 @@ simplePass.init();
                 <p>
                     Should produce something similar to:
                 </p>
-                <div>
+                <div class="simplePass_exampleContainer">
                     <!-- Batch Password Content Element -->
                     <div class="simplePass_passwordContainer_1">
                         <p>
@@ -880,7 +875,7 @@ simplePass.init();
                 <p>
                     Should produce something to the similar
                 </p>
-                <div>
+                <div class="simplePass_exampleContainer">
                     <!-- Batch Password Content Element -->
                     <div class="simplePass_passwordContainer_2">
                         <p>

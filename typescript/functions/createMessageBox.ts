@@ -19,6 +19,7 @@
 'use strict';
 
 import messageBoxObject from "../data/interfaces/messageBoxObject.js";
+import config from "../simplePass.config.js";
 
 /**
  * @file
@@ -30,6 +31,7 @@ import messageBoxObject from "../data/interfaces/messageBoxObject.js";
  *
  * @function createMessage
  * @param {string | messageBoxObject} message A string message to use or an [object]{@link messageBoxObject} describing the message.
+ * @requires config
  * @returns {HTMLElement}
  */
 export default function createMessageBox(
@@ -40,7 +42,7 @@ export default function createMessageBox(
     let messageBoxTitle: string = "SP_MESSAGE";
     let messageLevel: string = 'ERROR';
 
-    messageBox.classList.add('sp_messageBox');
+    messageBox.classList.add(config.messages.messageBoxes?.substring(1)??'simplePass_messageBox');
 
     const messageBoxHeader: HTMLElement = document.createElement('DIV');
     messageBox.appendChild(messageBoxHeader);
@@ -74,7 +76,7 @@ export default function createMessageBox(
                 case 'overlay':
 
                     backdrop = document.createElement('DIV');
-                    backdrop.classList.add('sp_backdrop');
+                    backdrop.classList.add(config.messages.messageBackdrop?.substring(1)??'simplePass_messageBackdrop');
 
                     break;
             }
@@ -119,8 +121,32 @@ export default function createMessageBox(
     messageBox.appendChild(messageElement);
 
     if (backdrop) {
+
         backdrop.appendChild(messageBox);
         messageBox = backdrop;
+
+        messageBox.setAttribute('style',`
+            height: ${document.documentElement.scrollHeight}px;
+            width: ${document.documentElement.scrollWidth}px;
+        `);
+
+        window.addEventListener('resize',()=>{
+
+            /**
+             * Briefly shrink the messageBox,
+             * this prevents the messageBox itself from being the cause of overflow.
+             */
+            messageBox.setAttribute('style',`
+                height: ${0}px;
+                width: ${0}px;
+            `);
+
+            messageBox.setAttribute('style',`
+                height: ${document.documentElement.scrollHeight}px;
+                width: ${document.documentElement.scrollWidth}px;
+            `);
+        });
+
     }
 
     return messageBox;

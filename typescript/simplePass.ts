@@ -193,7 +193,7 @@ export default function simplePass(
      * Because we manually add the first and last character
      * we need to changed the password length limit.
      */
-    let passwordLimit = (modifier.length - 2);
+    let passwordLimit:number = (modifier.length - 2);
 
     /**
      * Prevent ```uniqueCharacters``` begin set
@@ -317,8 +317,6 @@ export default function simplePass(
         let deck:Array<string> = [];
         deck = deck.concat(shuffle(characterAttributes));
 
-        let currentCharType:string|undefined = '';
-
         /**
          * Set the first character of the password.
          * Check if it's required to be a whitespace.
@@ -332,46 +330,49 @@ export default function simplePass(
 
         }else{
 
-            currentCharType = deck.pop();
+            try {
 
-            if(currentCharType){
-
-                try {
-
-                    password += String.fromCharCode(generateCharCode({
-                        charType: currentCharType,
-                        charCodeOptions: {
-                            whitespaceOptions: setWhitespaceAttributes,
-                            excludeCharacters: modifier.excludeCharacters
-                        }
-                    }, { beginning: true }));
-
-                } catch (caught: any) {
-
-                    messageHandler(
+                password += String.fromCharCode(
+                    generateCharCode(
                         {
-                            messageKey: caught.errorKey,
-                            templateMessages: {
-                                replacements: caught.replacements,
-                                templates: errors,
+                            charType: deck[0],
+                            charCodeOptions: {
+                                whitespaceOptions: setWhitespaceAttributes,
+                                excludeCharacters: modifier.excludeCharacters
                             }
                         },
                         {
-                            htmlMessage: (
-                                messageBoard ? {
-                                    messageBoard: messageBoard,
-                                } :
-                                undefined
-                            ),
-                            consoleMessage: true,
-                            level: "ERROR",
-                        },
-                        cFig
-                    );
+                            beginning: true
+                        }
+                    )
+                );
 
-                }
+            } catch (caught: any) {
+
+                messageHandler(
+                    {
+                        messageKey: caught.errorKey,
+                        templateMessages: {
+                            replacements: caught.replacements,
+                            templates: errors,
+                        }
+                    },
+                    {
+                        htmlMessage: (
+                            messageBoard ? {
+                                messageBoard: messageBoard,
+                            } :
+                            undefined
+                        ),
+                        consoleMessage: true,
+                        level: "ERROR",
+                    },
+                    cFig
+                );
 
             }
+
+            deck.shift();
 
         }
 
@@ -380,73 +381,66 @@ export default function simplePass(
          */
         while(middleCharacters.length < passwordLimit){
 
-            currentCharType = deck.pop();
-
             /**
              * If the current character type is undefined,
              * and the deck length is 0,
              * replenish the deck.
              */
-            if(
-                !currentCharType
-                && deck.length <= 0
-            ){
-
+            if(!deck.length){
                 deck = deck.concat(shuffle(characterAttributes));
-
-                currentCharType = deck.pop();
-
             }
 
-            if(currentCharType){
+            try {
 
-                try {
-
-                    const generatedCharacter:string = String.fromCharCode(generateCharCode({
-                        charType: currentCharType,
-                        charCodeOptions: {
-                            whitespaceOptions: setWhitespaceAttributes,
-                            excludeCharacters: modifier.excludeCharacters
-                        }
-                    }));
-
-                    if(modifier.uniqueCharacters){
-                        if(
-                            password.includes(generatedCharacter)
-                            || middleCharacters.includes(generatedCharacter)
-                        ){
-                            continue;
-                        }
-                    };
-
-                    middleCharacters += generatedCharacter;
-
-                } catch (caught: any) {
-
-                    messageHandler(
+                const generatedCharacter:string = String.fromCharCode(
+                    generateCharCode(
                         {
-                            messageKey: caught.errorKey,
-                            templateMessages: {
-                                replacements: caught.replacements,
-                                templates: errors,
+                            charType: deck[0],
+                            charCodeOptions: {
+                                whitespaceOptions: setWhitespaceAttributes,
+                                excludeCharacters: modifier.excludeCharacters
                             }
-                        },
-                        {
-                            htmlMessage: (
-                                messageBoard ? {
-                                    messageBoard: messageBoard
-                                } :
-                                undefined
-                            ),
-                            consoleMessage:  true,
-                            level: "ERROR",
-                        },
-                        cFig
-                    );
+                        }
+                    )
+                );
 
-                }
+                if(modifier.uniqueCharacters){
+                    if(
+                        password.includes(generatedCharacter)
+                        || middleCharacters.includes(generatedCharacter)
+                    ){
+                        continue;
+                    }
+                };
+
+                middleCharacters += generatedCharacter;
+
+            } catch (caught: any) {
+
+                messageHandler(
+                    {
+                        messageKey: caught.errorKey,
+                        templateMessages: {
+                            replacements: caught.replacements,
+                            templates: errors,
+                        }
+                    },
+                    {
+                        htmlMessage: (
+                            messageBoard ? {
+                                messageBoard: messageBoard
+                            } :
+                            undefined
+                        ),
+                        consoleMessage:  true,
+                        level: "ERROR",
+                    },
+                    cFig
+                );
 
             }
+
+            deck.shift();
 
         }
 
@@ -455,14 +449,13 @@ export default function simplePass(
             modifier.whitespaceBetween
             && modifier.max_whitespaceBetween
         ){
-            for(let i=0; i< modifier.max_whitespaceBetween;i++){
+            while(modifier.max_whitespaceBetween--){
                 middleCharacters += " ";
             }
         }
 
         // Add the middle characters
         password += shuffle(middleCharacters.split('')).join('');
-
 
         /**
          * Set the last character of the password.
@@ -483,75 +476,80 @@ export default function simplePass(
              * We need to do this here because the loop
              * could have ended it on empty.
              */
-            if(
-                deck.length <= 0
-                || !currentCharType
-            ){
+            if(!deck.length){
                 deck = deck.concat(shuffle(characterAttributes));
             }
 
-            currentCharType = deck.pop();
+            try {
 
-            if(currentCharType){
-
-                try {
-
-                    let generatedCharacter:string = String.fromCharCode(generateCharCode({
-                        charType: currentCharType,
-                        charCodeOptions: {
-                            whitespaceOptions: setWhitespaceAttributes,
-                            excludeCharacters: modifier.excludeCharacters
-                        }
-                    }, { end: true }));
-
-                    if(modifier.uniqueCharacters){
-
-                        if(
-                            password.includes(generatedCharacter)
-                        ){
-
-                            while(password.includes(generatedCharacter)){
-
-                                generatedCharacter = String.fromCharCode(generateCharCode({
-                                    charType: currentCharType,
-                                    charCodeOptions: {
-                                        whitespaceOptions: setWhitespaceAttributes,
-                                        excludeCharacters: modifier.excludeCharacters
-                                    }
-                                }, { end: true }));
-
+                let generatedCharacter:string = String.fromCharCode(
+                    generateCharCode(
+                        {
+                            charType: deck[0],
+                            charCodeOptions: {
+                                whitespaceOptions: setWhitespaceAttributes,
+                                excludeCharacters: modifier.excludeCharacters
                             }
+                        },
+                        {
+                            end: true
+                        }
+                    )
+                );
+
+                if(modifier.uniqueCharacters){
+
+                    if(
+                        password.includes(generatedCharacter)
+                    ){
+
+                        while(password.includes(generatedCharacter)){
+
+                            generatedCharacter = String.fromCharCode(
+                                generateCharCode(
+                                    {
+                                        charType: deck[0],
+                                        charCodeOptions: {
+                                            whitespaceOptions: setWhitespaceAttributes,
+                                            excludeCharacters: modifier.excludeCharacters
+                                        }
+                                    },
+                                    {
+                                        end: true
+                                    }
+                                )
+                            );
 
                         }
 
                     }
 
-                    password += generatedCharacter;
-
-                } catch (caught: any) {
-
-                    messageHandler(
-                        {
-                            messageKey: caught.errorKey,
-                            templateMessages: {
-                                replacements: caught.replacements,
-                                templates: errors,
-                            }
-                        },
-                        {
-                            htmlMessage: (
-                                messageBoard ? {
-                                    messageBoard: messageBoard
-                                } :
-                                undefined
-                            ),
-                            consoleMessage:  true,
-                            level: "ERROR",
-                        },
-                        cFig
-                    );
-
                 }
+
+                password += generatedCharacter;
+
+            } catch (caught: any) {
+
+                messageHandler(
+                    {
+                        messageKey: caught.errorKey,
+                        templateMessages: {
+                            replacements: caught.replacements,
+                            templates: errors,
+                        }
+                    },
+                    {
+                        htmlMessage: (
+                            messageBoard ? {
+                                messageBoard: messageBoard
+                            } :
+                            undefined
+                        ),
+                        consoleMessage:  true,
+                        level: "ERROR",
+                    },
+                    cFig
+                );
 
             }
 
@@ -561,14 +559,17 @@ export default function simplePass(
         if(modifier.repeatingCharacter){
 
             // Recreate the password
-            password = ensureRepeatingCharacters(password,{
-                repeatingSetCount:modifier.max_repeatingCharacter,
-                customCharacterSet:modifier.customRepeatingCharacters,
-                preservations:{
-                    beginning:preserveBeginning,
-                    end:preserveEnd
+            password = ensureRepeatingCharacters(
+                password,
+                {
+                    repeatingSetCount:modifier.max_repeatingCharacter,
+                    customCharacterSet:modifier.customRepeatingCharacters,
+                    preservations:{
+                        beginning:preserveBeginning,
+                        end:preserveEnd
+                    }
                 }
-            });
+            );
 
             /**
              * The *ensureRepeatingCharacters* function may remove some characters from
@@ -594,65 +595,55 @@ export default function simplePass(
                     /**
                      * Check and reinitialize deck.
                      */
-                    if(
-                        deck.length <= 0
-                        || !currentCharType
-                    ){
+                    if(!deck.length){
                         deck = deck.concat(shuffle(characterAttributes));
                     }
-
-                    // Get current character
-                    currentCharType = deck.pop();
 
                     /**
                      * Add current character to string middle.
                      * If we can repeat this character we will.
                      */
 
-                    if(currentCharType){
+                    try {
 
-                        try {
-
-                            const currentCharacter = String.fromCharCode(generateCharCode({
-                                charType: currentCharType,
-                                charCodeOptions: {
-                                    whitespaceOptions: setWhitespaceAttributes,
-                                    excludeCharacters: modifier.excludeCharacters
-                                }
-                            }));
-
-
-                            stringMiddle += currentCharacter;
-
-                            // Repeat character if possible.
-                            if ((stringMiddle.length + 1) <= (modifier.length - 2)) {
-                                stringMiddle += currentCharacter;
+                        const currentCharacter:string = String.fromCharCode(generateCharCode({
+                            charType: deck[0],
+                            charCodeOptions: {
+                                whitespaceOptions: setWhitespaceAttributes,
+                                excludeCharacters: modifier.excludeCharacters
                             }
+                        }));
 
-                        } catch (caught: any) {
 
-                            messageHandler(
-                                {
-                                    messageKey: caught.errorKey,
-                                    templateMessages: {
-                                        replacements: caught.replacements,
-                                        templates: errors,
-                                    }
-                                },
-                                {
-                                    htmlMessage: (
-                                        messageBoard ? {
-                                            messageBoard: messageBoard
-                                        } :
-                                        undefined
-                                    ),
-                                    consoleMessage: true,
-                                    level: "ERROR",
-                                },
-                                cFig
-                            );
+                        stringMiddle += currentCharacter;
 
+                        // Repeat character if possible.
+                        if ((stringMiddle.length + 1) <= (modifier.length - 2)) {
+                            stringMiddle += currentCharacter;
                         }
+
+                    } catch (caught: any) {
+
+                        messageHandler(
+                            {
+                                messageKey: caught.errorKey,
+                                templateMessages: {
+                                    replacements: caught.replacements,
+                                    templates: errors,
+                                }
+                            },
+                            {
+                                htmlMessage: (
+                                    messageBoard ? {
+                                        messageBoard: messageBoard
+                                    } :
+                                    undefined
+                                ),
+                                consoleMessage: true,
+                                level: "ERROR",
+                            },
+                            cFig
+                        );
 
                     }
 
@@ -679,15 +670,23 @@ export default function simplePass(
             password += ' ';
             preserveBeginning = true;
         } else {
+
             try {
 
-                password += String.fromCharCode(generateCharCode({
-                    charType: characterAttributes[0],
-                    charCodeOptions: {
-                        whitespaceOptions: setWhitespaceAttributes,
-                        excludeCharacters: modifier.excludeCharacters
-                    }
-                }, { beginning: true }));
+                password += String.fromCharCode(
+                    generateCharCode(
+                        {
+                            charType: characterAttributes[0],
+                            charCodeOptions: {
+                                whitespaceOptions: setWhitespaceAttributes,
+                                excludeCharacters: modifier.excludeCharacters
+                            }
+                        },
+                        {
+                            beginning: true
+                        }
+                    )
+                );
 
             } catch (caught: any) {
 
@@ -722,13 +721,17 @@ export default function simplePass(
 
             try {
 
-                const generatedCharacter:string = String.fromCharCode(generateCharCode({
-                    charType: characterAttributes[0],
-                    charCodeOptions: {
-                        whitespaceOptions: setWhitespaceAttributes,
-                        excludeCharacters: modifier.excludeCharacters
-                    }
-                }));
+                const generatedCharacter:string = String.fromCharCode(
+                    generateCharCode(
+                        {
+                            charType: characterAttributes[0],
+                            charCodeOptions: {
+                                whitespaceOptions: setWhitespaceAttributes,
+                                excludeCharacters: modifier.excludeCharacters
+                            }
+                        }
+                    )
+                );
 
 
                 if(modifier.uniqueCharacters){
@@ -775,7 +778,7 @@ export default function simplePass(
             modifier.whitespaceBetween
             && modifier.max_whitespaceBetween
         ){
-            for(let i=0; i< modifier.max_whitespaceBetween;i++){
+            while(modifier.max_whitespaceBetween--){
                 middleCharacters += " ";
             }
         }
@@ -797,13 +800,20 @@ export default function simplePass(
 
             try {
 
-                let generatedCharacter:string = String.fromCharCode(generateCharCode({
-                    charType: characterAttributes[0],
-                    charCodeOptions: {
-                        whitespaceOptions: setWhitespaceAttributes,
-                        excludeCharacters: modifier.excludeCharacters
-                    }
-                }, { end: true }));
+                let generatedCharacter:string = String.fromCharCode(
+                    generateCharCode(
+                        {
+                            charType: characterAttributes[0],
+                            charCodeOptions: {
+                                whitespaceOptions: setWhitespaceAttributes,
+                                excludeCharacters: modifier.excludeCharacters
+                            }
+                        },
+                        {
+                            end: true
+                        }
+                    )
+                );
 
                 if(modifier.uniqueCharacters){
 
@@ -813,13 +823,20 @@ export default function simplePass(
 
                         while(password.includes(generatedCharacter)){
 
-                            generatedCharacter = String.fromCharCode(generateCharCode({
-                                charType: characterAttributes[0],
-                                charCodeOptions: {
-                                    whitespaceOptions: setWhitespaceAttributes,
-                                    excludeCharacters: modifier.excludeCharacters
-                                }
-                            }, { end: true }));
+                            generatedCharacter = String.fromCharCode(
+                                generateCharCode(
+                                    {
+                                        charType: characterAttributes[0],
+                                        charCodeOptions: {
+                                            whitespaceOptions: setWhitespaceAttributes,
+                                            excludeCharacters: modifier.excludeCharacters
+                                        }
+                                    },
+                                    {
+                                        end: true
+                                    }
+                                )
+                            );
 
                         }
 
@@ -860,14 +877,17 @@ export default function simplePass(
         if(modifier.repeatingCharacter){
 
             // Recreate the password
-            password = ensureRepeatingCharacters(password,{
-                repeatingSetCount:modifier.max_repeatingCharacter,
-                customCharacterSet:modifier.customRepeatingCharacters,
-                preservations:{
-                    beginning:preserveBeginning,
-                    end:preserveEnd
+            password = ensureRepeatingCharacters(
+                password,
+                {
+                    repeatingSetCount:modifier.max_repeatingCharacter,
+                    customCharacterSet:modifier.customRepeatingCharacters,
+                    preservations:{
+                        beginning:preserveBeginning,
+                        end:preserveEnd
+                    }
                 }
-            });
+            );
 
             /**
              * The *ensureRepeatingCharacters* function may remove some characters from
@@ -882,22 +902,26 @@ export default function simplePass(
             if(password.length < modifier.length){
 
                 // Split the sting into pieces
-                let stringBeginning = password.slice(0,1);
-                let stringMiddle = password.slice(1,password.length-1);
-                let stringEnd = password.slice(password.length-1,password.length);
+                let stringBeginning:string = password.slice(0,1);
+                let stringMiddle:string = password.slice(1,password.length-1);
+                let stringEnd:string = password.slice(password.length-1,password.length);
 
                 // Add new characters to the middle of the string  the way we usually do.
                 while(stringMiddle.length < (modifier.length - 2)){
 
                     try {
 
-                        const currentCharacter = String.fromCharCode(generateCharCode({
-                            charType: characterAttributes[0],
-                            charCodeOptions: {
-                                whitespaceOptions: setWhitespaceAttributes,
-                                excludeCharacters: modifier.excludeCharacters
-                            }
-                        }));
+                        const currentCharacter:string = String.fromCharCode(
+                            generateCharCode(
+                                {
+                                    charType: characterAttributes[0],
+                                    charCodeOptions: {
+                                        whitespaceOptions: setWhitespaceAttributes,
+                                        excludeCharacters: modifier.excludeCharacters
+                                    }
+                                }
+                            )
+                        );
 
                         stringMiddle += currentCharacter;
 

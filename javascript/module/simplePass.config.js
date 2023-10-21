@@ -83,6 +83,8 @@ const config = {
         prefix: "ERROR.simplePass-~.~:",
         templateMarker: "~",
         messageBoard: '.simplePass_messageBoard',
+        messageBoxes: '.simplePass_messageBox',
+        messageBackdrop: '.simplePass_messageBackdrop',
         clearConsole: false,
     },
     htmlElements: {
