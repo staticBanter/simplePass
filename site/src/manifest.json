@@ -41,5 +41,21 @@
             "icons": [{"src": "./storage/icons/simplePass-Logo-512.png","sizes":"512x512"}]
         }
     ],
-    "theme_color": "grey"
+    "theme_color": "grey",
+    "screenshots": [
+        {
+            "form_factor": "wide",
+            "label": "simplePass Wide",
+            "type": "image/jpg",
+            "sizes" : "1920x961",
+            "src": "./storage/screen_shots/simplePass-wide.jpg"
+        },
+        {
+            "form_factor": "narrow",
+            "label": "simplePass Narrow",
+            "type": "image/jpg",
+            "sizes" : "500x961",
+            "src": "./storage/screen_shots/simplePass-narrow.jpg"
+        }
+    ]
 }
