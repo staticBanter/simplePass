@@ -34,7 +34,7 @@
 
 export default interface configHTMLElement{
     passwordTarget:string,
-    entropyTarget:string
+    entropyTarget?:string
     strengthCheckerStyling?:{
         styleTarget?:string,
         styleType:"inline"|"css"
