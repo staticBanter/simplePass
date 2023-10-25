@@ -19,6 +19,9 @@
 import calculateMaxPossibleCharacters from "./calculateMaxPossibleCharacters.js";
 import strengthScores from "../data/objects/strengthScores.js";
 import characterStrengthCheck from "./characterStrengthCheck.js";
+function DTMS(element, styles) {
+    console.log(Object.assign(element.style, styles));
+}
 /**
  * @file
  * @module strengthChecker
@@ -96,9 +99,7 @@ export default function strengthChecker(password, constraints, styling) {
             score = 'excellent';
         }
         styling.styleType === "inline" ?
-            styling.styleTarget.setAttribute('style', ((styling.styleTarget.getAttribute('style') ?? '') + `
-                    color: ${colour};
-                `)) :
+            Object.assign(styling.styleTarget.style, { color: colour }) :
             (styling.styleTarget.classList.add('strengthChecked'),
                 styling.styleTarget.dataset.score = score);
     }

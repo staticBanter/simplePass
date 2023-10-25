@@ -203,27 +203,22 @@ export default function initializer(cFig = config) {
                             password_P.appendChild(password_SPAN);
                             LI.appendChild(password_P);
                             OL.appendChild(LI);
-                            injectSimplePass(password_SPAN, simplePass(passwordModifiers, (cFig.htmlElements.strengthCheckerStyling
-                                && !cFig.htmlElements.strengthCheckerStyling.styleTarget) ?
-                                {
-                                    styleType: cFig.htmlElements.strengthCheckerStyling?.styleType ?? "inline",
-                                    styleTarget: password_SPAN
-                                } :
-                                false));
                             /**
                              * We only need to update our entropy target if we are on
                              * our last element.
                              */
-                            if (batchAmount === 1
-                                && cFig.htmlElements.entropyTarget) {
-                                const entropy_P = document.createElement('p');
-                                const entropy_B = document.createElement('b');
-                                entropy_B.innerText = 'Bits of Entropy: ~';
-                                const entropy_SPAN = document.createElement('span');
-                                entropy_SPAN.classList.add(cFig.htmlElements.entropyTarget.substring(1));
-                                entropy_P.appendChild(entropy_B);
-                                entropy_P.appendChild(entropy_SPAN);
-                                passwordContainer.appendChild(entropy_P);
+                            if (batchAmount === 1) {
+                                let entropy_SPAN = null;
+                                if (cFig.htmlElements.entropyTarget) {
+                                    const entropy_P = document.createElement('p');
+                                    const entropy_B = document.createElement('b');
+                                    entropy_B.innerText = 'Bits of Entropy: ~';
+                                    entropy_SPAN = document.createElement('span');
+                                    entropy_SPAN.classList.add(cFig.htmlElements.entropyTarget.substring(1));
+                                    entropy_P.appendChild(entropy_B);
+                                    entropy_P.appendChild(entropy_SPAN);
+                                    passwordContainer.appendChild(entropy_P);
+                                }
                                 strengthCheckStyleTarget = null;
                                 if (cFig.htmlElements.strengthCheckerStyling
                                     && cFig.htmlElements.strengthCheckerStyling.styleTarget) {
@@ -235,6 +230,15 @@ export default function initializer(cFig = config) {
                                         styleTarget: strengthCheckStyleTarget
                                     } :
                                     false), entropy_SPAN);
+                            }
+                            else {
+                                injectSimplePass(password_SPAN, simplePass(passwordModifiers, (cFig.htmlElements.strengthCheckerStyling
+                                    && !cFig.htmlElements.strengthCheckerStyling.styleTarget) ?
+                                    {
+                                        styleType: cFig.htmlElements.strengthCheckerStyling?.styleType ?? "inline",
+                                        styleTarget: password_SPAN
+                                    } :
+                                    false));
                             }
                         }
                         passwordContainer.prepend(OL);

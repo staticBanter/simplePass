@@ -24,6 +24,15 @@ import strengthCheckerStyling from "../data/interfaces/strengthCheckerStyling.js
 import strengthCheckedPassword from "../data/interfaces/strengthCheckedPassword.js";
 import strengthCheckerConstraints from "../data/interfaces/strengthCheckerConstraints.js";
 
+
+
+
+function DTMS(element:HTMLElement,styles:object){
+
+    console.log(Object.assign(element.style,styles));
+
+}
+
 /**
  * @file
  * @module strengthChecker
@@ -129,12 +138,7 @@ export default function strengthChecker(
         }
 
         styling.styleType==="inline"?
-            styling.styleTarget.setAttribute('style',(
-                (styling.styleTarget.getAttribute('style')??'')+`
-                    color: ${colour};
-                `
-            )
-        ):
+        Object.assign(styling.styleTarget.style,{color:colour}):
         (
             styling.styleTarget.classList.add('strengthChecked'),
             styling.styleTarget.dataset.score = score
