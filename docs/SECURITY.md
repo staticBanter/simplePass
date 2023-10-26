@@ -2,11 +2,7 @@
 
 ## Supported Versions
 
-The following table outlines our supported versions for security fixes and reports.
-
-| Version | Supported |
-| ---------- | ------------------ |
-| >=9.3.2-Beta | :white_check_mark: |
+We only support the newest version of simplePass. You can find the latest version on the projects GitHub in the [package.json files `version` attribute](https://github.com/staticBanter/simplePass/blob/main/package.json).
 
 ## Reporting a Vulnerability
 
