@@ -252,7 +252,7 @@ export default function initializer(cFig: typeof config = config):void{
                     event.preventDefault();
 
                     const passwordModifiers:FormData = new FormData(this);
-                    let batchAmount = parseInt(passwordModifiers.get('passwordBatchAmount')?.toString()??'0');
+                    let batchAmount:number = (parseInt(passwordModifiers.get('passwordBatchAmount')?.toString()??'0') - 1);
 
                     const passwordContainer:HTMLElement|null = document.body.querySelector<HTMLElement>(cFig.htmlElements.passwordContainer??'.simplePass_passwordContainer');
 
@@ -278,7 +278,7 @@ export default function initializer(cFig: typeof config = config):void{
 
                     if(
                         batchAmount
-                        && batchAmount > 1
+                        && batchAmount > 0
                     ){
 
                         passwordContainer.innerHTML = '';
@@ -303,73 +303,85 @@ export default function initializer(cFig: typeof config = config):void{
 
                             OL.appendChild(LI);
 
-                            /**
-                             * We only need to update our entropy target if we are on
-                             * our last element.
-                             */
-                            if(batchAmount === 1){
-
-                                let entropy_SPAN:HTMLSpanElement|null = null;
-                                if(cFig.htmlElements.entropyTarget){
-
-                                    const entropy_P:HTMLParagraphElement = document.createElement('p');
-
-                                    const entropy_B:HTMLElement = document.createElement('b');
-                                    entropy_B.innerText = 'Bits of Entropy: ~';
-
-                                    entropy_SPAN = document.createElement('span');
-                                    entropy_SPAN.classList.add(cFig.htmlElements.entropyTarget.substring(1));
-
-                                    entropy_P.appendChild(entropy_B);
-                                    entropy_P.appendChild(entropy_SPAN);
-
-                                    passwordContainer.appendChild(entropy_P);
-
-                                }
-
-                                strengthCheckStyleTarget = null;
-
-                                if(
-                                    cFig.htmlElements.strengthCheckerStyling
-                                    && cFig.htmlElements.strengthCheckerStyling.styleTarget
-                                ){
-                                    strengthCheckStyleTarget = document.body.querySelector<HTMLElement>(cFig.htmlElements.strengthCheckerStyling.styleTarget);
-                                }
-
-                                injectSimplePass(
-                                    password_SPAN,
-                                    simplePass(
-                                        passwordModifiers,
-                                        strengthCheckStyleTarget?
-                                            {
-                                                styleType:cFig.htmlElements.strengthCheckerStyling?.styleType??"inline",
-                                                styleTarget:strengthCheckStyleTarget
-                                            }:
-                                            false
-                                    ),
-                                    entropy_SPAN
-                                );
-
-                            }else{
-
-                                injectSimplePass(
-                                    password_SPAN,
-                                    simplePass(
-                                        passwordModifiers,
-                                        (
-                                            cFig.htmlElements.strengthCheckerStyling
-                                            && !cFig.htmlElements.strengthCheckerStyling.styleTarget
-                                        )?
-                                            {
-                                                styleType:cFig.htmlElements.strengthCheckerStyling?.styleType??"inline",
-                                                styleTarget:password_SPAN
-                                            }:
-                                            false
-                                    )
-                                );
-                            }
+                            injectSimplePass(
+                                password_SPAN,
+                                simplePass(
+                                    passwordModifiers,
+                                    (
+                                        cFig.htmlElements.strengthCheckerStyling
+                                        && !cFig.htmlElements.strengthCheckerStyling.styleTarget
+                                    )?
+                                        {
+                                            styleType:cFig.htmlElements.strengthCheckerStyling?.styleType??"inline",
+                                            styleTarget:password_SPAN
+                                        }:
+                                        false
+                                )
+                            );
 
                         }
+
+                        const LI:HTMLLIElement = document.createElement('li');
+
+                        const password_P:HTMLParagraphElement = document.createElement('p');
+
+                        const password_B:HTMLElement = document.createElement('b');
+                        password_B.innerText = 'Password: ';
+
+                        const password_SPAN:HTMLSpanElement = document.createElement('span');
+                        password_SPAN.classList.add(cFig.htmlElements.passwordTarget.substring(1));
+
+                        password_P.appendChild(password_B);
+                        password_P.appendChild(password_SPAN);
+                        LI.appendChild(password_P);
+
+                        OL.appendChild(LI);
+
+                        let entropy_SPAN:HTMLSpanElement|null = null;
+
+                        if(cFig.htmlElements.entropyTarget){
+
+                            const entropy_P:HTMLParagraphElement = document.createElement('p');
+
+                            const entropy_B:HTMLElement = document.createElement('b');
+                            entropy_B.innerText = 'Bits of Entropy: ~';
+
+                            entropy_SPAN = document.createElement('span');
+                            entropy_SPAN.classList.add(cFig.htmlElements.entropyTarget.substring(1));
+
+                            entropy_P.appendChild(entropy_B);
+                            entropy_P.appendChild(entropy_SPAN);
+
+                            passwordContainer.appendChild(entropy_P);
+
+                        }
+
+                        strengthCheckStyleTarget = null;
+
+                        if(
+                            cFig.htmlElements.strengthCheckerStyling
+                            && cFig.htmlElements.strengthCheckerStyling.styleTarget
+                            && cFig.htmlElements.strengthCheckerStyling.styleTarget !== cFig.htmlElements.passwordTarget
+                        ){
+                            strengthCheckStyleTarget = document.body.querySelector<HTMLElement>(cFig.htmlElements.strengthCheckerStyling.styleTarget);
+                        }
+
+                        injectSimplePass(
+                            password_SPAN,
+                            simplePass(
+                                passwordModifiers,
+                                (
+                                    cFig.htmlElements.strengthCheckerStyling
+                                    || strengthCheckStyleTarget
+                                )?
+                                    {
+                                        styleType:cFig.htmlElements.strengthCheckerStyling?.styleType??"inline",
+                                        styleTarget:strengthCheckStyleTarget??password_SPAN
+                                    }:
+                                    false
+                            ),
+                            entropy_SPAN
+                        );
 
                         passwordContainer.prepend(OL);
 
@@ -492,7 +504,7 @@ export default function initializer(cFig: typeof config = config):void{
 
                     for(const [key,value] of Object.entries(cFig.defaultPasswordModifier)){
 
-                        const input = passwordForm.querySelector<HTMLInputElement>(`[name=${key}]`);
+                        const input:HTMLInputElement|null = passwordForm.querySelector<HTMLInputElement>(`[name=${key}]`);
 
                         if(
                             input
