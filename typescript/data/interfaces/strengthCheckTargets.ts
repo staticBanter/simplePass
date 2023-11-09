@@ -38,5 +38,5 @@ export default interface strengthCheckTargets {
     binaryStringTarget?: string,
     binaryStringLengthTarget?: string,
     averageCharacterBitLengthTarget?: string,
-    uniqueCharacterPercentageTarget?: string,
+    uniqueCharactersPercentageTarget?: string,
 }

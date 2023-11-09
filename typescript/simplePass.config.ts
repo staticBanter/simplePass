@@ -176,7 +176,7 @@ const config: config = {
         binaryStringTarget: ".simplePass_binaryStringTarget",
         binaryStringLengthTarget: ".simplePass_binaryStringLengthTarget",
         averageCharacterBitLengthTarget: ".simplePass_averageCharacterBitLengthTarget",
-        uniqueCharacterPercentageTarget: ".simplePass_uniqueCharactersPercentageTarget",
+        uniqueCharactersPercentageTarget: ".simplePass_uniqueCharactersPercentageTarget",
     }
 };
 
