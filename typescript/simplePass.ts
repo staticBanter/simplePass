@@ -19,35 +19,36 @@
 'use strict';
 
 import passwordModifier from "./data/interfaces/passwordModifier.js";
-import cleanModifier from "./functions/cleanModifier.js";
-import validateModifier from "./functions/validateModifier.js";
-import config from "./simplePass.config.js"
-import whitespaceAttributes from "./data/lists/whitespaceAttributes.js";
-import shuffle from "./functions/shuffle.js";
-import generateCharCode from "./functions/generateCharCode.js";
-import errors from "./data/objects/errors.js";
-import ensureRepeatingCharacters from "./functions/ensureRepeatingCharacters.js";
-import strengthChecker from "./functions/strengthChecker.js";
-import useableAttributes from "./data/lists/useableAttributes.js";
-import strengthCheckerStyling from "./data/interfaces/strengthCheckerStyling.js";
 import strengthCheckedPassword from "./data/interfaces/strengthCheckedPassword.js";
-import passwordPreConfigs from "./data/objects/passwordPreConfigs.js";
-import messageHandler from "./functions/messageHandler.js";
-import initializer from "./functions/initializer.js";
+import useableAttributes from "./data/lists/useableAttributes.js";
+import whitespaceAttributes from "./data/lists/whitespaceAttributes.js";
 import characterCodeConstraints from "./data/objects/characterCodeConstraints.js";
+import errors from "./data/objects/errors.js";
+import passwordPreConfigs from "./data/objects/passwordPreConfigs.js";
+import cleanModifier from "./functions/cleanModifier.js";
+import ensureRepeatingCharacters from "./functions/ensureRepeatingCharacters.js";
+import generateCharCode from "./functions/generateCharCode.js";
+import initializer from "./functions/initializer.js";
+import messageHandler from "./functions/messageHandler.js";
+import shuffle from "./functions/shuffle.js";
+import strengthChecker from "./functions/strengthChecker.js";
+import validateModifier from "./functions/validateModifier.js";
+import config from "./simplePass.config.js";
 
 /**
- * @file
+ *
+ * @file This file contains the main 'simplePass' function. This file also is used to export any other function methods that are attached to the main function.
+ * Other programs that wish to use simplePass should import this file into there program and call various functions/methods found inside of this file.
  * @module simplePass
  */
 
 /**
- * Main program function. Can return a password string or an [object]{@link strengthCheckedPassword} describing a strength checked password.
+ * Main program function.
+ * Returns either a random string or a [strength check password object]{@link module:strengthCheckedPassword} that contains the a random string with additional information.
  *
  * @function simplePass
  * @param {passwordModifier | FormData} [modifier] The available [password modifiers]{@link module:passwordModifier} that can be used to create the password. Defaults to *[config.defaultPasswordModifier]{@link module:config}*.
- * @param {boolean | strengthCheckerStyling} [strengthCheck] An optional boolean or [Strength Checker Styling Object]{@link module:strengthCheckerStyling} instructing simplePass if and how to style the password as well as include an Entropy Score.
- * @requires config
+ * @param {module:config} [cFig] The configuration settings for the program.
  * @requires errors
  * @requires cleanModifier
  * @requires validateModifier
@@ -59,21 +60,21 @@ import characterCodeConstraints from "./data/objects/characterCodeConstraints.js
  * @requires strengthChecker
  * @requires passwordPreConfigs
  * @requires messageHandler
- * @throws {errors.invalidModifier} Will throw an Error if the [modifier]{@link passwordModifier} is ```null```, ```undefined``` or not a JavaScript Object.
+ * @requires characterCodeConstraints
+ * @throws {errors} Will throw an Error if the [modifier]{@link passwordModifier} is ```null```, ```undefined``` or not a JavaScript Object.
  * @returns {string | strengthCheckedPassword} The generated password or strength checked password object.
  */
-export default function simplePass(
-    modifier:passwordModifier|FormData = config.defaultPasswordModifier,
-    strengthCheck?:boolean|strengthCheckerStyling,
+export default function simplePass (
+    modifier: passwordModifier | FormData = config.defaultPasswordModifier,
     cFig: typeof config = config,
-) {
+): string | strengthCheckedPassword {
 
-    let messageBoard:HTMLElement|null = null;
+    let messageBoard: HTMLElement | null = null;
 
     if(
         cFig.messages
         && cFig.messages.messageBoard
-    ){
+    ) {
 
         messageBoard = document.body.querySelector<HTMLElement>(cFig.messages.messageBoard);
 
@@ -85,16 +86,16 @@ export default function simplePass(
             htmlMessage: (
                 messageBoard ? {
                     messageBoard: messageBoard,
-                    clear:true,
-                } :undefined
+                    clear: true,
+                } : undefined
             ),
             consoleMessage: {
                 clear: cFig.messages?.clearConsole,
             },
-            level:"CLEAR"
+            level: "CLEAR"
         },
         cFig
-    )
+    );
 
     /**
      * If the modifier is not an object
@@ -103,16 +104,17 @@ export default function simplePass(
     if(
         !modifier
         || typeof modifier !== 'object'
-    ){
+    ) {
+
         messageHandler(
             {
-                messageKey:'invalidModifier',
-                templateMessages:{
-                    replacements:[
+                messageKey: 'invalidModifier',
+                templateMessages: {
+                    replacements: [
                         'M',
                         '1'
                     ],
-                    templates:errors
+                    templates: errors
                 }
             },
             {
@@ -120,72 +122,108 @@ export default function simplePass(
                     messageBoard ? {
                         messageBoard: messageBoard,
                     } :
-                    undefined
+                        undefined
                 ),
                 consoleMessage: true,
                 level: "ERROR",
             },
             cFig
-        )
+        );
     }
 
     // Initialize the password.
-    let password:string = '';
-    let middleCharacters:string = '';
+    let password: string = '';
+    let middleCharacters: string = '';
 
     // Initialize preserve beginning and end character flags.
-    let preserveBeginning:boolean = false;
+    let preserveBeginning: boolean = false;
     let preserveEnd: boolean = false;
 
     // Remove unneeded object attributes and normalize formData objects.
     modifier = cleanModifier(modifier);
 
+    if(!cFig.defaultPasswordModifier) {
+        cFig.defaultPasswordModifier = Object.assign(config.defaultPasswordModifier, cFig.defaultPasswordModifier);
+    }
+
+    if(!cFig.passwordConstraints) {
+        cFig.passwordConstraints = Object.assign(config.passwordConstraints, cFig.defaultPasswordModifier);
+    }
+
     // Ensure certain values are set and set properly.
     try {
-        validateModifier(modifier,cFig);
 
-    } catch (caught: any) {
+        validateModifier(modifier, cFig);
 
-        messageHandler(
-            {
-                messageKey: caught.errorKey,
-                templateMessages: {
-                    replacements: caught.replacements,
-                    templates: errors,
-                }
-            },
-            {
-                htmlMessage: (
-                    messageBoard ? {
-                        messageBoard: messageBoard
-                    } :
-                    undefined
-                ),
-                consoleMessage: true,
-                level:"ERROR",
-            },
-            cFig
-        );
+    } catch(caught: any) {
+
+        if(caught.message) {
+
+            messageHandler(
+                {
+                    messageKey: `${caught.name ?? 'Internal Error'}: ${caught.message}`,
+                },
+                {
+                    htmlMessage: (
+                        messageBoard ? {
+                            messageBoard: messageBoard,
+                        } :
+                            undefined
+                    ),
+                    consoleMessage: true,
+                    level: "ERROR",
+                },
+                cFig
+            );
+
+        } else {
+
+            messageHandler(
+                {
+                    messageKey: caught.errorKey,
+                    templateMessages: {
+                        replacements: caught.replacements,
+                        templates: errors,
+                    }
+                },
+                {
+                    htmlMessage: (
+                        messageBoard ? {
+                            messageBoard: messageBoard
+                        } :
+                            undefined
+                    ),
+                    consoleMessage: true,
+                    level: "ERROR",
+                },
+                cFig
+            );
+
+        }
 
     }
 
-    if(modifier.preConfig){
-        const preConfig:object|undefined = passwordPreConfigs[modifier.preConfig];
+    if(modifier.preConfig) {
+
+        const preConfig: object | undefined = passwordPreConfigs[modifier.preConfig];
+
         modifier = {
-            length:modifier.length
+            length: modifier.length
         };
-        if(preConfig){
-            Object.assign(modifier,preConfig);
+
+        if(preConfig) {
+            Object.assign(modifier, preConfig);
         }
+
     }
 
     // Get the attributes that can affect the character type
-    const characterAttributes:Array<string> = Object.keys(modifier).filter((item:string)=>{
+    const characterAttributes: Array<string> = Object.keys(modifier).filter((item: string) => {
         return Object.keys(characterCodeConstraints).includes(item);
     });
 
     // Get the attributes that can set whitespace
-    const setWhitespaceAttributes:Array<string> = Object.keys(modifier).filter((item:string)=>{
+    const setWhitespaceAttributes: Array<string> = Object.keys(modifier).filter((item: string) => {
         return whitespaceAttributes.includes(item);
     });
 
@@ -193,7 +231,8 @@ export default function simplePass(
      * Because we manually add the first and last character
      * we need to changed the password length limit.
      */
-    let passwordLimit:number = (modifier.length - 2);
+    let passwordLimit: number = (modifier.length - 2);
+
 
     /**
      * Prevent ```uniqueCharacters``` begin set
@@ -209,33 +248,34 @@ export default function simplePass(
             || modifier.whitespaceEnd
             || modifier.required_whitespaceEnd
             || modifier.required_whitespaceBeginning
+            || modifier.whitespaceBetween
             || modifier.max_whitespaceBetween
             || modifier.preConfig
         )
-    ){
-        messageHandler(`ERROR.simplePass-M_E.2: Unique modifier was set with clashing modifiers.`)
+    ) {
+        messageHandler(`ERROR.simplePass-M_E.2: Unique modifier was set with clashing modifiers.`);
     }
 
     /**
      * If the repeating characters attribute is set we need to generate less characters.
      */
-    if (modifier.repeatingCharacter){
+    if(modifier.repeatingCharacter) {
 
-        if(modifier.customRepeatingCharacters){
+        if(modifier.customRepeatingCharacters) {
 
-            if(typeof(modifier.customRepeatingCharacters) !== 'string'){
+            if(typeof (modifier.customRepeatingCharacters) !== 'string') {
 
-                modifier.customRepeatingCharacters.forEach((set)=>{
+                modifier.customRepeatingCharacters.forEach((set) => {
                     passwordLimit -= parseInt(set[1]);
                 });
 
-            }else{
+            } else {
                 passwordLimit -= (modifier.customRepeatingCharacters.length * 2);
             }
 
-        }else if(modifier.max_repeatingCharacter){
+        } else if(modifier.max_repeatingCharacter) {
             passwordLimit -= modifier.max_repeatingCharacter;
-        }else{
+        } else {
             passwordLimit--;
         }
 
@@ -248,20 +288,22 @@ export default function simplePass(
      */
     if(
         modifier.whitespaceBetween
-        && modifier.max_whitespaceBetween
-    ){
-        if ((modifier.length - modifier.max_whitespaceBetween) < characterAttributes.length) {
+    ) {
+
+        const max_whitespaceBetween: number = modifier.max_whitespaceBetween ?? 1;
+
+        if((modifier.length - max_whitespaceBetween) < characterAttributes.length) {
 
             messageHandler(
                 {
-                    messageKey:'ERROR: The password length can not contain the selected amount of characters',
+                    messageKey: 'ERROR: The password length can not contain the selected amount of characters',
                 },
                 {
                     htmlMessage: (
                         messageBoard ? {
                             messageBoard: messageBoard,
                         } :
-                        undefined
+                            undefined
                     ),
                     consoleMessage: true,
                     level: "ERROR",
@@ -271,24 +313,24 @@ export default function simplePass(
 
         }
 
-        passwordLimit = passwordLimit - modifier.max_whitespaceBetween;
+        passwordLimit = passwordLimit - max_whitespaceBetween;
     }
 
     /**
      * If the password limit drops below zero the password will not be able to contain all the characters.
      */
-    if (passwordLimit <= -1) {
+    if(passwordLimit <= -1) {
 
         messageHandler(
             {
-                messageKey:'ERROR: The password length can not contain the selected amount of characters',
+                messageKey: 'ERROR: The password length can not contain the selected amount of characters',
             },
             {
                 htmlMessage: (
                     messageBoard ? {
                         messageBoard: messageBoard,
                     } :
-                    undefined
+                        undefined
                 ),
                 consoleMessage: true,
                 level: "ERROR",
@@ -304,7 +346,7 @@ export default function simplePass(
      * like ensuring the attribute list is replenished.
      * Where if there is only one item we can just reference that.
      */
-    if(characterAttributes.length > 1){
+    if(characterAttributes.length > 1) {
 
         /**
          * Because we may need through the attributes a few times
@@ -314,7 +356,7 @@ export default function simplePass(
          * to the old list we need to initialize it and contact
          * the old list to it.
          */
-        let deck:Array<string> = [];
+        let deck: Array<string> = [];
         deck = deck.concat(shuffle(characterAttributes));
 
         /**
@@ -324,11 +366,11 @@ export default function simplePass(
         if(
             modifier.whitespaceBeginning
             && modifier.required_whitespaceBeginning
-        ){
+        ) {
             password += ' ';
             preserveBeginning = true;
 
-        }else{
+        } else {
 
             try {
 
@@ -347,28 +389,51 @@ export default function simplePass(
                     )
                 );
 
-            } catch (caught: any) {
+            } catch(caught: any) {
 
-                messageHandler(
-                    {
-                        messageKey: caught.errorKey,
-                        templateMessages: {
-                            replacements: caught.replacements,
-                            templates: errors,
-                        }
-                    },
-                    {
-                        htmlMessage: (
-                            messageBoard ? {
-                                messageBoard: messageBoard,
-                            } :
-                            undefined
-                        ),
-                        consoleMessage: true,
-                        level: "ERROR",
-                    },
-                    cFig
-                );
+                if(caught.message) {
+
+                    messageHandler(
+                        {
+                            messageKey: `${caught.name ?? 'Internal Error'}: ${caught.message}`,
+                        },
+                        {
+                            htmlMessage: (
+                                messageBoard ? {
+                                    messageBoard: messageBoard,
+                                } :
+                                    undefined
+                            ),
+                            consoleMessage: true,
+                            level: "ERROR",
+                        },
+                        cFig
+                    );
+
+                } else {
+
+                    messageHandler(
+                        {
+                            messageKey: caught.errorKey,
+                            templateMessages: {
+                                replacements: caught.replacements,
+                                templates: errors,
+                            }
+                        },
+                        {
+                            htmlMessage: (
+                                messageBoard ? {
+                                    messageBoard: messageBoard,
+                                } :
+                                    undefined
+                            ),
+                            consoleMessage: true,
+                            level: "ERROR",
+                        },
+                        cFig
+                    );
+
+                }
 
             }
 
@@ -379,20 +444,20 @@ export default function simplePass(
         /**
          * Set the middle characters for the password.
          */
-        while(middleCharacters.length < passwordLimit){
+        while(middleCharacters.length < passwordLimit) {
 
             /**
              * If the current character type is undefined,
              * and the deck length is 0,
              * replenish the deck.
              */
-            if(!deck.length){
+            if(!deck.length) {
                 deck = deck.concat(shuffle(characterAttributes));
             }
 
             try {
 
-                const generatedCharacter:string = String.fromCharCode(
+                const generatedCharacter: string = String.fromCharCode(
                     generateCharCode(
                         {
                             charType: deck[0],
@@ -404,39 +469,62 @@ export default function simplePass(
                     )
                 );
 
-                if(modifier.uniqueCharacters){
+                if(modifier.uniqueCharacters) {
                     if(
                         password.includes(generatedCharacter)
                         || middleCharacters.includes(generatedCharacter)
-                    ){
+                    ) {
                         continue;
                     }
                 };
 
                 middleCharacters += generatedCharacter;
 
-            } catch (caught: any) {
+            } catch(caught: any) {
 
-                messageHandler(
-                    {
-                        messageKey: caught.errorKey,
-                        templateMessages: {
-                            replacements: caught.replacements,
-                            templates: errors,
-                        }
-                    },
-                    {
-                        htmlMessage: (
-                            messageBoard ? {
-                                messageBoard: messageBoard
-                            } :
-                            undefined
-                        ),
-                        consoleMessage:  true,
-                        level: "ERROR",
-                    },
-                    cFig
-                );
+                if(caught.message) {
+
+                    messageHandler(
+                        {
+                            messageKey: `${caught.name ?? 'Internal Error'}: ${caught.message}`,
+                        },
+                        {
+                            htmlMessage: (
+                                messageBoard ? {
+                                    messageBoard: messageBoard,
+                                } :
+                                    undefined
+                            ),
+                            consoleMessage: true,
+                            level: "ERROR",
+                        },
+                        cFig
+                    );
+
+                } else {
+
+                    messageHandler(
+                        {
+                            messageKey: caught.errorKey,
+                            templateMessages: {
+                                replacements: caught.replacements,
+                                templates: errors,
+                            }
+                        },
+                        {
+                            htmlMessage: (
+                                messageBoard ? {
+                                    messageBoard: messageBoard
+                                } :
+                                    undefined
+                            ),
+                            consoleMessage: true,
+                            level: "ERROR",
+                        },
+                        cFig
+                    );
+
+                }
 
             }
 
@@ -445,13 +533,21 @@ export default function simplePass(
         }
 
         // Add any needed whitespace characters.
-        if(
-            modifier.whitespaceBetween
-            && modifier.max_whitespaceBetween
-        ){
-            while(modifier.max_whitespaceBetween--){
+        if(modifier.whitespaceBetween) {
+
+            if(
+                modifier.max_whitespaceBetween
+                && modifier.max_whitespaceBetween > 1
+            ) {
+
+                while(modifier.max_whitespaceBetween--) {
+                    middleCharacters += " ";
+                }
+
+            } else {
                 middleCharacters += " ";
             }
+
         }
 
         // Add the middle characters
@@ -464,10 +560,10 @@ export default function simplePass(
         if(
             modifier.whitespaceEnd
             && modifier.required_whitespaceEnd
-        ){
+        ) {
             password += ' ';
             preserveEnd = true;
-        }else{
+        } else {
 
             /**
              * If the current character type is undefined,
@@ -476,13 +572,13 @@ export default function simplePass(
              * We need to do this here because the loop
              * could have ended it on empty.
              */
-            if(!deck.length){
+            if(!deck.length) {
                 deck = deck.concat(shuffle(characterAttributes));
             }
 
             try {
 
-                let generatedCharacter:string = String.fromCharCode(
+                let generatedCharacter: string = String.fromCharCode(
                     generateCharCode(
                         {
                             charType: deck[0],
@@ -497,13 +593,13 @@ export default function simplePass(
                     )
                 );
 
-                if(modifier.uniqueCharacters){
+                if(modifier.uniqueCharacters) {
 
                     if(
                         password.includes(generatedCharacter)
-                    ){
+                    ) {
 
-                        while(password.includes(generatedCharacter)){
+                        while(password.includes(generatedCharacter)) {
 
                             generatedCharacter = String.fromCharCode(
                                 generateCharCode(
@@ -528,45 +624,68 @@ export default function simplePass(
 
                 password += generatedCharacter;
 
-            } catch (caught: any) {
+            } catch(caught: any) {
 
-                messageHandler(
-                    {
-                        messageKey: caught.errorKey,
-                        templateMessages: {
-                            replacements: caught.replacements,
-                            templates: errors,
-                        }
-                    },
-                    {
-                        htmlMessage: (
-                            messageBoard ? {
-                                messageBoard: messageBoard
-                            } :
-                            undefined
-                        ),
-                        consoleMessage:  true,
-                        level: "ERROR",
-                    },
-                    cFig
-                );
+                if(caught.message) {
+
+                    messageHandler(
+                        {
+                            messageKey: `${caught.name ?? 'Internal Error'}: ${caught.message}`,
+                        },
+                        {
+                            htmlMessage: (
+                                messageBoard ? {
+                                    messageBoard: messageBoard,
+                                } :
+                                    undefined
+                            ),
+                            consoleMessage: true,
+                            level: "ERROR",
+                        },
+                        cFig
+                    );
+
+                } else {
+
+                    messageHandler(
+                        {
+                            messageKey: caught.errorKey,
+                            templateMessages: {
+                                replacements: caught.replacements,
+                                templates: errors,
+                            }
+                        },
+                        {
+                            htmlMessage: (
+                                messageBoard ? {
+                                    messageBoard: messageBoard
+                                } :
+                                    undefined
+                            ),
+                            consoleMessage: true,
+                            level: "ERROR",
+                        },
+                        cFig
+                    );
+
+                }
 
             }
 
         }
 
         // Check if we need to repeat any characters.
-        if(modifier.repeatingCharacter){
+        if(modifier.repeatingCharacter) {
 
             // Recreate the password
             password = ensureRepeatingCharacters(
                 password,
                 {
-                    repeatingSetCount:modifier.max_repeatingCharacter,
-                    customCharacterSet:modifier.customRepeatingCharacters,
-                    preservations:{
-                        beginning:preserveBeginning,
-                        end:preserveEnd
+                    repeatingSetCount: modifier.max_repeatingCharacter,
+                    customCharacterSet: modifier.customRepeatingCharacters,
+                    preservations: {
+                        beginning: preserveBeginning,
+                        end: preserveEnd
                     }
                 }
             );
@@ -581,21 +700,21 @@ export default function simplePass(
              * characters from the original password, we should be OK to add any
              * new characters from the request as we like.
              */
-            if(password.length < modifier.length){
+            if(password.length < modifier.length) {
 
 
                 // Split the sting into pieces
-                let stringBeginning = password.slice(0,1);
-                let stringMiddle = password.slice(1,password.length-1);
-                let stringEnd = password.slice(password.length-1,password.length);
+                let stringBeginning: string = password.slice(0, 1);
+                let stringMiddle: string = password.slice(1, password.length - 1);
+                let stringEnd: string = password.slice(password.length - 1, password.length);
 
                 // Add new characters to the middle of the string  the way we usually do.
-                while(stringMiddle.length < (modifier.length - 2)){
+                while(stringMiddle.length < (modifier.length - 2)) {
 
                     /**
                      * Check and reinitialize deck.
                      */
-                    if(!deck.length){
+                    if(!deck.length) {
                         deck = deck.concat(shuffle(characterAttributes));
                     }
 
@@ -606,7 +725,7 @@ export default function simplePass(
 
                     try {
 
-                        const currentCharacter:string = String.fromCharCode(generateCharCode({
+                        const currentCharacter: string = String.fromCharCode(generateCharCode({
                             charType: deck[0],
                             charCodeOptions: {
                                 whitespaceOptions: setWhitespaceAttributes,
@@ -614,36 +733,58 @@ export default function simplePass(
                             }
                         }));
 
-
                         stringMiddle += currentCharacter;
 
                         // Repeat character if possible.
-                        if ((stringMiddle.length + 1) <= (modifier.length - 2)) {
+                        if((stringMiddle.length + 1) <= (modifier.length - 2)) {
                             stringMiddle += currentCharacter;
                         }
 
-                    } catch (caught: any) {
+                    } catch(caught: any) {
 
-                        messageHandler(
-                            {
-                                messageKey: caught.errorKey,
-                                templateMessages: {
-                                    replacements: caught.replacements,
-                                    templates: errors,
-                                }
-                            },
-                            {
-                                htmlMessage: (
-                                    messageBoard ? {
-                                        messageBoard: messageBoard
-                                    } :
-                                    undefined
-                                ),
-                                consoleMessage: true,
-                                level: "ERROR",
-                            },
-                            cFig
-                        );
+                        if(caught.message) {
+
+                            messageHandler(
+                                {
+                                    messageKey: `${caught.name ?? 'Internal Error'}: ${caught.message}`,
+                                },
+                                {
+                                    htmlMessage: (
+                                        messageBoard ? {
+                                            messageBoard: messageBoard,
+                                        } :
+                                            undefined
+                                    ),
+                                    consoleMessage: true,
+                                    level: "ERROR",
+                                },
+                                cFig
+                            );
+
+                        } else {
+
+                            messageHandler(
+                                {
+                                    messageKey: caught.errorKey,
+                                    templateMessages: {
+                                        replacements: caught.replacements,
+                                        templates: errors,
+                                    }
+                                },
+                                {
+                                    htmlMessage: (
+                                        messageBoard ? {
+                                            messageBoard: messageBoard
+                                        } :
+                                            undefined
+                                    ),
+                                    consoleMessage: true,
+                                    level: "ERROR",
+                                },
+                                cFig
+                            );
+
+                        }
 
                     }
 
@@ -656,8 +797,8 @@ export default function simplePass(
 
         }
 
-    }else{
-    // ^ Our character attributes list only contained one item.
+    } else {
+        // ^ Our character attributes list only contained one item.
 
         /**
          * Set the first character of the password.
@@ -666,7 +807,7 @@ export default function simplePass(
         if(
             modifier.whitespaceBeginning
             && modifier.required_whitespaceBeginning
-        ){
+        ) {
             password += ' ';
             preserveBeginning = true;
         } else {
@@ -688,28 +829,51 @@ export default function simplePass(
                     )
                 );
 
-            } catch (caught: any) {
+            } catch(caught: any) {
 
-                messageHandler(
-                    {
-                        messageKey: caught.errorKey,
-                        templateMessages: {
-                            replacements: caught.replacements,
-                            templates: errors,
-                        }
-                    },
-                    {
-                        htmlMessage: (
-                            messageBoard ? {
-                                messageBoard: messageBoard
-                            } :
-                            undefined
-                        ),
-                        consoleMessage: true,
-                        level: "ERROR",
-                    },
-                    cFig
-                );
+                if(caught.message) {
+
+                    messageHandler(
+                        {
+                            messageKey: `${caught.name ?? 'Internal Error'}: ${caught.message}`,
+                        },
+                        {
+                            htmlMessage: (
+                                messageBoard ? {
+                                    messageBoard: messageBoard,
+                                } :
+                                    undefined
+                            ),
+                            consoleMessage: true,
+                            level: "ERROR",
+                        },
+                        cFig
+                    );
+
+                } else {
+
+                    messageHandler(
+                        {
+                            messageKey: caught.errorKey,
+                            templateMessages: {
+                                replacements: caught.replacements,
+                                templates: errors,
+                            }
+                        },
+                        {
+                            htmlMessage: (
+                                messageBoard ? {
+                                    messageBoard: messageBoard
+                                } :
+                                    undefined
+                            ),
+                            consoleMessage: true,
+                            level: "ERROR",
+                        },
+                        cFig
+                    );
+
+                }
 
             }
         }
@@ -717,11 +881,11 @@ export default function simplePass(
         /**
          * Set the middle characters for the password.
          */
-        while (middleCharacters.length < passwordLimit) {
+        while(middleCharacters.length < passwordLimit) {
 
             try {
 
-                const generatedCharacter:string = String.fromCharCode(
+                const generatedCharacter: string = String.fromCharCode(
                     generateCharCode(
                         {
                             charType: characterAttributes[0],
@@ -733,13 +897,12 @@ export default function simplePass(
                     )
                 );
 
-
-                if(modifier.uniqueCharacters){
+                if(modifier.uniqueCharacters) {
 
                     if(
                         password.includes(generatedCharacter)
                         || middleCharacters.includes(generatedCharacter)
-                    ){
+                    ) {
                         continue;
                     }
 
@@ -747,38 +910,66 @@ export default function simplePass(
 
                 middleCharacters += generatedCharacter;
 
-            } catch (caught: any) {
+            } catch(caught: any) {
 
-                messageHandler(
-                    {
-                        messageKey: caught.errorKey,
-                        templateMessages: {
-                            replacements: caught.replacements,
-                            templates: errors,
-                        }
-                    },
-                    {
-                        htmlMessage: (
-                            messageBoard ? {
-                                messageBoard: messageBoard
-                            } :
-                            undefined
-                        ),
-                        consoleMessage: true,
-                        level: "ERROR",
-                    },
-                    cFig
-                );
+                if(caught.message) {
+
+                    messageHandler(
+                        {
+                            messageKey: `${caught.name ?? 'Internal Error'}: ${caught.message}`,
+                        },
+                        {
+                            htmlMessage: (
+                                messageBoard ? {
+                                    messageBoard: messageBoard,
+                                } :
+                                    undefined
+                            ),
+                            consoleMessage: true,
+                            level: "ERROR",
+                        },
+                        cFig
+                    );
+
+                } else {
+
+                    messageHandler(
+                        {
+                            messageKey: caught.errorKey,
+                            templateMessages: {
+                                replacements: caught.replacements,
+                                templates: errors,
+                            }
+                        },
+                        {
+                            htmlMessage: (
+                                messageBoard ? {
+                                    messageBoard: messageBoard
+                                } :
+                                    undefined
+                            ),
+                            consoleMessage: true,
+                            level: "ERROR",
+                        },
+                        cFig
+                    );
+
+                }
             }
 
         }
 
         // Add any needed whitespace characters.
-        if(
-            modifier.whitespaceBetween
-            && modifier.max_whitespaceBetween
-        ){
-            while(modifier.max_whitespaceBetween--){
+        if(modifier.whitespaceBetween) {
+
+            if(
+                modifier.max_whitespaceBetween
+                && modifier.max_whitespaceBetween > 1
+            ) {
+                while(modifier.max_whitespaceBetween--) {
+                    middleCharacters += " ";
+                }
+            } else {
                 middleCharacters += " ";
             }
         }
@@ -793,14 +984,14 @@ export default function simplePass(
         if(
             modifier.whitespaceEnd
             && modifier.required_whitespaceEnd
-        ){
+        ) {
             password += ' ';
             preserveEnd = true;
         } else {
 
             try {
 
-                let generatedCharacter:string = String.fromCharCode(
+                let generatedCharacter: string = String.fromCharCode(
                     generateCharCode(
                         {
                             charType: characterAttributes[0],
@@ -815,13 +1006,13 @@ export default function simplePass(
                     )
                 );
 
-                if(modifier.uniqueCharacters){
+                if(modifier.uniqueCharacters) {
 
                     if(
                         password.includes(generatedCharacter)
-                    ){
+                    ) {
 
-                        while(password.includes(generatedCharacter)){
+                        while(password.includes(generatedCharacter)) {
 
                             generatedCharacter = String.fromCharCode(
                                 generateCharCode(
@@ -844,47 +1035,70 @@ export default function simplePass(
 
                 }
 
-                password += generatedCharacter
+                password += generatedCharacter;
 
-            } catch (caught: any) {
+            } catch(caught: any) {
 
-                messageHandler(
-                    {
-                        messageKey: caught.errorKey,
-                        templateMessages: {
-                            replacements: caught.replacements,
-                            templates: errors,
-                        }
-                    },
-                    {
-                        htmlMessage: (
-                            messageBoard ? {
-                                messageBoard: messageBoard
-                            } :
-                            undefined
-                        ),
-                        consoleMessage: true,
-                        level: "ERROR",
-                    },
-                    cFig
-                );
+                if(caught.message) {
+
+                    messageHandler(
+                        {
+                            messageKey: `${caught.name ?? 'Internal Error'}: ${caught.message}`,
+                        },
+                        {
+                            htmlMessage: (
+                                messageBoard ? {
+                                    messageBoard: messageBoard,
+                                } :
+                                    undefined
+                            ),
+                            consoleMessage: true,
+                            level: "ERROR",
+                        },
+                        cFig
+                    );
+
+                } else {
+
+                    messageHandler(
+                        {
+                            messageKey: caught.errorKey,
+                            templateMessages: {
+                                replacements: caught.replacements,
+                                templates: errors,
+                            }
+                        },
+                        {
+                            htmlMessage: (
+                                messageBoard ? {
+                                    messageBoard: messageBoard
+                                } :
+                                    undefined
+                            ),
+                            consoleMessage: true,
+                            level: "ERROR",
+                        },
+                        cFig
+                    );
+
+                }
 
             }
 
         }
 
         // Check if we need to repeat any characters.
-        if(modifier.repeatingCharacter){
+        if(modifier.repeatingCharacter) {
 
             // Recreate the password
             password = ensureRepeatingCharacters(
                 password,
                 {
-                    repeatingSetCount:modifier.max_repeatingCharacter,
-                    customCharacterSet:modifier.customRepeatingCharacters,
-                    preservations:{
-                        beginning:preserveBeginning,
-                        end:preserveEnd
+                    repeatingSetCount: modifier.max_repeatingCharacter,
+                    customCharacterSet: modifier.customRepeatingCharacters,
+                    preservations: {
+                        beginning: preserveBeginning,
+                        end: preserveEnd
                     }
                 }
             );
@@ -899,19 +1113,19 @@ export default function simplePass(
              * characters from the original password, we should be OK to add any
              * new characters from the request as we like.
              */
-            if(password.length < modifier.length){
+            if(password.length < modifier.length) {
 
                 // Split the sting into pieces
-                let stringBeginning:string = password.slice(0,1);
-                let stringMiddle:string = password.slice(1,password.length-1);
-                let stringEnd:string = password.slice(password.length-1,password.length);
+                let stringBeginning: string = password.slice(0, 1);
+                let stringMiddle: string = password.slice(1, password.length - 1);
+                let stringEnd: string = password.slice(password.length - 1, password.length);
 
                 // Add new characters to the middle of the string  the way we usually do.
-                while(stringMiddle.length < (modifier.length - 2)){
+                while(stringMiddle.length < (modifier.length - 2)) {
 
                     try {
 
-                        const currentCharacter:string = String.fromCharCode(
+                        const currentCharacter: string = String.fromCharCode(
                             generateCharCode(
                                 {
                                     charType: characterAttributes[0],
@@ -926,34 +1140,57 @@ export default function simplePass(
                         stringMiddle += currentCharacter;
 
                         // If we can repeat this character we shall.
-                        if ((stringMiddle.length + 1) <= (modifier.length - 2)) {
+                        if((stringMiddle.length + 1) <= (modifier.length - 2)) {
 
                             stringMiddle += currentCharacter;
 
                         }
 
-                    } catch (caught: any) {
+                    } catch(caught: any) {
 
-                        messageHandler(
-                            {
-                                messageKey: caught.errorKey,
-                                templateMessages: {
-                                    replacements: caught.replacements,
-                                    templates: errors,
-                                }
-                            },
-                            {
-                                htmlMessage: (
-                                    messageBoard? {
-                                        messageBoard: messageBoard,
-                                    } :
-                                    undefined
-                                ),
-                                consoleMessage: true,
-                                level: "ERROR",
-                            },
-                            cFig
-                        );
+                        if(caught.message) {
+
+                            messageHandler(
+                                {
+                                    messageKey: `${caught.name ?? 'Internal Error'}: ${caught.message}`,
+                                },
+                                {
+                                    htmlMessage: (
+                                        messageBoard ? {
+                                            messageBoard: messageBoard,
+                                        } :
+                                            undefined
+                                    ),
+                                    consoleMessage: true,
+                                    level: "ERROR",
+                                },
+                                cFig
+                            );
+
+                        } else {
+
+                            messageHandler(
+                                {
+                                    messageKey: caught.errorKey,
+                                    templateMessages: {
+                                        replacements: caught.replacements,
+                                        templates: errors,
+                                    }
+                                },
+                                {
+                                    htmlMessage: (
+                                        messageBoard ? {
+                                            messageBoard: messageBoard,
+                                        } :
+                                            undefined
+                                    ),
+                                    consoleMessage: true,
+                                    level: "ERROR",
+                                },
+                                cFig
+                            );
+
+                        }
                     }
 
                 }
@@ -967,42 +1204,18 @@ export default function simplePass(
 
     }
 
-    if(strengthCheck){
-
-        if(
-            typeof(strengthCheck) !== 'boolean'
-            && strengthCheck.styleTarget
-            && strengthCheck.styleType
-        ){
-
-            return strengthChecker(
-                password,
-                {
-                    characterSets:{
-                        used:Object.keys(modifier),
-                        available:useableAttributes
-                    },
-                    excludeCharacters:modifier.excludeCharacters,
-                    min_length:cFig.passwordConstraints.min_length,
-                    max_length:cFig.passwordConstraints.max_length
-                },
-                {
-                    styleTarget:strengthCheck.styleTarget,
-                    styleType:strengthCheck.styleType
-                }
-            );
-        }
+    if(cFig.strengthCheck) {
 
         return strengthChecker(
             password,
             {
-                characterSets:{
-                    used:Object.keys(modifier),
-                    available:useableAttributes
+                characterSets: {
+                    used: Object.keys(modifier),
+                    available: useableAttributes
                 },
-                excludeCharacters:modifier.excludeCharacters,
-                min_length:cFig.passwordConstraints.min_length,
-                max_length:cFig.passwordConstraints.max_length
+                excludeCharacters: modifier.excludeCharacters,
+                min_length: cFig.passwordConstraints.min_length,
+                max_length: cFig.passwordConstraints.max_length
             }
         );
     }

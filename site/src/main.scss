@@ -3,28 +3,45 @@
 @import "../../node_modules/normalize.css/normalize";
 
 $padding: 1rem;
-$padding-small: math.div($padding,2);
+$padding-small: math.div($padding, 2);
 $margin: 1rem;
-$margin-small: math.div($margin,2);
+$margin-small: math.div($margin, 2);
 
 /**
 * Generics
 **/
-*[class^="simplePass_passwordTarget"]{
-    display: inline-block;
-    width: 100%;
-    overflow: auto;
-    vertical-align: bottom;
-    white-space: break-spaces;
-    text-wrap: nowrap;
-    text-rendering: optimizeLegibility;
-    font-family: 'Courier New', Courier, monospace;
+
+* {
+    [class^="simplePass_passwordTarget"] {
+        display: inline-block;
+        width: 100%;
+        overflow: auto;
+        vertical-align: bottom;
+        white-space: break-spaces;
+        text-wrap: nowrap;
+        text-rendering: optimizeLegibility;
+        font-family: 'Courier New', Courier, 'Liberation Mono', monospace;
+    }
+
+
+    textarea[data-simplepass-binary-string-target] {
+        resize: vertical;
+    }
+
+    [data-simplepass-binary-string-target] {
+        width: calc(100% - $margin);
+    }
+
+    [data-simplepass-binary-string-target][type="password"] {
+        -webkit-text-security: disc;
+    }
 }
+
 
 /**
 * Elements
 **/
-html > body >{
+html > body > {
 
     header {
         display: flex;
@@ -40,42 +57,47 @@ html > body >{
 
 }
 
-main{
+main {
     padding-bottom: 1rem;
 }
 
-form{
+form {
     border-radius: 10px;
 }
 
-label{
+label {
     display: inline-block;
     width: calc(100% - $padding-small);
     margin: $margin-small auto;
     display: flex;
     align-items: center;
     flex-wrap: wrap;
+    font-weight: bolder;
 }
 
 label {
 
-    > input:not([type="checkbox"],[type="radio"]){
+    > input:not([type="checkbox"], [type="radio"]) {
         width: 100%;
     }
 
     > input[type="checkbox"],
-    > input[type="radio"]{
+    > input[type="radio"] {
         margin: auto $margin;
+    }
+
+    > * + button {
+        margin-top: $margin-small;
     }
 
 }
 
-button{
+button {
     min-height: 44px;
     min-width: 44px;
 }
 
-pre{
+pre {
     border: 2px solid;
     box-sizing: border-box;
     padding: 0.5rem;
@@ -86,13 +108,13 @@ pre{
 /**
 * Classes
 **/
-.simplePass_messageBoard{
+.simplePass_messageBoard {
     border-radius: 10px 10px 0 0;
     display: flex;
     flex-flow: column;
 }
 
-.simplePass_messageBox{
+.simplePass_messageBox {
     background-color: rgb(255, 79, 79);
     border: 1px solid;
     border-radius: 10px;
@@ -104,36 +126,40 @@ pre{
     height: max-content;
 }
 
-.simplePass_messageBox{
+.simplePass_messageBox {
 
-    > *:first-child{
+    > *:first-child {
         display: flex;
         flex-wrap: wrap;
         align-items: baseline;
     }
 
-    > *:first-child > *:first-child{
+    > *:first-child > *:first-child {
         margin-right: auto;
     }
 
 }
 
-.simplePass_messageBackdrop{
+.simplePass_messageBackdrop {
     position: absolute;
     background-color: rgba(0, 0, 0, 0.5);
-    top:0;
+    top: 0;
     left: 0;
 }
 
-.simplePass_messageBackdrop > .simplePass_messageBox{
+.simplePass_messageBackdrop > .simplePass_messageBox {
     max-width: 100%;
     margin: $margin-small auto;
+}
+
+.simplePass_passwordTarget + .simplePass_visibilityButton {
+    margin-top: $margin-small;
 }
 
 /**
 * IDs
 **/
-#simplePass_form{
+#simplePass_form {
     border-radius: 0 0 10px 10px;
 }
 
@@ -141,7 +167,8 @@ pre{
 * Lists
 */
 .simplePass_messageBoard,
-form{
+#simplePass_passwordStats,
+form {
     border: 1px solid;
     box-sizing: border-box;
     padding: $padding-small;

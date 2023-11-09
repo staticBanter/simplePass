@@ -34,7 +34,7 @@ import config from "../simplePass.config.js";
  * @requires config
  * @returns {HTMLElement}
  */
-export default function createMessageBox(
+export default function createMessageBox (
     message: string | messageBoxObject
 ): HTMLElement {
 
@@ -42,7 +42,7 @@ export default function createMessageBox(
     let messageBoxTitle: string = "SP_MESSAGE";
     let messageLevel: string = 'ERROR';
 
-    messageBox.classList.add(config.messages.messageBoxes?.substring(1)??'simplePass_messageBox');
+    messageBox.classList.add(config.messages.messageBoxes?.substring(1) ?? 'simplePass_messageBox');
 
     const messageBoxHeader: HTMLElement = document.createElement('DIV');
     messageBox.appendChild(messageBoxHeader);
@@ -55,35 +55,35 @@ export default function createMessageBox(
 
     let backdrop: HTMLElement | null = null;
 
-    if (typeof (message) === 'object') {
+    if(typeof (message) === 'object') {
 
-        if (message.level) {
+        if(message.level) {
             messageLevel = message.level.toUpperCase();
             messageBoxTitle = messageLevel;
         }
 
-        if (message.title) {
+        if(message.title) {
 
-            messageBoxTitle = message.title.replaceAll(' ','_');
+            messageBoxTitle = message.title.replaceAll(' ', '_');
 
         }
 
-        if (message.type) {
+        if(message.type) {
 
             messageBox.dataset.messageType = message.type;
 
-            switch (message.type.toLocaleLowerCase()) {
+            switch(message.type.toLowerCase()) {
                 case 'overlay':
 
                     backdrop = document.createElement('DIV');
-                    backdrop.classList.add(config.messages.messageBackdrop?.substring(1)??'simplePass_messageBackdrop');
+                    backdrop.classList.add(config.messages.messageBackdrop?.substring(1) ?? 'simplePass_messageBackdrop');
 
                     break;
             }
 
         }
 
-        if (typeof (message.message) === 'string') {
+        if(typeof (message.message) === 'string') {
             messageElement.innerText = message.message;
         } else {
 
@@ -120,28 +120,28 @@ export default function createMessageBox(
 
     messageBox.appendChild(messageElement);
 
-    if (backdrop) {
+    if(backdrop) {
 
         backdrop.appendChild(messageBox);
         messageBox = backdrop;
 
-        messageBox.setAttribute('style',`
+        messageBox.setAttribute('style', `
             height: ${document.documentElement.scrollHeight}px;
             width: ${document.documentElement.scrollWidth}px;
         `);
 
-        window.addEventListener('resize',()=>{
+        window.addEventListener('resize', () => {
 
             /**
              * Briefly shrink the messageBox,
              * this prevents the messageBox itself from being the cause of overflow.
              */
-            messageBox.setAttribute('style',`
+            messageBox.setAttribute('style', `
                 height: ${0}px;
                 width: ${0}px;
             `);
 
-            messageBox.setAttribute('style',`
+            messageBox.setAttribute('style', `
                 height: ${document.documentElement.scrollHeight}px;
                 width: ${document.documentElement.scrollWidth}px;
             `);

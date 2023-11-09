@@ -106,7 +106,7 @@ export default function generateCharCode(charCodeRequest, flags) {
             ]
         };
     }
-    if (constraint.min > 256) {
+    if (constraint.min > 255) {
         charCode += constraint.min;
     }
     if (!constraint.max

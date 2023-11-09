@@ -15,18 +15,17 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-
 /**
- * Interface object that describes the attributes for the 'Strength Scores' object.
+ * An interface representing the 'Strength Check Targets' object.
+ * This object is used to define what elements the program should use to inject password strength stats.
  *
- * @interface strengthScoreAttributes
- * @property {string} colour The colour for the given score.
- * @property {string} score The numeric score needed to surpass this score level.
+ * @interface strengthCheckTargets
+ * @property {string} [entropyTarget] Entropy stat target.
+ * @property {string} [possibleCombinationsTarget] Possible Combination Target stat target.
+ * @property {string} [binaryStringLengthTarget] Binary String Target stat target.
+ * @property {string} [binaryStringTarget] Binary String Length Target stat target.
+ * @property {string} [averageCharacterBitLengthTarget] Average Character Bit Length stat target.
+ * @property {string} [uniqueCharacterPercentageTarget] Unique Character Percentage stat target.
  */
-
 'use strict';
-
-export default interface strengthScoreAttributes{
-    colour: string,
-    score: number
-};
+export {};

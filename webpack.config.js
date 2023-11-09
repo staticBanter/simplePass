@@ -1,12 +1,9 @@
-/**
- * Webpack-Multi Compilation as shown here: https://github.com/webpack/webpack/blob/main/examples/multi-compiler/webpack.config.js
- */
+'use strict';
 
 const path = require('path');
 const {EnvironmentPlugin, BannerPlugin} = require('webpack');
 const TerserPlugin = require('terser-webpack-plugin');
 const CopyPlugin = require("copy-webpack-plugin");
-
 
 const licenseBanner = `
 simplePass - A JavaScript password generator.
@@ -27,69 +24,98 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 `;
 
 /**
+ * Console types that should never be in production.
+ */
+const nonProdConsoles = [
+    'assert',
+    'count',
+    'countReset',
+    'debug',
+    'dir',
+    'dirxml',
+    'profile',
+    'profileEnd',
+    'table',
+    'time',
+    'timeEnd',
+    'timeLog',
+    'timeStamp',
+    'trace'
+];
+
+/**
  * Because we need to bundle the browser version of simplePass with the main page, we create a second directory bundle our files and include it in the site.
- * So we have to webpack complilations, one to bundle the source javascript (application) and one to bundle the PWA javascript (site).
+ * So we have two webpack compilations, one to bundle the source javascript (application) and one to bundle the PWA javascript (site).
+ * Webpack-Multi Compilation as shown here: https://github.com/webpack/webpack/blob/main/examples/multi-compiler/webpack.config.js
  */
 module.exports = (env) => [
     // Config for the application.
-	{
-        context:path.resolve(__dirname,'javascript/module'),
-		name: "bundle",
-		entry:{
-            app:{
-                import:"./simplePass.js"
+    {
+        context: path.resolve(__dirname, 'javascript/module'),
+        name: "bundle",
+        entry: {
+            app: {
+                import: "./simplePass.js"
             }
         },
-        output:{
-            path:path.resolve(__dirname, './javascript/bundle/'),
-            filename:"simplePass.bundle.js",
-            module:true,
-            libraryTarget:'module'
+        output: {
+            path: path.resolve(__dirname, './javascript/bundle/'),
+            filename: "simplePass.bundle.js",
+            module: true,
+            libraryTarget: 'module'
         },
         optimization: {
-            minimize: true,
+            minimize: env.production ? true : false,
             minimizer: [
                 new TerserPlugin({
                     extractComments: false,
+                    terserOptions: {
+                        compress: {
+                            drop_console: nonProdConsoles,
+                        }
+                    }
                 })
             ],
         },
-        mode:"production",
-        cache:false,
+        mode: "production",
+        cache: false,
         experiments: {
             outputModule: true,
         },
-        plugins:[
+        plugins: [
             new BannerPlugin({
-                banner:licenseBanner
+                banner: licenseBanner
             })
-        ]
-	},
+        ],
+        performance: env.production ? {
+            hints: "warning"
+        } : false
+    },
     // Config for the site.
-	{
-        context:path.resolve(__dirname,'site/src/'),
-		name: "site",
-		entry:{
-            site:{
-                import:"./main.js"
+    {
+        context: path.resolve(__dirname, 'site/src/'),
+        name: "site",
+        entry: {
+            site: {
+                import: "./main.js"
             }
         },
-        devServer:{
+        devServer: {
             // static: './site/prod',
-            static:{
+            static: {
                 directory: './site/prod',
-                staticOptions:{
-                    extensions:['html'],
+                staticOptions: {
+                    extensions: ['html'],
                 }
             },
             bonjour: false,
-            client:{
+            client: {
                 logging: "none",
                 overlay: true,
                 progress: false,
                 reconnect: false,
             },
-            headers:[
+            headers: [
                 {
                     key: 'X-Webpack-Server',
                     value: 'TRUE',
@@ -97,40 +123,45 @@ module.exports = (env) => [
             ],
             magicHtml: false,
         },
-        output:{
-            path:path.resolve(__dirname, './site/prod'),
-            filename:"main.js",
-            module:true,
-            libraryTarget:'module'
+        output: {
+            path: path.resolve(__dirname, './site/prod'),
+            filename: "main.js",
+            module: true,
+            libraryTarget: 'module'
         },
         optimization: {
-            minimize: true,
+            minimize: env.production ? true : false,
             minimizer: [
                 new TerserPlugin({
                     extractComments: false,
+                    terserOptions: {
+                        compress: {
+                            drop_console: nonProdConsoles,
+                        }
+                    }
                 })
             ],
         },
-        mode:"production",
+        mode: "production",
         plugins: [
             new EnvironmentPlugin({
-                serviceWorkerURL: env.production?'/simplePass/sw.js':(env.customServiceWorkerURL??'/sw.js'),
-                examplesAndIntegrationURL:env.production?'/simplePass/EXAMPLES-AND-INTEGRATION.html':'/EXAMPLES-AND-INTEGRATION.html'
+                serviceWorkerURL: env.production ? '/simplePass/sw.js' : (env.customServiceWorkerURL ?? '/sw.js'),
+                examplesAndIntegrationURL: env.production ? '/simplePass/EXAMPLES-AND-INTEGRATION.html' : '/EXAMPLES-AND-INTEGRATION.html'
             }),
             new CopyPlugin({
                 patterns: [
-                // Assume `./site/src` is root dir here
+                    // Assume `./site/src` is root dir here
                     {
                         from: "./manifest.json",
                         to: "../prod/manifest.json",
                         transform(content) {
                             return content
-                              .toString()
-                              .replace('$START_URL$',
-                                (env.production)
-                                ?'https://staticbanter.github.io/simplePass/'
-                                :(env.customManifestStartURL??'http://localhost:8080/')
-                            )
+                                .toString()
+                                .replace('$START_URL$',
+                                    (env.production)
+                                        ? 'https://staticbanter.github.io/simplePass/'
+                                        : (env.customManifestStartURL ?? 'http://localhost:8080/')
+                                );
                         },
                     },
                     {
@@ -138,25 +169,28 @@ module.exports = (env) => [
                         to: "../prod/sw.js",
                         transform(content) {
                             return content
-                            .toString()
-                            .replace('$BASE_URL$',
-                                (env.production)
-                                ?'/simplePass/'
-                                :(env.customBaseURL??'/')
-                            )
-                            .replace('$serviceWorkerCacheName$',
-                                (env.production)
-                                ?'simplePass_PWA_Cache_v1'
-                                :(env.customServiceWorkerCacheName??'simplePass_DEVELOPMENT_PWA_Cache_v1')
-                            )
+                                .toString()
+                                .replace('$BASE_URL$',
+                                    (env.production)
+                                        ? '/simplePass/'
+                                        : (env.customBaseURL ?? '/')
+                                )
+                                .replace('$serviceWorkerCacheName$',
+                                    (env.production)
+                                        ? 'simplePass_PWA_Cache_v1'
+                                        : (env.customServiceWorkerCacheName ?? 'simplePass_DEVELOPMENT_PWA_Cache_v1')
+                                );
                         },
                     },
                 ],
             }),
         ],
-        cache:false,
+        cache: false,
         experiments: {
             outputModule: true,
-        }
-	},
+        },
+        performance: env.production ? {
+            hints: "warning"
+        } : false
+    },
 ];

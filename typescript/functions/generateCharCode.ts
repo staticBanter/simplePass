@@ -42,18 +42,18 @@ import characterCodeConstraintsAttributes from "../data/interfaces/characterCode
  * is not found within the character code constraints object.
  * @returns {number} An integer representing a UTF-16 character code unit. The integer will be within range of the defined character code request constraints.
  */
-export default function generateCharCode(charCodeRequest:charCodeRequest,flags?:charCodeGenerationFlag):number{
+export default function generateCharCode(charCodeRequest: charCodeRequest, flags?: charCodeGenerationFlag): number {
 
     // Generate our random number.
-    let charCode:number = self.crypto.getRandomValues(new Uint8Array(1))[0];
+    let charCode: number = self.crypto.getRandomValues(new Uint8Array(1))[0];
 
     /**
      * If the 'excluded characters' attribute is set,
      * If the 'excluded characters' contains the newly generated string,
      * regenerate a new string.
      */
-    if(charCodeRequest.charCodeOptions?.excludeCharacters){
-        if(charCodeRequest.charCodeOptions.excludeCharacters.includes(String.fromCharCode(charCode))){
+    if(charCodeRequest.charCodeOptions?.excludeCharacters) {
+        if(charCodeRequest.charCodeOptions.excludeCharacters.includes(String.fromCharCode(charCode))) {
             return generateCharCode(charCodeRequest);
         }
     }
@@ -62,12 +62,12 @@ export default function generateCharCode(charCodeRequest:charCodeRequest,flags?:
     /**
      * Check for flags.
      */
-    if(flags){
+    if(flags) {
 
         /**
          * Do things at the beginning of the password.
          */
-        if(flags?.beginning){
+        if(flags?.beginning) {
 
             /**
              * If a white-space is optional at the beginning of the password,
@@ -78,10 +78,10 @@ export default function generateCharCode(charCodeRequest:charCodeRequest,flags?:
             if(
                 charCodeRequest.charCodeOptions?.whitespaceOptions?.includes('whitespaceBeginning')
                 && charCode === 32
-            ){
+            ) {
                 return charCode;
-            }else if(charCode === 32){
-                return generateCharCode(charCodeRequest,flags);
+            } else if(charCode === 32) {
+                return generateCharCode(charCodeRequest, flags);
             }
 
         }
@@ -89,7 +89,7 @@ export default function generateCharCode(charCodeRequest:charCodeRequest,flags?:
         /**
          * Do things at the end of the password.
          */
-        if(flags?.end){
+        if(flags?.end) {
 
             /**
              * If a whitespace is optional at the end of the password,
@@ -97,13 +97,13 @@ export default function generateCharCode(charCodeRequest:charCodeRequest,flags?:
              * return the charCode.
              * Else regenerate.
              */
-             if(
+            if(
                 charCodeRequest.charCodeOptions?.whitespaceOptions?.includes('whitespaceEnd')
                 && charCode === 32
-            ){
+            ) {
                 return charCode;
-            }else if(charCode === 32){
-                return generateCharCode(charCodeRequest,flags);
+            } else if(charCode === 32) {
+                return generateCharCode(charCodeRequest, flags);
             }
 
         }
@@ -118,7 +118,7 @@ export default function generateCharCode(charCodeRequest:charCodeRequest,flags?:
      */
     const constraint: characterCodeConstraintsAttributes | undefined = characterCodeConstraints[charCodeRequest.charType];
 
-    if (!constraint) {
+    if(!constraint) {
 
         throw {
             errorKey: errors.nonGenerableCharacterType,
@@ -127,15 +127,15 @@ export default function generateCharCode(charCodeRequest:charCodeRequest,flags?:
                 '1',
                 charCodeRequest.charType
             ]
-        }
+        };
 
     }
 
-    if (constraint.min > 256) {
+    if(constraint.min > 255) {
         charCode += constraint.min;
     }
 
-    if (
+    if(
         !constraint.max
         && !constraint.range
         && charCode === constraint.min
@@ -150,7 +150,7 @@ export default function generateCharCode(charCodeRequest:charCodeRequest,flags?:
      * Iterate over our range;
      *  If our generated charCode exists somewhere in there, return it.
      */
-    if(constraint.range){
+    if(constraint.range) {
         if(
             (
                 constraint.min
@@ -160,15 +160,16 @@ export default function generateCharCode(charCodeRequest:charCodeRequest,flags?:
                 charCode >= constraint.min
                 && charCode <= constraint.max
             )
-        ){
+        ) {
+
             if(
                 charCode === constraint.min
                 || charCode === constraint.max
-            ){
+            ) {
                 return charCode;
             }
 
-            for(let i = 0; i < constraint.range.length; i++){
+            for(let i = 0; i < constraint.range.length; i++) {
 
                 if(
                     (
@@ -179,18 +180,20 @@ export default function generateCharCode(charCodeRequest:charCodeRequest,flags?:
                         charCode >= constraint.range[i][0]
                         && charCode <= constraint.range[i][1]
                     )
-                ){
+                ) {
                     return charCode;
-                }else if(
+                } else if(
                     constraint.range[i][0]
                     && charCode === constraint.range[i][0]
-                ){
+                ) {
                     return charCode;
                 }
+
             }
+
         }
-    }else if(
-    // ^ Else there was no range attribute and we only need to check the min and max.
+    } else if(
+        // ^ Else there was no range attribute and we only need to check the min and max.
         (
             constraint.min
             && constraint.max
@@ -199,7 +202,7 @@ export default function generateCharCode(charCodeRequest:charCodeRequest,flags?:
             charCode >= constraint.min
             && charCode <= constraint.max
         )
-    ){
+    ) {
         return charCode;
     }
 
@@ -207,5 +210,5 @@ export default function generateCharCode(charCodeRequest:charCodeRequest,flags?:
      * We did not find our character.
      * Regenerate.
      */
-    return generateCharCode(charCodeRequest,flags);
+    return generateCharCode(charCodeRequest, flags);
 }

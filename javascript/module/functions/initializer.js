@@ -17,14 +17,16 @@
 */
 'use strict';
 import config from "../simplePass.config.js";
-import messageHandler from "./messageHandler.js";
 import simplePass from "../simplePass.js";
+import messageHandler from "./messageHandler.js";
 /**
  * @file
  * @module initializer
  */
 /**
- * @function setInnerTextOrValue Sets the ```innerText``` or ```value``` of an element.
+ * Sets the ```innerText``` or ```value``` of an element.
+ *
+ * @function setInnerTextOrValue
  * @param {HTMLElement|HTMLInputElement} element The element that the string will be set in
  * @param {string} value The string to set inside of the element.
  * @returns {void}
@@ -38,7 +40,9 @@ function setInnerTextOrValue(element, value) {
     }
 }
 /**
- * @function getInnerTextOrValue Gets the ``innerText``` or ```value``` of an element.
+ * Gets the ``innerText``` or ```value``` of an element.
+ *
+ * @function getInnerTextOrValue
  * @param {HTMLInputElement|HTMLElement} element The element to get the string from.
  * @returns {string} The string inside of the element
  */
@@ -51,27 +55,57 @@ function getInnerTextOrValue(element) {
     }
 }
 /**
- * @function injectSimplePass Injects the generated password and calculated entropy into provided elements.
+ * Injects the generated password and if necessary the corresponding password stats.
+ *
+ * @function injectSimplePass
  * @param {HTMLElement|HTMLInputElement} passwordTarget The element that the password will be injected into.
  * @param {string|strengthCheckedPassword} password The password or [Strength Check Password object]{@link module:strengthCheckedPassword} to inject into the password target.
  * @param {HTMLElement|HTMLInputElement|null} [entropyTarget] The element that the entropy calculation will be inserted into.
+ * @requires setInnerTextOrValue
+ * @requires injectStrengthStats
  * @returns {void}
  */
-function injectSimplePass(passwordTarget, password, entropyTarget = null) {
+function injectSimplePass(passwordTarget, password, strengthChecks) {
     if (typeof (password) === 'string') {
         setInnerTextOrValue(passwordTarget, password);
     }
     else {
         setInnerTextOrValue(passwordTarget, password.password);
-        if (entropyTarget) {
-            setInnerTextOrValue(entropyTarget, Math.floor(password.entropy).toString());
+        if (strengthChecks) {
+            injectStrengthStats(password, strengthChecks);
         }
     }
 }
 /**
+ * Injects password strength stats into provided elements.
  *
- * @function initializer Initialization function used to automate the setup of inject passwords and registering events for various elements used by the program.
+ * @function injectStrengthStats
+ * @param {strengthCheckedPassword} password The strength checked password object
+ * @param {object} elements An object defining the HTML Elements to inject the stats into.
+ * @requires setInnerTextOrValue
+ */
+function injectStrengthStats(password, elements) {
+    Object.entries(elements).forEach(([key, element]) => {
+        if (element) {
+            if (element
+                && Object.keys(password).includes(key.replace('Target', ''))) {
+                setInnerTextOrValue(element, password[key.replace('Target', '')]);
+            }
+        }
+    });
+}
+/**
+ *
+ * Initialization function used to automate the setup of inject passwords and registering events for various elements used by the program.
+ * This function is currently also needed to preform batch password generation.
+ *
+ * @function initializer
  * @param cFig A [simplePass configuration]{@link config} object
+ * @requires messageHandler
+ * @requires injectSimplePass
+ * @requires simplePass
+ * @requires injectStrengthStats
+ * @requires getInnerTextOrValue
  * @returns {void}
  */
 export default function initializer(cFig = config) {
@@ -90,7 +124,7 @@ export default function initializer(cFig = config) {
      * These elements get used repeatedly throughout the function.
      * We will query for them here and initialize their variables.
      */
-    const passwordTarget = document.body.querySelector(cFig.htmlElements.passwordTarget);
+    const passwordTarget = document.body.querySelector(cFig.elements.passwordTarget);
     /**
      * If we have no target stop here.
      * We have nothing else to do.
@@ -111,41 +145,31 @@ export default function initializer(cFig = config) {
          */
         return;
     }
-    let entropyTarget = null;
-    let strengthCheckStyleTarget = null;
-    if (cFig.htmlElements.entropyTarget) {
-        entropyTarget = document.body.querySelector(cFig.htmlElements.entropyTarget);
-    }
-    if (cFig.htmlElements.strengthCheckerStyling) {
-        if (cFig.htmlElements.strengthCheckerStyling.styleTarget) {
-            strengthCheckStyleTarget = document.body.querySelector(cFig.htmlElements.strengthCheckerStyling.styleTarget);
-        }
-        else {
-            strengthCheckStyleTarget = passwordTarget;
-        }
+    let targetElements = {};
+    if (cFig.strengthCheck) {
+        Object.entries(cFig.strengthCheck).forEach(([propertyName, queryString]) => {
+            if (queryString) {
+                const target = document.body.querySelector(queryString);
+                if (target) {
+                    targetElements[propertyName] = target;
+                }
+            }
+        });
     }
     /**
      * Inject our initial password
      */
-    injectSimplePass(passwordTarget, simplePass(cFig.defaultPasswordModifier, (entropyTarget
-        || strengthCheckStyleTarget) ?
-        (strengthCheckStyleTarget ?
-            {
-                styleType: cFig.htmlElements.strengthCheckerStyling?.styleType ?? "inline",
-                styleTarget: strengthCheckStyleTarget
-            } :
-            true) :
-        false), entropyTarget);
+    injectSimplePass(passwordTarget, simplePass(cFig.defaultPasswordModifier, cFig), targetElements);
     /**
      * If we have any action elements set,
      * we need to preform more work.
      */
-    if (cFig.htmlElements.actionElements) {
+    if (cFig.elements.actions) {
         /**
          * Generate Action Button
          */
-        if (cFig.htmlElements.actionElements.generate) {
-            document.body.querySelector(cFig.htmlElements.actionElements.generate)?.addEventListener('click', function () {
+        if (cFig.elements.actions.generate) {
+            document.body.querySelector(cFig.elements.actions.generate)?.addEventListener('click', function () {
                 /**
                  * If this is a submit button and it has been clicked.
                  * we do not need to generate another password so bail out here.
@@ -155,28 +179,20 @@ export default function initializer(cFig = config) {
                     && this.type === 'submit') {
                     return;
                 }
-                injectSimplePass(passwordTarget, simplePass(cFig.defaultPasswordModifier, (entropyTarget
-                    || strengthCheckStyleTarget) ?
-                    (strengthCheckStyleTarget ?
-                        {
-                            styleType: cFig.htmlElements.strengthCheckerStyling?.styleType ?? "inline",
-                            styleTarget: strengthCheckStyleTarget
-                        } :
-                        true) :
-                    false), entropyTarget);
+                injectSimplePass(passwordTarget, simplePass(cFig.defaultPasswordModifier, cFig), targetElements);
             });
         }
         /**
          * Password Modifier Form
          */
-        if (cFig.htmlElements.actionElements.form) {
-            const passwordForm = document.body.querySelector(cFig.htmlElements.actionElements.form);
+        if (cFig.elements.actions.form) {
+            const passwordForm = document.body.querySelector(cFig.elements.actions.form);
             if (passwordForm) {
                 passwordForm.addEventListener('submit', function (event) {
                     event.preventDefault();
                     const passwordModifiers = new FormData(this);
                     let batchAmount = (parseInt(passwordModifiers.get('passwordBatchAmount')?.toString() ?? '0') - 1);
-                    const passwordContainer = document.body.querySelector(cFig.htmlElements.passwordContainer ?? '.simplePass_passwordContainer');
+                    const passwordContainer = document.body.querySelector(cFig.elements.passwordContainer ?? '.simplePass_passwordContainer');
                     if (!passwordContainer) {
                         messageHandler(`ERROR.simplePass-I.3: Use of batch password generation without a password container.`, {
                             htmlMessage: (messageBoard ? {
@@ -190,99 +206,74 @@ export default function initializer(cFig = config) {
                     }
                     if (batchAmount
                         && batchAmount > 0) {
+                        const statIndex = document.body.querySelector('.simplePass_passwordStatsIndex');
+                        const batchTotal = batchAmount + 1;
+                        if (statIndex) {
+                            statIndex.innerText = `(For Password: ${batchAmount + 1})`;
+                        }
                         passwordContainer.innerHTML = '';
                         const OL = document.createElement('ol');
                         while (batchAmount--) {
                             const LI = document.createElement('li');
-                            const password_P = document.createElement('p');
-                            const password_B = document.createElement('b');
-                            password_B.innerText = 'Password: ';
-                            const password_SPAN = document.createElement('span');
-                            password_SPAN.classList.add(cFig.htmlElements.passwordTarget.substring(1));
-                            password_P.appendChild(password_B);
-                            password_P.appendChild(password_SPAN);
-                            LI.appendChild(password_P);
-                            OL.appendChild(LI);
-                            injectSimplePass(password_SPAN, simplePass(passwordModifiers, (cFig.htmlElements.strengthCheckerStyling
-                                && !cFig.htmlElements.strengthCheckerStyling.styleTarget) ?
-                                {
-                                    styleType: cFig.htmlElements.strengthCheckerStyling?.styleType ?? "inline",
-                                    styleTarget: password_SPAN
-                                } :
-                                false));
+                            LI.dataset.simplePassIndex = (batchAmount + 1).toString();
+                            Object.assign(LI.style, { cursor: "pointer" });
+                            const password_LABEL = document.createElement('label');
+                            password_LABEL.innerText = "Password:";
+                            const password_INPUT = document.createElement('input');
+                            password_INPUT.type = 'text';
+                            password_INPUT.classList.add(cFig.elements.passwordTarget.substring(1));
+                            password_INPUT.setAttribute('readonly', 'readonly');
+                            password_LABEL.appendChild(password_INPUT);
+                            LI.appendChild(password_LABEL);
+                            OL.prepend(LI);
+                            const password = simplePass(passwordModifiers);
+                            injectSimplePass(password_INPUT, password);
+                            if (typeof (password) !== 'string') {
+                                LI.addEventListener('click', function () {
+                                    injectStrengthStats(password, targetElements);
+                                    if (statIndex) {
+                                        statIndex.innerText = `(For Password: ${LI.dataset.simplePassIndex})`;
+                                    }
+                                });
+                            }
                         }
                         const LI = document.createElement('li');
-                        const password_P = document.createElement('p');
-                        const password_B = document.createElement('b');
-                        password_B.innerText = 'Password: ';
-                        const password_SPAN = document.createElement('span');
-                        password_SPAN.classList.add(cFig.htmlElements.passwordTarget.substring(1));
-                        password_P.appendChild(password_B);
-                        password_P.appendChild(password_SPAN);
-                        LI.appendChild(password_P);
+                        LI.dataset.simplePassIndex = batchTotal.toString();
+                        const password_LABEL = document.createElement('label');
+                        password_LABEL.innerText = "Password:";
+                        const password_INPUT = document.createElement('input');
+                        password_INPUT.type = 'text';
+                        password_INPUT.classList.add(cFig.elements.passwordTarget.substring(1));
+                        password_INPUT.setAttribute('readonly', 'readonly');
+                        password_LABEL.appendChild(password_INPUT);
+                        LI.appendChild(password_LABEL);
                         OL.appendChild(LI);
-                        let entropy_SPAN = null;
-                        if (cFig.htmlElements.entropyTarget) {
-                            const entropy_P = document.createElement('p');
-                            const entropy_B = document.createElement('b');
-                            entropy_B.innerText = 'Bits of Entropy: ~';
-                            entropy_SPAN = document.createElement('span');
-                            entropy_SPAN.classList.add(cFig.htmlElements.entropyTarget.substring(1));
-                            entropy_P.appendChild(entropy_B);
-                            entropy_P.appendChild(entropy_SPAN);
-                            passwordContainer.appendChild(entropy_P);
-                        }
-                        strengthCheckStyleTarget = null;
-                        if (cFig.htmlElements.strengthCheckerStyling
-                            && cFig.htmlElements.strengthCheckerStyling.styleTarget
-                            && cFig.htmlElements.strengthCheckerStyling.styleTarget !== cFig.htmlElements.passwordTarget) {
-                            strengthCheckStyleTarget = document.body.querySelector(cFig.htmlElements.strengthCheckerStyling.styleTarget);
-                        }
-                        injectSimplePass(password_SPAN, simplePass(passwordModifiers, (cFig.htmlElements.strengthCheckerStyling
-                            || strengthCheckStyleTarget) ?
-                            {
-                                styleType: cFig.htmlElements.strengthCheckerStyling?.styleType ?? "inline",
-                                styleTarget: strengthCheckStyleTarget ?? password_SPAN
-                            } :
-                            false), entropy_SPAN);
+                        const password = simplePass(passwordModifiers);
+                        injectSimplePass(password_INPUT, password, targetElements);
                         passwordContainer.prepend(OL);
+                        if (typeof (password) !== 'string') {
+                            LI.addEventListener('click', function () {
+                                injectStrengthStats(password, targetElements);
+                                if (statIndex) {
+                                    statIndex.innerText = `(For Password: ${LI.dataset.simplePassIndex})`;
+                                }
+                            });
+                        }
                     }
                     else if (passwordContainer.querySelector('ol')) {
                         passwordContainer.innerHTML = '';
-                        const password_P = document.createElement('p');
-                        const password_B = document.createElement('b');
-                        password_B.innerText = 'Password: ';
-                        const password_SPAN = document.createElement('span');
-                        password_SPAN.classList.add(cFig.htmlElements.passwordTarget.substring(1));
-                        password_P.appendChild(password_B);
-                        password_P.appendChild(password_SPAN);
-                        passwordContainer.appendChild(password_P);
-                        let entropy_SPAN = null;
-                        if (cFig.htmlElements.entropyTarget) {
-                            const entropy_P = document.createElement('p');
-                            const entropy_B = document.createElement('b');
-                            entropy_B.innerText = 'Bits of Entropy: ~';
-                            entropy_SPAN = document.createElement('span');
-                            entropy_SPAN.classList.add(cFig.htmlElements.entropyTarget.substring(1));
-                            entropy_P.appendChild(entropy_B);
-                            entropy_P.appendChild(entropy_SPAN);
-                            passwordContainer.appendChild(entropy_P);
-                        }
-                        strengthCheckStyleTarget = null;
-                        if (cFig.htmlElements.strengthCheckerStyling
-                            && cFig.htmlElements.strengthCheckerStyling.styleTarget) {
-                            strengthCheckStyleTarget = document.body.querySelector(cFig.htmlElements.strengthCheckerStyling.styleTarget);
-                        }
-                        injectSimplePass(password_SPAN, simplePass(passwordModifiers, (cFig.htmlElements.strengthCheckerStyling
-                            || strengthCheckStyleTarget) ?
-                            {
-                                styleType: cFig.htmlElements.strengthCheckerStyling?.styleType ?? "inline",
-                                styleTarget: strengthCheckStyleTarget ?? password_SPAN
-                            } :
-                            false), entropy_SPAN);
+                        const password_LABEL = document.createElement('label');
+                        password_LABEL.innerText = "Password:";
+                        const password_INPUT = document.createElement('input');
+                        password_INPUT.classList.add(cFig.elements.passwordTarget.substring(1));
+                        password_INPUT.type = 'text';
+                        password_INPUT.setAttribute('readonly', 'readonly');
+                        password_LABEL.appendChild(password_INPUT);
+                        passwordContainer.appendChild(password_LABEL);
+                        injectSimplePass(password_INPUT, simplePass(passwordModifiers, cFig), targetElements);
                     }
                     else {
-                        const passwordTarget = document.body.querySelector(cFig.htmlElements.passwordTarget);
+                        const passwordTarget = document.body.querySelector(cFig.elements.passwordTarget);
                         if (!passwordTarget) {
                             messageHandler(`ERROR.simplePass-I.2: Could not find a password target`, {
                                 htmlMessage: (messageBoard ? {
@@ -294,18 +285,7 @@ export default function initializer(cFig = config) {
                             }, cFig);
                             return;
                         }
-                        if (cFig.htmlElements.entropyTarget) {
-                            entropyTarget = document.body.querySelector(cFig.htmlElements.entropyTarget);
-                        }
-                        injectSimplePass(passwordTarget, simplePass(passwordModifiers, (entropyTarget
-                            || strengthCheckStyleTarget) ?
-                            (strengthCheckStyleTarget ?
-                                {
-                                    styleType: cFig.htmlElements.strengthCheckerStyling?.styleType ?? "inline",
-                                    styleTarget: strengthCheckStyleTarget
-                                } :
-                                true) :
-                            false), entropyTarget);
+                        injectSimplePass(passwordTarget, simplePass(passwordModifiers, cFig), targetElements);
                     }
                 });
                 if (cFig.defaultPasswordModifier) {
@@ -324,10 +304,10 @@ export default function initializer(cFig = config) {
                     }
                 }
                 /**
-                    * Event listeners for "Radio Checkboxes".
-                    * Just loops through all the checkboxes and unchecks and box that does not have the same value as the
-                    * currently clicked box.
-                    */
+                * Event listeners for "Radio Checkboxes".
+                * Just loops through all the checkboxes and unchecks and box that does not have the same value as the
+                * currently clicked box.
+                */
                 const radioCheckboxes = passwordForm.querySelectorAll('input[data-radioCheckbox]');
                 radioCheckboxes.forEach((input) => {
                     input.addEventListener('click', function () {
@@ -345,11 +325,11 @@ export default function initializer(cFig = config) {
         /**
          * Copy Action Button
          */
-        if (cFig.htmlElements.actionElements.copy) {
-            document.body.querySelector(cFig.htmlElements.actionElements.copy)?.addEventListener(('click'), function () {
+        if (cFig.elements.actions.copy) {
+            document.body.querySelector(cFig.elements.actions.copy)?.addEventListener(('click'), function () {
                 let copiedPassword = '';
                 // Why are we not finding our new elements?
-                document.body.querySelectorAll(cFig.htmlElements.passwordTarget).forEach((password, passwordIndex) => {
+                document.body.querySelectorAll(cFig.elements.passwordTarget).forEach((password, passwordIndex) => {
                     if (!passwordIndex) {
                         copiedPassword += `${getInnerTextOrValue(password)}`;
                         return;

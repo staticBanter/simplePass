@@ -185,7 +185,7 @@ self.addEventListener("activate", (event) => {
     (async () => {
       // Enable navigation preload if it's supported.
       // See https://developers.google.com/web/updates/2017/02/navigation-preload
-      if ("navigationPreload" in self.registration) {
+      if("navigationPreload" in self.registration) {
         await self.registration.navigationPreload.enable();
       }
     })()
@@ -216,7 +216,7 @@ self.addEventListener("activate", (event) => {
 self.addEventListener("fetch", (event) => {
   // Only call event.respondWith() if this is a navigation request
   // for an HTML page.
-  if (event.request.mode === "navigate") {
+  if(event.request.mode === "navigate") {
     event.respondWith(
       (async () => {
         try {
@@ -224,14 +224,14 @@ self.addEventListener("fetch", (event) => {
           // supported.
           const preloadResponse = await event.preloadResponse;
 
-          if (preloadResponse) {
+          if(preloadResponse) {
             return preloadResponse;
           }
 
           // Always try the network first.
           const networkResponse = await fetch(event.request);
           return networkResponse;
-        } catch (error) {
+        } catch(error) {
           // catch is only triggered if an exception is thrown, which is
           // likely due to a network error.
           // If fetch() returns a valid HTTP response with a response code in
@@ -247,7 +247,7 @@ self.addEventListener("fetch", (event) => {
         }
       })()
     );
-  }else{
+  } else {
     event.respondWith(
       (async () => {
         try {
@@ -255,14 +255,14 @@ self.addEventListener("fetch", (event) => {
           // supported.
           const preloadResponse = await event.preloadResponse;
 
-          if (preloadResponse) {
+          if(preloadResponse) {
             return preloadResponse;
           }
 
           // Always try the network first.
           const networkResponse = await fetch(event.request);
           return networkResponse;
-        } catch (error) {
+        } catch(error) {
           // catch is only triggered if an exception is thrown, which is
           // likely due to a network error.
           // If fetch() returns a valid HTTP response with a response code in

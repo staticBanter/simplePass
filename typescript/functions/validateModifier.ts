@@ -46,7 +46,7 @@ import config from "../simplePass.config.js";
  * @throws {errors.excludeCharactersContainedWhitespace} Will throw an error if the ```excludeCharacters``` attribute contains a whitespace.
  * @returns {void}
  */
-export default function validateModifier(
+export default function validateModifier (
     modifier: passwordModifier,
     cFig: typeof config,
 ): void {
@@ -58,7 +58,7 @@ export default function validateModifier(
         })
         .length;
 
-    if (
+    if(
         modifier.preConfig
         &&
         (
@@ -70,16 +70,16 @@ export default function validateModifier(
         )
     ) {
 
-        if (typeof (modifier.preConfig) !== 'string') {
+        if(typeof (modifier.preConfig) !== 'string') {
             throw {
                 errorKey: 'invalidAttributeType',
-                replacements:['vM','16','preConfig','string']
-            }
+                replacements: ['vM', '16', 'preConfig', 'string']
+            };
         }
     }
 
     // Check if the password should contain repeating characters
-    if(modifier.repeatingCharacter){
+    if(modifier.repeatingCharacter) {
 
         /**
          * Determine if we are:
@@ -88,13 +88,13 @@ export default function validateModifier(
          *  Repeating a single character in the password.
          * * Note: It needs to be checked in this order.
          */
-        if(modifier.customRepeatingCharacters){
-        // ^ Custom Repeating Characters
+        if(modifier.customRepeatingCharacters) {
+            // ^ Custom Repeating Characters
 
             // No string, bye bye...
-            if (typeof (modifier.customRepeatingCharacters) !== 'string') {
+            if(typeof (modifier.customRepeatingCharacters) !== 'string') {
                 throw {
-                    errorKey:'invalidAttributeType',
+                    errorKey: 'invalidAttributeType',
                     replacements: [
                         'vM',
                         '15',
@@ -113,19 +113,19 @@ export default function validateModifier(
              * ELSE it's just a string of requested repeating characters.
              * We must preform these checks in this order.
              */
-            if(modifier.customRepeatingCharacters.includes(' ')){
+            if(modifier.customRepeatingCharacters.includes(' ')) {
 
                 // Initialize a holding array.
-                const repeatingSets:Array<Array<string>> = [];
+                const repeatingSets: Array<Array<string>> = [];
 
                 // Split the string along the spaces.
-                modifier.customRepeatingCharacters.split(' ').forEach((set:string)=>{
+                modifier.customRepeatingCharacters.split(' ').forEach((set: string) => {
 
                     /**
                      * IF any sets contains a literal character identifier "\" or ":".
                      * ELSE we shouldn't need to worry about splitting the string along the wrong character.
                      */
-                    if(set.includes('\\')){
+                    if(set.includes('\\')) {
 
                         /**
                          * Extract the character.
@@ -133,35 +133,35 @@ export default function validateModifier(
                          * * We are assuming that the first character will be our identifier "\",
                          * * the second character will be our literal.
                          */
-                        const literal:string = set.slice(1,2);
+                        const literal: string = set.slice(1, 2);
 
                         // Remove the first instance of our literal character.
-                        set = set.replace(literal,'');
+                        set = set.replace(literal, '');
 
 
-                        const pieces:Array<string> = set.split(':');
+                        const pieces: Array<string> = set.split(':');
 
-                        if(pieces.length > 2){
+                        if(pieces.length > 2) {
                             throw new Error('Custom Repeating Characters contain more than one ":" (colon) literal.');
                         }
 
                         /**
                          * Add the literal character and it's repeats to the holding array.
                          */
-                        repeatingSets.push([literal,pieces[1]]);
+                        repeatingSets.push([literal, pieces[1]]);
 
-                    }else{
-                    // ^ There shouldn't be a literal ":" (colon) in the string.
+                    } else {
+                        // ^ There shouldn't be a literal ":" (colon) in the string.
 
 
                         let pieces = set.split(':');
 
-                        if(pieces.length > 2){
+                        if(pieces.length > 2) {
                             throw new Error('Custom Repeating Characters contain more than one ":" (colon) literal.');
                         }
 
                         // Push the set to the array.
-                        repeatingSets.push([pieces[0],pieces[1]]);
+                        repeatingSets.push([pieces[0], pieces[1]]);
 
                     }
 
@@ -170,7 +170,7 @@ export default function validateModifier(
                 // Set the modifiers custom repeating characters to the holding array.
                 modifier.customRepeatingCharacters = repeatingSets;
 
-                modifier.customRepeatingCharacters.forEach((set)=>{
+                modifier.customRepeatingCharacters.forEach((set) => {
 
                     /**
                      * If the repeats wasn't their or less than 1,
@@ -180,7 +180,7 @@ export default function validateModifier(
                     if(
                         !set[1]
                         || parseInt(set[1]) <= 1
-                    ){
+                    ) {
                         set[1] = '2';
                     }
 
@@ -192,17 +192,17 @@ export default function validateModifier(
                     modifierCount += parseInt(set[1]);
                 });
 
-            }else if(modifier.customRepeatingCharacters.includes(':')){
-            // ^ Single custom repeat.
+            } else if(modifier.customRepeatingCharacters.includes(':')) {
+                // ^ Single custom repeat.
 
                 // Initialize a holding array.
-                const repeatingSets:Array<Array<string>> = [];
+                const repeatingSets: Array<Array<string>> = [];
 
                 /**
                  * IF any sets contains a literal character identifier "\" or ":".
                  * ELSE we shouldn't need to worry about splitting the string along the wrong character.
                  */
-                if(modifier.customRepeatingCharacters.includes('\\')){
+                if(modifier.customRepeatingCharacters.includes('\\')) {
 
                     /**
                      * Extract the character.
@@ -210,40 +210,40 @@ export default function validateModifier(
                      * * We are assuming that the first character will be our identifier "\",
                      * * the second character will be our literal.
                      */
-                    const literal = modifier.customRepeatingCharacters.slice(1,2);
+                    const literal = modifier.customRepeatingCharacters.slice(1, 2);
 
                     // Remove the first instance of our literal character.
-                    modifier.customRepeatingCharacters = modifier.customRepeatingCharacters.replace(literal,'');
+                    modifier.customRepeatingCharacters = modifier.customRepeatingCharacters.replace(literal, '');
 
 
                     const pieces = modifier.customRepeatingCharacters.split(':');
 
-                    if(pieces.length > 2){
+                    if(pieces.length > 2) {
                         throw new Error('Custom Repeating Characters contain more than one ":" (colon) literal.');
                     }
 
                     // Push the set to the array.
-                    repeatingSets.push([literal,pieces[1]]);
+                    repeatingSets.push([literal, pieces[1]]);
 
-                }else{
-                // ^ There shouldn't be a literal ":" (colon) in the string.
+                } else {
+                    // ^ There shouldn't be a literal ":" (colon) in the string.
 
 
                     const pieces = modifier.customRepeatingCharacters.split(':');
 
-                    if(pieces.length > 2){
+                    if(pieces.length > 2) {
                         throw new Error('Custom Character Repeats contained an unescaped ":" (colon).');
                     }
 
                     // Push the set to the array.
-                    repeatingSets.push([pieces[0],pieces[1]]);
+                    repeatingSets.push([pieces[0], pieces[1]]);
 
                 }
 
                 // Set the modifiers custom repeating characters to the holding array.
                 modifier.customRepeatingCharacters = repeatingSets;
 
-                modifier.customRepeatingCharacters.forEach((set)=>{
+                modifier.customRepeatingCharacters.forEach((set) => {
 
                     /**
                      * If the repeats wasn't their or less than 1,
@@ -252,7 +252,7 @@ export default function validateModifier(
                     if(
                         !set[1]
                         || parseInt(set[1]) <= 1
-                    ){
+                    ) {
                         set[1] = '2';
                     }
 
@@ -264,8 +264,8 @@ export default function validateModifier(
                     modifierCount += parseInt(set[1]);
                 });
 
-            }else{
-            // ^ String of repeating characters.
+            } else {
+                // ^ String of repeating characters.
 
                 /**
                  * Every repeating character replaces a potential password modification that can be added,
@@ -276,22 +276,22 @@ export default function validateModifier(
 
             }
 
-        }else if(modifier.max_repeatingCharacter){
-        // ^ Repeating random characters in the already generated password.
+        } else if(modifier.max_repeatingCharacter) {
+            // ^ Repeating random characters in the already generated password.
 
             // If our Repeating Character Limit is not a string or a number throw an error.
             if(
-                typeof(modifier.max_repeatingCharacter) !== 'number'
-                && typeof(modifier.max_repeatingCharacter) !== 'string'
+                typeof (modifier.max_repeatingCharacter) !== 'number'
+                && typeof (modifier.max_repeatingCharacter) !== 'string'
             ) {
                 throw {
-                    errorKey:'invalidAttributeType',
-                    replacements:['vM','13','max_repeatingCharacter','number or string']
+                    errorKey: 'invalidAttributeType',
+                    replacements: ['vM', '13', 'max_repeatingCharacter', 'number or string']
                 };
             }
 
             // Convert strings to ints.
-            if(typeof(modifier.max_repeatingCharacter)==='string'){
+            if(typeof (modifier.max_repeatingCharacter) === 'string') {
                 modifier.max_repeatingCharacter = parseInt(modifier.max_repeatingCharacter);
             }
 
@@ -305,15 +305,15 @@ export default function validateModifier(
                 || modifier.max_repeatingCharacter > 100
             ) {
                 throw {
-                    errorKey:'outOfBoundsAttributeValue',
-                    replacements:['vM','14','max_repeatingCharacter']
+                    errorKey: 'outOfBoundsAttributeValue',
+                    replacements: ['vM', '14', 'max_repeatingCharacter']
                 };
             }
 
             // Check if the requested password length can contain the amount of repeated characters.
-            if (modifier.length < (modifier.max_repeatingCharacter * 2)) {
+            if(modifier.length < (modifier.max_repeatingCharacter * 2)) {
                 throw {
-                    errorKey:'The password can not contain the requested amount of repeating characters.'
+                    errorKey: 'The password can not contain the requested amount of repeating characters.'
                 };
             }
 
@@ -324,8 +324,8 @@ export default function validateModifier(
              */
             modifierCount += modifier.max_repeatingCharacter;
 
-        }else{
-        // ^ Repeating a single character in the password.
+        } else {
+            // ^ Repeating a single character in the password.
 
             modifierCount++;
 
@@ -340,18 +340,18 @@ export default function validateModifier(
     if(
         !modifier.length
         || (
-            typeof(modifier.length) !== 'string'
-            && typeof(modifier.length) !== 'number'
+            typeof (modifier.length) !== 'string'
+            && typeof (modifier.length) !== 'number'
         )
-    ){
+    ) {
         throw {
-            errorKey:'invalidAttributeType',
-            replacements:['vM','1','length','string or number']
+            errorKey: 'invalidAttributeType',
+            replacements: ['vM', '1', 'length', 'string or number']
         };
 
-    }else{
+    } else {
 
-        if(typeof(modifier.length) === 'string'){
+        if(typeof (modifier.length) === 'string') {
 
             const length = parseInt(modifier.length);
 
@@ -361,12 +361,12 @@ export default function validateModifier(
             ) {
 
                 throw {
-                    errorKey:'invalidAttributeType',
-                    replacements:['vM','1','length','string or number']
+                    errorKey: 'invalidAttributeType',
+                    replacements: ['vM', '1', 'length', 'string or number']
                 };
 
             }
-        }else{
+        } else {
 
             if(
                 modifier.length > cFig.passwordConstraints.max_length
@@ -374,20 +374,20 @@ export default function validateModifier(
             ) {
 
                 throw {
-                    errorKey:'outOfBoundsAttributeValue',
-                    replacements:['vM','2','length']
+                    errorKey: 'outOfBoundsAttributeValue',
+                    replacements: ['vM', '2', 'length']
                 };
 
             }
 
         }
 
-        if (modifierCount > modifier.length) {
+        if(modifierCount > modifier.length) {
 
             throw {
                 errorKey: 'toManyAttributes',
-                replacements: ['vM','3',`${modifier.length}`,`${modifierCount}`]
-            }
+                replacements: ['vM', '3', `${modifier.length}`, `${modifierCount}`]
+            };
 
         }
     }
@@ -397,13 +397,13 @@ export default function validateModifier(
      * and if the 'white-space between limit' attribute is not set,
      * throw an error.
      */
-    if(modifier.w_between){
+    if(modifier.w_between) {
 
-        if (!modifier.max_whitespaceBetween) {
+        if(!modifier.max_whitespaceBetween) {
 
             throw {
-                errorKey:'missingRequiredAttribute',
-                replacements:['vM','11','max_whitespaceBetween','w_between']
+                errorKey: 'missingRequiredAttribute',
+                replacements: ['vM', '11', 'max_whitespaceBetween', 'w_between']
             };
 
         }
@@ -413,18 +413,18 @@ export default function validateModifier(
          * and within acceptable values.
          */
         if(
-            typeof(modifier.max_whitespaceBetween) !== 'string'
-            && typeof(modifier.max_whitespaceBetween) !== 'number'
+            typeof (modifier.max_whitespaceBetween) !== 'string'
+            && typeof (modifier.max_whitespaceBetween) !== 'number'
         ) {
 
             throw {
-                errorKey:'invalidAttributeType',
-                replacements:['vM','4','max_whitespaceBetween','string or number']
+                errorKey: 'invalidAttributeType',
+                replacements: ['vM', '4', 'max_whitespaceBetween', 'string or number']
             };
 
-        }else{
+        } else {
 
-            if(typeof(modifier.max_whitespaceBetween) === 'string'){
+            if(typeof (modifier.max_whitespaceBetween) === 'string') {
 
                 const max_whitespaceBetween = parseInt(modifier.max_whitespaceBetween);
 
@@ -434,21 +434,21 @@ export default function validateModifier(
                 ) {
 
                     throw {
-                        errorKey:'outOfBoundsAttributeValue',
-                        replacements:['vM','5','max_whitespaceBetween']
+                        errorKey: 'outOfBoundsAttributeValue',
+                        replacements: ['vM', '5', 'max_whitespaceBetween']
                     };
 
                 }
 
-            }else{
+            } else {
 
                 if(
                     modifier.max_whitespaceBetween > cFig.passwordConstraints.max_whitespaceBetween()
                     || modifier.max_whitespaceBetween < cFig.passwordConstraints.min_whitespaceBetween()
                 ) {
                     throw {
-                        errorKey:'outOfBoundsAttributeValue',
-                        replacements:['vM','6','max_whitespaceBetween']
+                        errorKey: 'outOfBoundsAttributeValue',
+                        replacements: ['vM', '6', 'max_whitespaceBetween']
                     };
 
                 }
@@ -463,14 +463,14 @@ export default function validateModifier(
      */
     if(
         !Object.keys(modifier)
-        .some(function(array){
-            return Object.keys(characterCodeConstraints).includes(array);
-        })
+            .some(function (array) {
+                return Object.keys(characterCodeConstraints).includes(array);
+            })
     ) {
         throw {
             errorKey: 'missingRequiredAttributes',
-            replacements:['vM','7',Object.keys(characterCodeConstraints).toString()]
-        }
+            replacements: ['vM', '7', Object.keys(characterCodeConstraints).toString()]
+        };
     }
 
     /**
@@ -480,15 +480,15 @@ export default function validateModifier(
      * its length is within proper range,
      * and does not contain any whitespace.
      */
-    if (modifier.excludeCharacters) {
+    if(modifier.excludeCharacters) {
 
-        if (
+        if(
             typeof (modifier.excludeCharacters) !== 'string'
         ) {
             throw {
                 errorKey: 'invalidAttributeType',
-                replacements:['vM','8','excludeCharacters','string']
-            }
+                replacements: ['vM', '8', 'excludeCharacters', 'string']
+            };
         }
 
         if(
@@ -498,17 +498,17 @@ export default function validateModifier(
 
             throw {
                 errorKey: 'outOfBoundsAttributeValue',
-                replacements:['vM','9','excludeCharacters']
-            }
+                replacements: ['vM', '9', 'excludeCharacters']
+            };
 
         }
 
-        if (new RegExp(/[\s]/g).test(modifier.excludeCharacters)) {
+        if(new RegExp(/[\s]/g).test(modifier.excludeCharacters)) {
 
             throw {
                 errorKey: 'excludeCharactersContainedWhitespace',
-                replacements:['vM','10']
-            }
+                replacements: ['vM', '10']
+            };
 
         }
 

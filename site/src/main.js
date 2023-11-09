@@ -21,10 +21,11 @@
 "use strict";
 
 import simplePass from "../../javascript/bundle/simplePass.bundle.js";
+import * as ElementToggle from "./element-toggle.js";
 
-(()=>{
+(() => {
 
-    if(window.location.pathname === process.env.examplesAndIntegrationURL){
+    if(window.location.pathname === process.env.examplesAndIntegrationURL) {
 
         // Get an element to display our password
         const displayPassword = document.body.querySelector(".simplePass_passwordTarget_6");
@@ -34,16 +35,11 @@ import simplePass from "../../javascript/bundle/simplePass.bundle.js";
         // Create our password
         const initialPassword = simplePass(
             {
-                length:22,
-                lowercase:true,
-                uppercase:true,
-                numbers:true,
-                punctuation:true
-            },
-            {
-                // We are going to style the 'display password' element using inline styling.
-                styleTarget:displayPassword,
-                styleType:"inline"
+                length: 22,
+                lowercase: true,
+                uppercase: true,
+                numbers: true,
+                punctuation: true
             }
         );
 
@@ -63,132 +59,87 @@ import simplePass from "../../javascript/bundle/simplePass.bundle.js";
          * or else things start to get... messy.
          */
         simplePass.init({
-            htmlElements:{
-                passwordTarget:".simplePass_passwordTarget_1",
-                strengthCheckerStyling:{
-                    styleType:"inline",
-                },
-                actionElements:{
-                    copy:".simplePass_copier_1",
-                    generate:'.simplePass_generator_1'
+            elements: {
+                passwordTarget: ".simplePass_passwordTarget_1",
+                actions: {
+                    copy: ".simplePass_copier_1",
+                    generate: '.simplePass_generator_1'
                 }
             }
         });
 
         simplePass.init({
-            htmlElements:{
-                passwordTarget:".simplePass_passwordTarget_2",
-                strengthCheckerStyling:{
-                    styleType:"inline",
-                },
-                actionElements:{
-                    copy:".simplePass_copier_2",
-                    generate:'.simplePass_generator_2',
-                    form:"#simplePass_form"
+            elements: {
+                passwordTarget: ".simplePass_passwordTarget_2",
+                actions: {
+                    copy: ".simplePass_copier_2",
+                    generate: '.simplePass_generator_2',
+                    form: "#simplePass_form"
                 }
             }
         });
 
         simplePass.init({
-            htmlElements:{
-                passwordTarget:".simplePass_passwordTarget_3",
-                strengthCheckerStyling:{
-                    styleType:"inline",
+            elements: {
+                passwordTarget: ".simplePass_passwordTarget_3",
+                passwordContainer: ".simplePass_passwordContainer",
+                actions: {
+                    copy: ".simplePass_copier_3",
+                    generate: '.simplePass_generator_3',
+                    form: "#simplePass_form_1"
                 },
-                actionElements:{
-                    copy:".simplePass_copier_3",
-                    generate:'.simplePass_generator_3',
-                    form:"#simplePass_form_1"
-                },
-                passwordContainer:".simplePass_passwordContainer"
             }
         });
 
         simplePass.init({
-            htmlElements:{
-                passwordTarget:".simplePass_passwordTarget_4",
-                entropyTarget:".simplePass_entropyTarget",
-                strengthCheckerStyling:{
-                    styleType:"inline",
+            elements: {
+                passwordTarget: ".simplePass_passwordTarget_4",
+                passwordContainer: ".simplePass_passwordContainer_1",
+                actions: {
+                    copy: ".simplePass_copier_4",
+                    generate: '.simplePass_generator_4',
+                    form: "#simplePass_form_2"
                 },
-                actionElements:{
-                    copy:".simplePass_copier_4",
-                    generate:'.simplePass_generator_4',
-                    form:"#simplePass_form_2"
-                },
-                passwordContainer:".simplePass_passwordContainer_1",
-            }
+            },
+            strengthCheck: {
+                entropyTarget: ".simplePass_entropyTarget",
+                possibleCombinationsTarget: ".simplePass_possibleCombinationsTarget",
+                binaryStringTarget: ".simplePass_binaryStringTarget",
+                binaryStringLengthTarget: ".simplePass_binaryStringLengthTarget",
+                averageCharacterByteLengthTarget: ".simplePass_averageCharacterByteLengthTarget",
+                uniqueCharacterPercentageTarget: ".simplePass_uniqueCharactersPercentageTarget",
+            },
         });
 
         simplePass.init({
-            htmlElements:{
-                passwordTarget:".simplePass_passwordTarget_5",
-                entropyTarget:".simplePass_entropyTarget_2",
-                strengthCheckerStyling:{
-                    styleType:"inline",
+            elements: {
+                passwordTarget: ".simplePass_passwordTarget_5",
+                actions: {
+                    copy: ".simplePass_copier_5",
+                    generate: '.simplePass_generator_5',
+                    form: "#simplePass_form_3"
                 },
-                messages:{
-                    messageBoard:'.simplePass_messageBoard'
-                },
-                actionElements:{
-                    copy:".simplePass_copier_5",
-                    generate:'.simplePass_generator_5',
-                    form:"#simplePass_form_3"
-                },
-                passwordContainer:".simplePass_passwordContainer_2",
-            }
+                passwordContainer: ".simplePass_passwordContainer_2",
+            },
+            messages: {
+                messageBoard: '.simplePass_messageBoard'
+            },
+            strengthCheck: {
+                entropyTarget: ".simplePass_entropyTarget_2"
+            },
         });
 
-    }else{
+    } else {
         simplePass.init();
     }
 
-    /**
-     * PWA A2HS Functionality.
-     * https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Add_to_home_screen
-     * https://web.dev/customize-install/
-     */
-    let deferredPrompt;
-    // const addBtn = document.querySelector(".add-button");
-    // addBtn.style.display = "none";
-
-    window.addEventListener("beforeinstallprompt", (e) => {
-        // Prevent Chrome 67 and earlier from automatically showing the prompt
-        e.preventDefault();
-        // Stash the event so it can be triggered later.
-        deferredPrompt = e;
-        // Update UI to notify the user they can add to home screen
-        // addBtn.style.display = "block";
-
-        // addBtn.addEventListener("click", (e) => {
-        //   // hide our user interface that shows our A2HS button
-        //   addBtn.style.display = "none";
-        //   // Show the prompt
-        //   deferredPrompt.prompt();
-        //   // Wait for the user to respond to the prompt
-        //   deferredPrompt.userChoice.then((choiceResult) => {
-        //     if (choiceResult.outcome === "accepted") {
-        //       console.log("User accepted the A2HS prompt");
-        //     } else {
-        //       console.log("User dismissed the A2HS prompt");
-        //     }
-        //     deferredPrompt = null;
-        //   });
-        // });
-    });
-
-    window.addEventListener('appinstalled', () => {
-        // hide our user interface that shows our A2HS buttons
-        addBtn.style.display = "none";
-        // Clear the deferredPrompt so it can be garbage collected
-        deferredPrompt = null;
-    });
+    ElementToggle;
 
     /**
      * PWA Service Worker Registration.
      * https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Offline_Service_workers
      */
-    if ("serviceWorker" in navigator) {
+    if("serviceWorker" in navigator) {
         navigator.serviceWorker.register(process.env.serviceWorkerURL);
     }
 

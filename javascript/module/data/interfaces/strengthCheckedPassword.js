@@ -20,8 +20,12 @@
  *
  * @interface strengthCheckedPassword
  * @property {string} password The strength checked password.
- * @property {number} strengthScore The score the password received.
  * @property {number} entropy The bit entropy of the password.
+ * @property {possibleCombinations} number The number of possible combinations that can be created from the selected character sets and password length.
+ * @property {binaryStringLength} number The length of the password as a binary string.
+ * @property {binaryString} string The password represented in binary.
+ * @property {averageCharacterByteLength} number The average length of a character in bits.
+ * @property {uniqueCharactersPercentage} number The percentage of unique characters in the password.
  */
 'use strict';
 export {};

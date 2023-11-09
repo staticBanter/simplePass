@@ -51,7 +51,7 @@ export default function createMessageBox(message) {
         }
         if (message.type) {
             messageBox.dataset.messageType = message.type;
-            switch (message.type.toLocaleLowerCase()) {
+            switch (message.type.toLowerCase()) {
                 case 'overlay':
                     backdrop = document.createElement('DIV');
                     backdrop.classList.add(config.messages.messageBackdrop?.substring(1) ?? 'simplePass_messageBackdrop');

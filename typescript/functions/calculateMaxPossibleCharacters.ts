@@ -43,44 +43,43 @@ import characterSetObject from "../data/interfaces/characterSetObject.js";
  */
 export default function calculateMaxPossibleCharacters(characterSetObject:characterSetObject):number{
 
-    let maxPossibleCharacters = 0;
-    let whiteSpaceFlag = false;
+    let maxPossibleCharacters:number = 0;
+    let whiteSpaceFlag:boolean = false;
 
     characterSetObject.characterSets.forEach((set:string)=>{
 
-        if(useableAttributes.includes(set)){
-            if(whitespaceAttributes.includes(set)){
-                // Only count whitespace once.
-                if(!whiteSpaceFlag){
-                    set = 'whitespace';
-                    whiteSpaceFlag = true;
-                }else{
-                    set = '';
-                }
+        if(whitespaceAttributes.includes(set)){
+            // Only count whitespace once.
+            if(whiteSpaceFlag){
+                return;
             }
+            maxPossibleCharacters++;
+            whiteSpaceFlag = true;
+            return;
+        }
 
-            const constraint:characterCodeConstraintsAttributes|undefined = characterCodeConstraints[set]
+        const constraint:characterCodeConstraintsAttributes|undefined = characterCodeConstraints[set]
 
-            if(constraint){
-                if(constraint.range){
-                    constraint.range.forEach((range)=>{
-                        if(
-                            range[0]
-                            && range[1]
-                        ){
-                            maxPossibleCharacters += (range[1]-range[0]);
-                        }else if(range[0]){
-                            maxPossibleCharacters++;
-                        }
-                    })
-                }else if(
-                    constraint.min
-                    && constraint.max
-                ){
-                    maxPossibleCharacters += (constraint.max-constraint.min);
-                }
+        if(constraint){
+            if(constraint.range){
+                constraint.range.forEach((range)=>{
+                    if(
+                        range[0]
+                        && range[1]
+                    ){
+                        maxPossibleCharacters += (range[1]-range[0])+1;
+                    }else if(range[0]){
+                        maxPossibleCharacters++;
+                    }
+                })
+            }else if(
+                constraint.min
+                && constraint.max
+            ){
+                maxPossibleCharacters += (constraint.max-constraint.min)+1;
             }
         }
+
     });
 
     if(
