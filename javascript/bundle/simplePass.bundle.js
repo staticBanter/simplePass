@@ -1,7 +1,7 @@
 /*!
  * 
- * simplePass - A JavaScript password generator.
- * Copyright (C) 2023  Jordan Vezina(staticBanter)
+ * simplePass - A Javascript password generator..
+ * Copyright (C) 2023  Jordan Vezina (staticBanter)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

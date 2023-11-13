@@ -4,10 +4,29 @@ const path = require('path');
 const {EnvironmentPlugin, BannerPlugin} = require('webpack');
 const TerserPlugin = require('terser-webpack-plugin');
 const CopyPlugin = require("copy-webpack-plugin");
+const FS = require('fs');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackTagsPlugin = require('html-webpack-tags-plugin');
+const PACKAGE = require('./package.json');
+const {SubresourceIntegrityPlugin} = require("webpack-subresource-integrity");
+const CspHtmlWebpackPlugin = require('csp-html-webpack-plugin');
+
+PACKAGE.name = 'simplePass';
+
+const githubDomain = `https://staticbanter.github.io`
+const githubURL = `${githubDomain}/${PACKAGE.name}/`;
+
+const devDomain = `localhost:`
+const devPort = `8080`;
+const devURL = `http://${devDomain}${devPort}`;
+
+const serviceWorkerAppShellFiles = FS.readdirSync('./site/prod',{
+    recursive:true,
+});
 
 const licenseBanner = `
-simplePass - A JavaScript password generator.
-Copyright (C) 2023  Jordan Vezina(staticBanter)
+${PACKAGE.name} - ${PACKAGE.description}.
+Copyright (C) 2023  ${PACKAGE.author.name}
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -43,6 +62,8 @@ const nonProdConsoles = [
     'trace'
 ];
 
+
+
 /**
  * Because we need to bundle the browser version of simplePass with the main page, we create a second directory bundle our files and include it in the site.
  * So we have two webpack compilations, one to bundle the source javascript (application) and one to bundle the PWA javascript (site).
@@ -55,12 +76,12 @@ module.exports = (env) => [
         name: "bundle",
         entry: {
             app: {
-                import: "./simplePass.js"
+                import: `./${PACKAGE.name}.js`
             }
         },
         output: {
             path: path.resolve(__dirname, './javascript/bundle/'),
-            filename: "simplePass.bundle.js",
+            filename: `${PACKAGE.name}.bundle.js`,
             module: true,
             libraryTarget: 'module'
         },
@@ -101,7 +122,6 @@ module.exports = (env) => [
             }
         },
         devServer: {
-            // static: './site/prod',
             static: {
                 directory: './site/prod',
                 staticOptions: {
@@ -127,7 +147,8 @@ module.exports = (env) => [
             path: path.resolve(__dirname, './site/prod'),
             filename: "main.js",
             module: true,
-            libraryTarget: 'module'
+            libraryTarget: 'module',
+            crossOriginLoading: "anonymous",
         },
         optimization: {
             minimize: env.production ? true : false,
@@ -145,8 +166,8 @@ module.exports = (env) => [
         mode: "production",
         plugins: [
             new EnvironmentPlugin({
-                serviceWorkerURL: env.production ? '/simplePass/sw.js' : (env.customServiceWorkerURL ?? '/sw.js'),
-                examplesAndIntegrationURL: env.production ? '/simplePass/EXAMPLES-AND-INTEGRATION.html' : '/EXAMPLES-AND-INTEGRATION.html'
+                serviceWorkerURL: env.production ? `/${PACKAGE.name}/sw.js` : (env.customServiceWorkerURL ?? '/sw.js'),
+                examplesAndIntegrationURL: env.production ? `/${PACKAGE.name}/EXAMPLES-AND-INTEGRATION.html` : '/EXAMPLES-AND-INTEGRATION.html'
             }),
             new CopyPlugin({
                 patterns: [
@@ -159,8 +180,8 @@ module.exports = (env) => [
                                 .toString()
                                 .replace('$START_URL$',
                                     (env.production)
-                                        ? 'https://staticbanter.github.io/simplePass/'
-                                        : (env.customManifestStartURL ?? 'http://localhost:8080/')
+                                        ? githubURL
+                                        : (env.customManifestStartURL ?? devURL)
                                 );
                         },
                     },
@@ -170,19 +191,59 @@ module.exports = (env) => [
                         transform(content) {
                             return content
                                 .toString()
-                                .replace('$BASE_URL$',
-                                    (env.production)
-                                        ? '/simplePass/'
-                                        : (env.customBaseURL ?? '/')
-                                )
                                 .replace('$serviceWorkerCacheName$',
                                     (env.production)
-                                        ? 'simplePass_PWA_Cache_v1'
-                                        : (env.customServiceWorkerCacheName ?? 'simplePass_DEVELOPMENT_PWA_Cache_v1')
+                                        ? `${PACKAGE.name}_PWA_Cache_v1`
+                                        : (env.customServiceWorkerCacheName ?? `${PACKAGE.name}_DEVELOPMENT_PWA_Cache_v1`)
+                                )
+                                .replace(
+                                    '$serviceWorkerAppShellFiles$',
+                                    serviceWorkerAppShellFiles.filter((fileName)=>{
+                                        return(
+                                            fileName[0] !== '.'
+                                            && fileName.includes('.')
+                                        )?fileName:null;
+                                    }).map((fileName)=>{
+                                        return `./${fileName}`
+                                    })
+                                    .join(' ')
+                                    .concat((env.production)?` /${PACKAGE.name}/`:(env.customBaseURL?` ${env.customBaseURL}`:" /"))
                                 );
                         },
                     },
                 ],
+            }),
+            new HtmlWebpackPlugin({
+                minify:env.production?true:false,
+                inject:'head',
+                title:`${PACKAGE.name} | Demo`,
+                scriptLoading:'module',
+                base:env.production?githubURL:devURL,
+                template:"./index.html",
+            }),
+            env.production?new SubresourceIntegrityPlugin():function(){},
+            new HtmlWebpackTagsPlugin({
+                tags:[
+                    {
+                        path:"sw.js",
+                        // Stops HtmlWebPackPlugin From changing script type
+                        attributes:{
+                            type:"text/javascript",
+                            defer:true
+                        }
+                    },
+                    "main.css"
+                ],
+                append: true,
+            }),
+            new CspHtmlWebpackPlugin({
+                'default-src':"'self'",
+                'base-uri':"'self'",
+                'form-action':"'self'",
+                'upgrade-insecure-requests':"",
+                'object-src': "'none'",
+                'script-src': ['',"'strict-dynamic'"],
+                'style-src': ''
             }),
         ],
         cache: false,

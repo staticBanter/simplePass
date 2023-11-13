@@ -1,8 +1,8 @@
 var e={d:(t,s)=>{for(var a in s)e.o(s,a)&&!e.o(t,a)&&Object.defineProperty(t,a,{enumerable:!0,get:s[a]})},o:(e,t)=>Object.prototype.hasOwnProperty.call(e,t),r:e=>{"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})}},t={};e.r(t),e.d(t,{default:()=>M});
 /*!
  * 
- * simplePass - A JavaScript password generator.
- * Copyright (C) 2023  Jordan Vezina(staticBanter)
+ * simplePass - A Javascript password generator..
+ * Copyright (C) 2023  Jordan Vezina (staticBanter)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
