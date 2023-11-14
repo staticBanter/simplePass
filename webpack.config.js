@@ -236,15 +236,23 @@ module.exports = (env) => [
                 ],
                 append: true,
             }),
-            new CspHtmlWebpackPlugin({
-                'default-src':"'self'",
-                'base-uri':"'self'",
-                'form-action':"'self'",
-                'upgrade-insecure-requests':"",
-                'object-src': "'none'",
-                'script-src': ['',"'strict-dynamic'"],
-                'style-src': ''
-            }),
+            new CspHtmlWebpackPlugin(
+                {
+                    'default-src':"'self'",
+                    'base-uri':"'self'",
+                    'form-action':"'self'",
+                    'upgrade-insecure-requests':"",
+                    'object-src': "'none'",
+                    'script-src': ['',"'strict-dynamic'"],
+                    'style-src': ''
+                },
+                {
+                    nonceEnabled: {
+                        'script-src': false,
+                        'style-src': false
+                    },
+                }
+            ),
         ],
         cache: false,
         experiments: {
