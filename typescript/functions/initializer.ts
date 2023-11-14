@@ -18,6 +18,7 @@
 
 'use strict';
 
+import strengthCheckTargets from "../data/interfaces/strengthCheckTargets.js";
 import strengthCheckedPassword from "../data/interfaces/strengthCheckedPassword.js";
 import config from "../simplePass.config.js";
 import simplePass from "../simplePass.js";
@@ -117,11 +118,16 @@ function injectStrengthStats (
 
         if(element) {
 
+            key = key.replace('Target','');
+
             if(
-                element
-                && Object.keys(password).includes(key.replace('Target', ''))
-            ) {
-                setInnerTextOrValue(element, password[key.replace('Target', '')]);
+                password.compressionStats
+                && Object.keys(password.compressionStats).includes(key)
+                && password.compressionStats[key]
+            ){
+                setInnerTextOrValue(element, password.compressionStats[key]);
+            }else if (Object.keys(password).includes(key)) {
+                setInnerTextOrValue(element, password[key]);
             }
 
         }
@@ -201,30 +207,55 @@ export default function initializer (cFig: typeof config = config): void {
         [index: string]: HTMLElement | null,
     } = {};
 
-    if(cFig.strengthCheck) {
+    if(
+        cFig.strengthCheck
+        && typeof(cFig.strengthCheck) === 'object'
+    ) {
 
-        Object.entries(cFig.strengthCheck).forEach(([propertyName, queryString]: [string, string]) => {
-            if(queryString) {
-                const target: HTMLElement | null = document.body.querySelector<HTMLElement>(queryString);
-                if(target) {
-                    targetElements[propertyName] = target;
+        function getTargetElements(strengthCheck:strengthCheckTargets){
+            Object.entries(strengthCheck).forEach(([propertyName, queryString]: [string, string|object|boolean]) => {
+                if(typeof(queryString)==='string') {
+                    const target: HTMLElement | null = document.body.querySelector<HTMLElement>(queryString);
+                    if(target) {
+                        targetElements[propertyName] = target;
+                    }
+                }else if(typeof(queryString)==='object'){
+                    getTargetElements(queryString)
                 }
-            }
-        });
+            });
+        }
+
+        getTargetElements(cFig.strengthCheck);
 
     }
+
+    const password:string|strengthCheckedPassword|Promise<strengthCheckedPassword> = simplePass(
+        cFig.defaultPasswordModifier,
+        cFig
+    );
 
     /**
      * Inject our initial password
      */
-    injectSimplePass(
-        passwordTarget,
-        simplePass(
-            cFig.defaultPasswordModifier,
-            cFig
-        ),
-        targetElements
-    );
+    if(!(password instanceof Promise)){
+
+        injectSimplePass(
+            passwordTarget,
+            password,
+            targetElements
+        );
+
+    }else{
+
+        password.then((password:string|strengthCheckedPassword):void=>{
+            injectSimplePass(
+                passwordTarget,
+                password,
+                targetElements
+            );
+        });
+
+    }
 
     /**
      * If we have any action elements set,
@@ -251,14 +282,30 @@ export default function initializer (cFig: typeof config = config): void {
                     return;
                 }
 
-                injectSimplePass(
-                    passwordTarget,
-                    simplePass(
-                        cFig.defaultPasswordModifier,
-                        cFig
-                    ),
-                    targetElements
+                const password:string | strengthCheckedPassword | Promise<strengthCheckedPassword> = simplePass(
+                    cFig.defaultPasswordModifier,
+                    cFig
                 );
+
+                if(!(password instanceof Promise)){
+
+                    injectSimplePass(
+                        passwordTarget,
+                        password,
+                        targetElements
+                    );
+
+                }else{
+
+                    password.then((password:string|strengthCheckedPassword):void=>{
+                        injectSimplePass(
+                            passwordTarget,
+                            password,
+                            targetElements
+                        );
+                    });
+
+                }
 
             });
 
@@ -336,21 +383,47 @@ export default function initializer (cFig: typeof config = config): void {
 
                             OL.prepend(LI);
 
-                            const password: string | strengthCheckedPassword = simplePass(passwordModifiers);
+                            const password: string | strengthCheckedPassword | Promise<strengthCheckedPassword> = simplePass(passwordModifiers);
 
-                            injectSimplePass(
-                                password_INPUT,
-                                password
-                            );
+                            if(!(password instanceof Promise)){
+
+                                injectSimplePass(
+                                    password_INPUT,
+                                    password
+                                );
+
+                            }else{
+
+                                password.then((password)=>{
+                                    injectSimplePass(
+                                        password_INPUT,
+                                        password
+                                    );
+                                });
+
+                            }
 
                             if(typeof (password) !== 'string') {
 
                                 LI.addEventListener('click', function () {
 
-                                    injectStrengthStats(
-                                        password,
-                                        targetElements
-                                    );
+                                    if(!(password instanceof Promise)){
+
+                                        injectStrengthStats(
+                                            password,
+                                            targetElements
+                                        );
+
+                                    }else{
+
+                                        password.then((password)=>{
+                                            injectStrengthStats(
+                                                password,
+                                                targetElements
+                                            );
+                                        });
+
+                                    }
 
                                     if(statIndex) {
                                         statIndex.innerText = `(For Password: ${LI.dataset.simplePassIndex})`;
@@ -379,13 +452,23 @@ export default function initializer (cFig: typeof config = config): void {
 
                         OL.appendChild(LI);
 
-                        const password: string | strengthCheckedPassword = simplePass(passwordModifiers);
+                        const password: string | strengthCheckedPassword | Promise<strengthCheckedPassword> = simplePass(passwordModifiers);
 
-                        injectSimplePass(
-                            password_INPUT,
-                            password,
-                            targetElements
-                        );
+                        if(!(password instanceof Promise)){
+                            injectSimplePass(
+                                password_INPUT,
+                                password,
+                                targetElements
+                            );
+                        }else{
+                            password.then((password)=>{
+                                injectSimplePass(
+                                    password_INPUT,
+                                    password,
+                                    targetElements
+                                );
+                            })
+                        }
 
                         passwordContainer.prepend(OL);
 
@@ -393,10 +476,23 @@ export default function initializer (cFig: typeof config = config): void {
 
                             LI.addEventListener('click', function () {
 
-                                injectStrengthStats(
-                                    password,
-                                    targetElements
-                                );
+                                if(!(password instanceof Promise)){
+
+                                    injectStrengthStats(
+                                        password,
+                                        targetElements
+                                    );
+
+                                }else{
+
+                                    password.then((password)=>{
+                                        injectStrengthStats(
+                                            password,
+                                            targetElements
+                                        );
+                                    });
+
+                                }
 
                                 if(statIndex) {
                                     statIndex.innerText = `(For Password: ${LI.dataset.simplePassIndex})`;
@@ -422,14 +518,31 @@ export default function initializer (cFig: typeof config = config): void {
 
                         passwordContainer.appendChild(password_LABEL);
 
-                        injectSimplePass(
-                            password_INPUT,
-                            simplePass(
-                                passwordModifiers,
-                                cFig
-                            ),
-                            targetElements
+
+                        const password: string | strengthCheckedPassword | Promise<strengthCheckedPassword> = simplePass(
+                            passwordModifiers,
+                            cFig
                         );
+
+                        if(!(password instanceof Promise)){
+
+                            injectSimplePass(
+                                password_INPUT,
+                                password,
+                                targetElements
+                            );
+
+                        }else{
+
+                            password.then((password)=>{
+                                injectSimplePass(
+                                    password_INPUT,
+                                    password,
+                                    targetElements
+                                );
+                            });
+
+                        }
 
                     } else {
 
@@ -455,14 +568,30 @@ export default function initializer (cFig: typeof config = config): void {
                             return;
                         }
 
-                        injectSimplePass(
-                            passwordTarget,
-                            simplePass(
-                                passwordModifiers,
-                                cFig
-                            ),
-                            targetElements
+                        const password: string | strengthCheckedPassword | Promise<strengthCheckedPassword> = simplePass(
+                            passwordModifiers,
+                            cFig
                         );
+
+                        if(!(password instanceof Promise)){
+
+                            injectSimplePass(
+                                passwordTarget,
+                                password,
+                                targetElements
+                            );
+
+                        }else{
+
+                            password.then((password)=>{
+                                injectSimplePass(
+                                    passwordTarget,
+                                    password,
+                                    targetElements
+                                );
+                            });
+
+                        }
 
                     }
 

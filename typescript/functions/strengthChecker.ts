@@ -45,7 +45,8 @@ import calculateMaxPossibleCharacters from "./calculateMaxPossibleCharacters.js"
 export default function strengthChecker (
     password: string,
     constraints: strengthCheckerConstraints,
-): strengthCheckedPassword {
+    compressions?:Array<CompressionFormat>
+): strengthCheckedPassword | Promise<strengthCheckedPassword> {
 
     const numberOfCharacters: number = calculateMaxPossibleCharacters(
         {
@@ -91,6 +92,54 @@ export default function strengthChecker (
             uniqueCharacters += element;
         }
     });
+
+    if(compressions){
+
+        const compressionResponses:Array<Promise<ArrayBuffer>> = [];
+
+        for(let i =0; i<compressions.length; i++){
+            const byteArray = new TextEncoder().encode(password);
+            const cs = new CompressionStream(compressions[i]);
+            const writer = cs.writable.getWriter();
+            writer.write(byteArray);
+            writer.close();
+            compressionResponses.push(new Response(cs.readable).arrayBuffer());
+        }
+
+        if(compressions.length){
+
+            return Promise.all(compressionResponses)
+            .then((compressionBuffers:Array<ArrayBuffer>)=>{
+
+                const compressionStats:{
+                    [index:string]:number
+                } = {};
+
+                let averageCompression = 0;
+
+                compressions.forEach((compression:CompressionFormat,index:number)=>{
+                    compressionStats[compression] = compressionBuffers[index].byteLength;
+                    averageCompression += compressionBuffers[index].byteLength;
+                });
+
+                compressionStats['average'] = (averageCompression / compressionBuffers.length);
+
+                return {
+                    password: password,
+                    entropy: (password.length * Math.log2(numberOfCharacters)),
+                    possibleCombinations: (numberOfCharacters ** password.length),
+                    binaryStringLength: binaryString.replaceAll(binaryStringDelimiter, '').length,
+                    binaryString: binaryString,
+                    averageCharacterBitLength: (averageBitLength / password.length),
+                    uniqueCharactersPercentage: ((uniqueCharacters.length / password.length) * 100),
+                    compressionStats:compressionStats
+                };
+
+            });
+
+        }
+
+    }
 
     return {
         password: password,

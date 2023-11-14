@@ -38,7 +38,8 @@ import config from "./simplePass.config.js";
  */
 /**
  * Main program function.
- * Returns either a random string or a [strength check password object]{@link module:strengthCheckedPassword} that contains the a random string with additional information.
+ * Returns either a random strin or a [strength check password object]{@link module:strengthCheckedPassword} that contains the a random string with additional information.
+ * If compression is configured, simplePass will return a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) containing your [strength check password object]{@link module:strengthCheckedPassword}.
  *
  * @function simplePass
  * @param {passwordModifier | FormData} [modifier] The available [password modifiers]{@link module:passwordModifier} that can be used to create the password. Defaults to *[config.defaultPasswordModifier]{@link module:config}*.
@@ -56,7 +57,7 @@ import config from "./simplePass.config.js";
  * @requires messageHandler
  * @requires characterCodeConstraints
  * @throws {errors} Will throw an Error if the [modifier]{@link passwordModifier} is ```null```, ```undefined``` or not a JavaScript Object.
- * @returns {string | strengthCheckedPassword} The generated password or strength checked password object.
+ * @returns {string | strengthCheckedPassword | Promise<strengthCheckedPassword>} The generated password or strength checked password object.
  */
 export default function simplePass(modifier = config.defaultPasswordModifier, cFig = config) {
     let messageBoard = null;
@@ -818,6 +819,29 @@ export default function simplePass(modifier = config.defaultPasswordModifier, cF
         }
     }
     if (cFig.strengthCheck) {
+        if (typeof (cFig.strengthCheck) === 'object'
+            && cFig.strengthCheck.compression) {
+            const compressions = Object.keys(cFig.strengthCheck.compression)
+                .map((key) => {
+                return key.replace('Target', '');
+            })
+                .filter((key) => {
+                return [
+                    'gzip',
+                    'deflate',
+                    'deflate-raw'
+                ].includes(key);
+            });
+            return strengthChecker(password, {
+                characterSets: {
+                    used: Object.keys(modifier),
+                    available: useableAttributes
+                },
+                excludeCharacters: modifier.excludeCharacters,
+                min_length: cFig.passwordConstraints.min_length,
+                max_length: cFig.passwordConstraints.max_length
+            }, compressions);
+        }
         return strengthChecker(password, {
             characterSets: {
                 used: Object.keys(modifier),

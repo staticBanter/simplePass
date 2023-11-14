@@ -87,9 +87,14 @@ function injectSimplePass(passwordTarget, password, strengthChecks) {
 function injectStrengthStats(password, elements) {
     Object.entries(elements).forEach(([key, element]) => {
         if (element) {
-            if (element
-                && Object.keys(password).includes(key.replace('Target', ''))) {
-                setInnerTextOrValue(element, password[key.replace('Target', '')]);
+            key = key.replace('Target', '');
+            if (password.compressionStats
+                && Object.keys(password.compressionStats).includes(key)
+                && password.compressionStats[key]) {
+                setInnerTextOrValue(element, password.compressionStats[key]);
+            }
+            else if (Object.keys(password).includes(key)) {
+                setInnerTextOrValue(element, password[key]);
             }
         }
     });
@@ -146,20 +151,35 @@ export default function initializer(cFig = config) {
         return;
     }
     let targetElements = {};
-    if (cFig.strengthCheck) {
-        Object.entries(cFig.strengthCheck).forEach(([propertyName, queryString]) => {
-            if (queryString) {
-                const target = document.body.querySelector(queryString);
-                if (target) {
-                    targetElements[propertyName] = target;
+    if (cFig.strengthCheck
+        && typeof (cFig.strengthCheck) === 'object') {
+        function getTargetElements(strengthCheck) {
+            Object.entries(strengthCheck).forEach(([propertyName, queryString]) => {
+                if (typeof (queryString) === 'string') {
+                    const target = document.body.querySelector(queryString);
+                    if (target) {
+                        targetElements[propertyName] = target;
+                    }
                 }
-            }
-        });
+                else if (typeof (queryString) === 'object') {
+                    getTargetElements(queryString);
+                }
+            });
+        }
+        getTargetElements(cFig.strengthCheck);
     }
+    const password = simplePass(cFig.defaultPasswordModifier, cFig);
     /**
      * Inject our initial password
      */
-    injectSimplePass(passwordTarget, simplePass(cFig.defaultPasswordModifier, cFig), targetElements);
+    if (!(password instanceof Promise)) {
+        injectSimplePass(passwordTarget, password, targetElements);
+    }
+    else {
+        password.then((password) => {
+            injectSimplePass(passwordTarget, password, targetElements);
+        });
+    }
     /**
      * If we have any action elements set,
      * we need to preform more work.
@@ -179,7 +199,15 @@ export default function initializer(cFig = config) {
                     && this.type === 'submit') {
                     return;
                 }
-                injectSimplePass(passwordTarget, simplePass(cFig.defaultPasswordModifier, cFig), targetElements);
+                const password = simplePass(cFig.defaultPasswordModifier, cFig);
+                if (!(password instanceof Promise)) {
+                    injectSimplePass(passwordTarget, password, targetElements);
+                }
+                else {
+                    password.then((password) => {
+                        injectSimplePass(passwordTarget, password, targetElements);
+                    });
+                }
             });
         }
         /**
@@ -227,10 +255,24 @@ export default function initializer(cFig = config) {
                             LI.appendChild(password_LABEL);
                             OL.prepend(LI);
                             const password = simplePass(passwordModifiers);
-                            injectSimplePass(password_INPUT, password);
+                            if (!(password instanceof Promise)) {
+                                injectSimplePass(password_INPUT, password);
+                            }
+                            else {
+                                password.then((password) => {
+                                    injectSimplePass(password_INPUT, password);
+                                });
+                            }
                             if (typeof (password) !== 'string') {
                                 LI.addEventListener('click', function () {
-                                    injectStrengthStats(password, targetElements);
+                                    if (!(password instanceof Promise)) {
+                                        injectStrengthStats(password, targetElements);
+                                    }
+                                    else {
+                                        password.then((password) => {
+                                            injectStrengthStats(password, targetElements);
+                                        });
+                                    }
                                     if (statIndex) {
                                         statIndex.innerText = `(For Password: ${LI.dataset.simplePassIndex})`;
                                     }
@@ -249,11 +291,25 @@ export default function initializer(cFig = config) {
                         LI.appendChild(password_LABEL);
                         OL.appendChild(LI);
                         const password = simplePass(passwordModifiers);
-                        injectSimplePass(password_INPUT, password, targetElements);
+                        if (!(password instanceof Promise)) {
+                            injectSimplePass(password_INPUT, password, targetElements);
+                        }
+                        else {
+                            password.then((password) => {
+                                injectSimplePass(password_INPUT, password, targetElements);
+                            });
+                        }
                         passwordContainer.prepend(OL);
                         if (typeof (password) !== 'string') {
                             LI.addEventListener('click', function () {
-                                injectStrengthStats(password, targetElements);
+                                if (!(password instanceof Promise)) {
+                                    injectStrengthStats(password, targetElements);
+                                }
+                                else {
+                                    password.then((password) => {
+                                        injectStrengthStats(password, targetElements);
+                                    });
+                                }
                                 if (statIndex) {
                                     statIndex.innerText = `(For Password: ${LI.dataset.simplePassIndex})`;
                                 }
@@ -270,7 +326,15 @@ export default function initializer(cFig = config) {
                         password_INPUT.setAttribute('readonly', 'readonly');
                         password_LABEL.appendChild(password_INPUT);
                         passwordContainer.appendChild(password_LABEL);
-                        injectSimplePass(password_INPUT, simplePass(passwordModifiers, cFig), targetElements);
+                        const password = simplePass(passwordModifiers, cFig);
+                        if (!(password instanceof Promise)) {
+                            injectSimplePass(password_INPUT, password, targetElements);
+                        }
+                        else {
+                            password.then((password) => {
+                                injectSimplePass(password_INPUT, password, targetElements);
+                            });
+                        }
                     }
                     else {
                         const passwordTarget = document.body.querySelector(cFig.elements.passwordTarget);
@@ -285,7 +349,15 @@ export default function initializer(cFig = config) {
                             }, cFig);
                             return;
                         }
-                        injectSimplePass(passwordTarget, simplePass(passwordModifiers, cFig), targetElements);
+                        const password = simplePass(passwordModifiers, cFig);
+                        if (!(password instanceof Promise)) {
+                            injectSimplePass(passwordTarget, password, targetElements);
+                        }
+                        else {
+                            password.then((password) => {
+                                injectSimplePass(passwordTarget, password, targetElements);
+                            });
+                        }
                     }
                 });
                 if (cFig.defaultPasswordModifier) {

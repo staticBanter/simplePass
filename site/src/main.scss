@@ -10,9 +10,8 @@ $margin-small: math.div($margin, 2);
 /**
 * Generics
 **/
-
 * {
-    [class^="simplePass_passwordTarget"] {
+    [class="simplePass_passwordTarget"] {
         display: inline-block;
         width: 100%;
         overflow: auto;
@@ -23,20 +22,10 @@ $margin-small: math.div($margin, 2);
         font-family: 'Courier New', Courier, 'Liberation Mono', monospace;
     }
 
-
-    textarea[data-simplepass-binary-string-target] {
-        resize: vertical;
-    }
-
-    [data-simplepass-binary-string-target] {
-        width: calc(100% - $margin);
-    }
-
-    [data-simplepass-binary-string-target][type="password"] {
+    [type="password"] {
         -webkit-text-security: disc;
     }
 }
-
 
 /**
 * Elements
@@ -77,7 +66,8 @@ label {
 
 label {
 
-    > input:not([type="checkbox"], [type="radio"]) {
+    > input:not([type="checkbox"], [type="radio"]),
+    > textarea {
         width: 100%;
     }
 
@@ -90,6 +80,11 @@ label {
         margin-top: $margin-small;
     }
 
+}
+
+textarea{
+    resize: vertical;
+    min-height: 4.5rem;
 }
 
 button {

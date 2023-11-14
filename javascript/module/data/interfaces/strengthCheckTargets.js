@@ -16,6 +16,16 @@
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 /**
+ * An interface representing the 'Strength Check Compression' object.
+ * This object is used to define what elements the program should use to inject password strength compression stats.
+ *
+ * @interface strengthCheckCompression
+ * @property {string} [gzipTarget] The target element for GZIP value.
+ * @property {string} [deflateTarget] The target element for deflate value.
+ * @property {string} ['deflate-rawTarget'] The target element for deflate-raw value.
+ * @property {string} [average] The target element for the average compression value.
+ */
+/**
  * An interface representing the 'Strength Check Targets' object.
  * This object is used to define what elements the program should use to inject password strength stats.
  *
@@ -26,6 +36,7 @@
  * @property {string} [binaryStringTarget] Binary String Length Target stat target.
  * @property {string} [averageCharacterBitLengthTarget] Average Character Bit Length stat target.
  * @property {string} [uniqueCharacterPercentageTarget] Unique Character Percentage stat target.
+ * @property {strengthCheckCompression} [compression] An object defining the types of compression checks you wish to preform.
  */
 'use strict';
 export {};

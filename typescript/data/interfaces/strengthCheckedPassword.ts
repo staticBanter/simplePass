@@ -22,11 +22,16 @@
  * @interface strengthCheckedPassword
  * @property {string} password The strength checked password.
  * @property {number} entropy The bit entropy of the password.
- * @property {possibleCombinations} number The number of possible combinations that can be created from the selected character sets and password length.
- * @property {binaryStringLength} number The length of the password as a binary string.
- * @property {binaryString} string The password represented in binary.
- * @property {averageCharacterByteLength} number The average length of a character in bits.
- * @property {uniqueCharactersPercentage} number The percentage of unique characters in the password.
+ * @property {number} possibleCombinations The number of possible combinations that can be created from the selected character sets and password length.
+ * @property {number} binaryStringLength The length of the password as a binary string.
+ * @property {string} binaryString The password represented in binary.
+ * @property {number} averageCharacterBitLength The average length of a character in bits.
+ * @property {number} uniqueCharacterPercentageTarget The percentage of unique characters in the password.
+ * @property {object} [compressionStats] An object representing the compressions stats of the password.
+ * @property {number} [compressionStats.gzip] Passwords GZIP compression value.
+ * @property {number} [compressionStats.deflate] Passwords deflate compression value.
+ * @property {number} [compressionStats.'deflate-raw'] Passwords 'deflate-raw' compression value.
+ * @property {number} [compressionStats.average] Passwords average compression value.
  */
 
 'use strict';
@@ -40,4 +45,11 @@ export default interface strengthCheckedPassword {
     binaryString: string,
     averageCharacterBitLength: number,
     uniqueCharactersPercentage: number,
+    compressionStats?:{
+        [index:string]:any
+        gzip?:number,
+        deflate?:number
+        'deflate-raw'?:number,
+        average?:number,
+    }
 }

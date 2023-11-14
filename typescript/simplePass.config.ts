@@ -177,6 +177,12 @@ const config: config = {
         binaryStringLengthTarget: ".simplePass_binaryStringLengthTarget",
         averageCharacterBitLengthTarget: ".simplePass_averageCharacterBitLengthTarget",
         uniqueCharactersPercentageTarget: ".simplePass_uniqueCharactersPercentageTarget",
+        compression:{
+            gzipTarget:".simplePass_gzipCompressionTarget",
+            deflateTarget:".simplePass_deflateCompressionTarget",
+            'deflate-rawTarget':".simplePass_deflate-rawCompressionTarget",
+            averageTarget:".simplePass_averageCompressionTarget"
+        }
     }
 };
 
