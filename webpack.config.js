@@ -5,11 +5,7 @@ const {EnvironmentPlugin, BannerPlugin} = require('webpack');
 const TerserPlugin = require('terser-webpack-plugin');
 const CopyPlugin = require("copy-webpack-plugin");
 const FS = require('fs');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const HtmlWebpackTagsPlugin = require('html-webpack-tags-plugin');
 const PACKAGE = require('./package.json');
-const {SubresourceIntegrityPlugin} = require("webpack-subresource-integrity");
-const CspHtmlWebpackPlugin = require('csp-html-webpack-plugin');
 
 PACKAGE.name = 'simplePass';
 
@@ -212,47 +208,7 @@ module.exports = (env) => [
                         },
                     },
                 ],
-            }),
-            new HtmlWebpackPlugin({
-                minify:env.production?true:false,
-                inject:'head',
-                title:`${PACKAGE.name} | Demo`,
-                scriptLoading:'module',
-                base:env.production?githubURL:devURL,
-                template:"./index.html",
-            }),
-            env.production?new SubresourceIntegrityPlugin():function(){},
-            new HtmlWebpackTagsPlugin({
-                tags:[
-                    {
-                        path:"sw.js",
-                        // Stops HtmlWebPackPlugin From changing script type
-                        attributes:{
-                            type:"text/javascript",
-                            defer:true
-                        }
-                    },
-                    "main.css"
-                ],
-                append: true,
-            }),
-            new CspHtmlWebpackPlugin(
-                {
-                    'default-src':"'self'",
-                    'base-uri':"'self'",
-                    'form-action':"'self'",
-                    'upgrade-insecure-requests':"",
-                    'object-src': "'none'",
-                    'script-src': ['',"'strict-dynamic'"],
-                    'style-src': ''
-                },
-                {
-                    nonceEnabled: {
-                        'script-src': false,
-                        'style-src': false
-                    },
-                }
-            ),
+            })
         ],
         cache: false,
         experiments: {
