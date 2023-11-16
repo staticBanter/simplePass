@@ -57,6 +57,7 @@
     "prod": "npm run production",
     "production": "npm run tsc && npm run docs-build && npm run webpack-build && npm run html-min && npm run sass-build"
   },
+  "type": "module",
   "dependencies": {
     "normalize.css": "^8.0.1"
   }

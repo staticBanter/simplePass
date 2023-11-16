@@ -1,13 +1,13 @@
-const doop = require('jsdoc/util/doop');
-const env = require('jsdoc/env');
-const fs = require('jsdoc/fs');
-const helper = require('jsdoc/util/templateHelper');
-const logger = require('jsdoc/util/logger');
-const path = require('jsdoc/path');
-const { taffy } = require('@jsdoc/salty');
-const template = require('jsdoc/template');
-const util = require('util');
-const { couldStartTrivia } = require('typescript');
+const doop = import('jsdoc/util/doop');
+const env = import('jsdoc/env');
+const fs = import('jsdoc/fs');
+const helper = import('jsdoc/util/templateHelper');
+const logger = import('jsdoc/util/logger');
+const path = import('jsdoc/path');
+const { taffy } = import('@jsdoc/salty');
+const template = import('jsdoc/template');
+const util = import('util');
+const { couldStartTrivia } = import('typescript');
 
 const htmlsafe = helper.htmlsafe;
 const linkto = helper.linkto;

@@ -1,11 +1,12 @@
 'use strict';
 
-const path = require('path');
-const {EnvironmentPlugin, BannerPlugin} = require('webpack');
-const TerserPlugin = require('terser-webpack-plugin');
-const CopyPlugin = require("copy-webpack-plugin");
-const FS = require('fs');
-const PACKAGE = require('./package.json');
+import CopyPlugin from "copy-webpack-plugin";
+import * as FS from "fs";
+import * as path from "path";
+import TerserPlugin from "terser-webpack-plugin";
+import webpack from 'webpack';
+const PACKAGE = JSON.parse(FS.readFileSync('./package.json'));
+
 
 PACKAGE.name = 'simplePass';
 
@@ -65,10 +66,10 @@ const nonProdConsoles = [
  * So we have two webpack compilations, one to bundle the source javascript (application) and one to bundle the PWA javascript (site).
  * Webpack-Multi Compilation as shown here: https://github.com/webpack/webpack/blob/main/examples/multi-compiler/webpack.config.js
  */
-module.exports = (env) => [
+export default (env) => [
     // Config for the application.
     {
-        context: path.resolve(__dirname, 'javascript/module'),
+        context: path.resolve("javascript/module"),
         name: "bundle",
         entry: {
             app: {
@@ -76,7 +77,7 @@ module.exports = (env) => [
             }
         },
         output: {
-            path: path.resolve(__dirname, './javascript/bundle/'),
+            path: path.resolve( 'javascript/bundle/'),
             filename: `${PACKAGE.name}.bundle.js`,
             module: true,
             libraryTarget: 'module'
@@ -100,8 +101,8 @@ module.exports = (env) => [
             outputModule: true,
         },
         plugins: [
-            new BannerPlugin({
-                banner: licenseBanner
+            new webpack.BannerPlugin({
+                banner: licenseBanner,
             })
         ],
         performance: env.production ? {
@@ -110,7 +111,7 @@ module.exports = (env) => [
     },
     // Config for the site.
     {
-        context: path.resolve(__dirname, 'site/src/'),
+        context: path.resolve('site/src'),
         name: "site",
         entry: {
             site: {
@@ -140,7 +141,7 @@ module.exports = (env) => [
             magicHtml: false,
         },
         output: {
-            path: path.resolve(__dirname, './site/prod'),
+            path: path.resolve('site/prod'),
             filename: "main.js",
             module: true,
             libraryTarget: 'module',
@@ -161,7 +162,7 @@ module.exports = (env) => [
         },
         mode: "production",
         plugins: [
-            new EnvironmentPlugin({
+            new webpack.EnvironmentPlugin({
                 serviceWorkerURL: env.production ? `/${PACKAGE.name}/sw.js` : (env.customServiceWorkerURL ?? '/sw.js'),
                 examplesAndIntegrationURL: env.production ? `/${PACKAGE.name}/EXAMPLES-AND-INTEGRATION.html` : '/EXAMPLES-AND-INTEGRATION.html'
             }),
