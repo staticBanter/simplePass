@@ -28,7 +28,10 @@ Please note that if you are planning to contribute to the project you will be re
 - [GitHub](https://github.com/)
 - [Node & NPM](https://nodejs.org/)(LTS Version)
   - [TypeScript](https://www.typescriptlang.org/)
-  - [Webpack & Webpack-CLI](https://webpack.js.org/)
+  - [Webpack & Webpack-CLI](https://webpack.js.org/) as well as the following Webpack plugins:
+    - [Copy Webpack Plugin](https://github.com/webpack-contrib/copy-webpack-plugin)
+    - [Terser Webpack Plugin](https://www.npmjs.com/package/terser-webpack-plugin)
+    - [Webpack Dev Server](https://www.npmjs.com/package/webpack-dev-server)
   - [JSDoc](https://jsdoc.app/)
   - [HTML-Minifier](https://github.com/kangax/html-minifier)
   - [SASS](https://sass-lang.com/)

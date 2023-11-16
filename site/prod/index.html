@@ -122,13 +122,13 @@
         }
     </script>
         <script type="module"
-            src="main.js"></script>
+            src="./main.js"></script>
         <script type="text/javascript"
             defer
-            src="sw.js"></script>
+            src="./sw.js"></script>
         <link type="text/css"
             rel="stylesheet"
-            href="main.css">
+            href="./main.css">
     </head>
 
     <body>
@@ -186,17 +186,63 @@
                     <button type="button"
                         class="toggle"
                         data-toggle-target=".simplePass_passwordTarget"
-                        data-toggle="type=password|text">Show/Hide</button>
+                        data-toggle="type=password|text"
+                        data-toggle-state="off"
+                        aria-label="Show/Hide Password(s)">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            fill="currentColor"
+                            viewBox="0 0 16 16"
+                            aria-hidden="true">
+                            <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
+                            <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            fill="currentColor"
+                            viewBox="0 0 16 16"
+                            aria-hidden="true">
+                            <path d="m10.79 12.912-1.614-1.615a3.5 3.5 0 0 1-4.474-4.474l-2.06-2.06C.938 6.278 0 8 0 8s3 5.5 8 5.5a7.029 7.029 0 0 0 2.79-.588zM5.21 3.088A7.028 7.028 0 0 1 8 2.5c5 0 8 5.5 8 5.5s-.939 1.721-2.641 3.238l-2.062-2.062a3.5 3.5 0 0 0-4.474-4.474L5.21 3.089z" />
+                            <path d="M5.525 7.646a2.5 2.5 0 0 0 2.829 2.829l-2.83-2.829zm4.95.708-2.829-2.83a2.5 2.5 0 0 1 2.829 2.829zm3.171 6-12-12 .708-.708 12 12-.708.708z" />
+                        </svg>
+                    </button>
                 </div>
             </div>
             <div id="simplePass_passwordStats">
-                <h2>
-                    Password Stats:
-                    <span class="simplePass_passwordStatsIndex"></span>
-                </h2>
-                <button class="toggle"
-                    data-toggle-target="#simplePass_passwordStats_internal"
-                    data-toggle="hidden">Show/Hide</button>
+                <div>
+                    <h2>
+                        Password Stats:
+                        <span class="simplePass_passwordStatsIndex"></span>
+                    </h2>
+                    <button class="toggle"
+                        data-toggle-target="#simplePass_passwordStats_internal"
+                        data-toggle="hidden"
+                        data-load-toggle="true"
+                        aria-expanded="true"
+                        aria-controls="simplePass_passwordStats_internal"
+                        aria-label="Show/Hide Password.">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            fill="currentColor"
+                            viewBox="0 0 16 16"
+                            aria-hidden="true">
+                            <path fill-rule="evenodd"
+                                d="M1 8a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 8ZM7.646.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 1.707V5.5a.5.5 0 0 1-1 0V1.707L6.354 2.854a.5.5 0 1 1-.708-.708l2-2ZM8 10a.5.5 0 0 1 .5.5v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L7.5 14.293V10.5A.5.5 0 0 1 8 10Z" />
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            fill="currentColor"
+                            viewBox="0 0 16 16"
+                            aria-hidden="true">
+                            <path fill-rule="evenodd"
+                                d="M1 8a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 8Zm7-8a.5.5 0 0 1 .5.5v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 4.293V.5A.5.5 0 0 1 8 0Zm-.5 11.707-1.146 1.147a.5.5 0 0 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 11.707V15.5a.5.5 0 0 1-1 0v-3.793Z" />
+                        </svg>
+                    </button>
+                </div>
                 <noscript>
                     <p>
                         <strong>Notice:</strong>
@@ -217,13 +263,32 @@
                             </span>
                         </p>
                         <label>Binary String For Password:
-                            <textarea type="password"
-                                class="simplePass_binaryStringTarget"
-                                readonly></textarea>
                             <button type="button"
                                 class="toggle"
                                 data-toggle-target=".simplePass_binaryStringTarget"
-                                data-toggle="type=password|text">Show/Hide</button>
+                                data-toggle="type=password|text"
+                                data-toggle-state="off">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    width="16"
+                                    height="16"
+                                    fill="currentColor"
+                                    viewBox="0 0 16 16"
+                                    aria-hidden="true">
+                                    <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
+                                    <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
+                                </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    width="16"
+                                    height="16"
+                                    fill="currentColor"
+                                    viewBox="0 0 16 16"
+                                    aria-hidden="true">
+                                    <path d="m10.79 12.912-1.614-1.615a3.5 3.5 0 0 1-4.474-4.474l-2.06-2.06C.938 6.278 0 8 0 8s3 5.5 8 5.5a7.029 7.029 0 0 0 2.79-.588zM5.21 3.088A7.028 7.028 0 0 1 8 2.5c5 0 8 5.5 8 5.5s-.939 1.721-2.641 3.238l-2.062-2.062a3.5 3.5 0 0 0-4.474-4.474L5.21 3.089z" />
+                                    <path d="M5.525 7.646a2.5 2.5 0 0 0 2.829 2.829l-2.83-2.829zm4.95.708-2.829-2.83a2.5 2.5 0 0 1 2.829 2.829zm3.171 6-12-12 .708-.708 12 12-.708.708z" />
+                                </svg>
+                            </button>
+                            <textarea class="simplePass_binaryStringTarget"
+                                readonly></textarea>
                         </label>
                         <p>
                             <b>Average Character Bit Length:</b>
@@ -264,7 +329,7 @@
                 </div>
             </div>
             <form id="simplePass_form">
-                <h2>Modifiers</h2>
+                <h2>Modifiers:</h2>
                 <div>
                     <p>Character Codes that are displayed are shown as the decimal value(s) for the character(s). A
                         helpful list of these resources can be found at:</p>
@@ -275,461 +340,864 @@
                     </ul>
                 </div>
                 <fieldset>
-                    <legend>Pre-Configs</legend>
-                    <div>
-                        <p>* <strong>Note</strong>: Pre-Configs will override any similar modifiers that are set, and
-                            remove unrelated modifiers.</p>
-                    </div>
-                    <div>
-                        <label>Default:
-                            <input type="checkbox"
-                                data-radioCheckbox
-                                name="preConfig"
-                                value="default"
-                                class="sp_preConfig"
-                                autocomplete="off">
-                        </label>
+                    <legend>
+                        <button class="toggle"
+                            type="button"
+                            data-toggle-target="#preconfigField"
+                            data-toggle="hidden"
+                            data-load-toggle="true"
+                            aria-expanded="true"
+                            aria-controls="preconfigField">
+                            Pre-Configs
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                viewBox="0 0 16 16"
+                                aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                    d="M1 8a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 8ZM7.646.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 1.707V5.5a.5.5 0 0 1-1 0V1.707L6.354 2.854a.5.5 0 1 1-.708-.708l2-2ZM8 10a.5.5 0 0 1 .5.5v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L7.5 14.293V10.5A.5.5 0 0 1 8 10Z" />
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                viewBox="0 0 16 16"
+                                aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                    d="M1 8a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 8Zm7-8a.5.5 0 0 1 .5.5v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 4.293V.5A.5.5 0 0 1 8 0Zm-.5 11.707-1.146 1.147a.5.5 0 0 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 11.707V15.5a.5.5 0 0 1-1 0v-3.793Z" />
+                            </svg>
+                        </button>
+                    </legend>
+                    <div id="preconfigField">
                         <div>
-                            <p>Configuration:</p>
+                            <p>* <strong>Note</strong>: Pre-Configs will override any similar modifiers that are set, and
+                                remove unrelated modifiers.</p>
+                        </div>
+                        <div>
+                            <label>Default:
+                                <input type="checkbox"
+                                    data-radioCheckbox
+                                    name="preConfig"
+                                    value="default"
+                                    class="sp_preConfig"
+                                    autocomplete="off">
+                            </label>
+                            <div>
+                                <p>Configuration:</p>
+                                <ul>
+                                    <li>Length: 22</li>
+                                    <li>Basic Latin Lowercase</li>
+                                    <li>Basic Latin Uppercase</li>
+                                    <li>Basic Latin Numbers</li>
+                                    <li>Basic Latin Punctuation</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div>
+                            <label>4 Digit Pin:
+                                <input type="checkbox"
+                                    data-radioCheckbox
+                                    name="preConfig"
+                                    value="fourDigitPin"
+                                    class="sp_preConfig"
+                                    autocomplete="off">
+                            </label>
+                            <div>
+                                <p>Configuration:</p>
+                                <ul>
+                                    <li>Length: 4</li>
+                                    <li>Basic Latin Numbers</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div>
+                            <label>Default (Latin Supplement):
+                                <input type="checkbox"
+                                    data-radioCheckbox
+                                    name="preConfig"
+                                    value="defaultSupplement1"
+                                    class="sp_preConfig"
+                                    autocomplete="off">
+                            </label>
+                            <div>
+                                <p>Configuration:</p>
+                                <ul>
+                                    <li>Length: 22</li>
+                                    <li>Basic Latin Supplement Lowercase</li>
+                                    <li>Basic Latin Supplement Uppercase</li>
+                                    <li>Basic Latin Numbers</li>
+                                    <li>Basic Latin Supplement Punctuation</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div>
+                            <label>BIOS:
+                                <input type="checkbox"
+                                    data-radioCheckbox
+                                    name="preConfig"
+                                    value="bios"
+                                    class="sp_preConfig"
+                                    autocomplete="off">
+                            </label>
+                            <p>Configuration</p>
                             <ul>
-                                <li>Length: 22</li>
+                                <li>Length: 20</li>
                                 <li>Basic Latin Lowercase</li>
                                 <li>Basic Latin Uppercase</li>
                                 <li>Basic Latin Numbers</li>
-                                <li>Basic Latin Punctuation</li>
                             </ul>
                         </div>
-                    </div>
-                    <div>
-                        <label>4 Digit Pin:
-                            <input type="checkbox"
-                                data-radioCheckbox
-                                name="preConfig"
-                                value="fourDigitPin"
-                                class="sp_preConfig"
-                                autocomplete="off">
-                        </label>
                         <div>
-                            <p>Configuration:</p>
-                            <ul>
-                                <li>Length: 4</li>
-                                <li>Basic Latin Numbers</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div>
-                        <label>Default (Latin Supplement):
-                            <input type="checkbox"
-                                data-radioCheckbox
-                                name="preConfig"
-                                value="defaultSupplement1"
-                                class="sp_preConfig"
-                                autocomplete="off">
-                        </label>
-                        <div>
-                            <p>Configuration:</p>
-                            <ul>
-                                <li>Length: 22</li>
-                                <li>Basic Latin Supplement Lowercase</li>
-                                <li>Basic Latin Supplement Uppercase</li>
-                                <li>Basic Latin Numbers</li>
-                                <li>Basic Latin Supplement Punctuation</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div>
-                        <label>BIOS:
-                            <input type="checkbox"
-                                data-radioCheckbox
-                                name="preConfig"
-                                value="bios"
-                                class="sp_preConfig"
-                                autocomplete="off">
-                        </label>
-                        <p>Configuration</p>
-                        <ul>
-                            <li>Length: 20</li>
-                            <li>Basic Latin Lowercase</li>
-                            <li>Basic Latin Uppercase</li>
-                            <li>Basic Latin Numbers</li>
-                        </ul>
-                    </div>
-                    <div>
-                        <label>Extreme:
-                            <input type="checkbox"
-                                data-radioCheckbox
-                                name="preConfig"
-                                value="extreme"
-                                class="sp_preConfig"
-                                autocomplete="off">
-                        </label>
-                        <div>
-                            <p>Configuration:</p>
-                            <ul>
-                                <li>Length: 256</li>
-                                <li>Basic Latin Lowercase</li>
-                                <li>Basic Latin Uppercase</li>
-                                <li>Basic Latin Numbers</li>
-                                <li>Basic Latin Punctuation</li>
-                                <li>5 - 13 Repeating Characters</li>
-                                <li>2 - 10 Whitespace Characters</li>
-                                <li>Basic Latin Supplement Lowercase</li>
-                                <li>Basic Latin Supplement Uppercase</li>
-                                <li>Basic Latin Supplement Punctuation</li>
-                            </ul>
+                            <label>Extreme:
+                                <input type="checkbox"
+                                    data-radioCheckbox
+                                    name="preConfig"
+                                    value="extreme"
+                                    class="sp_preConfig"
+                                    autocomplete="off">
+                            </label>
+                            <div>
+                                <p>Configuration:</p>
+                                <ul>
+                                    <li>Length: 256</li>
+                                    <li>Basic Latin Lowercase</li>
+                                    <li>Basic Latin Uppercase</li>
+                                    <li>Basic Latin Numbers</li>
+                                    <li>Basic Latin Punctuation</li>
+                                    <li>5 - 13 Repeating Characters</li>
+                                    <li>2 - 10 Whitespace Characters</li>
+                                    <li>Basic Latin Supplement Lowercase</li>
+                                    <li>Basic Latin Supplement Uppercase</li>
+                                    <li>Basic Latin Supplement Punctuation</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </fieldset>
-                <label>Character Length:
+                <label>Password Length:
                     <input type="number"
                         form="simplePass_form"
-                        name="length">
+                        name="length"
+                        placeholder="Password Length">
                 </label>
                 <div>
                     <label>Exclude Characters:
+                        <button type="button"
+                            class="toggle"
+                            data-toggle-target="#excludeCharactersInfo"
+                            data-toggle="hidden"
+                            data-load-toggle="true"
+                            aria-expanded="true"
+                            aria-controls="excludeCharactersInfo"
+                            aria-label="Show/Hide Exclude Characters Input Information.">?</button>
                         <input type="text"
                             form="simplePass_form"
-                            name="excludeCharacters">
+                            name="excludeCharacters"
+                            placeholder="Exclude Characters"
+                            aria-describedby="excludeCharactersInfo">
                     </label>
-                    <p>* <strong>Warning</strong>: Excessive use of this feature may result in degraded performance or
-                        non-performance of the program.</p>
+                    <p id="excludeCharactersInfo">
+                        * <strong>Warning</strong>: Excessive use of this feature may result in degraded performance or
+                        non-performance of the program.
+                    </p>
                 </div>
                 <div>
-                    <label>Unique Characters Only
+                    <label>Unique Characters Only:
                         <input type="checkbox"
                             form="simplePass_form"
-                            name="uniqueCharacters">
+                            name="uniqueCharacters"
+                            aria-describedby="uniqueCharactersInfo">
+                        <button type="button"
+                            class="toggle"
+                            data-toggle-target="#uniqueCharactersInfo"
+                            data-toggle="hidden"
+                            data-load-toggle="true"
+                            aria-expanded="true"
+                            aria-controls="uniqueCharactersInfo"
+                            aria-label="Show/Hide Unique Characters Input Information.">?</button>
                     </label>
-                    <p>* This option can not be combined with the following modifiers:</p>
-                    <ul>
-                        <li>Repeating Characters</li>
-                        <li>Whitespace Beginning/End (Required OR Optional)</li>
-                        <li>Whitespace Between Limit</li>
-                        <li>Pre-Configurations</li>
-                    </ul>
-                    <p>* <strong>Warning</strong> This option will lower your passwords Entropy.</p>
+                    <div id="uniqueCharactersInfo">
+                        <p>* This option can not be combined with the following modifiers:</p>
+                        <ul>
+                            <li>Repeating Characters</li>
+                            <li>Whitespace Beginning/End (Required OR Optional)</li>
+                            <li>Whitespace Between Limit</li>
+                            <li>Pre-Configurations</li>
+                        </ul>
+                        <p>* <strong>Warning</strong> This option will lower your passwords Entropy.</p>
+                    </div>
                 </div>
                 <fieldset>
-                    <legend>Repeat Characters</legend>
-                    <div>
-                        <label>Repeating Character:
-                            <input type="checkbox"
-                                form="simplePass_form"
-                                name="repeatingCharacter">
-                        </label>
-                        <p>Ensure at least one character in the password will be repeated.</p>
-                    </div>
-                    <div>
-                        <label>Repeating Character Limit:
-                            <input type="number"
-                                form="simplePass_form"
-                                name="max_repeatingCharacter"
-                                min="1"
-                                max="256"
-                                step="1">
-                        </label>
-                        <p>Specify the number of characters that should be repeated in the password.</p>
-                    </div>
-                    <div>
-                        <label>Custom Repeats:
-                            <input type="text"
-                                form="simplePass_form"
-                                name="customRepeatingCharacters"
-                                minlength="1"
-                                maxlength="256">
-                        </label>
-                        <p>Specify the exact characters that should be repeated in the password, as-well as indicate the
-                            number of times the character should repeat.</p>
-                        <p>The input either needs to be a single string containing all characters wished to be repeated
-                            (abcd). Or it can be formatted to define the amount each character should be repeated (b a:3
-                            \::4);</p>
-                        <ul>
-                            <li>each set should be space separated,</li>
-                            <li>characters single characters and characters with a repeat of 1 will default to a repeat
-                                of 2,</li>
-                            <li>to use literal characters prefix them with a "\" (forward-slash),</li>
-                        </ul>
-                        <p><b>* Note:</b> This feature is currently limited with the total of repeated characters that
-                            can be requested in a password to the constraint of <i>passwordLength - 2</i> (ie; a
-                            password of length 8 would can only contain 6 repeating characters).</p>
-                        <p><b>* Note:</b> This feature will ignore any password modifiers already set when including
-                            characters.</p>
+                    <legend>
+                        <button class="toggle"
+                            type="button"
+                            data-toggle-target="#repeatCharactersField"
+                            data-toggle="hidden"
+                            data-load-toggle="true"
+                            aria-expanded="true"
+                            aria-controls="repeatCharactersField">
+                            Repeat Characters
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                viewBox="0 0 16 16"
+                                aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                    d="M1 8a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 8ZM7.646.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 1.707V5.5a.5.5 0 0 1-1 0V1.707L6.354 2.854a.5.5 0 1 1-.708-.708l2-2ZM8 10a.5.5 0 0 1 .5.5v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L7.5 14.293V10.5A.5.5 0 0 1 8 10Z" />
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                viewBox="0 0 16 16"
+                                aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                    d="M1 8a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 8Zm7-8a.5.5 0 0 1 .5.5v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 4.293V.5A.5.5 0 0 1 8 0Zm-.5 11.707-1.146 1.147a.5.5 0 0 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 11.707V15.5a.5.5 0 0 1-1 0v-3.793Z" />
+                            </svg>
+                        </button>
+                    </legend>
+                    <div id="repeatCharactersField">
+                        <div>
+                            <label>Repeating Character:
+                                <input type="checkbox"
+                                    form="simplePass_form"
+                                    name="repeatingCharacter">
+                            </label>
+                            <p>Ensure at least one character in the password will be repeated.</p>
+                        </div>
+                        <div>
+                            <label>Repeating Character Limit:
+                                <input type="number"
+                                    form="simplePass_form"
+                                    name="max_repeatingCharacter"
+                                    min="1"
+                                    max="256"
+                                    step="1"
+                                    placeholder="Repeating Character Limit">
+                            </label>
+                            <p>Specify the number of characters that should be repeated in the password.</p>
+                        </div>
+                        <div>
+                            <label>Custom Repeating Characters:
+                                <button type="button"
+                                    class="toggle"
+                                    data-toggle-target="#customRepeatsInfo"
+                                    data-toggle="hidden"
+                                    data-load-toggle="true"
+                                    aria-expanded="true"
+                                    aria-controls="customRepeatsInfo"
+                                    aria-label="Show/Hide Custom Repeating Characters Input Information.">?</button>
+                                <input type="text"
+                                    form="simplePass_form"
+                                    name="customRepeatingCharacters"
+                                    minlength="1"
+                                    maxlength="256"
+                                    placeholder="Custom Repeating Characters"
+                                    aria-describedby="customRepeatsInfo">
+                            </label>
+                            <div id="customRepeatsInfo">
+                                <p>Specify the exact characters that should be repeated in the password, as-well as indicate the
+                                    number of times the character should repeat.</p>
+                                <p>The input either needs to be a single string containing all characters wished to be repeated
+                                    (abcd). Or it can be formatted to define the amount each character should be repeated (b a:3
+                                    \::4);</p>
+                                <ul>
+                                    <li>each set should be space separated,</li>
+                                    <li>characters single characters and characters with a repeat of 1 will default to a repeat
+                                        of 2,</li>
+                                    <li>to use literal characters prefix them with a "\" (forward-slash),</li>
+                                </ul>
+                                <p><b>* Note:</b> This feature is currently limited with the total of repeated characters that
+                                    can be requested in a password to the constraint of <i>passwordLength - 2</i> (ie; a
+                                    password of length 8 would can only contain 6 repeating characters).</p>
+                                <p><b>* Note:</b> This feature will ignore any password modifiers already set when including
+                                    characters.</p>
+                            </div>
+                        </div>
                     </div>
                 </fieldset>
                 <fieldset>
-                    <legend>Latin Basic</legend>
-                    <label>Lowercase Alpha:
-                        <input type="checkbox"
-                            form="simplePass_form"
-                            name="lowercase">
-                    </label>
-                    <label>Uppercase Alpha:
-                        <input type="checkbox"
-                            form="simplePass_form"
-                            name="uppercase">
-                    </label>
-                    <label>Numbers:
-                        <input type="checkbox"
-                            form="simplePass_form"
-                            name="numbers">
-                    </label>
-                    <label>Signs, Symbols, and Punctuation:
-                        <input type="checkbox"
-                            form="simplePass_form"
-                            name="punctuation">
-                    </label>
+                    <legend>
+                        <button class="toggle"
+                            type="button"
+                            data-toggle-target="#latinBasicField"
+                            data-toggle="hidden"
+                            data-load-toggle="true"
+                            aria-expanded="true"
+                            aria-controls="latinBasicField">
+                            Latin Basic
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                viewBox="0 0 16 16"
+                                aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                    d="M1 8a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 8ZM7.646.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 1.707V5.5a.5.5 0 0 1-1 0V1.707L6.354 2.854a.5.5 0 1 1-.708-.708l2-2ZM8 10a.5.5 0 0 1 .5.5v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L7.5 14.293V10.5A.5.5 0 0 1 8 10Z" />
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                viewBox="0 0 16 16"
+                                aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                    d="M1 8a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 8Zm7-8a.5.5 0 0 1 .5.5v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 4.293V.5A.5.5 0 0 1 8 0Zm-.5 11.707-1.146 1.147a.5.5 0 0 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 11.707V15.5a.5.5 0 0 1-1 0v-3.793Z" />
+                            </svg>
+                        </button>
+                    </legend>
+                    <div id="latinBasicField">
+                        <label>Lowercase Alpha:
+                            <input type="checkbox"
+                                form="simplePass_form"
+                                name="lowercase">
+                        </label>
+                        <label>Uppercase Alpha:
+                            <input type="checkbox"
+                                form="simplePass_form"
+                                name="uppercase">
+                        </label>
+                        <label>Numbers:
+                            <input type="checkbox"
+                                form="simplePass_form"
+                                name="numbers">
+                        </label>
+                        <label>Signs, Symbols, and Punctuation:
+                            <input type="checkbox"
+                                form="simplePass_form"
+                                name="punctuation">
+                        </label>
+                    </div>
                 </fieldset>
                 <fieldset name="whitespaceOptions"
                     form="simplePass_form">
-                    <legend>Whitespace Options</legend>
-                    <fieldset>
-                        <legend>Beginning of Password:</legend>
-                        <label>Yes:
+                    <legend>
+                        <button class="toggle"
+                            type="button"
+                            data-toggle-target="#whitespaceOptionsField"
+                            data-toggle="hidden"
+                            data-load-toggle="true"
+                            aria-expanded="true"
+                            aria-controls="whitespaceOptionsField">
+                            Whitespace Options
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                viewBox="0 0 16 16"
+                                aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                    d="M1 8a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 8ZM7.646.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 1.707V5.5a.5.5 0 0 1-1 0V1.707L6.354 2.854a.5.5 0 1 1-.708-.708l2-2ZM8 10a.5.5 0 0 1 .5.5v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L7.5 14.293V10.5A.5.5 0 0 1 8 10Z" />
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                viewBox="0 0 16 16"
+                                aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                    d="M1 8a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 8Zm7-8a.5.5 0 0 1 .5.5v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 4.293V.5A.5.5 0 0 1 8 0Zm-.5 11.707-1.146 1.147a.5.5 0 0 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 11.707V15.5a.5.5 0 0 1-1 0v-3.793Z" />
+                            </svg>
+                        </button>
+                    </legend>
+                    <div id="whitespaceOptionsField">
+                        <fieldset>
+                            <legend>Beginning of Password</legend>
+                            <label>Yes:
+                                <input type="checkbox"
+                                    form="simplePass_form"
+                                    name="whitespaceBeginning">
+                            </label>
+                            <label>Required:
+                                <input type="checkbox"
+                                    form="simplePass_form"
+                                    name="required_whitespaceBeginning">
+                            </label>
+                        </fieldset>
+                        <fieldset>
+                            <legend>End of Password</legend>
+                            <label>Yes:
+                                <input type="checkbox"
+                                    form="simplePass_form"
+                                    name="whitespaceEnd">
+                            </label>
+                            <label>Required:
+                                <input type="checkbox"
+                                    form="simplePass_form"
+                                    name="required_whitespaceEnd">
+                            </label>
+                        </fieldset>
+                        <fieldset>
+                            <legend>Middle of Password</legend>
+                            <label>Yes:
+                                <input type="checkbox"
+                                    form="simplePass_form"
+                                    name="whitespaceBetween">
+                            </label>
+                            <label>Limit:
+                                <input type="number"
+                                    step="1"
+                                    min="1"
+                                    max="252"
+                                    form="simplePass_form"
+                                    name="max_whitespaceBetween"
+                                    placeholder="Limit Middle of Password Whitespace">
+                            </label>
+                        </fieldset>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>
+                        <button class="toggle"
+                            type="button"
+                            data-toggle-target="#latinSupplementField"
+                            data-toggle="hidden"
+                            data-load-toggle="true"
+                            aria-expanded="true"
+                            aria-controls="latinSupplementField">
+                            Latin Supplement
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                viewBox="0 0 16 16"
+                                aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                    d="M1 8a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 8ZM7.646.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 1.707V5.5a.5.5 0 0 1-1 0V1.707L6.354 2.854a.5.5 0 1 1-.708-.708l2-2ZM8 10a.5.5 0 0 1 .5.5v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L7.5 14.293V10.5A.5.5 0 0 1 8 10Z" />
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                viewBox="0 0 16 16"
+                                aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                    d="M1 8a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 8Zm7-8a.5.5 0 0 1 .5.5v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 4.293V.5A.5.5 0 0 1 8 0Zm-.5 11.707-1.146 1.147a.5.5 0 0 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 11.707V15.5a.5.5 0 0 1-1 0v-3.793Z" />
+                            </svg>
+                        </button>
+                    </legend>
+                    <div id="latinSupplementField">
+                        <label>Lowercase Characters:
                             <input type="checkbox"
                                 form="simplePass_form"
-                                name="whitespaceBeginning">
+                                name="lowercase_supplement">
                         </label>
-                        <label>Required:
+                        <label>Uppercase Characters:
                             <input type="checkbox"
                                 form="simplePass_form"
-                                name="required_whitespaceBeginning">
+                                name="uppercase_supplement">
                         </label>
-                    </fieldset>
-                    <fieldset>
-                        <legend>End of Password:</legend>
-                        <label>Yes:
+                        <label>Signs, Symbols, and Punctuation:
                             <input type="checkbox"
                                 form="simplePass_form"
-                                name="whitespaceEnd">
+                                name="symbols_supplement">
                         </label>
-                        <label>Required:
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>
+                        <button class="toggle"
+                            type="button"
+                            data-toggle-target="#latinExtendedAField"
+                            data-toggle="hidden"
+                            data-load-toggle="true"
+                            aria-expanded="true"
+                            aria-controls="latinExtendedAField">
+                            Latin Extended A
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                viewBox="0 0 16 16"
+                                aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                    d="M1 8a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 8ZM7.646.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 1.707V5.5a.5.5 0 0 1-1 0V1.707L6.354 2.854a.5.5 0 1 1-.708-.708l2-2ZM8 10a.5.5 0 0 1 .5.5v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L7.5 14.293V10.5A.5.5 0 0 1 8 10Z" />
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                viewBox="0 0 16 16"
+                                aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                    d="M1 8a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 8Zm7-8a.5.5 0 0 1 .5.5v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 4.293V.5A.5.5 0 0 1 8 0Zm-.5 11.707-1.146 1.147a.5.5 0 0 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 11.707V15.5a.5.5 0 0 1-1 0v-3.793Z" />
+                            </svg>
+                        </button>
+                    </legend>
+                    <di id="latinExtendedAField">
+                        <label>Lowercase Characters:
                             <input type="checkbox"
                                 form="simplePass_form"
-                                name="required_whitespaceEnd">
+                                name="lowercase_extended_a">
                         </label>
-                    </fieldset>
-                    <fieldset>
-                        <label>Between:
+                        <label>Uppercase Characters:
                             <input type="checkbox"
                                 form="simplePass_form"
-                                name="whitespaceBetween">
+                                name="uppercase_extended_a">
                         </label>
-                        <label>Limit:
-                            <input type="number"
-                                step="1"
-                                min="1"
-                                max="252"
+                        <label>Ligatures:
+                            <input type="checkbox"
                                 form="simplePass_form"
-                                name="max_whitespaceBetween">
+                                name="ligature_extended_a">
                         </label>
-                    </fieldset>
+                    </di>
                 </fieldset>
                 <fieldset>
-                    <legend>Latin Supplement</legend>
-                    <label>Lowercase Characters:
-                        <input type="checkbox"
-                            form="simplePass_form"
-                            name="lowercase_supplement">
-                    </label>
-                    <label>Uppercase Characters:
-                        <input type="checkbox"
-                            form="simplePass_form"
-                            name="uppercase_supplement">
-                    </label>
-                    <label>Signs, Symbols, and Punctuation:
-                        <input type="checkbox"
-                            form="simplePass_form"
-                            name="symbols_supplement">
-                    </label>
+                    <legend>
+                        <button class="toggle"
+                            type="button"
+                            data-toggle-target="#latinExtendedBField"
+                            data-toggle="hidden"
+                            data-load-toggle="true"
+                            aria-expanded="true"
+                            aria-controls="latinExtendedBField">
+                            Latin Extended B
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                viewBox="0 0 16 16"
+                                aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                    d="M1 8a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 8ZM7.646.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 1.707V5.5a.5.5 0 0 1-1 0V1.707L6.354 2.854a.5.5 0 1 1-.708-.708l2-2ZM8 10a.5.5 0 0 1 .5.5v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L7.5 14.293V10.5A.5.5 0 0 1 8 10Z" />
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                viewBox="0 0 16 16"
+                                aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                    d="M1 8a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 8Zm7-8a.5.5 0 0 1 .5.5v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 4.293V.5A.5.5 0 0 1 8 0Zm-.5 11.707-1.146 1.147a.5.5 0 0 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 11.707V15.5a.5.5 0 0 1-1 0v-3.793Z" />
+                            </svg>
+                        </button>
+                    </legend>
+                    <div id="latinExtendedBField">
+                        <label> Lowercase Characters:
+                            <input type="checkbox"
+                                form="simplePass_form"
+                                name="lowercase_extended_b">
+                        </label>
+                        <label> Uppercase Characters:
+                            <input type="checkbox"
+                                form="simplePass_form"
+                                name="uppercase_extended_b">
+                        </label>
+                        <label> Mixed-Case Characters:
+                            <input type="checkbox"
+                                form="simplePass_form"
+                                name="mixedcase_extended_b">
+                        </label>
+                        <label> Insensitive-Case Characters:
+                            <input type="checkbox"
+                                form="simplePass_form"
+                                name="insensitivecase_extended_b">
+                        </label>
+                    </div>
                 </fieldset>
                 <fieldset>
-                    <legend>Latin Extended A</legend>
-                    <label>Lowercase Characters:
-                        <input type="checkbox"
-                            form="simplePass_form"
-                            name="lowercase_extended_a">
-                    </label>
-                    <label>Uppercase Characters:
-                        <input type="checkbox"
-                            form="simplePass_form"
-                            name="uppercase_extended_a">
-                    </label>
-                    <label>Ligatures:
-                        <input type="checkbox"
-                            form="simplePass_form"
-                            name="ligature_extended_a">
-                    </label>
+                    <legend>
+                        <button class="toggle"
+                            type="button"
+                            data-toggle-target="#latinIpaExtensionField"
+                            data-toggle="hidden"
+                            data-load-toggle="true"
+                            aria-expanded="true"
+                            aria-controls="latinIpaExtensionField">
+                            Latin IPA Extension
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                viewBox="0 0 16 16"
+                                aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                    d="M1 8a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 8ZM7.646.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 1.707V5.5a.5.5 0 0 1-1 0V1.707L6.354 2.854a.5.5 0 1 1-.708-.708l2-2ZM8 10a.5.5 0 0 1 .5.5v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L7.5 14.293V10.5A.5.5 0 0 1 8 10Z" />
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                viewBox="0 0 16 16"
+                                aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                    d="M1 8a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 8Zm7-8a.5.5 0 0 1 .5.5v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 4.293V.5A.5.5 0 0 1 8 0Zm-.5 11.707-1.146 1.147a.5.5 0 0 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 11.707V15.5a.5.5 0 0 1-1 0v-3.793Z" />
+                            </svg>
+                        </button>
+                    </legend>
+                    <div id="latinIpaExtensionField">
+                        <label> Lowercase Characters:
+                            <input type="checkbox"
+                                form="simplePass_form"
+                                name="lowercase_ipa_extension">
+                        </label>
+                        <label> Uppercase Characters:
+                            <input type="checkbox"
+                                form="simplePass_form"
+                                name="uppercase_ipa_extension">
+                        </label>
+                    </div>
                 </fieldset>
                 <fieldset>
-                    <legend>Latin Extended B</legend>
-                    <label> Lowercase Characters:
-                        <input type="checkbox"
-                            form="simplePass_form"
-                            name="lowercase_extended_b">
-                    </label>
-                    <label> Uppercase Characters:
-                        <input type="checkbox"
-                            form="simplePass_form"
-                            name="uppercase_extended_b">
-                    </label>
-                    <label> Mixed-Case Characters:
-                        <input type="checkbox"
-                            form="simplePass_form"
-                            name="mixedcase_extended_b">
-                    </label>
-                    <label> Insensitive-Case Characters:
-                        <input type="checkbox"
-                            form="simplePass_form"
-                            name="insensitivecase_extended_b">
-                    </label>
+                    <legend>
+                        <button class="toggle"
+                            type="button"
+                            data-toggle-target="#modifierLettersField"
+                            data-toggle="hidden"
+                            data-load-toggle="true"
+                            aria-expanded="true"
+                            aria-controls="modifierLettersField">
+                            Modifier Letters
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                viewBox="0 0 16 16"
+                                aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                    d="M1 8a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 8ZM7.646.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 1.707V5.5a.5.5 0 0 1-1 0V1.707L6.354 2.854a.5.5 0 1 1-.708-.708l2-2ZM8 10a.5.5 0 0 1 .5.5v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L7.5 14.293V10.5A.5.5 0 0 1 8 10Z" />
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                viewBox="0 0 16 16"
+                                aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                    d="M1 8a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 8Zm7-8a.5.5 0 0 1 .5.5v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 4.293V.5A.5.5 0 0 1 8 0Zm-.5 11.707-1.146 1.147a.5.5 0 0 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 11.707V15.5a.5.5 0 0 1-1 0v-3.793Z" />
+                            </svg>
+                        </button>
+                    </legend>
+                    <div id="modifierLettersField">
+                        <label>Characters:
+                            <input type="checkbox"
+                                form="simplePass_form"
+                                name="character_modifier_letters">
+                        </label>
+                        <label>Symbols:
+                            <input type="checkbox"
+                                form="simplePass_form"
+                                name="symbol_modifier_letters">
+                        </label>
+                    </div>
                 </fieldset>
                 <fieldset>
-                    <legend>Latin IPA Extension</legend>
-                    <label> Lowercase Characters:
-                        <input type="checkbox"
-                            form="simplePass_form"
-                            name="lowercase_ipa_extension">
-                    </label>
-                    <label> Uppercase Characters:
-                        <input type="checkbox"
-                            form="simplePass_form"
-                            name="uppercase_ipa_extension">
-                    </label>
+                    <legend>
+                        <button class="toggle"
+                            type="button"
+                            data-toggle-target="#greekAndCopticField"
+                            data-toggle="hidden"
+                            data-load-toggle="true"
+                            aria-expanded="true"
+                            aria-controls="greekAndCopticField">
+                            Greek And Coptic
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                viewBox="0 0 16 16"
+                                aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                    d="M1 8a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 8ZM7.646.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 1.707V5.5a.5.5 0 0 1-1 0V1.707L6.354 2.854a.5.5 0 1 1-.708-.708l2-2ZM8 10a.5.5 0 0 1 .5.5v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L7.5 14.293V10.5A.5.5 0 0 1 8 10Z" />
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                viewBox="0 0 16 16"
+                                aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                    d="M1 8a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 8Zm7-8a.5.5 0 0 1 .5.5v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 4.293V.5A.5.5 0 0 1 8 0Zm-.5 11.707-1.146 1.147a.5.5 0 0 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 11.707V15.5a.5.5 0 0 1-1 0v-3.793Z" />
+                            </svg>
+                        </button>
+                    </legend>
+                    <div id="greekAndCopticField">
+                        <label>Lowercase Characters:
+                            <input type="checkbox"
+                                form="simplePass_form"
+                                name="lowercase_greek_coptic">
+                        </label>
+                        <label>Uppercase Characters:
+                            <input type="checkbox"
+                                form="simplePass_form"
+                                name="uppercase_greek_coptic">
+                        </label>
+                        <label> Insensitive-Case Characters:
+                            <input type="checkbox"
+                                form="simplePass_form"
+                                name="insensitivecase_greek_coptic">
+                        </label>
+                        <label>Symbols:
+                            <input type="checkbox"
+                                form="simplePass_form"
+                                name="symbol_greek_coptic">
+                        </label>
+                    </div>
                 </fieldset>
                 <fieldset>
-                    <legend>Modifier Letters</legend>
-                    <label>Characters:
-                        <input type="checkbox"
-                            form="simplePass_form"
-                            name="character_modifier_letters">
-                    </label>
-                    <label>Symbols:
-                        <input type="checkbox"
-                            form="simplePass_form"
-                            name="symbol_modifier_letters">
-                    </label>
+                    <legend>
+                        <button class="toggle"
+                            type="button"
+                            data-toggle-target="#cyrillicField"
+                            data-toggle="hidden"
+                            data-load-toggle="true"
+                            aria-expanded="true"
+                            aria-controls="cyrillicField">
+                            Cyrillic
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                viewBox="0 0 16 16"
+                                aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                    d="M1 8a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 8ZM7.646.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 1.707V5.5a.5.5 0 0 1-1 0V1.707L6.354 2.854a.5.5 0 1 1-.708-.708l2-2ZM8 10a.5.5 0 0 1 .5.5v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L7.5 14.293V10.5A.5.5 0 0 1 8 10Z" />
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                viewBox="0 0 16 16"
+                                aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                    d="M1 8a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 8Zm7-8a.5.5 0 0 1 .5.5v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 4.293V.5A.5.5 0 0 1 8 0Zm-.5 11.707-1.146 1.147a.5.5 0 0 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 11.707V15.5a.5.5 0 0 1-1 0v-3.793Z" />
+                            </svg>
+                        </button>
+                    </legend>
+                    <div id="cyrillicField">
+                        <p>
+                            * <strong>Note</strong>: This set excludes '<em>Combination Characters</em>' (decimal values:
+                            1155-1161), because they are illegible when they are the only characters selected and can be
+                            hard to decern when combined with other characters.
+                        </p>
+                        <label>Lowercase Characters:
+                            <input type="checkbox"
+                                form="simplePass_form"
+                                name="lowercase_cyrillic">
+                        </label>
+                        <label>Uppercase Characters:
+                            <input type="checkbox"
+                                form="simplePass_form"
+                                name="uppercase_cyrillic">
+                        </label>
+                        <label>Symbols:
+                            <input type="checkbox"
+                                form="simplePass_form"
+                                name="symbols_cyrillic">
+                        </label>
+                    </div>
                 </fieldset>
                 <fieldset>
-                    <legend>Greek And Coptic</legend>
-                    <label>Lowercase Characters:
-                        <input type="checkbox"
-                            form="simplePass_form"
-                            name="lowercase_greek_coptic">
-                    </label>
-                    <label>Uppercase Characters:
-                        <input type="checkbox"
-                            form="simplePass_form"
-                            name="uppercase_greek_coptic">
-                    </label>
-                    <label> Insensitive-Case Characters:
-                        <input type="checkbox"
-                            form="simplePass_form"
-                            name="insensitivecase_greek_coptic">
-                    </label>
-                    <label>Symbols:
-                        <input type="checkbox"
-                            form="simplePass_form"
-                            name="symbol_greek_coptic">
-                    </label>
+                    <legend>
+                        <button class="toggle"
+                            type="button"
+                            data-toggle-target="#cyrillicSupplementField"
+                            data-toggle="hidden"
+                            data-load-toggle="true"
+                            aria-expanded="true"
+                            aria-controls="cyrillicSupplementField">
+                            Cyrillic Supplement
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                viewBox="0 0 16 16"
+                                aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                    d="M1 8a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 8ZM7.646.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 1.707V5.5a.5.5 0 0 1-1 0V1.707L6.354 2.854a.5.5 0 1 1-.708-.708l2-2ZM8 10a.5.5 0 0 1 .5.5v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L7.5 14.293V10.5A.5.5 0 0 1 8 10Z" />
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                viewBox="0 0 16 16"
+                                aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                    d="M1 8a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 8Zm7-8a.5.5 0 0 1 .5.5v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 4.293V.5A.5.5 0 0 1 8 0Zm-.5 11.707-1.146 1.147a.5.5 0 0 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 11.707V15.5a.5.5 0 0 1-1 0v-3.793Z" />
+                            </svg>
+                        </button>
+                    </legend>
+                    <div id="cyrillicSupplementField">
+                        <label>Lowercase Characters:
+                            <input type="checkbox"
+                                form="simplePass_form"
+                                name="lowercase_cyrillic_supplement">
+                        </label>
+                        <label>Uppercase Characters:
+                            <input type="checkbox"
+                                form="simplePass_form"
+                                name="uppercase_cyrillic_supplement">
+                        </label>
+                        <label>Miscellaneous Characters:
+                            <input type="checkbox"
+                                form="simplePass_form"
+                                name="misc_cyrillic_supplement">
+                        </label>
+                    </div>
                 </fieldset>
-                <fieldset>
-                    <legend>Cyrillic</legend>
-                    <p>
-                        * <strong>Note</strong>: This set excludes '<em>Combination Characters</em>' (decimal values:
-                        1155-1161), because they are illegible when they are the only characters selected and can be
-                        hard to decern when combined with other characters.
-                    </p>
-                    <label>Lowercase Characters:
-                        <input type="checkbox"
-                            form="simplePass_form"
-                            name="lowercase_cyrillic">
-                    </label>
-                    <label>Uppercase Characters:
-                        <input type="checkbox"
-                            form="simplePass_form"
-                            name="uppercase_cyrillic">
-                    </label>
-                    <label>Symbols:
-                        <input type="checkbox"
-                            form="simplePass_form"
-                            name="symbols_cyrillic">
-                    </label>
-                </fieldset>
-                <fieldset>
-                    <legend>Cyrillic Supplement</legend>
-                    <label>Lowercase Characters:
-                        <input type="checkbox"
-                            form="simplePass_form"
-                            name="lowercase_cyrillic_supplement">
-                    </label>
-                    <label>Uppercase Characters:
-                        <input type="checkbox"
-                            form="simplePass_form"
-                            name="uppercase_cyrillic_supplement">
-                    </label>
-                    <label>Miscellaneous Characters:
-                        <input type="checkbox"
-                            form="simplePass_form"
-                            name="misc_cyrillic_supplement">
-                    </label>
-                </fieldset>
-                <div>
-                    <label>General Punctuation
-                        <input type="checkbox"
-                            form="simplePass_form"
-                            name="general_punctuation">
-                    </label>
-                    <p>
-                        * <strong>Note</strong>: This does not include the following
-                        character-codes/character-code-sets; [8192-8207], [8232-8239], [8287-8303].
-                    </p>
-                </div>
-                <div>
-                    <label>Currency Symbols
-                        <input type="checkbox"
-                            form="simplePass_form"
-                            name="currency_symbols">
-                    </label>
-                    <p>
-                        * <strong>Note</strong>: This does not include the following
-                        character-codes/character-code-sets; [8372].
-                    </p>
-                </div>
-                <div>
-                    <label>Miscellaneous Technical
-                        <input type="checkbox"
-                            form="simplePass_form"
-                            name="misc_technical">
-                    </label>
-                </div>
-                <div>
-                    <label>Box Drawings
-                        <input type="checkbox"
-                            form="simplePass_form"
-                            name="box_drawings">
-                    </label>
-                </div>
-                <div>
-                    <label>Block Elements
-                        <input type="checkbox"
-                            form="simplePass_form"
-                            name="block_elements">
-                    </label>
-                </div>
-                <div>
-                    <label>Miscellaneous Symbols
-                        <input type="checkbox"
-                            form="simplePass_form"
-                            name="misc_symbols">
-                    </label>
-                </div>
-                <div>
-                    <label>Dingbats
-                        <input type="checkbox"
-                            form="simplePass_form"
-                            name="dingbats">
-                    </label>
-                </div>
+                <label>General Punctuation
+                    <input type="checkbox"
+                        form="simplePass_form"
+                        name="general_punctuation"
+                        aria-describedby="generalPunctuationInfo">
+                    <button type="button"
+                        class="toggle"
+                        data-toggle-target="#generalPunctuationInfo"
+                        data-toggle="hidden"
+                        data-load-toggle="true"
+                        aria-expanded="true"
+                        aria-controls="generalPunctuationInfo"
+                        aria-label="Show/Hide General Punctuation Input Information.">?</button>
+                </label>
+                <p id="generalPunctuationInfo">
+                    * <strong>Note</strong>: This does not include the following
+                    character-codes/character-code-sets; [8192-8207], [8232-8239], [8287-8303].
+                </p>
+                <label>Currency Symbols
+                    <input type="checkbox"
+                        form="simplePass_form"
+                        name="currency_symbols"
+                        aria-describedby="currencySymbolsInfo">
+                    <button type="button"
+                        class="toggle"
+                        data-toggle-target="#currencySymbolsInfo"
+                        data-toggle="hidden"
+                        data-load-toggle="true"
+                        aria-expanded="true"
+                        aria-controls="currencySymbolsInfo"
+                        aria-label="Show/Hide Currency Symbols Input Information.">?</button>
+                </label>
+                <p id="currencySymbolsInfo">
+                    * <strong>Note</strong>: This does not include the following
+                    character-codes/character-code-sets; [8372].
+                </p>
+                <label>Miscellaneous Technical
+                    <input type="checkbox"
+                        form="simplePass_form"
+                        name="misc_technical">
+                </label>
+                <label>Box Drawings
+                    <input type="checkbox"
+                        form="simplePass_form"
+                        name="box_drawings">
+                </label>
+                <label>Block Elements
+                    <input type="checkbox"
+                        form="simplePass_form"
+                        name="block_elements">
+                </label>
+                <label>Miscellaneous Symbols
+                    <input type="checkbox"
+                        form="simplePass_form"
+                        name="misc_symbols">
+                </label>
+                <label>Dingbats
+                    <input type="checkbox"
+                        form="simplePass_form"
+                        name="dingbats">
+                </label>
             </form>
         </main>
         <noscript>

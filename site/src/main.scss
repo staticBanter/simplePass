@@ -6,6 +6,7 @@ $padding: 1rem;
 $padding-small: math.div($padding, 2);
 $margin: 1rem;
 $margin-small: math.div($margin, 2);
+$margin-x-small: math.div($margin,3);
 
 /**
 * Generics
@@ -66,6 +67,11 @@ label {
 
 label {
 
+    input,
+    textarea{
+        margin-top: $margin-x-small;
+    }
+
     > input:not([type="checkbox"], [type="radio"]),
     > textarea {
         width: 100%;
@@ -75,11 +81,6 @@ label {
     > input[type="radio"] {
         margin: auto $margin;
     }
-
-    > * + button {
-        margin-top: $margin-small;
-    }
-
 }
 
 textarea{
@@ -90,6 +91,22 @@ textarea{
 button {
     min-height: 44px;
     min-width: 44px;
+}
+
+label,
+legend{
+    > button {display: contents;}
+}
+
+label > button{
+    display: revert;
+    min-height: min-content;
+    min-width: min-content;
+    margin-left: auto;
+}
+
+legend > button > svg{
+    vertical-align: text-bottom;
 }
 
 pre {
@@ -151,11 +168,45 @@ pre {
     margin-top: $margin-small;
 }
 
+.toggle{
+
+    svg:nth-of-type(2){
+        display: none;
+    }
+
+}
+
+.toggle[data-toggle-state="on"]{
+
+    svg:nth-of-type(1){
+        display: none;
+    }
+
+    svg:nth-of-type(2){
+        display: revert;
+    }
+
+}
+
 /**
 * IDs
 **/
 #simplePass_form {
     border-radius: 0 0 10px 10px;
+}
+
+#simplePass_passwordStats{
+
+    > div:first-of-type{
+        display: flex;
+    }
+
+    > div:first-of-type > button:first-of-type{
+        margin-left: auto;
+        height: min;
+        align-self: center;
+    }
+
 }
 
 /**
@@ -168,4 +219,9 @@ form {
     box-sizing: border-box;
     padding: $padding-small;
     margin: 0 $margin-small;
+}
+
+button,
+.toggle{
+    cursor: pointer;
 }

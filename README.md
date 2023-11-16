@@ -15,7 +15,7 @@
 
 ## About
 
-simplePass is a JavaScript password generator.
+simplePass is a JavaScript password generator designed to simplify the creation of complex passwords.
 
 PWA Size: ~2MB
 
@@ -110,8 +110,9 @@ Partially Supported Character Sets:
 
 | Feature | [Firefox](https://www.mozilla.org/en-CA/firefox/)* | [Firefox (Android)](https://www.mozilla.org/en-CA/firefox/browsers/mobile/android/) | [Google Chrome](https://www.google.com/intl/en_ca/chrome/) | [Google Chrome (Android)](https://www.google.com/chrome/go-mobile/) | [GNome Web](https://wiki.gnome.org/Apps/Web) | [Edge](https://www.microsoft.com/en-us/edge) | [Opera](https://www.opera.com/) | [Safari](https://www.apple.com/ca/safari/) | [Safari (iOS)](https://www.apple.com/ca/safari/) | [Samsung Internet](https://www.samsung.com/ca/apps/samsung-internet/) | [Webview Android](https://play.google.com/store/apps/details?id=com.google.android.webview) |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Minimum Version (In Browser Use): | 63 | 63 | 66 | 66 | 44.6 | 79 | 53 | 13.1 | 13.4 | 9.0 | 66 |
-| Minimum Version (PWA Use): | 99 | 99 | ^ | ^ | * | ^ | ^ | 15.4 | 15.4 | ^ | ^ |
+| In Browser Use: | 63 | 63 | 66 | 66 | 44.6 | 79 | 53 | 13.1 | 13.4 | 9.0 | 66 |
+| PWA Use: | 99 | 99 | ^ | ^ | * | ^ | ^ | 15.4 | 15.4 | ^ | ^ |
+| Compression Strength Checks | 113 | 113 | 80 | 80 | 44.6 | 80 | 67 | 16.4 | 16.4 | 13.0 | 80
 
 \* Numbers are acquired using the Mozilla Developer *Browser Compatibility* section.
 

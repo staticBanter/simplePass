@@ -40,6 +40,11 @@ import * as ElementToggle from "./element-toggle.js";
                 uppercase: true,
                 numbers: true,
                 punctuation: true
+            },
+            {
+                strengthCheck: {
+                    entropyTarget: true
+                }
             }
         );
 

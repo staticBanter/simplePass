@@ -1,3 +1,23 @@
+/*!
+ *
+ * simplePass - A JavaScript password generator.
+ * Copyright (C) 2023  Jordan Vezina(staticBanter)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ */
+
 'use strict';
 
 export default (() => {
@@ -62,7 +82,36 @@ export default (() => {
 
             });
 
+            const internalAttributes = {
+                'data-toggle-state':['on','off'],
+                'aria-expanded':['false','true']
+            }
+
+            Object.entries(internalAttributes).forEach(([key,value])=>{
+
+                const toggleAttribute = toggle.getAttribute(key);
+
+                // Aria attributes have to be explicitly set first
+                if(
+                    key.includes('aria-')
+                    && toggleAttribute
+                ){
+                    toggleAttribute === value[1]?
+                        toggle.setAttribute(key, value[0]):
+                        toggle.setAttribute(key, value[1]);
+                }else if(!key.includes('aria-')){
+                    toggleAttribute === value[1]?
+                    toggle.setAttribute(key, value[0]):
+                    toggle.setAttribute(key, value[1]);
+                }
+
+            })
+
         });
+
+        if(toggle.dataset.loadToggle){
+            toggle.click();
+        }
 
     });
 

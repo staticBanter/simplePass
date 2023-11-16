@@ -3,16 +3,26 @@
 
     <head>
         <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="application-name" content="simplePass">
-        <meta name="application-url" content="https://staticbanter.github.io/simplePass/">
-        <meta name="creator" content="staticBanter">
-        <meta name="keywords" content="javascript,js,password-generator,password,generator,progressive-web-application,pwa">
-        <meta name="description" content="A JavaScript password generator.">
-        <meta name="theme-color" content="#130E1E">
-        <meta name="robots" content="index, follow, max-snippet:30">
-        <meta name="thumbnail" content="./storage/icons/simplePass-Logo-1080.png">
+        <meta http-equiv="X-UA-Compatible"
+            content="IE=edge">
+        <meta name="viewport"
+            content="width=device-width, initial-scale=1.0">
+        <meta name="application-name"
+            content="simplePass">
+        <meta name="application-url"
+            content="https://staticbanter.github.io/simplePass/">
+        <meta name="creator"
+            content="staticBanter">
+        <meta name="keywords"
+            content="javascript,js,password-generator,password,generator,progressive-web-application,pwa">
+        <meta name="description"
+            content="A JavaScript password generator.">
+        <meta name="theme-color"
+            content="#130E1E">
+        <meta name="robots"
+            content="index, follow, max-snippet:30">
+        <meta name="thumbnail"
+            content="./storage/icons/simplePass-Logo-1080.png">
         <!--
         simplePass - A JavaScript password generator.
         Copyright (C) 2023  Jordan Vezina(staticBanter)
@@ -32,41 +42,71 @@
     -->
 
         <!--Open Graph Protocol Meta Data-->
-        <meta property="og:title" content="simplePass | Demo">
-        <meta property="og:type" content="website">
-        <meta property="og:url" content="https://staticbanter.github.io/simplePass/">
-        <meta property="og:description" content="A JavaScript password generator.">
-        <meta property="og:locale" content="en_CA">
-        <meta property="og:locale:alternate" content="en_US">
-        <meta property="og:locale:alternate" content="en_JM">
-        <meta property="og:locale:alternate" content="en_US">
-        <meta property="og:locale:alternate" content="en_GB">
-        <meta property="og:locale:alternate" content="en_AU">
-        <meta property="og:locale:alternate" content="en_IE">
-        <meta property="og:site_name" content="GitHub">
+        <meta property="og:title"
+            content="simplePass | Demo">
+        <meta property="og:type"
+            content="website">
+        <meta property="og:url"
+            content="https://staticbanter.github.io/simplePass/">
+        <meta property="og:description"
+            content="A JavaScript password generator.">
+        <meta property="og:locale"
+            content="en_CA">
+        <meta property="og:locale:alternate"
+            content="en_US">
+        <meta property="og:locale:alternate"
+            content="en_JM">
+        <meta property="og:locale:alternate"
+            content="en_US">
+        <meta property="og:locale:alternate"
+            content="en_GB">
+        <meta property="og:locale:alternate"
+            content="en_AU">
+        <meta property="og:locale:alternate"
+            content="en_IE">
+        <meta property="og:site_name"
+            content="GitHub">
 
         <!--iOS/Safari-->
-        <link type="image/png" rel="apple-touch-icon" href="./storage/icons/simplePass-Logo-512.png">
-        <meta name="apple-mobile-web-app-status-bar" content="#130E1E">
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-status-bar-style" content="#130E1E">
-        <meta name="apple-mobile-web-app-title" content="simplePass">
-        <meta name="format-detection" content="telephone=no">
-        <meta name="format-detection" content="address=no">
+        <link type="image/png"
+            rel="apple-touch-icon"
+            href="./storage/icons/simplePass-Logo-512.png">
+        <meta name="apple-mobile-web-app-status-bar"
+            content="#130E1E">
+        <meta name="apple-mobile-web-app-capable"
+            content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style"
+            content="#130E1E">
+        <meta name="apple-mobile-web-app-title"
+            content="simplePass">
+        <meta name="format-detection"
+            content="telephone=no">
+        <meta name="format-detection"
+            content="address=no">
 
         <!--Chrome-->
-        <meta name="mobile-web-application-capable" content="yes">
+        <meta name="mobile-web-application-capable"
+            content="yes">
 
         <!--Win8 Support-->
-        <meta name="msapplication-TileColor" content="#130E1E">
-        <meta name="msapplication-TileImage" content="./storage/icons/simplePass-Logo-512.png">
-        <meta name="msapplication-tooltip" content="simplePass Password Generator">
+        <meta name="msapplication-TileColor"
+            content="#130E1E">
+        <meta name="msapplication-TileImage"
+            content="./storage/icons/simplePass-Logo-512.png">
+        <meta name="msapplication-tooltip"
+            content="simplePass Password Generator">
 
         <title>simplePass | Demo</title>
-        <script type="module" src="./main.js"></script>
-        <link type="text/css" href="./main.css" rel="stylesheet">
-        <link rel="manifest" href="./manifest.json">
-        <link type="image/png" rel="icon" href="./storage/icons/simplePass-Logo-512.png">
+        <script type="module"
+            src="./main.js"></script>
+        <link type="text/css"
+            href="./main.css"
+            rel="stylesheet">
+        <link rel="manifest"
+            href="./manifest.json">
+        <link type="image/png"
+            rel="icon"
+            href="./storage/icons/simplePass-Logo-512.png">
         <style type="text/css">
             main {
                 padding: 0 0.5rem;
@@ -232,19 +272,19 @@ const passwordEntropy = document.body.querySelector('.simplePass_passwordEntropy
 
 // Create our password
 const initialPassword = simplePass(
-    {
-        length:22,
-        lowercase:true,
-        uppercase:true,
-        numbers:true,
-        punctuation:true
-    },
-    {
-        // We are going to style the 'display password' element using inline styling.
-        styleTarget:displayPassword,
-        styleType:"inline"
-    }
-);
+            {
+                length: 22,
+                lowercase: true,
+                uppercase: true,
+                numbers: true,
+                punctuation: true
+            },
+            {
+                strengthCheck: {
+                    entropyTarget: true
+                }
+            }
+        );
 
 // Set our 'display element' text to the password.
 displayPassword.innerText = initialPassword.password;
@@ -359,7 +399,9 @@ simplePass.init();
                     </p>
                     <label>
                         Password:
-                        <input type="text" class="simplePass_passwordTarget" readonly>
+                        <input type="text"
+                            class="simplePass_passwordTarget"
+                            readonly>
                     </label>
                 </div>
                 <div>
@@ -422,17 +464,30 @@ simplePass.init();
                     <p>
                         The result should look like something below:
                     </p>
-                    <form id="registration" action="/" method="POST">
+                    <form id="registration"
+                        action="/"
+                        method="POST">
                         <b>Registration</b>
                         <label>Username:
-                            <input type="text" name="username" form="registration" placeholder="Username">
+                            <input type="text"
+                                name="username"
+                                form="registration"
+                                placeholder="Username">
                         </label>
                         <label>Password:
-                            <input type="text" name="password" form="registration" placeholder="Password" class="simplePass_passwordTarget_1" readonly>
+                            <input type="text"
+                                name="password"
+                                form="registration"
+                                placeholder="Password"
+                                class="simplePass_passwordTarget_1"
+                                readonly>
                         </label>
-                        <button type="button" class="simplePass_generator_1">Regenerate Password</button>
-                        <button type="button" class="simplePass_copier_1">Copy Password</button>
-                        <button type="button" form="registration">Register</button>
+                        <button type="button"
+                            class="simplePass_generator_1">Regenerate Password</button>
+                        <button type="button"
+                            class="simplePass_copier_1">Copy Password</button>
+                        <button type="button"
+                            form="registration">Register</button>
                     </form>
                 </div>
                 <div>
@@ -512,17 +567,31 @@ simplePass.init();
                 </pre>
                     <p>Should produce the following:</p>
                     <div class="multiForm">
-                        <form id="registration_1" action="/" method="POST">
+                        <form id="registration_1"
+                            action="/"
+                            method="POST">
                             <b>Registration</b>
                             <label>Username:
-                                <input type="text" name="username" form="registration_1" placeholder="Username">
+                                <input type="text"
+                                    name="username"
+                                    form="registration_1"
+                                    placeholder="Username">
                             </label>
                             <label>Password:
-                                <input type="text" name="password" form="registration_1" placeholder="Password" class="simplePass_passwordTarget_2" readonly>
+                                <input type="text"
+                                    name="password"
+                                    form="registration_1"
+                                    placeholder="Password"
+                                    class="simplePass_passwordTarget_2"
+                                    readonly>
                             </label>
-                            <button type="submit" form="simplePass_form" class="simplePass_generator_2">Regenerate Password</button>
-                            <button type="button" class="simplePass_copier_2">Copy Password</button>
-                            <button type="submit" form="registration_1">Register</button>
+                            <button type="submit"
+                                form="simplePass_form"
+                                class="simplePass_generator_2">Regenerate Password</button>
+                            <button type="button"
+                                class="simplePass_copier_2">Copy Password</button>
+                            <button type="submit"
+                                form="registration_1">Register</button>
                         </form>
                         <hr>
                         <!-- simplePass Password Form -->
@@ -531,16 +600,24 @@ simplePass.init();
                                 <b>Password Modifiers</b>
                             </p>
                             <label>Lowercase Alpha:
-                                <input type="checkbox" form="simplePass_form" name="lowercase">
+                                <input type="checkbox"
+                                    form="simplePass_form"
+                                    name="lowercase">
                             </label>
                             <label>Uppercase Alpha:
-                                <input type="checkbox" form="simplePass_form" name="uppercase">
+                                <input type="checkbox"
+                                    form="simplePass_form"
+                                    name="uppercase">
                             </label>
                             <label>Numbers:
-                                <input type="checkbox" form="simplePass_form" name="numbers">
+                                <input type="checkbox"
+                                    form="simplePass_form"
+                                    name="numbers">
                             </label>
                             <label>Signs, Symbols, and Punctuation:
-                                <input type="checkbox" form="simplePass_form" name="punctuation">
+                                <input type="checkbox"
+                                    form="simplePass_form"
+                                    name="punctuation">
                             </label>
                         </form>
                     </div>
@@ -629,7 +706,9 @@ simplePass.init();
                     <div class="simplePass_passwordContainer simplePass_exampleContainer">
                         <label>
                             Password:
-                            <input type="text" class="simplePass_passwordTarget_3" readonly>
+                            <input type="text"
+                                class="simplePass_passwordTarget_3"
+                                readonly>
                         </label>
                     </div>
                     <form id="simplePass_form_1">
@@ -637,22 +716,35 @@ simplePass.init();
                             <b>Password Modifiers</b>
                         </p>
                         <label>Batch Amount:
-                            <input type="number" name="passwordBatchAmount" form="simplePass_form_1">
+                            <input type="number"
+                                name="passwordBatchAmount"
+                                form="simplePass_form_1">
                         </label>
                         <label>Lowercase Alpha:
-                            <input type="checkbox" form="simplePass_form_1" name="lowercase">
+                            <input type="checkbox"
+                                form="simplePass_form_1"
+                                name="lowercase">
                         </label>
                         <label>Uppercase Alpha:
-                            <input type="checkbox" form="simplePass_form_1" name="uppercase">
+                            <input type="checkbox"
+                                form="simplePass_form_1"
+                                name="uppercase">
                         </label>
                         <label>Numbers:
-                            <input type="checkbox" form="simplePass_form_1" name="numbers">
+                            <input type="checkbox"
+                                form="simplePass_form_1"
+                                name="numbers">
                         </label>
                         <label>Signs, Symbols, and Punctuation:
-                            <input type="checkbox" form="simplePass_form_1" name="punctuation">
+                            <input type="checkbox"
+                                form="simplePass_form_1"
+                                name="punctuation">
                         </label>
-                        <button type="submit" form="simplePass_form_1" class="simplePass_generator_3">Regenerate Password</button>
-                        <button type="button" class="simplePass_copier_3">Copy Password</button>
+                        <button type="submit"
+                            form="simplePass_form_1"
+                            class="simplePass_generator_3">Regenerate Password</button>
+                        <button type="button"
+                            class="simplePass_copier_3">Copy Password</button>
                     </form>
                 </div>
                 <div>
@@ -808,7 +900,8 @@ simplePass.init();
                                 </span>
                             </p>
                             <label>Binary String For Password:
-                                <textarea class="simplePass_binaryStringTarget" readonly></textarea>
+                                <textarea class="simplePass_binaryStringTarget"
+                                    readonly></textarea>
                             </label>
                             <p>
                                 <b>Average Character Bit Length:</b>
@@ -830,23 +923,36 @@ simplePass.init();
                     <form id="simplePass_form_2">
                         <!-- Batch Password Input -->
                         <label>Batch Amount:
-                            <input type="number" name="passwordBatchAmount" form="simplePass_form_2">
+                            <input type="number"
+                                name="passwordBatchAmount"
+                                form="simplePass_form_2">
                         </label>
                         <!-- Password Modifiers -->
                         <label>Lowercase Alpha:
-                            <input type="checkbox" form="simplePass_form_2" name="lowercase">
+                            <input type="checkbox"
+                                form="simplePass_form_2"
+                                name="lowercase">
                         </label>
                         <label>Uppercase Alpha:
-                            <input type="checkbox" form="simplePass_form_2" name="uppercase">
+                            <input type="checkbox"
+                                form="simplePass_form_2"
+                                name="uppercase">
                         </label>
                         <label>Numbers:
-                            <input type="checkbox" form="simplePass_form_2" name="numbers">
+                            <input type="checkbox"
+                                form="simplePass_form_2"
+                                name="numbers">
                         </label>
                         <label>Signs, Symbols, and Punctuation:
-                            <input type="checkbox" form="simplePass_form_2" name="punctuation">
+                            <input type="checkbox"
+                                form="simplePass_form_2"
+                                name="punctuation">
                         </label>
-                        <button type="submit" form="simplePass_form_2" class="simplePass_generator_4">Regenerate Password</button>
-                        <button type="button" class="simplePass_copier_4">Copy Password</button>
+                        <button type="submit"
+                            form="simplePass_form_2"
+                            class="simplePass_generator_4">Regenerate Password</button>
+                        <button type="button"
+                            class="simplePass_copier_4">Copy Password</button>
                     </form>
                 </div>
                 <div>
@@ -936,23 +1042,36 @@ simplePass.init();
                         </div>
                         <!-- Batch Password Input -->
                         <label>Batch Amount:
-                            <input type="number" name="passwordBatchAmount" form="simplePass_form_3">
+                            <input type="number"
+                                name="passwordBatchAmount"
+                                form="simplePass_form_3">
                         </label>
                         <!-- Password Modifiers -->
                         <label>Lowercase Alpha:
-                            <input type="checkbox" form="simplePass_form_3" name="lowercase">
+                            <input type="checkbox"
+                                form="simplePass_form_3"
+                                name="lowercase">
                         </label>
                         <label>Uppercase Alpha:
-                            <input type="checkbox" form="simplePass_form_3" name="uppercase">
+                            <input type="checkbox"
+                                form="simplePass_form_3"
+                                name="uppercase">
                         </label>
                         <label>Numbers:
-                            <input type="checkbox" form="simplePass_form_3" name="numbers">
+                            <input type="checkbox"
+                                form="simplePass_form_3"
+                                name="numbers">
                         </label>
                         <label>Signs, Symbols, and Punctuation:
-                            <input type="checkbox" form="simplePass_form_3" name="punctuation">
+                            <input type="checkbox"
+                                form="simplePass_form_3"
+                                name="punctuation">
                         </label>
-                        <button type="submit" form="simplePass_form_3" class="simplePass_generator">Regenerate Password</button>
-                        <button type="button" class="simplePass_copier">Copy Password</button>
+                        <button type="submit"
+                            form="simplePass_form_3"
+                            class="simplePass_generator">Regenerate Password</button>
+                        <button type="button"
+                            class="simplePass_copier">Copy Password</button>
                     </form>
                     <p>
                         Attempting to create a password without any modifiers should trigger an Error and result in a message being added to the board.
