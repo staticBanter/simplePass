@@ -18,6 +18,7 @@
 'use strict';
 import errors from "../data/objects/errors.js";
 import characterCodeConstraints from "../data/objects/characterCodeConstraints.js";
+import matchCharacterSetConstraint from "../functions/matchCharacterSetConstraint.js";
 /**
  * @file
  * @module generateCharCode
@@ -35,9 +36,9 @@ import characterCodeConstraints from "../data/objects/characterCodeConstraints.j
  * is not found within the character code constraints object.
  * @returns {number} An integer representing a UTF-16 character code unit. The integer will be within range of the defined character code request constraints.
  */
-export default function generateCharCode(charCodeRequest, flags) {
+export default function generateCharCode(charCodeRequest, flags, cryptoModule = self.crypto) {
     // Generate our random number.
-    let charCode = self.crypto.getRandomValues(new Uint8Array(1))[0];
+    let charCode = cryptoModule.getRandomValues(new Uint8Array(1))[0];
     /**
      * If the 'excluded characters' attribute is set,
      * If the 'excluded characters' contains the newly generated string,
@@ -45,7 +46,7 @@ export default function generateCharCode(charCodeRequest, flags) {
      */
     if (charCodeRequest.charCodeOptions?.excludeCharacters) {
         if (charCodeRequest.charCodeOptions.excludeCharacters.includes(String.fromCharCode(charCode))) {
-            return generateCharCode(charCodeRequest);
+            return generateCharCode(charCodeRequest, flags, cryptoModule);
         }
     }
     /**
@@ -64,10 +65,7 @@ export default function generateCharCode(charCodeRequest, flags) {
              */
             if (charCodeRequest.charCodeOptions?.whitespaceOptions?.includes('whitespaceBeginning')
                 && charCode === 32) {
-                return charCode;
-            }
-            else if (charCode === 32) {
-                return generateCharCode(charCodeRequest, flags);
+                charCodeRequest.charType = 'whitespace';
             }
         }
         /**
@@ -82,10 +80,7 @@ export default function generateCharCode(charCodeRequest, flags) {
              */
             if (charCodeRequest.charCodeOptions?.whitespaceOptions?.includes('whitespaceEnd')
                 && charCode === 32) {
-                return charCode;
-            }
-            else if (charCode === 32) {
-                return generateCharCode(charCodeRequest, flags);
+                charCodeRequest.charType = 'whitespace';
             }
         }
     }
@@ -106,56 +101,10 @@ export default function generateCharCode(charCodeRequest, flags) {
             ]
         };
     }
-    if (constraint.min > 255) {
-        charCode += constraint.min;
+    const result = matchCharacterSetConstraint(charCode, constraint);
+    if (!result) {
+        return generateCharCode(charCodeRequest, flags, cryptoModule);
     }
-    if (!constraint.max
-        && !constraint.range
-        && charCode === constraint.min) {
-        return charCode;
-    }
-    /**
-     * If the character code we are looking for exists in a range of codes.
-     * If the generated charCode is within the min or max of that range.
-     * If the generated charCode is equal to our min or max, we can just return it.
-     * Iterate over our range;
-     *  If our generated charCode exists somewhere in there, return it.
-     */
-    if (constraint.range) {
-        if ((constraint.min
-            && constraint.max)
-            && (charCode >= constraint.min
-                && charCode &lt;= constraint.max)) {
-            if (charCode === constraint.min
-                || charCode === constraint.max) {
-                return charCode;
-            }
-            for (let i = 0; i &lt; constraint.range.length; i++) {
-                if ((constraint.range[i][0]
-                    && constraint.range[i][1])
-                    && (charCode >= constraint.range[i][0]
-                        && charCode &lt;= constraint.range[i][1])) {
-                    return charCode;
-                }
-                else if (constraint.range[i][0]
-                    && charCode === constraint.range[i][0]) {
-                    return charCode;
-                }
-            }
-        }
-    }
-    else if (
-    // ^ Else there was no range attribute and we only need to check the min and max.
-    (constraint.min
-        && constraint.max)
-        && (charCode >= constraint.min
-            && charCode &lt;= constraint.max)) {
-        return charCode;
-    }
-    /**
-     * We did not find our character.
-     * Regenerate.
-     */
-    return generateCharCode(charCodeRequest, flags);
+    return result;
 }
-</code></pre></article></section></div><nav><a href=../index.html>simplePass Program</a> <a href=../EXAMPLES-AND-INTEGRATION.html>Examples & Integration</a><h3><a href=index.html>README</a></h3><h3>Modules</h3><ul><li><a href=module-allowedModifiers.html>allowedModifiers</a><li><a href=module-calculateMaxPossibleCharacters.html>calculateMaxPossibleCharacters</a><li><a href=module-characterCodeConstraints.html>characterCodeConstraints</a><li><a href=module-cleanModifier.html>cleanModifier</a><li><a href=module-config.html>config</a><li><a href=module-createMessage.html>createMessage</a><li><a href=module-createModifierList.html>createModifierList</a><li><a href=module-ensureRepeatingCharacters.html>ensureRepeatingCharacters</a><li><a href=module-errors.html>errors</a><li><a href=module-generateCharCode.html>generateCharCode</a><li><a href=module-initializer.html>initializer</a><li><a href=module-messageHandler.html>messageHandler</a><li><a href=module-passwordPreConfigs.html>passwordPreConfigs</a><li><a href=module-range.html>range</a><li><a href=module-shuffle.html>shuffle</a><li><a href=module-simplePass.html>simplePass</a><li><a href=module-strengthChecker.html>strengthChecker</a><li><a href=module-useableAttributes.html>useableAttributes</a><li><a href=module-validateModifier.html>validateModifier</a><li><a href=module-whitespaceAttributes.html>whitespaceAttributes</a></ul><h3>Interfaces</h3><ul><li><a href=charCodeGenerationFlag.html>charCodeGenerationFlag</a><li><a href=charCodeOptions.html>charCodeOptions</a><li><a href=charCodeRequest.html>charCodeRequest</a><li><a href=characterCodeConstraintsAttributes.html>characterCodeConstraintsAttributes</a><li><a href=characterSetObject.html>characterSetObject</a><li><a href=ensureRepeatingCharacterOptions.html>ensureRepeatingCharacterOptions</a><li><a href=messageBoxObject.html>messageBoxObject</a><li><a href=messageObject.html>messageObject</a><li><a href=messageTypes.html>messageTypes</a><li><a href=module-config-Messages.html>Messages</a><li><a href=module-config-PasswordConstraints.html>PasswordConstraints</a><li><a href=module-config-SimplePassConfig.html>SimplePassConfig</a><li><a href=module-config-configHTMLElement.html>configHTMLElement</a><li><a href=passwordModifier.html>passwordModifier</a><li><a href=repeatingCharacterOptionsPreservations.html>repeatingCharacterOptionsPreservations</a><li><a href=strengthCheckCompression.html>strengthCheckCompression</a><li><a href=strengthCheckTargets.html>strengthCheckTargets</a><li><a href=strengthCheckedPassword.html>strengthCheckedPassword</a><li><a href=strengthCheckerConstraints.html>strengthCheckerConstraints</a></ul><h3>Other Resources</h3><ul><li><a href=CODE_OF_CONDUCT.html>Code Of Conduct</a><li><a href=CONTRIBUTING.html>Contributing</a><li><a href=DEVELOPMENT.html>DEVELOPMENT</a><li><a href=SECURITY.html>Security</a></ul></nav><br class=clear><footer>Documentation generated by <a href=https://github.com/jsdoc/jsdoc>JSDoc 4.0.2</a></footer><script>prettyPrint()</script><script src=scripts/linenumber.js></script>
+</code></pre></article></section></div><nav><a href=../index.html>simplePass Program</a> <a href=../EXAMPLES-AND-INTEGRATION.html>Examples & Integration</a><h3><a href=index.html>README</a></h3><h3>Modules</h3><ul><li><a href=module-allowedModifiers.html>allowedModifiers</a><li><a href=module-calculateMaxPossibleCharacters.html>calculateMaxPossibleCharacters</a><li><a href=module-characterCodeConstraints.html>characterCodeConstraints</a><li><a href=module-cleanModifier.html>cleanModifier</a><li><a href=module-config.html>config</a><li><a href=module-createMessage.html>createMessage</a><li><a href=module-ensureRepeatingCharacters.html>ensureRepeatingCharacters</a><li><a href=module-errors.html>errors</a><li><a href=module-generateCharCode.html>generateCharCode</a><li><a href=module-initializer.html>initializer</a><li><a href=module-matchCharacterSetConstraint.html>matchCharacterSetConstraint</a><li><a href=module-messageHandler.html>messageHandler</a><li><a href=module-passwordPreConfigs.html>passwordPreConfigs</a><li><a href=module-range.html>range</a><li><a href=module-shuffle.html>shuffle</a><li><a href=module-simplePass.html>simplePass</a><li><a href=module-strengthChecker.html>strengthChecker</a><li><a href=module-uniqueCharacterFilter.html>uniqueCharacterFilter</a><li><a href=module-validateModifier.html>validateModifier</a><li><a href=module-whitespaceAttributes.html>whitespaceAttributes</a></ul><h3>Interfaces</h3><ul><li><a href=charCodeGenerationFlag.html>charCodeGenerationFlag</a><li><a href=charCodeOptions.html>charCodeOptions</a><li><a href=charCodeRequest.html>charCodeRequest</a><li><a href=characterCodeConstraintsAttributes.html>characterCodeConstraintsAttributes</a><li><a href=characterSetObject.html>characterSetObject</a><li><a href=ensureRepeatingCharacterOptions.html>ensureRepeatingCharacterOptions</a><li><a href=messageBoxObject.html>messageBoxObject</a><li><a href=messageObject.html>messageObject</a><li><a href=messageTypes.html>messageTypes</a><li><a href=module-config-Messages.html>Messages</a><li><a href=module-config-PasswordConstraints.html>PasswordConstraints</a><li><a href=module-config-SimplePassConfig.html>SimplePassConfig</a><li><a href=module-config-configHTMLElement.html>configHTMLElement</a><li><a href=passwordModifier.html>passwordModifier</a><li><a href=repeatingCharacterOptionsPreservations.html>repeatingCharacterOptionsPreservations</a><li><a href=strengthCheckCompression.html>strengthCheckCompression</a><li><a href=strengthCheckTargets.html>strengthCheckTargets</a><li><a href=strengthCheckedPassword.html>strengthCheckedPassword</a><li><a href=strengthCheckerConstraints.html>strengthCheckerConstraints</a></ul><h3>Other Resources</h3><ul><li><a href=CODE_OF_CONDUCT.html>Code Of Conduct</a><li><a href=CONTRIBUTING.html>Contributing</a><li><a href=DEVELOPMENT.html>DEVELOPMENT</a><li><a href=SECURITY.html>Security</a></ul></nav><br class=clear><footer>Documentation generated by <a href=https://github.com/jsdoc/jsdoc>JSDoc 4.0.2</a></footer><script>prettyPrint()</script><script src=scripts/linenumber.js></script>

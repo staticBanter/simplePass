@@ -18,6 +18,7 @@
 'use strict';
 import errors from "../data/objects/errors.js";
 import characterCodeConstraints from "../data/objects/characterCodeConstraints.js";
+import matchCharacterSetConstraint from "../functions/matchCharacterSetConstraint.js";
 /**
  * @file
  * @module generateCharCode
@@ -35,9 +36,9 @@ import characterCodeConstraints from "../data/objects/characterCodeConstraints.j
  * is not found within the character code constraints object.
  * @returns {number} An integer representing a UTF-16 character code unit. The integer will be within range of the defined character code request constraints.
  */
-export default function generateCharCode(charCodeRequest, flags) {
+export default function generateCharCode(charCodeRequest, flags, cryptoModule = self.crypto) {
     // Generate our random number.
-    let charCode = self.crypto.getRandomValues(new Uint8Array(1))[0];
+    let charCode = cryptoModule.getRandomValues(new Uint8Array(1))[0];
     /**
      * If the 'excluded characters' attribute is set,
      * If the 'excluded characters' contains the newly generated string,
@@ -45,7 +46,7 @@ export default function generateCharCode(charCodeRequest, flags) {
      */
     if (charCodeRequest.charCodeOptions?.excludeCharacters) {
         if (charCodeRequest.charCodeOptions.excludeCharacters.includes(String.fromCharCode(charCode))) {
-            return generateCharCode(charCodeRequest);
+            return generateCharCode(charCodeRequest, flags, cryptoModule);
         }
     }
     /**
@@ -64,10 +65,7 @@ export default function generateCharCode(charCodeRequest, flags) {
              */
             if (charCodeRequest.charCodeOptions?.whitespaceOptions?.includes('whitespaceBeginning')
                 && charCode === 32) {
-                return charCode;
-            }
-            else if (charCode === 32) {
-                return generateCharCode(charCodeRequest, flags);
+                charCodeRequest.charType = 'whitespace';
             }
         }
         /**
@@ -82,10 +80,7 @@ export default function generateCharCode(charCodeRequest, flags) {
              */
             if (charCodeRequest.charCodeOptions?.whitespaceOptions?.includes('whitespaceEnd')
                 && charCode === 32) {
-                return charCode;
-            }
-            else if (charCode === 32) {
-                return generateCharCode(charCodeRequest, flags);
+                charCodeRequest.charType = 'whitespace';
             }
         }
     }
@@ -106,55 +101,9 @@ export default function generateCharCode(charCodeRequest, flags) {
             ]
         };
     }
-    if (constraint.min > 255) {
-        charCode += constraint.min;
+    const result = matchCharacterSetConstraint(charCode, constraint);
+    if (!result) {
+        return generateCharCode(charCodeRequest, flags, cryptoModule);
     }
-    if (!constraint.max
-        && !constraint.range
-        && charCode === constraint.min) {
-        return charCode;
-    }
-    /**
-     * If the character code we are looking for exists in a range of codes.
-     * If the generated charCode is within the min or max of that range.
-     * If the generated charCode is equal to our min or max, we can just return it.
-     * Iterate over our range;
-     *  If our generated charCode exists somewhere in there, return it.
-     */
-    if (constraint.range) {
-        if ((constraint.min
-            && constraint.max)
-            && (charCode >= constraint.min
-                && charCode <= constraint.max)) {
-            if (charCode === constraint.min
-                || charCode === constraint.max) {
-                return charCode;
-            }
-            for (let i = 0; i < constraint.range.length; i++) {
-                if ((constraint.range[i][0]
-                    && constraint.range[i][1])
-                    && (charCode >= constraint.range[i][0]
-                        && charCode <= constraint.range[i][1])) {
-                    return charCode;
-                }
-                else if (constraint.range[i][0]
-                    && charCode === constraint.range[i][0]) {
-                    return charCode;
-                }
-            }
-        }
-    }
-    else if (
-    // ^ Else there was no range attribute and we only need to check the min and max.
-    (constraint.min
-        && constraint.max)
-        && (charCode >= constraint.min
-            && charCode <= constraint.max)) {
-        return charCode;
-    }
-    /**
-     * We did not find our character.
-     * Regenerate.
-     */
-    return generateCharCode(charCodeRequest, flags);
+    return result;
 }

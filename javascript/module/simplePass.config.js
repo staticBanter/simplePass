@@ -80,13 +80,16 @@
  * @property {passwordModifier} defaultPasswordModifier An [object]{@link passwordModifier} that defines the default password modifiers.
  * @property {module:config~Messages} messages An [object]{@link module:config~Messages} that defines how simplePass should handle various forms of messages.
  * @property {module:config~configHTMLElement} htmlElements An [object]{@link module:config~configHTMLElement} that defines the HTML elements that simplePass should interact with.
+ * @property {Crypto} cryptoModule
  */
 const config = {
     passwordConstraints: {
         min_length: 3,
         max_length: 256,
         min_excludeCharactersLength: 0,
-        max_excludeCharactersLength: 10,
+        max_excludeCharactersLength: 256,
+        min_repeatingCharactersLength: 0,
+        max_repeatingCharactersLength: 50,
         max_whitespaceCharactersOffset: 4,
         max_whitespaceBetween: function () {
             const max_possibleWhitespaceCharacters = (this.max_length - this.max_whitespaceCharactersOffset);

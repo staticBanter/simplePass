@@ -15,29 +15,30 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
+
 'use strict';
+
 /**
  * @file
- * @module createModifierList
+ * @module uniqueCharacterFilter
  */
+
 /**
- * Creates an array of strings from a [password modifier object]{@link passwordModifier} containing the object
- * keys that were found in a predefined list.
+ * A function that filters a string for unique characters.
  *
- * @function createModifierList
- * @param {passwordModifier} modifier The password modifier object.
- * @param {Array<any>} list The predefined list to match object keys about.
- * @returns {Array<any>} The list of modifiers attributes that matched the original list.
+ * @function uniqueCharacterFilter
+ * @param {string} string The string to filter unique characters.
+ * @returns {string} A string containing only unique characters
  */
-export default function createModifierList(modifier, list) {
-    // Initialize Array
-    const modifiers = [];
-    // Filter Keys
-    Object.keys(modifier).forEach((key) => {
-        if (list.includes(key)) {
-            modifiers.push(key);
+export default function uniqueCharacterFilter(string:string):string{
+
+    let uniqueCharacters:string = '';
+
+    for(let i:number = 0; i< string.length; i++){
+        if(!uniqueCharacters.includes(string[i])){
+            uniqueCharacters += string[i];
         }
-    });
-    // Return Array.
-    return modifiers;
+    };
+
+    return uniqueCharacters;
 }

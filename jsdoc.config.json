@@ -4,7 +4,7 @@
     ],
     "recurseDepth": 10,
     "source": {
-        "includePattern": ".cjs",
+        "includePattern": ".js",
         "excludePattern": "(^|\\/|\\\\)_"
     },
     "sourceType": "module",

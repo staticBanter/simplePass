@@ -16,8 +16,9 @@
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 'use strict';
-import useableAttributes from "../data/lists/useableAttributes.js";
 import characterCodeConstraints from "../data/objects/characterCodeConstraints.js";
+import config from "../simplePass.config.js";
+import passwordPreConfigs from "../data/objects/passwordPreConfigs.js";
 /**
  * @file
  * @module validateModifier
@@ -32,7 +33,6 @@ import characterCodeConstraints from "../data/objects/characterCodeConstraints.j
  * @function validateModifier
  * @param {passwordModifier} modifier The [password modifier]{@link passwordModifier} object to validate.
  * @requires config
- * @requires useableAttributes
  * @throws {errors.invalidAttributeType} Will throw an error if a modifier attribute is not a valid type.
  * @throws {errors.outOfBoundsAttributeValue} Will throw an error if a modifier attribute is out of its allowed value bounds.
  * @throws {errors.toManyAttributes} Will throw an error if the modifier contains more attributes than the password can contain.
@@ -40,25 +40,22 @@ import characterCodeConstraints from "../data/objects/characterCodeConstraints.j
  * @throws {errors.excludeCharactersContainedWhitespace} Will throw an error if the ```excludeCharacters``` attribute contains a whitespace.
  * @returns {void}
  */
-export default function validateModifier(modifier, cFig) {
+export default function validateModifier(modifier) {
+    // Ensure our modifier match our schema.
+    Object.entries(passwordModifierSchema).forEach(([key, validator]) => {
+        if (modifier[key]) {
+            const result = validator(modifier[key]);
+            if (!result) {
+                throw new Error(`Invalid value for password modifier attribute ${key}`);
+            }
+        }
+    });
     // Check if the password will be long enough to contain all the attributes.
     let modifierCount = Object.keys(modifier)
         .filter((item) => {
-        return useableAttributes.includes(item);
+        return Object.keys(characterCodeConstraints).includes(item);
     })
         .length;
-    if (modifier.preConfig
-        &&
-            (typeof (modifier.preConfig) !== 'string'
-                || (!modifier.preConfig.length
-                    || modifier.preConfig.length <= 0))) {
-        if (typeof (modifier.preConfig) !== 'string') {
-            throw {
-                errorKey: 'invalidAttributeType',
-                replacements: ['vM', '16', 'preConfig', 'string']
-            };
-        }
-    }
     // Check if the password should contain repeating characters
     if (modifier.repeatingCharacter) {
         /**
@@ -256,90 +253,6 @@ export default function validateModifier(modifier, cFig) {
         }
     }
     /**
-     * Ensure the length attribute is proper type
-     * and within acceptable values.
-     */
-    if (!modifier.length
-        || (typeof (modifier.length) !== 'string'
-            && typeof (modifier.length) !== 'number')) {
-        throw {
-            errorKey: 'invalidAttributeType',
-            replacements: ['vM', '1', 'length', 'string or number']
-        };
-    }
-    else {
-        if (typeof (modifier.length) === 'string') {
-            const length = parseInt(modifier.length);
-            if (length > cFig.passwordConstraints.max_length
-                || length < cFig.passwordConstraints.min_length) {
-                throw {
-                    errorKey: 'invalidAttributeType',
-                    replacements: ['vM', '1', 'length', 'string or number']
-                };
-            }
-        }
-        else {
-            if (modifier.length > cFig.passwordConstraints.max_length
-                || modifier.length < cFig.passwordConstraints.min_length) {
-                throw {
-                    errorKey: 'outOfBoundsAttributeValue',
-                    replacements: ['vM', '2', 'length']
-                };
-            }
-        }
-        if (modifierCount > modifier.length) {
-            throw {
-                errorKey: 'toManyAttributes',
-                replacements: ['vM', '3', `${modifier.length}`, `${modifierCount}`]
-            };
-        }
-    }
-    /**
-     * If the 'white-space between' attribute is set,
-     * and if the 'white-space between limit' attribute is not set,
-     * throw an error.
-     */
-    if (modifier.w_between) {
-        if (!modifier.max_whitespaceBetween) {
-            throw {
-                errorKey: 'missingRequiredAttribute',
-                replacements: ['vM', '11', 'max_whitespaceBetween', 'w_between']
-            };
-        }
-        /**
-         * Ensure the 'white-space between limit' attribute is proper type
-         * and within acceptable values.
-         */
-        if (typeof (modifier.max_whitespaceBetween) !== 'string'
-            && typeof (modifier.max_whitespaceBetween) !== 'number') {
-            throw {
-                errorKey: 'invalidAttributeType',
-                replacements: ['vM', '4', 'max_whitespaceBetween', 'string or number']
-            };
-        }
-        else {
-            if (typeof (modifier.max_whitespaceBetween) === 'string') {
-                const max_whitespaceBetween = parseInt(modifier.max_whitespaceBetween);
-                if (max_whitespaceBetween > cFig.passwordConstraints.max_whitespaceBetween()
-                    || max_whitespaceBetween < cFig.passwordConstraints.min_whitespaceBetween()) {
-                    throw {
-                        errorKey: 'outOfBoundsAttributeValue',
-                        replacements: ['vM', '5', 'max_whitespaceBetween']
-                    };
-                }
-            }
-            else {
-                if (modifier.max_whitespaceBetween > cFig.passwordConstraints.max_whitespaceBetween()
-                    || modifier.max_whitespaceBetween < cFig.passwordConstraints.min_whitespaceBetween()) {
-                    throw {
-                        errorKey: 'outOfBoundsAttributeValue',
-                        replacements: ['vM', '6', 'max_whitespaceBetween']
-                    };
-                }
-            }
-        }
-    }
-    /**
      * Ensure the modifier contains at least one of these attributes.
      */
     if (!Object.keys(modifier)
@@ -351,32 +264,109 @@ export default function validateModifier(modifier, cFig) {
             replacements: ['vM', '7', Object.keys(characterCodeConstraints).toString()]
         };
     }
-    /**
-     * If the 'exclude characters' attributes is set,
-     * ensure it is the proper type,
-     * is not blank,
-     * its length is within proper range,
-     * and does not contain any whitespace.
-     */
-    if (modifier.excludeCharacters) {
-        if (typeof (modifier.excludeCharacters) !== 'string') {
-            throw {
-                errorKey: 'invalidAttributeType',
-                replacements: ['vM', '8', 'excludeCharacters', 'string']
-            };
-        }
-        if (!modifier.excludeCharacters.length
-            && modifier.excludeCharacters.length <= 0) {
-            throw {
-                errorKey: 'outOfBoundsAttributeValue',
-                replacements: ['vM', '9', 'excludeCharacters']
-            };
-        }
-        if (new RegExp(/[\s]/g).test(modifier.excludeCharacters)) {
-            throw {
-                errorKey: 'excludeCharactersContainedWhitespace',
-                replacements: ['vM', '10']
-            };
-        }
+    if (modifierCount > modifier.length) {
+        throw {
+            errorKey: 'toManyAttributes',
+            replacements: ['vM', '3', `${modifier.length}`, `${modifierCount}`]
+        };
     }
+    return true;
 }
+const passwordModifierSchema = {
+    // Modifiers
+    length: (v) => {
+        v = parseInt(v);
+        return (typeof (v) === 'number'
+            && (v % 1) === 0
+            && v >= config.passwordConstraints.min_length
+            && v <= config.passwordConstraints.max_length);
+    },
+    excludeCharacters: (v) => {
+        return (typeof (v) === 'string'
+            && !(new RegExp(/[\s]/g).test(v))
+            && v.length >= config.passwordConstraints.min_excludeCharactersLength
+            && v.length <= config.passwordConstraints.max_excludeCharactersLength);
+    },
+    uniqueCharacters: (v) => { return (v ? true : false); },
+    repeatingCharacter: (v) => { return (v ? true : false); },
+    max_repeatingCharacter: (v) => {
+        v = parseInt(v);
+        return (typeof (v) === 'number'
+            && (v % 1) === 0
+            && v >= config.passwordConstraints.min_repeatingCharactersLength
+            && v <= config.passwordConstraints.max_repeatingCharactersLength);
+    },
+    customRepeatingCharacters: (v) => {
+        if (Array.isArray(v)) {
+            if (!v.length) {
+                return false;
+            }
+            for (let i = 0; i < v.length; i++) {
+                if (!Array.isArray(v[i])
+                    || v[i].length > 1
+                    || typeof (v[i][0]) === 'string') {
+                    return false;
+                }
+            }
+        }
+        else if (typeof (v) === 'string') {
+            return (v.length
+                && v.length >= config.passwordConstraints.min_repeatingCharactersLength
+                && v.length <= config.passwordConstraints.max_repeatingCharactersLength);
+        }
+        return false;
+    },
+    preConfig: (v) => {
+        return (typeof (v) === 'string'
+            && Object.keys(passwordPreConfigs).includes(v));
+    },
+    // Whitespace
+    whitespaceBeginning: (v) => { return (v ? true : false); },
+    required_whitespaceBeginning: (v) => { return (v ? true : false); },
+    whitespaceEnd: (v) => { return (v ? true : false); },
+    required_whitespaceEnd: (v) => { return (v ? true : false); },
+    whitespaceBetween: (v) => { return (v ? true : false); },
+    max_whitespaceBetween: (v) => {
+        v = parseInt(v);
+        return (typeof (v) === 'number'
+            && (v % 1) === 0
+            && v >= config.passwordConstraints.min_whitespaceBetween()
+            && v <= config.passwordConstraints.max_whitespaceBetween());
+    },
+    // Character Sets
+    lowercase: (v) => { return (v ? true : false); },
+    uppercase: (v) => { return (v ? true : false); },
+    numbers: (v) => { return (v ? true : false); },
+    punctuation: (v) => { return (v ? true : false); },
+    lowercase_supplement: (v) => { return (v ? true : false); },
+    uppercase_supplement: (v) => { return (v ? true : false); },
+    symbols_supplement: (v) => { return (v ? true : false); },
+    lowercase_extended_a: (v) => { return (v ? true : false); },
+    uppercase_extended_a: (v) => { return (v ? true : false); },
+    ligature_extended_a: (v) => { return (v ? true : false); },
+    lowercase_extended_b: (v) => { return (v ? true : false); },
+    uppercase_extended_b: (v) => { return (v ? true : false); },
+    mixedcase_extended_b: (v) => { return (v ? true : false); },
+    insensitivecase_extended_b: (v) => { return (v ? true : false); },
+    lowercase_ipa_extension: (v) => { return (v ? true : false); },
+    uppercase_ipa_extension: (v) => { return (v ? true : false); },
+    character_modifier_letters: (v) => { return (v ? true : false); },
+    symbol_modifier_letters: (v) => { return (v ? true : false); },
+    lowercase_greek_coptic: (v) => { return (v ? true : false); },
+    uppercase_greek_coptic: (v) => { return (v ? true : false); },
+    insensitivecase_greek_coptic: (v) => { return (v ? true : false); },
+    symbol_greek_coptic: (v) => { return (v ? true : false); },
+    lowercase_cyrillic: (v) => { return (v ? true : false); },
+    uppercase_cyrillic: (v) => { return (v ? true : false); },
+    symbols_cyrillic: (v) => { return (v ? true : false); },
+    lowercase_cyrillic_supplement: (v) => { return (v ? true : false); },
+    uppercase_cyrillic_supplement: (v) => { return (v ? true : false); },
+    misc_cyrillic_supplement: (v) => { return (v ? true : false); },
+    general_punctuation: (v) => { return (v ? true : false); },
+    currency_symbols: (v) => { return (v ? true : false); },
+    misc_technical: (v) => { return (v ? true : false); },
+    box_drawings: (v) => { return (v ? true : false); },
+    block_elements: (v) => { return (v ? true : false); },
+    misc_symbols: (v) => { return (v ? true : false); },
+    dingbats: (v) => { return (v ? true : false); },
+};

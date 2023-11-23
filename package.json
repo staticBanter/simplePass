@@ -1,8 +1,11 @@
 {
   "devDependencies": {
+    "c8": "^8.0.1",
+    "chai": "^4.3.10",
     "copy-webpack-plugin": "^11.0.0",
     "html-minifier": "^4.0.0",
     "jsdoc": "^4.0.2",
+    "mocha": "^10.2.0",
     "sass": "^1.58.3",
     "terser-webpack-plugin": "^5.3.9",
     "typescript": "^5.2.2",
@@ -12,7 +15,7 @@
   },
   "name": "simplepass",
   "description": "A Javascript password generator.",
-  "version": "10.2.0-Beta",
+  "version": "11.0.0-Beta",
   "browser": "./simplePass/browser/simplePass.js",
   "directories": {
     "test": "test",
@@ -44,7 +47,7 @@
   "homepage": "https://github.com/staticBanter/simplePass#readme",
   "private": true,
   "scripts": {
-    "webpack-build": "webpack build --env production --config webpack.config.js",
+    "webpack-build": "webpack build --profile --json=webpack.profile.json --env production --config webpack.config.js",
     "webpack-dev-build": "webpack build --env development --config webpack.config.js",
     "webpack-watch": "webpack build --env development --config webpack.config.js --watch",
     "start": "webpack serve",
@@ -55,7 +58,9 @@
     "sass-build": "sass site/src/main.scss:site/prod/main.css --style=compressed --no-source-map",
     "sass-watch": "sass site/src/main.scss:site/prod/main.css --style=compressed --no-source-map --watch --update",
     "prod": "npm run production",
-    "production": "npm run tsc && npm run docs-build && npm run webpack-build && npm run html-min && npm run sass-build"
+    "test": "mocha",
+    "coverage": "c8 --check-coverage=80 mocha",
+    "production": "npm run tsc && npm run docs-build && npm run webpack-build && npm run html-min && npm run sass-build && npm run test"
   },
   "type": "module",
   "dependencies": {

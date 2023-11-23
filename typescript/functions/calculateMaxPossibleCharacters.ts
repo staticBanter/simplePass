@@ -18,11 +18,10 @@
 
 'use strict';
 
-import characterCodeConstraints from "../data/objects/characterCodeConstraints.js";
 import characterCodeConstraintsAttributes from "../data/interfaces/characterCodeConstraintsAttributes.js";
-import whitespaceAttributes from "../data/lists/whitespaceAttributes.js";
-import useableAttributes from "../data/lists/useableAttributes.js";
 import characterSetObject from "../data/interfaces/characterSetObject.js";
+import characterCodeConstraints from "../data/objects/characterCodeConstraints.js";
+import uniqueCharacterFilter from "./uniqueCharacterFilter.js";
 
 /**
  * @file
@@ -37,8 +36,7 @@ import characterSetObject from "../data/interfaces/characterSetObject.js";
  * @param {characterSetObject} characterSetObject An [object]{@link module:characterSetObject} describing the usable characters and character-sets.
  * @requires characterCodeConstraints
  * @implements {characterCodeConstraintsAttributes}
- * @requires whitespaceAttributes
- * @requires useableAttributes
+ * @requires uniqueCharacterFilter
  * @returns {number} The number of usable characters minus any exclusions.
  */
 export default function calculateMaxPossibleCharacters(characterSetObject:characterSetObject):number{
@@ -48,7 +46,7 @@ export default function calculateMaxPossibleCharacters(characterSetObject:charac
 
     characterSetObject.characterSets.forEach((set:string)=>{
 
-        if(whitespaceAttributes.includes(set)){
+        if(set === 'whitespace'){
             // Only count whitespace once.
             if(whiteSpaceFlag){
                 return;
@@ -71,12 +69,18 @@ export default function calculateMaxPossibleCharacters(characterSetObject:charac
                     }else if(range[0]){
                         maxPossibleCharacters++;
                     }
-                })
+                });
             }else if(
-                constraint.min
+                !constraint.range
+                && constraint.min
                 && constraint.max
             ){
                 maxPossibleCharacters += (constraint.max-constraint.min)+1;
+            }else if(
+                !constraint.range
+                && !constraint.max
+            ){
+                maxPossibleCharacters++;
             }
         }
 
@@ -86,7 +90,8 @@ export default function calculateMaxPossibleCharacters(characterSetObject:charac
         characterSetObject.excludeCharacters
         && characterSetObject.excludeCharacters.length > 0
     ){
-        maxPossibleCharacters -= characterSetObject.excludeCharacters.length;
+
+        maxPossibleCharacters -= uniqueCharacterFilter(characterSetObject.excludeCharacters).length;
     }
 
     return maxPossibleCharacters;

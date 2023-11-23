@@ -39,22 +39,38 @@
  * console.log(range(1,10,1,[2,7,8]))
  * @returns {Array<number>} A list of numbers within the start and end values
  */
-export default function range(start, end, increment = 1, exclude, singles = false) {
+export default function range(start, end, options) {
     const range = [];
-    end = (end + 1); // Final number inclusion
-    while (start < end) {
-        if (!exclude?.includes(start)) {
-            if (singles) {
-                range.push([start]);
+    const increment = options?.increment ?? 1;
+    while (start < (end + increment)) {
+        if (start <= end) {
+            if (options) {
+                if (options.exclude
+                    && options.exclude.includes(start)) {
+                    start += increment;
+                    continue;
+                }
+                if (options.singles) {
+                    range.push([start]);
+                }
+                else {
+                    range.push(start);
+                }
             }
             else {
                 range.push(start);
             }
         }
-        // If we are over the end, set the final number to our end.
-        (start + increment) > end ?
-            start = end :
-            start += increment;
+        start += increment;
+    }
+    if (options?.forceInclusiveEnd
+        && !range.includes(end)) {
+        if (options.singles) {
+            range.push([end]);
+        }
+        else {
+            range.push(end);
+        }
     }
     return range;
 }

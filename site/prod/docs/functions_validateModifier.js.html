@@ -16,8 +16,9 @@
 * along with this program.  If not, see &lt;https://www.gnu.org/licenses/>.
 */
 'use strict';
-import useableAttributes from "../data/lists/useableAttributes.js";
 import characterCodeConstraints from "../data/objects/characterCodeConstraints.js";
+import config from "../simplePass.config.js";
+import passwordPreConfigs from "../data/objects/passwordPreConfigs.js";
 /**
  * @file
  * @module validateModifier
@@ -32,7 +33,6 @@ import characterCodeConstraints from "../data/objects/characterCodeConstraints.j
  * @function validateModifier
  * @param {passwordModifier} modifier The [password modifier]{@link passwordModifier} object to validate.
  * @requires config
- * @requires useableAttributes
  * @throws {errors.invalidAttributeType} Will throw an error if a modifier attribute is not a valid type.
  * @throws {errors.outOfBoundsAttributeValue} Will throw an error if a modifier attribute is out of its allowed value bounds.
  * @throws {errors.toManyAttributes} Will throw an error if the modifier contains more attributes than the password can contain.
@@ -40,25 +40,22 @@ import characterCodeConstraints from "../data/objects/characterCodeConstraints.j
  * @throws {errors.excludeCharactersContainedWhitespace} Will throw an error if the ```excludeCharacters``` attribute contains a whitespace.
  * @returns {void}
  */
-export default function validateModifier(modifier, cFig) {
+export default function validateModifier(modifier) {
+    // Ensure our modifier match our schema.
+    Object.entries(passwordModifierSchema).forEach(([key, validator]) => {
+        if (modifier[key]) {
+            const result = validator(modifier[key]);
+            if (!result) {
+                throw new Error(`Invalid value for password modifier attribute ${key}`);
+            }
+        }
+    });
     // Check if the password will be long enough to contain all the attributes.
     let modifierCount = Object.keys(modifier)
         .filter((item) => {
-        return useableAttributes.includes(item);
+        return Object.keys(characterCodeConstraints).includes(item);
     })
         .length;
-    if (modifier.preConfig
-        &&
-            (typeof (modifier.preConfig) !== 'string'
-                || (!modifier.preConfig.length
-                    || modifier.preConfig.length &lt;= 0))) {
-        if (typeof (modifier.preConfig) !== 'string') {
-            throw {
-                errorKey: 'invalidAttributeType',
-                replacements: ['vM', '16', 'preConfig', 'string']
-            };
-        }
-    }
     // Check if the password should contain repeating characters
     if (modifier.repeatingCharacter) {
         /**
@@ -256,90 +253,6 @@ export default function validateModifier(modifier, cFig) {
         }
     }
     /**
-     * Ensure the length attribute is proper type
-     * and within acceptable values.
-     */
-    if (!modifier.length
-        || (typeof (modifier.length) !== 'string'
-            && typeof (modifier.length) !== 'number')) {
-        throw {
-            errorKey: 'invalidAttributeType',
-            replacements: ['vM', '1', 'length', 'string or number']
-        };
-    }
-    else {
-        if (typeof (modifier.length) === 'string') {
-            const length = parseInt(modifier.length);
-            if (length > cFig.passwordConstraints.max_length
-                || length &lt; cFig.passwordConstraints.min_length) {
-                throw {
-                    errorKey: 'invalidAttributeType',
-                    replacements: ['vM', '1', 'length', 'string or number']
-                };
-            }
-        }
-        else {
-            if (modifier.length > cFig.passwordConstraints.max_length
-                || modifier.length &lt; cFig.passwordConstraints.min_length) {
-                throw {
-                    errorKey: 'outOfBoundsAttributeValue',
-                    replacements: ['vM', '2', 'length']
-                };
-            }
-        }
-        if (modifierCount > modifier.length) {
-            throw {
-                errorKey: 'toManyAttributes',
-                replacements: ['vM', '3', `${modifier.length}`, `${modifierCount}`]
-            };
-        }
-    }
-    /**
-     * If the 'white-space between' attribute is set,
-     * and if the 'white-space between limit' attribute is not set,
-     * throw an error.
-     */
-    if (modifier.w_between) {
-        if (!modifier.max_whitespaceBetween) {
-            throw {
-                errorKey: 'missingRequiredAttribute',
-                replacements: ['vM', '11', 'max_whitespaceBetween', 'w_between']
-            };
-        }
-        /**
-         * Ensure the 'white-space between limit' attribute is proper type
-         * and within acceptable values.
-         */
-        if (typeof (modifier.max_whitespaceBetween) !== 'string'
-            && typeof (modifier.max_whitespaceBetween) !== 'number') {
-            throw {
-                errorKey: 'invalidAttributeType',
-                replacements: ['vM', '4', 'max_whitespaceBetween', 'string or number']
-            };
-        }
-        else {
-            if (typeof (modifier.max_whitespaceBetween) === 'string') {
-                const max_whitespaceBetween = parseInt(modifier.max_whitespaceBetween);
-                if (max_whitespaceBetween > cFig.passwordConstraints.max_whitespaceBetween()
-                    || max_whitespaceBetween &lt; cFig.passwordConstraints.min_whitespaceBetween()) {
-                    throw {
-                        errorKey: 'outOfBoundsAttributeValue',
-                        replacements: ['vM', '5', 'max_whitespaceBetween']
-                    };
-                }
-            }
-            else {
-                if (modifier.max_whitespaceBetween > cFig.passwordConstraints.max_whitespaceBetween()
-                    || modifier.max_whitespaceBetween &lt; cFig.passwordConstraints.min_whitespaceBetween()) {
-                    throw {
-                        errorKey: 'outOfBoundsAttributeValue',
-                        replacements: ['vM', '6', 'max_whitespaceBetween']
-                    };
-                }
-            }
-        }
-    }
-    /**
      * Ensure the modifier contains at least one of these attributes.
      */
     if (!Object.keys(modifier)
@@ -351,33 +264,110 @@ export default function validateModifier(modifier, cFig) {
             replacements: ['vM', '7', Object.keys(characterCodeConstraints).toString()]
         };
     }
-    /**
-     * If the 'exclude characters' attributes is set,
-     * ensure it is the proper type,
-     * is not blank,
-     * its length is within proper range,
-     * and does not contain any whitespace.
-     */
-    if (modifier.excludeCharacters) {
-        if (typeof (modifier.excludeCharacters) !== 'string') {
-            throw {
-                errorKey: 'invalidAttributeType',
-                replacements: ['vM', '8', 'excludeCharacters', 'string']
-            };
-        }
-        if (!modifier.excludeCharacters.length
-            && modifier.excludeCharacters.length &lt;= 0) {
-            throw {
-                errorKey: 'outOfBoundsAttributeValue',
-                replacements: ['vM', '9', 'excludeCharacters']
-            };
-        }
-        if (new RegExp(/[\s]/g).test(modifier.excludeCharacters)) {
-            throw {
-                errorKey: 'excludeCharactersContainedWhitespace',
-                replacements: ['vM', '10']
-            };
-        }
+    if (modifierCount > modifier.length) {
+        throw {
+            errorKey: 'toManyAttributes',
+            replacements: ['vM', '3', `${modifier.length}`, `${modifierCount}`]
+        };
     }
+    return true;
 }
-</code></pre></article></section></div><nav><a href=../index.html>simplePass Program</a> <a href=../EXAMPLES-AND-INTEGRATION.html>Examples & Integration</a><h3><a href=index.html>README</a></h3><h3>Modules</h3><ul><li><a href=module-allowedModifiers.html>allowedModifiers</a><li><a href=module-calculateMaxPossibleCharacters.html>calculateMaxPossibleCharacters</a><li><a href=module-characterCodeConstraints.html>characterCodeConstraints</a><li><a href=module-cleanModifier.html>cleanModifier</a><li><a href=module-config.html>config</a><li><a href=module-createMessage.html>createMessage</a><li><a href=module-createModifierList.html>createModifierList</a><li><a href=module-ensureRepeatingCharacters.html>ensureRepeatingCharacters</a><li><a href=module-errors.html>errors</a><li><a href=module-generateCharCode.html>generateCharCode</a><li><a href=module-initializer.html>initializer</a><li><a href=module-messageHandler.html>messageHandler</a><li><a href=module-passwordPreConfigs.html>passwordPreConfigs</a><li><a href=module-range.html>range</a><li><a href=module-shuffle.html>shuffle</a><li><a href=module-simplePass.html>simplePass</a><li><a href=module-strengthChecker.html>strengthChecker</a><li><a href=module-useableAttributes.html>useableAttributes</a><li><a href=module-validateModifier.html>validateModifier</a><li><a href=module-whitespaceAttributes.html>whitespaceAttributes</a></ul><h3>Interfaces</h3><ul><li><a href=charCodeGenerationFlag.html>charCodeGenerationFlag</a><li><a href=charCodeOptions.html>charCodeOptions</a><li><a href=charCodeRequest.html>charCodeRequest</a><li><a href=characterCodeConstraintsAttributes.html>characterCodeConstraintsAttributes</a><li><a href=characterSetObject.html>characterSetObject</a><li><a href=ensureRepeatingCharacterOptions.html>ensureRepeatingCharacterOptions</a><li><a href=messageBoxObject.html>messageBoxObject</a><li><a href=messageObject.html>messageObject</a><li><a href=messageTypes.html>messageTypes</a><li><a href=module-config-Messages.html>Messages</a><li><a href=module-config-PasswordConstraints.html>PasswordConstraints</a><li><a href=module-config-SimplePassConfig.html>SimplePassConfig</a><li><a href=module-config-configHTMLElement.html>configHTMLElement</a><li><a href=passwordModifier.html>passwordModifier</a><li><a href=repeatingCharacterOptionsPreservations.html>repeatingCharacterOptionsPreservations</a><li><a href=strengthCheckCompression.html>strengthCheckCompression</a><li><a href=strengthCheckTargets.html>strengthCheckTargets</a><li><a href=strengthCheckedPassword.html>strengthCheckedPassword</a><li><a href=strengthCheckerConstraints.html>strengthCheckerConstraints</a></ul><h3>Other Resources</h3><ul><li><a href=CODE_OF_CONDUCT.html>Code Of Conduct</a><li><a href=CONTRIBUTING.html>Contributing</a><li><a href=DEVELOPMENT.html>DEVELOPMENT</a><li><a href=SECURITY.html>Security</a></ul></nav><br class=clear><footer>Documentation generated by <a href=https://github.com/jsdoc/jsdoc>JSDoc 4.0.2</a></footer><script>prettyPrint()</script><script src=scripts/linenumber.js></script>
+const passwordModifierSchema = {
+    // Modifiers
+    length: (v) => {
+        v = parseInt(v);
+        return (typeof (v) === 'number'
+            && (v % 1) === 0
+            && v >= config.passwordConstraints.min_length
+            && v &lt;= config.passwordConstraints.max_length);
+    },
+    excludeCharacters: (v) => {
+        return (typeof (v) === 'string'
+            && !(new RegExp(/[\s]/g).test(v))
+            && v.length >= config.passwordConstraints.min_excludeCharactersLength
+            && v.length &lt;= config.passwordConstraints.max_excludeCharactersLength);
+    },
+    uniqueCharacters: (v) => { return (v ? true : false); },
+    repeatingCharacter: (v) => { return (v ? true : false); },
+    max_repeatingCharacter: (v) => {
+        v = parseInt(v);
+        return (typeof (v) === 'number'
+            && (v % 1) === 0
+            && v >= config.passwordConstraints.min_repeatingCharactersLength
+            && v &lt;= config.passwordConstraints.max_repeatingCharactersLength);
+    },
+    customRepeatingCharacters: (v) => {
+        if (Array.isArray(v)) {
+            if (!v.length) {
+                return false;
+            }
+            for (let i = 0; i &lt; v.length; i++) {
+                if (!Array.isArray(v[i])
+                    || v[i].length > 1
+                    || typeof (v[i][0]) === 'string') {
+                    return false;
+                }
+            }
+        }
+        else if (typeof (v) === 'string') {
+            return (v.length
+                && v.length >= config.passwordConstraints.min_repeatingCharactersLength
+                && v.length &lt;= config.passwordConstraints.max_repeatingCharactersLength);
+        }
+        return false;
+    },
+    preConfig: (v) => {
+        return (typeof (v) === 'string'
+            && Object.keys(passwordPreConfigs).includes(v));
+    },
+    // Whitespace
+    whitespaceBeginning: (v) => { return (v ? true : false); },
+    required_whitespaceBeginning: (v) => { return (v ? true : false); },
+    whitespaceEnd: (v) => { return (v ? true : false); },
+    required_whitespaceEnd: (v) => { return (v ? true : false); },
+    whitespaceBetween: (v) => { return (v ? true : false); },
+    max_whitespaceBetween: (v) => {
+        v = parseInt(v);
+        return (typeof (v) === 'number'
+            && (v % 1) === 0
+            && v >= config.passwordConstraints.min_whitespaceBetween()
+            && v &lt;= config.passwordConstraints.max_whitespaceBetween());
+    },
+    // Character Sets
+    lowercase: (v) => { return (v ? true : false); },
+    uppercase: (v) => { return (v ? true : false); },
+    numbers: (v) => { return (v ? true : false); },
+    punctuation: (v) => { return (v ? true : false); },
+    lowercase_supplement: (v) => { return (v ? true : false); },
+    uppercase_supplement: (v) => { return (v ? true : false); },
+    symbols_supplement: (v) => { return (v ? true : false); },
+    lowercase_extended_a: (v) => { return (v ? true : false); },
+    uppercase_extended_a: (v) => { return (v ? true : false); },
+    ligature_extended_a: (v) => { return (v ? true : false); },
+    lowercase_extended_b: (v) => { return (v ? true : false); },
+    uppercase_extended_b: (v) => { return (v ? true : false); },
+    mixedcase_extended_b: (v) => { return (v ? true : false); },
+    insensitivecase_extended_b: (v) => { return (v ? true : false); },
+    lowercase_ipa_extension: (v) => { return (v ? true : false); },
+    uppercase_ipa_extension: (v) => { return (v ? true : false); },
+    character_modifier_letters: (v) => { return (v ? true : false); },
+    symbol_modifier_letters: (v) => { return (v ? true : false); },
+    lowercase_greek_coptic: (v) => { return (v ? true : false); },
+    uppercase_greek_coptic: (v) => { return (v ? true : false); },
+    insensitivecase_greek_coptic: (v) => { return (v ? true : false); },
+    symbol_greek_coptic: (v) => { return (v ? true : false); },
+    lowercase_cyrillic: (v) => { return (v ? true : false); },
+    uppercase_cyrillic: (v) => { return (v ? true : false); },
+    symbols_cyrillic: (v) => { return (v ? true : false); },
+    lowercase_cyrillic_supplement: (v) => { return (v ? true : false); },
+    uppercase_cyrillic_supplement: (v) => { return (v ? true : false); },
+    misc_cyrillic_supplement: (v) => { return (v ? true : false); },
+    general_punctuation: (v) => { return (v ? true : false); },
+    currency_symbols: (v) => { return (v ? true : false); },
+    misc_technical: (v) => { return (v ? true : false); },
+    box_drawings: (v) => { return (v ? true : false); },
+    block_elements: (v) => { return (v ? true : false); },
+    misc_symbols: (v) => { return (v ? true : false); },
+    dingbats: (v) => { return (v ? true : false); },
+};
+</code></pre></article></section></div><nav><a href=../index.html>simplePass Program</a> <a href=../EXAMPLES-AND-INTEGRATION.html>Examples & Integration</a><h3><a href=index.html>README</a></h3><h3>Modules</h3><ul><li><a href=module-allowedModifiers.html>allowedModifiers</a><li><a href=module-calculateMaxPossibleCharacters.html>calculateMaxPossibleCharacters</a><li><a href=module-characterCodeConstraints.html>characterCodeConstraints</a><li><a href=module-cleanModifier.html>cleanModifier</a><li><a href=module-config.html>config</a><li><a href=module-createMessage.html>createMessage</a><li><a href=module-ensureRepeatingCharacters.html>ensureRepeatingCharacters</a><li><a href=module-errors.html>errors</a><li><a href=module-generateCharCode.html>generateCharCode</a><li><a href=module-initializer.html>initializer</a><li><a href=module-matchCharacterSetConstraint.html>matchCharacterSetConstraint</a><li><a href=module-messageHandler.html>messageHandler</a><li><a href=module-passwordPreConfigs.html>passwordPreConfigs</a><li><a href=module-range.html>range</a><li><a href=module-shuffle.html>shuffle</a><li><a href=module-simplePass.html>simplePass</a><li><a href=module-strengthChecker.html>strengthChecker</a><li><a href=module-uniqueCharacterFilter.html>uniqueCharacterFilter</a><li><a href=module-validateModifier.html>validateModifier</a><li><a href=module-whitespaceAttributes.html>whitespaceAttributes</a></ul><h3>Interfaces</h3><ul><li><a href=charCodeGenerationFlag.html>charCodeGenerationFlag</a><li><a href=charCodeOptions.html>charCodeOptions</a><li><a href=charCodeRequest.html>charCodeRequest</a><li><a href=characterCodeConstraintsAttributes.html>characterCodeConstraintsAttributes</a><li><a href=characterSetObject.html>characterSetObject</a><li><a href=ensureRepeatingCharacterOptions.html>ensureRepeatingCharacterOptions</a><li><a href=messageBoxObject.html>messageBoxObject</a><li><a href=messageObject.html>messageObject</a><li><a href=messageTypes.html>messageTypes</a><li><a href=module-config-Messages.html>Messages</a><li><a href=module-config-PasswordConstraints.html>PasswordConstraints</a><li><a href=module-config-SimplePassConfig.html>SimplePassConfig</a><li><a href=module-config-configHTMLElement.html>configHTMLElement</a><li><a href=passwordModifier.html>passwordModifier</a><li><a href=repeatingCharacterOptionsPreservations.html>repeatingCharacterOptionsPreservations</a><li><a href=strengthCheckCompression.html>strengthCheckCompression</a><li><a href=strengthCheckTargets.html>strengthCheckTargets</a><li><a href=strengthCheckedPassword.html>strengthCheckedPassword</a><li><a href=strengthCheckerConstraints.html>strengthCheckerConstraints</a></ul><h3>Other Resources</h3><ul><li><a href=CODE_OF_CONDUCT.html>Code Of Conduct</a><li><a href=CONTRIBUTING.html>Contributing</a><li><a href=DEVELOPMENT.html>DEVELOPMENT</a><li><a href=SECURITY.html>Security</a></ul></nav><br class=clear><footer>Documentation generated by <a href=https://github.com/jsdoc/jsdoc>JSDoc 4.0.2</a></footer><script>prettyPrint()</script><script src=scripts/linenumber.js></script>

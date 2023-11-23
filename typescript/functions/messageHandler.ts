@@ -50,7 +50,16 @@ export default function messageHandler(
     cFig: typeof config = config
 ): void {
 
-    cFig.messages = Object.assign(config,cFig.messages);
+
+    if(!cFig.messages){return;}
+
+    if(!cFig.messages.prefix){
+        cFig.messages.prefix = config.messages.prefix;
+    };
+
+    if(!cFig.messages.templateMarker){
+        cFig.messages.templateMarker = config.messages.templateMarker;
+    }
 
     if (
         message === 'CLEAR'
@@ -146,9 +155,6 @@ export default function messageHandler(
             break;
         case 'log':
             console.log(message);
-            break;
-        case 'debug':
-            console.debug(message);
             break;
         default:
             throw new Error(message);

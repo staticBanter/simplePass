@@ -17,6 +17,8 @@
 */
 'use strict';
 import allowedModifiers from "../data/lists/allowedModifiers.js";
+import whitespaceAttributes from "../data/lists/whitespaceAttributes.js";
+import characterCodeConstraints from "../data/objects/characterCodeConstraints.js";
 import config from "../simplePass.config.js";
 /**
  * @file
@@ -49,7 +51,8 @@ export default function cleanModifier(modifier) {
      * @private
      */
     function checkPair([key, value]) {
-        if (allowedModifiers.includes(key)) {
+        const combinedModifiers = allowedModifiers.concat(Object.keys(characterCodeConstraints)).concat(whitespaceAttributes);
+        if (combinedModifiers.includes(key)) {
             if (value
                 && (typeof (value) === 'string'
                     || typeof (value) === 'number'

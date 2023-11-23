@@ -1,0 +1,17 @@
+{
+    "all":true,
+    "extension":".js",
+    "reporter":[
+        "html",
+        "text",
+        "text-summary"
+    ],
+    "src":"javascript/module",
+    "exclude":[
+        "test/**/*.test.js",
+        "data/interfaces",
+        "functions/createMessageBox.js",
+        "functions/initializer.js",
+        "functions/messageHandler.js"
+    ]
+}

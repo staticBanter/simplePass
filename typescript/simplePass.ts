@@ -20,7 +20,6 @@
 
 import passwordModifier from "./data/interfaces/passwordModifier.js";
 import strengthCheckedPassword from "./data/interfaces/strengthCheckedPassword.js";
-import useableAttributes from "./data/lists/useableAttributes.js";
 import whitespaceAttributes from "./data/lists/whitespaceAttributes.js";
 import characterCodeConstraints from "./data/objects/characterCodeConstraints.js";
 import errors from "./data/objects/errors.js";
@@ -57,7 +56,6 @@ import config from "./simplePass.config.js";
  * @requires generateCharCode
  * @requires ensureRepeatingCharacters
  * @requires shuffle
- * @requires useableAttributes
  * @requires strengthChecker
  * @requires passwordPreConfigs
  * @requires messageHandler
@@ -132,29 +130,13 @@ export default function simplePass (
         );
     }
 
-    // Initialize the password.
-    let password: string = '';
-    let middleCharacters: string = '';
-
-    // Initialize preserve beginning and end character flags.
-    let preserveBeginning: boolean = false;
-    let preserveEnd: boolean = false;
-
     // Remove unneeded object attributes and normalize formData objects.
     modifier = cleanModifier(modifier);
-
-    if(!cFig.defaultPasswordModifier) {
-        cFig.defaultPasswordModifier = Object.assign(config.defaultPasswordModifier, cFig.defaultPasswordModifier);
-    }
-
-    if(!cFig.passwordConstraints) {
-        cFig.passwordConstraints = Object.assign(config.passwordConstraints, cFig.defaultPasswordModifier);
-    }
 
     // Ensure certain values are set and set properly.
     try {
 
-        validateModifier(modifier, cFig);
+        validateModifier(modifier);
 
     } catch(caught: any) {
 
@@ -202,6 +184,22 @@ export default function simplePass (
 
         }
 
+    }
+
+    // Initialize the password.
+    let password: string = '';
+    let middleCharacters: string = '';
+
+    // Initialize preserve beginning and end character flags.
+    let preserveBeginning: boolean = false;
+    let preserveEnd: boolean = false;
+
+    if(!cFig.defaultPasswordModifier) {
+        cFig.defaultPasswordModifier = Object.assign(config.defaultPasswordModifier, cFig.defaultPasswordModifier);
+    }
+
+    if(!cFig.passwordConstraints) {
+        cFig.passwordConstraints = Object.assign(config.passwordConstraints, cFig.defaultPasswordModifier);
     }
 
     if(modifier.preConfig) {
@@ -272,6 +270,10 @@ export default function simplePass (
 
             } else {
                 passwordLimit -= (modifier.customRepeatingCharacters.length * 2);
+            }
+
+            if(modifier.max_repeatingCharacter){
+                passwordLimit -= modifier.max_repeatingCharacter;
             }
 
         } else if(modifier.max_repeatingCharacter) {
@@ -386,7 +388,8 @@ export default function simplePass (
                         },
                         {
                             beginning: true
-                        }
+                        },
+                        cFig.cryptoModule
                     )
                 );
 
@@ -466,7 +469,9 @@ export default function simplePass (
                                 whitespaceOptions: setWhitespaceAttributes,
                                 excludeCharacters: modifier.excludeCharacters
                             }
-                        }
+                        },
+                        undefined,
+                        cFig.cryptoModule
                     )
                 );
 
@@ -590,7 +595,8 @@ export default function simplePass (
                         },
                         {
                             end: true
-                        }
+                        },
+                        cFig.cryptoModule
                     )
                 );
 
@@ -613,7 +619,8 @@ export default function simplePass (
                                     },
                                     {
                                         end: true
-                                    }
+                                    },
+                                    cFig.cryptoModule
                                 )
                             );
 
@@ -726,13 +733,19 @@ export default function simplePass (
 
                     try {
 
-                        const currentCharacter: string = String.fromCharCode(generateCharCode({
-                            charType: deck[0],
-                            charCodeOptions: {
-                                whitespaceOptions: setWhitespaceAttributes,
-                                excludeCharacters: modifier.excludeCharacters
-                            }
-                        }));
+                        const currentCharacter: string = String.fromCharCode(
+                            generateCharCode(
+                                {
+                                    charType: deck[0],
+                                    charCodeOptions: {
+                                        whitespaceOptions: setWhitespaceAttributes,
+                                        excludeCharacters: modifier.excludeCharacters
+                                    }
+                                },
+                                undefined,
+                                cFig.cryptoModule
+                            )
+                        );
 
                         stringMiddle += currentCharacter;
 
@@ -826,7 +839,8 @@ export default function simplePass (
                         },
                         {
                             beginning: true
-                        }
+                        },
+                        cFig.cryptoModule
                     )
                 );
 
@@ -894,7 +908,9 @@ export default function simplePass (
                                 whitespaceOptions: setWhitespaceAttributes,
                                 excludeCharacters: modifier.excludeCharacters
                             }
-                        }
+                        },
+                        undefined,
+                        cFig.cryptoModule
                     )
                 );
 
@@ -1003,7 +1019,8 @@ export default function simplePass (
                         },
                         {
                             end: true
-                        }
+                        },
+                        cFig.cryptoModule
                     )
                 );
 
@@ -1026,7 +1043,8 @@ export default function simplePass (
                                     },
                                     {
                                         end: true
-                                    }
+                                    },
+                                    cFig.cryptoModule
                                 )
                             );
 
@@ -1134,7 +1152,9 @@ export default function simplePass (
                                         whitespaceOptions: setWhitespaceAttributes,
                                         excludeCharacters: modifier.excludeCharacters
                                     }
-                                }
+                                },
+                                undefined,
+                                cFig.cryptoModule
                             )
                         );
 
@@ -1230,7 +1250,7 @@ export default function simplePass (
                 {
                     characterSets: {
                         used: Object.keys(modifier),
-                        available: useableAttributes
+                        available: Object.keys(characterCodeConstraints)
                     },
                     excludeCharacters: modifier.excludeCharacters,
                     min_length: cFig.passwordConstraints.min_length,
@@ -1246,7 +1266,7 @@ export default function simplePass (
             {
                 characterSets: {
                     used: Object.keys(modifier),
-                    available: useableAttributes
+                    available: Object.keys(characterCodeConstraints)
                 },
                 excludeCharacters: modifier.excludeCharacters,
                 min_length: cFig.passwordConstraints.min_length,

@@ -1,0 +1,8 @@
+{
+    "extension": ".test.js",
+    "check-leaks": true,
+    "recursive": true,
+    "fail-zero": true,
+    "color": true,
+    "bail": true
+}

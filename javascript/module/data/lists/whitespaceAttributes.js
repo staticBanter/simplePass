@@ -22,17 +22,14 @@
  */
 /**
  * Defines what attributes are considered white-space attributes.
- * - ```whitespaceBeginning```
- * - ```whitespaceEnd```
- * - ```whitespaceBetween```
- * - ```required_whitespaceEnd```
- * - ```required_whitespaceBeginning```
+ *
  * @const {Array<string>} whitespaceAttributes
  */
 const whitespaceAttributes = [
     'whitespaceBeginning',
     'whitespaceEnd',
     'whitespaceBetween',
+    'max_whitespaceBetween',
     'required_whitespaceEnd',
     'required_whitespaceBeginning',
 ];

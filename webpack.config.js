@@ -107,7 +107,12 @@ export default (env) => [
         ],
         performance: env.production ? {
             hints: "warning"
-        } : false
+        } : false,
+        stats:env.production?{
+            all:true,
+            colors:true,
+            logging:'verbose',
+        }:'minimal',
     },
     // Config for the site.
     {
@@ -217,6 +222,11 @@ export default (env) => [
         },
         performance: env.production ? {
             hints: "warning"
-        } : false
+        } : false,
+        stats:env.production?{
+            all:true,
+            colors:true,
+            logging:'verbose',
+        }:'minimal',
     },
 ];

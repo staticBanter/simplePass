@@ -119,20 +119,43 @@ const characterCodeConstraints = {
     lowercase_extended_a: {
         min: 257,
         max: 383,
-        range: range(257, 312, 2, [306, 307])
-            .concat(range(314, 329, 2))
-            .concat(range(331, 375, 2, [338, 339]))
-            .concat(range(378, 383, 2))
+        range: range(257, 312, {
+            increment: 2,
+            exclude: [306, 307],
+            forceInclusiveEnd: true
+        })
+            .concat(range(314, 329, {
+            increment: 2,
+            forceInclusiveEnd: true
+        }))
+            .concat(range(331, 375, {
+            increment: 2,
+            exclude: [338, 339]
+        }))
+            .concat(range(378, 383, {
+            increment: 2,
+            forceInclusiveEnd: true
+        }))
             .map((element) => element = [element]),
     },
     uppercase_extended_a: {
         min: 256,
         max: 382,
-        range: range(256, 310, 2, [306, 307])
-            .concat(range(313, 327, 2))
-            .concat(range(330, 374, 2, [338, 339]))
+        range: range(256, 310, {
+            increment: 2,
+            exclude: [306, 307]
+        })
+            .concat(range(313, 327, {
+            increment: 2
+        }))
+            .concat(range(330, 374, {
+            increment: 2,
+            exclude: [338, 339]
+        }))
             .concat([376])
-            .concat(range(377, 381, 2))
+            .concat(range(377, 381, {
+            increment: 2
+        }))
             .map((element) => element = [element]),
     },
     ligature_extended_a: {
@@ -183,59 +206,89 @@ const characterCodeConstraints = {
             [587],
             [583]
         ]
-            .concat(range(462, 476, 2, undefined, true))
-            .concat(range(479, 495, 2, undefined, true))
-            .concat(range(505, 561, 2, undefined, true))
+            .concat(range(462, 476, {
+            increment: 2
+        }))
+            .concat(range(479, 495, {
+            increment: 2
+        }))
+            .concat(range(505, 561, {
+            increment: 2
+        }))
     },
     uppercase_extended_b: {
         min: 385,
         max: 590,
         range: [
             [444]
-        ].concat(range(385, 408, 1, [
-            387,
-            389,
-            392,
-            396,
-            397,
-            402,
-            405
-        ], true))
-            .concat(range(412, 440, 1, [
-            414,
-            417,
-            419,
-            421,
-            422,
-            424,
-            426,
-            427,
-            429,
-            432,
-            436,
-            438
-        ], true))
-            .concat(range(452, 458, 1, [
-            453,
-            454,
-            456,
-            459
-        ], true))
-            .concat(range(461, 475, 2, undefined, true))
-            .concat(range(478, 494, 2, undefined, true)).concat(range(497, 504, 1, [
-            498,
-            499,
-            501
-        ], true)).concat(range(506, 562, 2, undefined, true)).concat(range(570, 590, 1, [
-            572,
-            575,
-            576,
-            578,
-            583,
-            585,
-            587,
-            589
-        ], true))
+        ].concat(range(385, 408, {
+            exclude: [
+                387,
+                389,
+                392,
+                396,
+                397,
+                402,
+                405
+            ],
+            singles: true
+        }))
+            .concat(range(412, 440, {
+            exclude: [
+                414,
+                417,
+                419,
+                421,
+                422,
+                424,
+                426,
+                427,
+                429,
+                432,
+                436,
+                438
+            ],
+            singles: true,
+        }))
+            .concat(range(452, 458, {
+            exclude: [
+                453,
+                454,
+                456,
+                459
+            ],
+            singles: true
+        }))
+            .concat(range(461, 475, {
+            increment: 2,
+            singles: true
+        }))
+            .concat(range(478, 494, {
+            increment: 2,
+            singles: true
+        })).concat(range(497, 504, {
+            exclude: [
+                498,
+                499,
+                501
+            ],
+            singles: true
+        })).concat(range(506, 562, {
+            increment: 2,
+            singles: true
+        })).concat(range(570, 590, {
+            exclude: [
+                572,
+                575,
+                576,
+                578,
+                583,
+                585,
+                587,
+                589
+            ],
+            singles: true
+        }))
     },
     mixedcase_extended_b: {
         min: 453,
@@ -302,7 +355,10 @@ const characterCodeConstraints = {
             [940, 974],
             [1016],
             [1019]
-        ].concat(range(985, 107, 2, undefined, true))
+        ].concat(range(985, 107, {
+            increment: 2,
+            singles: true
+        }))
     },
     uppercase_greek_coptic: {
         min: 880,
@@ -319,14 +375,20 @@ const characterCodeConstraints = {
             [931, 939],
             [1015],
             [1018]
-        ].concat(range(994, 1004, 2, undefined, true))
+        ].concat(range(994, 1004, {
+            increment: 2,
+            singles: true
+        }))
     },
     insensitivecase_greek_coptic: {
         min: 984,
         max: 1011,
         range: [
             [1011]
-        ].concat(range(984, 992, 2, undefined, true))
+        ].concat(range(984, 992, {
+            increment: 2,
+            singles: true
+        }))
     },
     symbol_greek_coptic: {
         min: 884,
@@ -348,14 +410,28 @@ const characterCodeConstraints = {
         range: [
             [1072, 1119]
         ]
-            .concat(range(1121, 1153, 2, undefined, true))
-            .concat(range(1163, 1215, 2, [
-            1189,
-            1205,
-        ], true)).concat(range(1218, 1230, 2, undefined, true))
-            .concat(range(1231, 1279, 2, [
-            1237,
-        ], true))
+            .concat(range(1121, 1153, {
+            increment: 2,
+            singles: true,
+        }))
+            .concat(range(1163, 1215, {
+            increment: 2,
+            exclude: [
+                1189,
+                1205,
+            ],
+            singles: true,
+        })).concat(range(1218, 1230, {
+            increment: 2,
+            singles: true
+        }))
+            .concat(range(1231, 1279, {
+            increment: 2,
+            exclude: [
+                1237
+            ],
+            singles: true
+        }))
     },
     uppercase_cyrillic: {
         min: 1024,
@@ -363,18 +439,29 @@ const characterCodeConstraints = {
         range: [
             [1024, 1071],
         ]
-            .concat(range(1120, 1214, 2, [
-            1154,
-            1156,
-            1158,
-            1160,
-            1188,
-            1204,
-        ], true))
-            .concat(range(1217, 1229, 2, undefined, true))
-            .concat(range(1232, 1278, 2, [
-            1236,
-        ], true))
+            .concat(range(1120, 1214, {
+            increment: 2,
+            exclude: [
+                1154,
+                1156,
+                1158,
+                1160,
+                1188,
+                1204,
+            ],
+            singles: true
+        }))
+            .concat(range(1217, 1229, {
+            increment: 2,
+            singles: true
+        }))
+            .concat(range(1232, 1278, {
+            increment: 2,
+            exclude: [
+                1236
+            ],
+            singles: true,
+        }))
     },
     symbols_cyrillic: {
         min: 1154,
@@ -389,12 +476,18 @@ const characterCodeConstraints = {
     lowercase_cyrillic_supplement: {
         min: 1281,
         max: 1319,
-        range: range(1281, 1319, 2, undefined, true)
+        range: range(1281, 1319, {
+            increment: 2,
+            singles: true,
+        })
     },
     uppercase_cyrillic_supplement: {
         min: 1280,
         max: 1319,
-        range: range(1280, 1319, 2, undefined, true)
+        range: range(1280, 1319, {
+            increment: 2,
+            singles: true
+        })
     },
     misc_cyrillic_supplement: {
         min: 1320,

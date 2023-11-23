@@ -50,26 +50,29 @@
 export default interface passwordModifier {
     [index: string]: number|string|boolean|Array<Array<string|number>>|undefined;
 
+    // Modifiers
     length:number;
-    lowercase?:boolean,
-    uppercase?:boolean,
-    numbers?:boolean,
-    punctuation?:boolean,
+    excludeCharacters?:string,
+    uniqueCharacters?:boolean,
+    repeatingCharacter?:boolean,
+    max_repeatingCharacter?:number,
+    customRepeatingCharacters?:string|Array<Array<string>>,
+    preConfig?:string,
+    // Whitespace
     whitespaceBeginning?:boolean,
     required_whitespaceBeginning?:boolean,
     whitespaceEnd?:boolean,
     required_whitespaceEnd?:boolean,
     whitespaceBetween?:boolean,
     max_whitespaceBetween?:number,
-    excludeCharacters?:string,
-    uniqueCharacters?:boolean,
-    repeatingCharacter?:boolean,
-    max_repeatingCharacter?:number,
-    customRepeatingCharacters?:string|Array<Array<string>>,
+    // Character Sets
+    lowercase?:boolean,
+    uppercase?:boolean,
+    numbers?:boolean,
+    punctuation?:boolean,
     lowercase_supplement?:boolean,
     uppercase_supplement?:boolean,
     symbols_supplement?:boolean,
-    preConfig?:string,
     lowercase_extended_a?:boolean,
     uppercase_extended_a?:boolean,
     ligature_extended_a?:boolean,

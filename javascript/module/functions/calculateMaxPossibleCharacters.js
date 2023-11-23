@@ -17,7 +17,7 @@
 */
 'use strict';
 import characterCodeConstraints from "../data/objects/characterCodeConstraints.js";
-import whitespaceAttributes from "../data/lists/whitespaceAttributes.js";
+import uniqueCharacterFilter from "./uniqueCharacterFilter.js";
 /**
  * @file
  * @module calculateMaxPossibleCharacters
@@ -29,15 +29,14 @@ import whitespaceAttributes from "../data/lists/whitespaceAttributes.js";
  * @param {characterSetObject} characterSetObject An [object]{@link module:characterSetObject} describing the usable characters and character-sets.
  * @requires characterCodeConstraints
  * @implements {characterCodeConstraintsAttributes}
- * @requires whitespaceAttributes
- * @requires useableAttributes
+ * @requires uniqueCharacterFilter
  * @returns {number} The number of usable characters minus any exclusions.
  */
 export default function calculateMaxPossibleCharacters(characterSetObject) {
     let maxPossibleCharacters = 0;
     let whiteSpaceFlag = false;
     characterSetObject.characterSets.forEach((set) => {
-        if (whitespaceAttributes.includes(set)) {
+        if (set === 'whitespace') {
             // Only count whitespace once.
             if (whiteSpaceFlag) {
                 return;
@@ -59,15 +58,20 @@ export default function calculateMaxPossibleCharacters(characterSetObject) {
                     }
                 });
             }
-            else if (constraint.min
+            else if (!constraint.range
+                && constraint.min
                 && constraint.max) {
                 maxPossibleCharacters += (constraint.max - constraint.min) + 1;
+            }
+            else if (!constraint.range
+                && !constraint.max) {
+                maxPossibleCharacters++;
             }
         }
     });
     if (characterSetObject.excludeCharacters
         && characterSetObject.excludeCharacters.length > 0) {
-        maxPossibleCharacters -= characterSetObject.excludeCharacters.length;
+        maxPossibleCharacters -= uniqueCharacterFilter(characterSetObject.excludeCharacters).length;
     }
     return maxPossibleCharacters;
 }

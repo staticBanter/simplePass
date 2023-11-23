@@ -20,6 +20,8 @@
 
 import passwordModifier from "../data/interfaces/passwordModifier.js";
 import allowedModifiers from "../data/lists/allowedModifiers.js";
+import whitespaceAttributes from "../data/lists/whitespaceAttributes.js";
+import characterCodeConstraints from "../data/objects/characterCodeConstraints.js";
 import config from "../simplePass.config.js";
 
 /**
@@ -57,8 +59,10 @@ export default function cleanModifier(modifier:passwordModifier|FormData|object)
      */
     function checkPair([key,value]:any){
 
+        const combinedModifiers:Array<string> = allowedModifiers.concat(Object.keys(characterCodeConstraints)).concat(whitespaceAttributes);
+
         if(
-            allowedModifiers.includes(key)
+            combinedModifiers.includes(key)
         ){
 
             if(

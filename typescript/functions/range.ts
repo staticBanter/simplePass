@@ -42,28 +42,56 @@
  * console.log(range(1,10,1,[2,7,8]))
  * @returns {Array<number>} A list of numbers within the start and end values
  */
-export default function range(start:number,end:number,increment:number=1,exclude?:Array<number>,singles:boolean=false):Array<number> & Array<Array<number>>{
+export default function range(start:number,end:number,options?:{
+    increment?:number,
+    exclude?:Array<number>,
+    singles?:boolean
+    forceInclusiveEnd?:boolean,
+}):Array<number> & Array<Array<number>>{
 
     const range: Array<number> & Array<Array<number>> = [];
+    const increment = options?.increment??1;
 
-    end = (end + 1); // Final number inclusion
+    while(start<(end+increment)){
 
-    while(start < end){
+        if(start<=end){
 
-        if (!exclude?.includes(start)) {
-            if (singles) {
-                range.push([start]);
-            } else {
+            if(options){
+
+                if(
+                    options.exclude
+                    && options.exclude.includes(start)
+                ){
+                    start+=increment;
+                    continue;
+                }
+
+                if(options.singles){
+                    range.push([start]);
+                }else{
+                    range.push(start);
+                }
+
+            }else{
                 range.push(start);
             }
         }
 
-        // If we are over the end, set the final number to our end.
-        (start+increment)>end?
-        start = end:
         start+=increment;
 
     }
 
+    if(
+        options?.forceInclusiveEnd
+        && !range.includes(end)
+    ){
+        if(options.singles){
+            range.push([end]);
+        }else{
+            range.push(end);
+        }
+    }
+
     return range;
+
 }
