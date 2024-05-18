@@ -143,7 +143,6 @@ export default (env) => [
                     value: 'TRUE',
                 }
             ],
-            magicHtml: false,
         },
         output: {
             path: path.resolve('site/prod'),
