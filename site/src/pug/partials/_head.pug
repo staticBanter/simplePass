@@ -1,0 +1,205 @@
+head
+    meta(charset="UTF-8")
+    title #{applicationName} | Demo
+    meta(
+        http-equiv="X-UA-Compatible"
+        content="IE=edge"
+    )
+    meta(
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    )
+    meta(
+        name="application-name"
+        content="simplePass"
+    )
+    meta(
+        name="application-url"
+        content="https://staticbanter.github.io/simplePass/"
+    )
+    meta(
+        name="creator"
+        content="staticBanter"
+    )
+    meta(
+        name="keywords"
+        content="javascript,js,password-generator,password,generator,progressive-web-application,pwa"
+    )
+    meta(
+        name="description"
+        content="A JavaScript password generator."
+    )
+    meta(
+        name="theme-color"
+        content="#130E1E"
+    )
+    meta(
+        name="robots"
+        content="index, follow, max-snippet:30"
+    )
+    meta(
+        name="thumbnail"
+        content="./storage/icons/simplePass-Logo-1080.png"
+    )
+    //
+        simplePass - A JavaScript password generator.
+        Copyright (C) 2023  Jordan Vezina(staticBanter)
+
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+    // Open Graph Protocol Meta Data
+    meta(
+        property="og:title"
+        content="simplePass | Demo"
+    )
+    meta(
+        property="og:type"
+        content="website"
+    )
+    meta(
+        property="og:url"
+        content="https://staticbanter.github.io/simplePass/"
+    )
+    meta(
+        property="og:description"
+        content="A JavaScript password generator."
+    )
+    meta(
+        property="og:locale"
+        content="en_CA"
+    )
+    meta(
+        property="og:locale:alternate"
+        content="en_US"
+    )
+    meta(
+        property="og:locale:alternate"
+        content="en_JM"
+    )
+    meta(
+        property="og:locale:alternate"
+        content="en_US"
+    )
+    meta( property="og:locale:alternate"
+        content="en_GB"
+    )
+    meta(
+        property="og:locale:alternate"
+        content="en_AU"
+    )
+    meta(
+        property="og:locale:alternate"
+        content="en_IE"
+    )
+    meta(
+        property="og:site_name"
+        content="GitHub"
+    )
+
+    // iOS/Safari
+    link(
+        type="image/png"
+        rel="apple-touch-icon"
+        href="./storage/icons/simplePass-Logo-512.png"
+    )
+    meta(
+        name="apple-mobile-web-app-status-bar"
+        content="#130E1E"
+    )
+    meta(
+        name="apple-mobile-web-app-capable"
+        content="yes"
+    )
+    meta(
+        name="apple-mobile-web-app-status-bar-style"
+        content="#130E1E"
+    )
+    meta(
+        name="apple-mobile-web-app-title"
+        content="simplePass"
+    )
+    meta(
+        name="format-detection"
+        content="telephone=no"
+    )
+    meta(
+        name="format-detection"
+        content="address=no"
+    )
+
+    // Chrome
+    meta(
+        name="mobile-web-application-capable"
+        content="yes"
+    )
+
+    // Win8 Support
+
+    meta(
+        name="msapplication-TileColor"
+        content="#130E1E"
+    )
+    meta(
+        name="msapplication-TileImage"
+        content="./storage/icons/simplePass-Logo-512.png"
+    )
+    meta(
+        name="msapplication-tooltip"
+        content="simplePass Password Generator"
+    )
+    link(
+        type="image/png"
+        rel="icon"
+        href="./storage/icons/simplePass-Logo-512.png"
+    )
+
+    // JSON-LD(SEO)
+    script(type="application/ld+json").
+        {
+            "@context": "http://schema.org/",
+            "@type": "SoftwareApplication",
+            "url" : "https://staticbanter.github.io/simplePass/",
+            "offers": {
+                "@type": "Offer",
+                "price": "0"
+            },
+            "applicationCategory": "SecurityApplication",
+            "name": "simplePass",
+            "operatingSystem":"Windows 10, Windows 11, Linux, Android 9, Android 10, Android 11, Android 12, Android 13, Android 14"
+        }
+
+    // JavaScript
+    script(
+        type="module"
+        src="./main.js"
+    )
+    script(
+        type="text/javascript"
+        defer
+        src="./sw.js"
+    )
+
+    // CSS
+    link(
+        type="text/css"
+        rel="stylesheet"
+        href="./main.css"
+    )
+    block styles
+
+    // Manifest
+    link(
+        href="./manifest.json"
+        rel="manifest"
+    )

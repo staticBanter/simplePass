@@ -7,7 +7,6 @@ import TerserPlugin from "terser-webpack-plugin";
 import webpack from 'webpack';
 const PACKAGE = JSON.parse(FS.readFileSync('./package.json'));
 
-
 PACKAGE.name = 'simplePass';
 
 const githubDomain = `https://staticbanter.github.io`
@@ -58,8 +57,6 @@ const nonProdConsoles = [
     'timeStamp',
     'trace'
 ];
-
-
 
 /**
  * Because we need to bundle the browser version of simplePass with the main page, we create a second directory bundle our files and include it in the site.
@@ -120,7 +117,7 @@ export default (env) => [
         name: "site",
         entry: {
             site: {
-                import: "./main.js"
+                import: "./js/main.js"
             }
         },
         devServer: {
@@ -187,7 +184,7 @@ export default (env) => [
                         },
                     },
                     {
-                        from: "./sw.js",
+                        from: "./js/sw.js",
                         to: "../prod/sw.js",
                         transform(content) {
                             return content
@@ -227,5 +224,5 @@ export default (env) => [
             colors:true,
             logging:'verbose',
         }:'minimal',
-    },
+    }
 ];

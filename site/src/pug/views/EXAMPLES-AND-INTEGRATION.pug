@@ -1,0 +1,1105 @@
+extends ../partials/_layout.pug
+
+block styles
+    style(type="text/css").
+        main {
+            padding: 0 0.5rem;
+        }
+
+        .simplePass_exampleContainer {
+            display: block;
+            border: 1px solid;
+            box-sizing: border-box;
+            border-radius: 10px;
+            margin: 0 0.5rem;
+            padding: 1rem;
+        }
+
+        .simplePass_messageBoard {
+            border: none;
+            box-sizing: content-box;
+        }
+
+        .multiForm>form {
+            border: none;
+            box-sizing: content-box;
+        }
+
+        .multiForm {
+            display: block;
+            border: 1px solid;
+            border-radius: 10px;
+            box-sizing: border-box;
+        }
+
+block content
+    -
+        let codeExample = ``;
+    section
+        h2 Integration
+        p
+            | simplePass is not only designed to be a standalone application but it is also made to be integrated into your applications, allowing your clients to generate stronger passwords simply.
+            | Through this document we hope to demonstrate how you can obtain and integrate the simplePass program into your application.
+    section
+        h2 Obtaining The Files
+        p
+            | simplePass is currently distributed on
+            |
+            a(href="https://github.com") Github
+            |
+            | under the
+            |
+            a(href="https://github.com/staticBanter/simplePass") staticBanter/simplePass repository.
+        p
+            | If you are just looking for the production ready bundled JavaScript code then you can find it
+            |
+            a(href="https://github.com/staticBanter/simplePass/blob/main/javascript/bundle/simplePass.bundle.js") in the repo under
+                code /javascript/bundle/simplePass.bundle.js
+        p
+            | If you are looking to tinker with simplePass or only need pieces we also offer an unbundled JavaScript and TypeScript versions of the code.
+            | We would also recommend taking a look at
+            |
+            a(href="https://github.com/staticBanter/simplePass/tree/main/docs") the Development documentation found within the repository
+            |
+            | as well.
+        p
+            | If you would like to test simplePass or just need a password generator you can
+            |
+            a(href="https://staticbanter.github.io/simplePass/") check simplePass out on its GitHub.IO page.
+    section
+        h2 Importing
+        p
+            | simplePass is built using
+            |
+            a(href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules") 'Native JavaScript Modules'
+            |
+            | (also known as
+            |
+            a(href="https://tc39.es/ecma262/#sec-modules") Ecmascript Modules)
+            |
+            |
+            em import
+            |
+            | and
+            |
+            em export
+            |
+            | syntax.
+            | Thus you will need a compatible environment to run simplePass and it's recommend to use the following
+            |
+            em import
+            |
+            | statement to include the program into your application.
+        pre
+            code.
+                import simplePass from "YOUR_DIRECTORY_PATH/simplePass.bundle.js"
+    section
+        h2 simplePass Function
+        p Once you have imported the simplePass function into your program you may call it like so:
+        pre
+            code
+                | simplePass(?
+                i passwordModifier:passwordModifier = passwordModifier
+                | ,?
+                i strengthCheck:boolean|strengthCheckerStyling
+                | ,?
+                i cFig:config = config
+                | )
+        p
+            | For brevity we will skip over all of the possible arguments that can be passed to the parameters and stick with some simpler examples.
+            | If you need a better understanding of what each parameter does then you may review their respective
+            |
+            a(href="https://staticbanter.github.io/simplePass/docs/index.html") documentation pages.
+        div
+            h3 simplePass Function Parameters
+            ul
+                li
+                    a(href="https://staticbanter.github.io/simplePass/docs/passwordModifier.html")
+                        i passwordModifier
+                li
+                    a(href="https://staticbanter.github.io/simplePass/docs/strengthCheckerStyling.html")
+                        i strengthCheck
+                li
+                    a(href="https://staticbanter.github.io/simplePass/docs/module-config.html")
+                        i cFig
+        div
+            h3 Usage Inside Of JavaScript
+            p
+                | First we will just import the simplePass program and use it to
+                |
+                code console.log()
+                |
+                | various random strings.
+            pre
+                code.
+                    // Import simplePass
+                    import simplePass from "YOUR_DIRECTORY_PATH/simplePass.bundle.js"
+
+                    /**
+                     * Generate a password with the default modifiers.
+                     * Outputs similar to: 5UyO"Ir/nyB?Z65o0/3)Rm
+                     */
+
+                    console.log(simplePass());
+            p As you can see integrating simplePass into your application can be as simple as two lines of code.
+            p As we progress through this documentation we will create more complex examples of integration.
+            pre
+                code.
+                    // Generate a more complex random password.
+                    const complexPass  = simplePass({
+                        length: 26,
+                        lowercase: true,
+                        uppercase: true,
+                        numbers: true,
+                        punctuation: true,
+                        lowercase_supplement:true
+                        excludeCharacters: 'abc'
+                    });
+                                        console.log(complexPass)
+                    // outputs similar to: tsøû}BpWe:o]M6õ1þJ4D$þ/84ù
+            p
+                strong * Note:
+                | This documentation can not go through every possible form of integration into every type of application scenario.
+                | While it does go through many of the most common use cases, it is highly advised you use this documentation as a starting point for more complex integration scenarios.
+                | If you need further help please open a question on the
+                |
+                a(href="https://github.com/staticBanter/simplePass/issues") GitHub Issues Board
+                |
+                | ( you should also please read our
+                |
+                a(href="https://github.com/staticBanter/simplePass/blob/main/docs/CONTRIBUTING.md#creating-an-issue") Creating An Issue section
+                |
+                | of our Contributing documentation.)
+            div
+                p Next let's add an element to our page to inject a random string into.
+                p
+                    b JavaScript
+                pre
+                    code.
+                        // Get an element to display our password
+                        const displayPassword = document.body.querySelector(".simplePass_passwordTarget");
+                        // Get an element to display our entropy score.
+                        const passwordEntropy = document.body.querySelector('.simplePass_passwordEntropy');
+                                                // Create our password
+                        const initialPassword = simplePass(
+                                    {
+                                        length: 22,
+                                        lowercase: true,
+                                        uppercase: true,
+                                        numbers: true,
+                                        punctuation: true
+                                    },
+                                    {
+                                        strengthCheck: {
+                                            entropyTarget: true
+                                        }
+                                    }
+                                );
+                                                // Set our 'display element' text to the password.
+                        displayPassword.innerText = initialPassword.password;
+                        // Set the 'password entropy' elements inner text to our passwords entropy.
+                        passwordEntropy.innerText = Math.round(initialPassword.entropy);
+                p
+                    b
+                        abbr HTML
+                pre
+                    -
+                        codeExample = `
+                            <div>
+                                <p>
+                                    <b>Password:</b>
+                                    <span class="simplePass_passwordTarget"></span>
+                                </p>
+                                <p>
+                                    <b>Bits Of Entropy ~:</b>
+                                    <span class="simplePass_entropyTarget"></span>
+                                </p>
+                            </div>
+                        `;
+                    code= codeExample
+                p Should produce something similar to:
+                div
+                    p
+                        b Password:
+                        span(class="simplePass_passwordTarget_6")
+                    p
+                        b Bits Of Entropy ~:
+                        span(class="simplePass_entropyTarget_3")
+    section
+        h2 Initializer Function
+        p
+            | simplePass also provides an automated function for assisting in the setting up of event-listeners for various buttons and forms.
+            | This function is the
+            |
+            code
+                | simplePass.init(?
+                i cFig:config = config
+                | )
+            |
+            | function.
+            | The
+            |
+            i cFig
+            |
+            | parameter is the same as one used by the
+            |
+            code simplePass()
+            |
+            | .
+        p Currently you have to call
+            |
+            code simplePass.init()
+            |
+            | for each password target that you have.
+        p
+            |
+            strong * Note:
+            |
+            | you can customize the configuration values to suite your applications needs but for this documentation we will be sticking to the default values.
+        p
+            |
+            strong * Note:
+            |
+            | The
+            |
+            code  simplePass.init()
+            |
+            |  function is intended to work in environments where their is an
+            |
+            abbr HTML
+            |
+            |
+            abbr DOM
+            |
+            | present.
+        div
+            h3 Targeting An Inline Element
+            p For this example we will:
+            ol
+                li
+                    | Import
+                    |
+                    em simplePass
+                    |
+                    | into our script.
+                li Add the a class identifier to the element that is our desired password target;
+                li
+                    | Call the
+                    |
+                    code simplePass.init()
+                    |
+                    | function.
+            p
+                | The
+                |
+                code simplePass.init()
+                |
+                | function can also determine if the element you are trying to target is an
+                |
+                code input
+                |
+                | and insert the password into the inputs
+                |
+                em value
+                |
+                | attribute instead of the
+                |
+                em innerText
+                | .
+            p
+                b JavaScript
+            pre
+                code.
+                    // Import simplePass
+                    import simplePass from "YOUR_DIRECTORY_PATH/simplePass.bundle.js";
+
+                    // Call the initializer function
+                    simplePass.init();
+            p
+                b
+                    abbr HTML
+            pre
+                -
+                    codeExample = `
+                        <!-- Our password target element for simplePass -->
+                        <label>
+                            Password:
+                            <input type="text" class="simplePass_passwordTarget" readonly >
+                        </label>
+                    `;
+                code= codeExample
+            p
+                | Given the above JavaScript and
+                |
+                abbr HTML
+                |
+                | the results should look something like the following:
+            label Password:
+                input(
+                    type="text"
+                    class="simplePass_passwordTarget"
+                    readonly
+                )
+        div
+            h3 Integrating With A Registration Form
+            p  A more practical use case for simplePass is the integration with a websites registration form.
+            p  For this example we will:
+            ol
+                li
+                    | Import
+                    |
+                    em simplePass
+                    |
+                    | into our script;
+                li
+                    | Add the following class identifier
+                    |
+                    code
+                        i simplePass_passwordTarget
+                    |
+                    | to the element that is our desired password target;
+                li
+                    p
+                        strong Optionally:
+                        |
+                        | Add
+                        |
+                        em action
+                        |
+                        | buttons so your clients may
+                        |
+                        em regenerate
+                        |
+                        | and
+                        |
+                        em Copy
+                        |
+                        | their generated password.
+                    p
+                        strong * Note:
+                        |
+                        | We must ensure these elements have their respective class identifiers set based on their configuration attributes.
+                li
+                    | Call the
+                    |
+                    code simplePass.init()
+                    |
+                    | function.
+            p
+                b JavaScript
+            pre
+                code.
+                    // Import simplePass
+                    import simplePass from "YOUR_DIRECTORY_PATH/simplePass.bundle.js";
+
+                    // Call the initializer function
+                    simplePass.init();
+            p
+                b
+                    abbr HTML
+            pre
+                -
+                    codeExample = `
+                    <form id="registration" action="/" method="POST">
+                        <p>
+                            <b>Registration:</b>
+                        </p>
+                        <label>Username:
+                            <input type="text" name="username" form="registration" placeholder="User Name">
+                        </label>
+                        <label>Password:
+                            <input type="text" name="password" form="registration" placeholder="Password" class="simplePass_passwordTarget" readonly>
+                        </label>
+                        <button type="button" class="simplePass_generator">Regenerate Password</button>
+                        <button type="button" class="simplePass_copier">Copy Password</button>
+                        <button type="submit" form="registration">Register</button>
+                    </form>
+                    `;
+                code= codeExample
+            p The result should look like something below:
+            form#registration(
+                action="/"
+                method="POST"
+            )
+                p
+                    b Registration:
+                label User Name:
+                    input(
+                        type="text"
+                        name="username"
+                        form="registration"
+                        placeholder="User Name."
+                    )
+                label Password:
+                    input(
+                        type="text"
+                        form="registration"
+                        placeholder="Password"
+                        class="simplePass_passwordTarget_1"
+                        readonly
+                    )
+                button(
+                    type="button"
+                    class="simplePass_generator_1"
+                ) Regenerate Password
+                button(
+                    type="button"
+                    class="simplePass_copier_1"
+                ) Copy Password
+                button(
+                    type="button"
+                    form="registration"
+                ) Register
+        div
+            h3 Integrating A Modifier Form
+            p
+                | If you would like your clients to have some customization over their password you must add an extra form with the necessary inputs.
+                | simplePass will also set the default attributes for each input based on the default password modifiers configured.
+                | The
+                |
+                em name
+                |
+                | attributes of these
+                |
+                code input
+                |
+                | elements must match the keys of the
+                |
+                code
+                    i passwordModifier
+                |
+                | object.
+                | For the following example we will take the the JavaScript and HTML from the previous example and modify the following:
+            ol
+                li
+                    | Add a new
+                    |
+                    code form
+                    |
+                    | with the a unique
+                    |
+                    code
+                        i id
+                    |
+                    | attribute.
+                li
+                    | Set the
+                    |
+                    em regenerate buttons
+                    |
+                    |
+                    code
+                        i type
+                    |
+                    | attribute to
+                    |
+                    em "submit"
+                    | . Also set this buttons
+                    |
+                    code
+                        i form
+                    |
+                    | attribute to the
+                    |
+                    code
+                        i id
+                    |
+                    | of the new form we added.
+                li
+                    | Call the
+                    |
+                    code simplePass.init()
+                    |
+                    | function.
+            p
+                b  JavaScript
+            pre
+                code.
+                    // Import simplePass
+                    import simplePass from "YOUR_DIRECTORY_PATH/simplePass.bundle.js";
+
+                    // Call the initializer function
+                    simplePass.init();
+            p
+                b
+                    abbr HTML
+            pre
+                -
+                    codeExample = `
+                        <!-- Registration Form -->
+                        <form id="registration" action="/" method="POST">
+                            <b>Registration</b>
+                            <label>Username:
+                                <input type="text" name="username" form="registration" placeholder="Username">
+                            </label>
+                            <!-- Regenerate Button -->
+                            <button type="submit" form="simplePass_form" class="simplePass_generator">Regenerate Password</button>
+                            <!-- Copy Button -->
+                            <button type="button" class="simplePass_copier">Copy Password</button>
+                            <button type="submit" form="registration">Register</button>
+                        </form>
+                        <!-- simplePass Password Form -->
+                        <form id="simplePass_form">
+                            <label>Password:
+                                <input type="text" name="password" form="registration" placeholder="Password" class="simplePass_passwordTarget" readonly>
+                            </label>
+                            <label>Lowercase Alpha:
+                                <input type="checkbox" form="simplePass_form" name="lowercase">
+                            </label>
+                            <label>Uppercase Alpha:
+                                <input type="checkbox" form="simplePass_form" name="uppercase">
+                            </label>
+                            <label>Numbers:
+                                <input type="checkbox" form="simplePass_form" name="numbers">
+                            </label>
+                            <label>Signs, Symbols, and Punctuation:
+                                <input type="checkbox" form="simplePass_form" name="punctuation">
+                            </label>
+                        </form>
+                    `;
+                code= codeExample
+            p Should produce the following:
+            .multiForm
+                form#registration_1
+                    p
+                        b Registration:
+                    label User Name:
+                        input(
+                            type="text"
+                            name="username"
+                            form="registration_1"
+                            placeholder="User Name"
+                        )
+                    label Password:
+                        input.simplePass_passwordTarget_2(
+                            type="text"
+                            name="password"
+                            form="registration_1"
+                            placeholder="Password"
+                            readonly
+                        )
+                    button(
+                        type="submit"
+                        form="simplePass_form"
+                        class="simplePass_generator_2"
+                    ) Regenerate Password
+                    button(
+                        type="button"
+                        class="simplePass_copier_2"
+                    ) Copy Password
+                    button(
+                        type="button"
+                        form="registration_1"
+                    ) Register
+                hr
+                form#simplePass_form(
+                    action="/"
+                    method="POST"
+                )
+                    p
+                        b Password Modifiers
+                    label Lowercase Alpha:
+                        input(
+                            type="checkbox"
+                            name="lowercase"
+                            form="simplePass_form"
+                        )
+                    label Uppercase Alpha:
+                        input(
+                            type="checkbox"
+                            name="uppercase"
+                            form="simplePass_form"
+                        )
+                    label Numbers:
+                        input(
+                            type="checkbox"
+                            name="numbers"
+                            form="simplePass_form"
+                        )
+                    label Signs, Symbols and Punctuation:
+                        input(
+                            type="checkbox"
+                            name="punctuation"
+                            form="simplePass_form"
+                        )
+            p From here you should be able to add any password modifier to your forms.
+        div
+            h3 Batch Password Generation
+            p
+                |
+                |
+                em simplePass
+                |
+                | also has the ability to generate batches of passwords if this is desired.
+            p
+                strong * Note:
+                |
+                | This is currently not a
+                |
+                em native
+                |
+                | feature of simplePass as it requires the use of the
+                |
+                code simplePass.init()
+                |
+                | function and can only be used in conjunction with a form.
+                | We understand this is inconstant and unitive to how the program should function and are working on a way to implement some form of batch option inside of the
+                |
+                code simplePass()
+                |
+                | function itself.
+            p
+                | For this example we continue to use the same JavaScript example as the previous but we will only use the
+                |
+                em Password Modifier
+                |
+                | form from the previous example (as generating batches of passwords in not generally a
+                |
+                em registration
+                |
+                | use case).
+            p We will als need to preform the following modifications:
+            ol
+                li
+                    | Add a new
+                    |
+                    code input
+                    |
+                    | following the same naming convention as other form inputs.
+                li
+                    | Instead of setting our password target to an
+                    |
+                    code input
+                    |
+                    | element we will instead use an Inline Element such as a
+                    |
+                    em paragraph
+                    |
+                    | or
+                    |
+                    em span
+                    |
+                    | .
+                li
+                    | Our password target element must be nested inside of a separate element. We must give this element the class identifier of
+                    |
+                    em "simplePass_passwordContainer"
+            p
+                | When you click the
+                |
+                em Regenerate
+                |
+                | button this time, if you have a set a batch amount of passwords simplePass will inject a list
+            p
+                b JavaScript
+            pre
+                code.
+                    // Import simplePass
+                    import simplePass from "YOUR_DIRECTORY_PATH/simplePass.bundle.js";
+
+                    // Call the initializer function
+                    simplePass.init();
+            p
+                b
+                    abbr HTML
+            pre
+                -
+                    codeExample = `
+                    <div class="simplePass_passwordContainer">
+                        <label>
+                            Password:
+                            <input type="text" class="simplePass_passwordTarget" readonly >
+                        </label>
+                    </div>
+                    <form id="simplePass_form">
+                        <!-- Batch Password Input -->
+                        <label>Batch Amount:
+                            <input type="number" name="passwordBatchAmount" form="simplePass_form">
+                        </label>
+                        <label>Lowercase Alpha:
+                            <input type="checkbox" form="simplePass_form" name="lowercase">
+                        </label>
+                        <label>Uppercase Alpha:
+                            <input type="checkbox" form="simplePass_form" name="uppercase">
+                        </label>
+                        <label>Numbers:
+                            <input type="checkbox" form="simplePass_form" name="numbers">
+                        </label>
+                        <label>Signs, Symbols, and Punctuation:
+                            <input type="checkbox" form="simplePass_form" name="punctuation">
+                        </label>
+                        <button type="submit" form="simplePass_form" class="simplePass_generator">Regenerate Password</button>
+                        <button type="button" class="simplePass_copier">Copy Password</button>
+                    </form>
+                    `;
+                code= codeExample
+            p Should produce the following:
+            .simplePass_passwordContainer.simplePass_exampleContainer
+                label Password:
+                    input(
+                        type="text"
+                        class="simplePass_passwordTarget_3"
+                        readonly
+                    )
+            form#simplePass_form_1
+                p
+                    b Password Modifiers
+                label Batch Amount:
+                    input(
+                        type="number"
+                        name="passwordBatchAmount"
+                        form="simplePass_form_1"
+                        min="2"
+                        max="256"
+                    )
+                label Lowercase Alpha:
+                    input(
+                        type="checkbox"
+                        form="simplePass_form_1"
+                        name="lowercase"
+                    )
+                label Uppercase Alpha:
+                    input(
+                        type="checkbox"
+                        form="simplePass_form_1"
+                        name="uppercase"
+                    )
+                label Numbers:
+                    input(
+                        type="checkbox"
+                        form="simplePass_form_1"
+                        name="numbers"
+                    )
+                label Signs, Symbols, and Punctuation:
+                    input(
+                        type="checkbox"
+                        form="simplePass_form_1"
+                        name="punctuation"
+                    )
+                button.simplePass_generator_3(
+                    type="submit"
+                    form="simplePass_form_1"
+                ) Regenerate Password
+                button.simplePass_copier_3(
+                    type="button"
+                ) Copy Password
+        div
+            //- TODO: This section needs to be updated to showcase some of the new strength stat options and how to properly use them.
+            //- TODO: From here on forward any example that uses batch password generation needs to be refactored, moving the entropy display out of the password container.
+            h3 Password Stats
+            p
+                em simplePass
+                |
+                | has the ability to display various stats about the generated password such as:
+            ul
+                li Bits of Entropy
+                li Possible Combinations
+                li Binary Information
+                li Percentage of Unique Characters
+            p Building upon our previous examples we will add a Passwords Stats section and display some stats.
+            p
+                strong * Note:
+                |
+                | When using
+                em Batch Password Generation
+                |
+                | simplePass will initially only display the stats for the last generated password.
+                | Clicking on generated passwords will update the stats.
+            p
+                strong * Note:
+                |
+                | If you are using
+                |
+                em Batch Password Generation
+                |
+                | ensure you are not putting your
+                |
+                em Entropy Target
+                |
+                | inside of your
+                |
+                em Password Container
+                |
+                | or else it will be removed when generating passwords.
+            p
+                b JavaScript
+            pre
+                code.
+                    // Import simplePass
+                    import simplePass from "YOUR_DIRECTORY_PATH/simplePass.bundle.js";
+
+                    // Call the initializer function
+                    simplePass.init();
+            p
+                b
+                    abbr HTML
+            pre
+                -
+                    codeExample = `
+                        <div>
+                            <!-- Batch Password Content Element -->
+                            <div class="simplePass_passwordContainer">
+                                <label>
+                                    Password:
+                                    <input type="text" class="simplePass_passwordTarget" readonly >
+                                </label>
+                            </div>
+                            <!--Stats Content Element-->
+                            <div>
+                                <p>
+                                    <b>Password Stats</b>
+                                </p>
+                                <p>
+                                    <b>Bits of Entropy:</b>
+                                    <span class="simplePass_entropyTarget">
+                                    </span>
+                                </p>
+                                <p>
+                                    <b>Possible Combinations</b>
+                                    <span class="simplePass_possibleCombinationsTarget">
+                                    </span>
+                                </p>
+                                <label>Binary String For Password:
+                                    <textarea class="simplePass_binaryStringTarget" readonly></textarea>
+                                </label>
+                                <p>
+                                    <b>Average Character Bit Length:</b>
+                                    <span class="simplePass_averageCharacterBitLengthTarget">
+                                    </span>
+                                </p>
+                                <p>
+                                    <b>Binary String Length:</b>
+                                    <span class="simplePass_binaryStringLengthTarget">
+                                    </span>
+                                </p>
+                                <p>
+                                    <b>Percentage Of Unique Characters:</b>
+                                    <span class="simplePass_uniqueCharactersPercentageTarget">
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                        <form id="simplePass_form">
+                            <!-- Batch Password Input -->
+                            <label>Batch Amount:
+                                <input type="number" name="passwordBatchAmount" form="simplePass_form">
+                            </label>
+                            <!-- Password Modifiers -->
+                            <label>Lowercase Alpha:
+                                <input type="checkbox" form="simplePass_form" name="lowercase">
+                            </label>
+                            <label>Uppercase Alpha:
+                                <input type="checkbox" form="simplePass_form" name="uppercase">
+                            </label>
+                            <label>Numbers:
+                                <input type="checkbox" form="simplePass_form" name="numbers">
+                            </label>
+                            <label>Signs, Symbols, and Punctuation:
+                                <input type="checkbox" form="simplePass_form" name="punctuation">
+                            </label>
+                            <button type="submit" form="simplePass_form" class="simplePass_generator">Regenerate Password</button>
+                            <button type="button" class="simplePass_copier">Copy Password</button>
+                        </form>
+                    `;
+                code= codeExample
+            p Should produce something similar to:
+            .simplePass_exampleContainer
+                .simplePass_passwordContainer_1
+                    p
+                        b Password:
+                        span.simplePass_passwordTarget_4
+                // Entropy Target
+                div
+                    -
+                        const passwordStats = [
+                            {
+                                label:"Possible Combinations",
+                                class:"simplePass_possibleCombinationsTarget"
+                            },
+                            {
+                                label:"Bits of Entropy",
+                                class:"simplePass_entropyTarget"
+                            },
+                            {
+                                label:"Average Character Bit Length",
+                                class:"simplePass_averageCharacterBitLengthTarget"
+                            },
+                            {
+                                label:"Binary String Length",
+                                class:"simplePass_binaryStringLengthTarget"
+                            },
+                            {
+                                label:"Percentage Of Unique Characters",
+                                class:"simplePass_uniqueCharactersPercentageTarget"
+                            },
+                        ]
+                    label
+                        textarea.simplePass_binaryStringTarget(
+                            readonly
+                        )
+                    each passwordStat in passwordStats
+                        p
+                            b= passwordStat.label+": "
+                            span(
+                                class=passwordStat.class
+                            )
+                -
+                    const formInputs = [
+                        {
+                            label:"Lowercase Alpha",
+                            name:"lowercase"
+                        },
+                        {
+                            label:"Uppercase Alpha",
+                            name:"uppercase"
+                        },
+                        {
+                            label:"Numbers",
+                            name:"numbers"
+                        },
+                        {
+                            label:"Signs, Symbols, and Punctuation",
+                            name:"punctuation"
+                        },
+                    ]
+                form#simplePass_form_2(
+                    action="/"
+                    method="POST"
+                )
+                    label Batch Amount:
+                            input(
+                                type="number"
+                                name="passwordBatchAmount"
+                                form="simplePass_form_2"
+                            )
+                    each formInput in formInputs
+                        label= formInput.label+": "
+                            input(
+                                type="checkbox"
+                                name=formInput.name
+                                form="simplePass_form_2"
+                            )
+                    button.simplePass_generator(
+                        type="submit"
+                        form="simplePass_form_2"
+                    ) Regenerate Password
+                    button.simplePass_copier(
+                        type="button"
+                    ) Copy Password Button
+        div
+            h3 Error Messages
+            p
+                | Due to simplePass being part standalone application it needs the ability to handle and display various messages to the user, such as an Error Message or Invalid Input Message.
+                | If this is not suitable for your needs you can disable this feature as well and have
+                |
+                em simplePass
+                |
+                | resort to throwing exceptions that can be caught by your application.
+            p
+                | To enable simplePass messaging you can add a
+                |
+                code messages.messageBoard
+                |
+                | attribute to your
+                |
+                code simplePass.config
+                |
+                | file with a
+                |
+                abbr DOM
+                |
+                | Query String that references an element that simplePass can attach messages to (default value:
+                |
+                code
+                    em ".simplePass_messageBoard"
+                |
+                | ).
+            p Using the following code.
+            p
+                b JavaScript
+            pre
+                code.
+                    // Import simplePass
+                    import simplePass from "YOUR_DIRECTORY_PATH/simplePass.bundle.js";
+
+                    // Call the initializer function
+                    simplePass.init();
+            p
+                b
+                    abbr HTML
+            pre
+                -
+                    codeExample = `
+                        <div>
+                            <!-- Batch Password Content Element -->
+                            <div class="simplePass_passwordContainer">
+                                <p>
+                                    <b>Password:</b>
+                                    <span class="simplePass_passwordTarget"></span>
+                                </p>
+                            </div>
+                            <!-- Entropy Target -->
+                            <p>
+                                <b>Bits Of Entropy ~:</b> <span class="simplePass_entropyTarget"></span>
+                            </p>
+                        </div>
+                        <form id="simplePass_form">
+                            <!-- Message Board -->
+                            <div class="simplePass_messageBoard">
+                            </div>
+                            <!-- Batch Password Input -->
+                            <label>Batch Amount:
+                                <input type="number" name="passwordBatchAmount" form="simplePass_form">
+                            </label>
+                            <!-- Password Modifiers -->
+                            <label>Lowercase Alpha:
+                                <input type="checkbox" form="simplePass_form" name="lowercase">
+                            </label>
+                            <label>Uppercase Alpha:
+                                <input type="checkbox" form="simplePass_form" name="uppercase">
+                            </label>
+                            <label>Numbers:
+                                <input type="checkbox" form="simplePass_form" name="numbers">
+                            </label>
+                            <label>Signs, Symbols, and Punctuation:
+                                <input type="checkbox" form="simplePass_form" name="punctuation">
+                            </label>
+                            <button type="submit" form="simplePass_form" class="simplePass_generator">Regenerate Password</button>
+                            <button type="button" class="simplePass_copier">Copy Password</button>
+                        </form>
+                    `;
+                code= codeExample
+            p Should produce something to the similar.
+            .simplePass_exampleContainer
+                .simplePass_passwordContainer_2
+                    p
+                        b Password:
+                        span.simplePass_passwordTarget_5
+                    p
+                        b Bits Of Entropy
+                        span.simplePass_entropyTarget_2
+                form#simplePass_form_3(
+                    action="/"
+                    method="POST"
+                )
+                    .simplePass_messageBoard
+                    label Batch Amount:
+                            input(
+                                type="number"
+                                name="passwordBatchAmount"
+                                form="simplePass_form_3"
+                            )
+                    each formInput in formInputs
+                        label= formInput.label+": "
+                            input(
+                                type="checkbox"
+                                name=formInput.name
+                                form="simplePass_form_3"
+                            )
+                    button.simplePass_generator(
+                        type="submit"
+                        form="simplePass_form_3"
+                    ) Regenerate Password
+                    button.simplePass_copier(
+                        type="button"
+                    ) Copy Password Button

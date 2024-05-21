@@ -1,0 +1,15 @@
+include ../mixins/_noscriptNotice
+
+doctype html
+html(
+    lang="en"
+    dir="ltr"
+)
+    include ./_head.pug
+    body
+        +noscriptNotice(true)
+        include ./_header.pug
+        main
+            block content
+        include ./_footer.pug
+        +noscriptNotice(true)

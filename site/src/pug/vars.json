@@ -1,0 +1,25 @@
+{
+    "applicationName":"simplePass",
+    "passwordStats": [
+        {
+            "label":"Bits of Entropy",
+            "class":"simplePass_entropyTarget"
+        },
+        {
+            "label":"Possible Combinations",
+            "class":"simplePass_possibleCombinationsTarget"
+        },
+        {
+            "label":"Average Character Bit Length",
+            "class":"simplePass_averageCharacterBitLengthTarget"
+        },
+        {
+            "label":"Binary String Length",
+            "class":"simplePass_binaryStringLengthTarget"
+        },
+        {
+            "label":"Percentage Of Unique Characters",
+            "class":"simplePass_uniqueCharactersPercentageTarget"
+        }
+    ]
+}

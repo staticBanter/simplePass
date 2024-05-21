@@ -1,3 +1,5 @@
+# simplePass
+
 > **CAUTION!**
 >
 > This project is in Beta Phase. Some features may still contain a few bugs.
@@ -12,6 +14,27 @@
   - [Browser Support](#browser-support)
   - [OS Support](#os-support)
 - [Resources](#resources)
+https://github.com/staticBanter/simplePass
+
+---
+
+![GitHub License](https://img.shields.io/github/license/staticBanter/simplePass)
+![Github Created At](https://img.shields.io/github/created-at/staticBanter/simplePass)
+![GitHub package.json version (branch)](https://img.shields.io/github/package-json/v/staticBanter/simplePass/main)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/y/staticBanter/simplePass)
+![GitHub last commit (by committer)](https://img.shields.io/github/last-commit/staticBanter/simplePass)
+![GitHub language count](https://img.shields.io/github/languages/count/staticBanter/simplePass)
+![GitHub top language](https://img.shields.io/github/languages/top/staticBanter/simplePass)
+![GitHub repo size](https://img.shields.io/github/repo-size/staticBanter/simplePass)
+![W3C Validation](https://img.shields.io/w3c-validation/html?targetUrl=https%3A%2F%2Fstaticbanter.github.io%2FsimplePass%2F)
+![GitHub deployments](https://img.shields.io/github/deployments/staticBanter/simplePass/github-pages)
+
+
+
+
+<small>Badges Curtesy Of: <a href="https://shields.io/">SHIELDS.IO</a></small>
+
+---
 
 ## About
 

@@ -1,0 +1,605 @@
+extends ../partials/_layout.pug
+
+include ../mixins/_showHideButton.pug
+include ../mixins/_expandCollapseButton.pug
+include ../mixins/_noscriptNotice.pug
+include ../mixins/_infoButton.pug
+
+mixin passwordStat(stat)
+    p
+        b= stat.label+": "
+        span(class=stat.class)
+
+block content
+    .simplePass_messageBoard
+        .simplePass_passwordContainer
+            label Password
+                +showHideButton(".simplePass_passwordTarget")
+                input.simplePass_passwordTarget(
+                    type="text"
+                    readonly
+                )
+            +noscriptNotice
+        div
+            label Batch Amount:
+                input#sp_batchPasswordInput(
+                    type="number"
+                    form="simplePass_form"
+                    min="2"
+                    max="256"
+                    name="passwordBatchAmount"
+                    placeholder="Generate Multiple Passwords"
+                )
+        button.simplePass_generator(
+            type="submit"
+            form="simplePass_form"
+        ) Generate
+        button.simplePass_copier(
+            type="button"
+        ) Copy
+    #simplePass_passwordStats
+        div
+            h2 Password Stats:
+                |
+                span.simplePass_passwordStatsIndex
+            +expandCollapseButton("#simplePass_passwordStats_internal","simplePass_passwordStats_internal")
+        +noscriptNotice
+        #simplePass_passwordStats_internal
+            p If you have a batch of passwords, click on the password to display its stats.
+            div
+                label Binary String For Password:
+                    +showHideButton('.simplePass_binaryStringTarget')
+                    textarea.simplePass_binaryStringTarget(
+                        readonly
+                    )
+                -
+                    const passwordStats = [
+                        {
+                            "label":"Bits of Entropy",
+                            "class":"simplePass_entropyTarget"
+                        },
+                        {
+                            "label":"Possible Combinations",
+                            "class":"simplePass_possibleCombinationsTarget"
+                        },
+                        {
+                            "label":"Average Character Bit Length",
+                            "class":"simplePass_averageCharacterBitLengthTarget"
+                        },
+                        {
+                            "label":"Binary String Length",
+                            "class":"simplePass_binaryStringLengthTarget"
+                        },
+                        {
+                            "label":"Percentage Of Unique Characters",
+                            "class":"simplePass_uniqueCharactersPercentageTarget",
+                        }
+                    ]
+                each passwordStat in passwordStats
+                    +passwordStat(passwordStat)
+            div
+                -
+                    const compressionStats= [
+                        {
+                            "label":"GZIP",
+                            "class":"simplePass_gzipCompressionTarget"
+                        },
+                        {
+                            "label":"Deflate",
+                            "class":"simplePass_deflateCompressionTarget",
+                        },
+                        {
+                            "label":"Deflate-Raw",
+                            "class":"simplePass_deflate-rawCompressionTarget"
+                        },
+                        {
+                            "label":"Average",
+                            "class":"simplePass_averageCompressionTarget"
+                        }
+                    ]
+                h4 Compression Stats:
+                p
+                    em Higher is better
+                each compressionStat in compressionStats
+                    +passwordStat(compressionStat)
+    form#simplePass_form
+        h2 Modifiers
+        div
+            p
+                | Character Codes that are displayed are shown as the decimal value(s) for the character(s).
+                | A helpful list of these resources can be found at:
+            ul
+                li
+                    a(
+                        href="https://www.w3schools.com/charsets/"
+                    ) W3Schools | HTML Character Sets
+                li
+                    | and
+                    |
+                    a(
+                        href="https://www.unicode.org/charts"
+                    ) Unicode | Code Charts
+            p Some characters are purposeful excluded due to complications rendering the character inside of a browser.
+        fieldset
+            legend
+                +expandCollapseButton("#preconfigField","preconfigField","Pre-Configs")
+            #preconfigField
+                div
+                    p
+                        strong * Note:
+                        |
+                        | Pre-Configs will override any similar modifiers that are set, and remove unrelated modifiers.
+                -
+                    const preConfigs = [
+                        {
+                            label:"Default",
+                            value:"default",
+                            configurations:[
+                                "Length: 22",
+                                "Basic Latin Lowercase",
+                                "Basic Latin Uppercase",
+                                "Basic Latin Numbers",
+                                "Basic Latin Punctuation"
+                            ]
+                        },
+                        {
+                            label:"4 Digit Pin",
+                            value:"fourDigitPin",
+                            configurations:[
+                                "Length: 4",
+                                "Basic Latin Numbers"
+                            ]
+                        },
+                        //- TODO: Remove this configuration
+                        {
+                            label:"Default (Latin Supplement)",
+                            value:"defaultSupplement1",
+                            configurations:[
+                                "Length: 22",
+                                "Basic Latin Supplement Lowercase",
+                                "Basic Latin Supplement Uppercase",
+                                "Basic Latin Supplement Numbers",
+                                "Basic Latin Supplement Punctuation"
+                            ]
+                        },
+                        {
+                            label:"BIOS",
+                            value:"bios",
+                            configurations:[
+                                "Length: 20",
+                                "Basic Latin Lowercase",
+                                "Basic Latin Uppercase",
+                                "Basic Latin Numbers",
+                            ]
+                        },
+                        {
+                            label:"Extreme",
+                            value:"extreme",
+                            configurations:[
+                                "Length: 256",
+                                "Basic Latin Lowercase",
+                                "Basic Latin Uppercase",
+                                "Basic Latin Numbers",
+                                "Basic Latin Punctuation",
+                                "5 - 13 Repeating Characters",
+                                "2 - 10 Whitespace Characters",
+                                "Basic Latin Supplement Lowercase",
+                                "Basic Latin Supplement Uppercase",
+                                "Basic Latin Supplement Punctuation",
+                            ]
+                        }
+                    ]
+                each preConfig in preConfigs
+                    div
+                        label= preConfig.label+": "
+                            input.sp_preConfig(
+                                type="checkbox"
+                                data-radioCheckbox
+                                name="preConfig"
+                                value=preConfig.value
+                                autocomplete="off"
+                            )
+                        div
+                            p Configuration:
+                            ul
+                                each configuration in preConfig.configurations
+                                    li= configuration
+        label Password Length
+            input(
+                type="number"
+                form="simplePass_form"
+                name="length"
+                placeholder="Password Length"
+            )
+        div
+            label Exclude Characters
+                +infoButton("#excludeCharactersInfo","excludeCharactersInfo")
+                input(
+                    type="text"
+                    form="simplePass_form"
+                    name="excludeCharacters"
+                    placeholder="Exclude Characters"
+                    aria-describedby="excludeCharactersInfo"
+                )
+            p#excludeCharactersInfo
+                strong * Warning:
+                |
+                | Excessive use of this feature may result in degraded performance or on-performance of the program.
+        div
+            label Unique Characters Only:
+                input(
+                    type="checkbox"
+                    form="simplePass_form"
+                    name="uniqueCharacters"
+                    aria-describedby="uniqueCharactersInfo"
+                )
+                +infoButton("#uniqueCharactersInfo","uniqueCharactersInfo")
+            #uniqueCharactersInfo
+                p * This option can not by combined with the following modifiers:
+                ul
+                    li Repeating Characters
+                    li ANY Whitespace Modifier
+                    li Pre-Configurations
+                p
+                    strong * Warning:
+                    |
+                    | This option may lower your passwords entropy.
+        fieldset
+            legend
+                +expandCollapseButton("#repeatCharactersField","repeatCharactersField","Repeating Characters")
+            #repeatingCharactersField
+                div
+                    label Repeating Characters:
+                        input(
+                            type="checkbox"
+                            form="simplePass_form"
+                            name="repeatingCharacter"
+                        )
+                    p Ensures at least one character in the password will be repeated.
+                div
+                    label Repeating Character Limit:
+                        input(
+                            type="number"
+                            form="simplePass_form"
+                            name="max_repeatingCharacter"
+                            min="1"
+                            max="256"
+                            step="1"
+                            placeholder="Repeating Character Limit"
+                        )
+                    p Specify the number of characters that should be repeated in the password.
+                div
+                    label Custom Repeating Characters:
+                        +infoButton("#customRepeatsInfo","customRepeatsInfo")
+                        input(
+                            type="text"
+                            name="customRepeatingCharacters"
+                            minlength="1"
+                            maxlength="256"
+                            placeholder="Custom Repeating Characters"
+                            aria-describedby="customRepeatsInfo"
+                        )
+                    #customRepeatsInfo
+                        p Specify the exact characters that should be repeated in the password, as-well as indicate the number of times the character should repeat.
+                        p
+                            | The input either needs to be a single string containing all characters wished to be repeated (abcd).
+                            | Or it can be formatted to define the amount each character should be repeated (b a:3 \::4);
+                        ul
+                            li each set should be space separated,
+                            li characters single characters and characters with a repeat of 1 will default to a repeat of 2,
+                            li to use literal characters prefix them with a "\" (forward-slash),
+                        p
+                            strong * Note:
+                            |
+                            |  This feature is currently limited with the total of repeated characters that can be requested in a password to the constraint of
+                            |
+                            i  passwordLength - 2
+                            |
+                            |  (ie; a password of length 8 would can only contain 6 repeating characters).
+                        p
+                            strong * Note:
+                            |
+                            |  This feature will ignore any password modifiers already set when including characters.
+        -
+            const whitespaceOptions = [
+                {
+                    legend:"Beginning Of Password",
+                    options:[
+                        {
+                            label:"Yes",
+                            name:"whitespaceBeginning"
+                        },
+                        {
+                            label:"Required",
+                            name:"required_whitespaceBeginning"
+                        }
+                    ]
+                },
+                {
+                    legend:"End Of Password",
+                    options:[
+                        {
+                            label:"Yes",
+                            name:"whitespaceEnd"
+                        },
+                        {
+                            label:"Required",
+                            name:"required_whitespaceEnd"
+                        }
+                    ]
+                }
+            ]
+        fieldset
+            legend
+                +expandCollapseButton(
+                    "#whitespaceOptionsField",
+                    "whitespaceOptionsField",
+                    "Whitespace Options"
+                )
+            #whitespaceOptionsField
+                each whitespaceOption in whitespaceOptions
+                    fieldset
+                        legend= whitespaceOption.legend
+                            each option in whitespaceOption.options
+                                label= option.label+": "
+                                    input(
+                                        type="checkbox"
+                                        form="simplePass_form"
+                                        name=option.name
+                                    )
+                    fieldset
+                        legend Middle of Password
+                        label Yes:
+                            input(
+                                type="checkbox"
+                                form="simplePass_form"
+                                name="whitespaceBetween"
+                            )
+                        label Limit
+                            input(
+                                type="number"
+                                step="1"
+                                min="1"
+                                max="252"
+                                form="simplePass_form"
+                                placeholder="Limit Middle of Password Whitespace"
+                            )
+        -
+            const passwordModifiers=[
+                {
+                    expandCollapseButton:{
+                        toggleTarget:"#latinBasicField",
+                        ariaControls:"latinBasicField",
+                        label:"Latin Basic"
+                    },
+                    characterSets:[
+                        {
+                            label:"Lowercase Alpha",
+                            name:"lowercase"
+                        },
+                        {
+                            label:"Uppercase Alpha",
+                            name:"uppercase",
+                        },
+                        {
+                            label:"Numbers",
+                            name:"numbers",
+                        },
+                        {
+                            label:"Signs, Symbols, and Punctuation",
+                            name:"punctuation",
+                        },
+                    ]
+                },
+                {
+                    expandCollapseButton:{
+                        toggleTarget:"#latinSupplementField",
+                        ariaControls:"latinSupplementField",
+                        label:"Latin Supplement"
+                    },
+                    characterSets:[
+                        {
+                            label:"Lowercase Characters",
+                            name:"lowercase_supplement"
+                        },
+                        {
+                            label:"Uppercase Characters",
+                            name:"uppercase_supplement",
+                        },
+                        {
+                            label:"Signs, Symbols, and Punctuation",
+                            name:"symbols_supplement",
+                        },
+                    ]
+                },
+                {
+                    expandCollapseButton:{
+                        toggleTarget:"#latinExtendedAField",
+                        ariaControls:"latinExtendedAField",
+                        label:"Latin Extended A"
+                    },
+                    characterSets:[
+                        {
+                            label:"Lowercase Characters",
+                            name:"lowercase_extended_a"
+                        },
+                        {
+                            label:"Uppercase Characters",
+                            name:"uppercase_extended_a",
+                        },
+                        {
+                            label:"Signs, Symbols, and Punctuation",
+                            name:"ligature_extended_a",
+                        },
+                    ]
+                },
+                {
+                    expandCollapseButton:{
+                        toggleTarget:"#latinExtendedBField",
+                        ariaControls:"latinExtendedBField",
+                        label:"Latin Extended B"
+                    },
+                    characterSets:[
+                        {
+                            label:"Lowercase Characters",
+                            name:"lowercase_extended_b"
+                        },
+                        {
+                            label:"Uppercase Characters",
+                            name:"uppercase_extended_b",
+                        },
+                        {
+                            label:"Mixed-Case Characters",
+                            name:"mixedcase_extended_b",
+                        },
+                        {
+                            label:"Insensitive-Case Characters",
+                            name:"insensitivecase_extended_b",
+                        },
+                    ]
+                },
+                {
+                    expandCollapseButton:{
+                        toggleTarget:"#latinIpaExtensionField",
+                        ariaControls:"latinIpaExtensionField",
+                        label:"Latin IPA Extension"
+                    },
+                    characterSets:[
+                        {
+                            label:"Lowercase Characters",
+                            name:"lowercase_ipa_extension"
+                        },
+                        {
+                            label:"Uppercase Characters",
+                            name:"uppercase_ipa_extension",
+                        },
+                    ]
+                },
+                {
+                    expandCollapseButton:{
+                        toggleTarget:"#modifierLettersField",
+                        ariaControls:"modifierLettersField",
+                        label:"Modifier Letters"
+                    },
+                    characterSets:[
+                        {
+                            label:"Characters",
+                            name:"character_modifier_letters"
+                        },
+                        {
+                            label:"Symbols",
+                            name:"symbol_modifier_letters",
+                        },
+                    ]
+                },
+                {
+                    expandCollapseButton:{
+                        toggleTarget:"#greekAndCopticField",
+                        ariaControls:"greekAndCopticField",
+                        label:"Greek And Coptic"
+                    },
+                    characterSets:[
+                        {
+                            label:"Lowercase Characters",
+                            name:"lowercase_greek_coptic"
+                        },
+                        {
+                            label:"Uppercase Characters",
+                            name:"uppercase_greek_coptic",
+                        },
+                        {
+                            label:"Insensitive-Case Characters",
+                            name:"insensitive_greek_coptic",
+                        },
+                        {
+                            label:"Symbols",
+                            name:"symbols_greek_coptic",
+                        },
+                    ]
+                },
+                {
+                    expandCollapseButton:{
+                        toggleTarget:"#cyrillicField",
+                        ariaControls:"cyrillicField",
+                        label:"Cyrillic"
+                    },
+                    characterSets:[
+                        {
+                            label:"Lowercase Characters",
+                            name:"lowercase_cyrillic"
+                        },
+                        {
+                            label:"Uppercase Characters",
+                            name:"uppercase_cyrillic",
+                        },
+                        {
+                            label:"Symbols",
+                            name:"symbols_cyrillic",
+                        },
+                    ]
+                },
+                {
+                    expandCollapseButton:{
+                        toggleTarget:"#cyrillicSupplementField",
+                        ariaControls:"cyrillicSupplementField",
+                        label:"Cyrillic Supplement"
+                    },
+                    characterSets:[
+                        {
+                            label:"Lowercase Characters",
+                            name:"lowercase_cyrillic_supplement"
+                        },
+                        {
+                            label:"Uppercase Characters",
+                            name:"uppercase_cyrillic_supplement",
+                        },
+                        {
+                            label:"Miscellaneous Characters",
+                            name:"misc_cyrillic_supplement",
+                        },
+                    ]
+                },
+            ]
+        each passwordModifier in passwordModifiers
+            fieldset
+                legend
+                    +expandCollapseButton(
+                        passwordModifier.expandCollapseButton.toggleTarget,
+                        passwordModifier.expandCollapseButton.ariaControls,
+                        passwordModifier.expandCollapseButton.label
+                    )
+                div(id=passwordModifier.expandCollapseButton.ariaControls)
+                    each characterSet in passwordModifier.characterSets
+                        label= characterSet.label+": "
+                            input(
+                                type="checkbox"
+                                form="simplePass_form"
+                                name=characterSet.name
+                            )
+        -
+            const singleModifiers = [
+                {
+                    label:"General Punctuation",
+                    name:"general_punctuation"
+                },
+                {
+                    label:"Currency Symbols",
+                    name:"currency_symbols"
+                },
+                {
+                    label:"Miscellaneous Technical",
+                    name:"misc_technical"
+                },
+                {
+                    label:"Block Elements",
+                    name:"box_drawings"
+                },
+                {
+                    label:"Miscellaneous Symbols",
+                    name:"block_elements"
+                },
+                {
+                    label:"Dingbats",
+                    name:"dingbats"
+                },
+            ]

@@ -33,8 +33,10 @@ Please note that if you are planning to contribute to the project you will be re
     - [Terser Webpack Plugin](https://www.npmjs.com/package/terser-webpack-plugin)
     - [Webpack Dev Server](https://www.npmjs.com/package/webpack-dev-server)
   - [JSDoc](https://jsdoc.app/)
-  - [HTML-Minifier](https://github.com/kangax/html-minifier)
+  - [Terser HTML-Minifier](https://github.com/terser/html-minifier-terser)
   - [SASS](https://sass-lang.com/)
+  - [Pug](https://pugjs.org/)
+  - [Pug-CLI (By: Anduh)](https://www.npmjs.com/package/@anduh/pug-cli)
 - A Web Browser (Preferably):
   - [FireFox](https://www.mozilla.org/en-CA/firefox/new/)
   - [Chrome](https://www.google.com/intl/en_ca/chrome/)
@@ -288,6 +290,7 @@ This is a description of the following commands that can be used with the ```npm
   3. ```webpack-build```
   4. ```html-min```
   5. ```sass-build```
+  6 ```pug```
 
 ### Running The Demo
 

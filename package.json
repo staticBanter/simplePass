@@ -1,11 +1,13 @@
 {
   "devDependencies": {
+    "@anduh/pug-cli": "^1.0.0-alpha8",
     "c8": "^9.1.0",
     "chai": "^5.1.1",
     "copy-webpack-plugin": "^12.0.2",
-    "html-minifier": "^4.0.0",
+    "html-minifier-terser": "^7.2.0",
     "jsdoc": "^4.0.3",
     "mocha": "^10.4.0",
+    "pug": "^3.0.2",
     "sass": "^1.77.2",
     "terser-webpack-plugin": "^5.3.10",
     "typescript": "^5.4.5",
@@ -54,13 +56,15 @@
     "tsc": "tsc --project .",
     "tsc-watch": "tsc --watch --project .",
     "docs-build": "jsdoc ./javascript/module/ --tutorials ./docs --configure ./jsdoc.config.json",
-    "html-min": "html-minifier --config-file html-minifier.config.json --input-dir ./site/prod/docs/ --output-dir ./site/prod/docs/ --file-ext html",
-    "sass-build": "sass site/src/main.scss:site/prod/main.css --style=compressed --no-source-map",
-    "sass-watch": "sass site/src/main.scss:site/prod/main.css --style=compressed --no-source-map --watch --update",
+    "sass-build": "sass site/src/scss/main.scss:site/prod/main.css --style=compressed --no-source-map",
+    "sass-watch": "sass site/src/scss/main.scss:site/prod/main.css --style=compressed --no-source-map --watch --update",
     "prod": "npm run production",
     "test": "mocha",
     "coverage": "c8 --check-coverage=80 mocha",
-    "production": "npm run tsc && npm run docs-build && npm run webpack-build && npm run html-min && npm run sass-build && npm run test"
+    "production": "npm run tsc && npm run docs-build && npm run webpack-build && npm run sass-build && npm run pug && npm run html-minify && npm run test",
+    "pug-watch": "pug3 -P -w ./site/src/pug/views/ -o ./site/prod/ -O ./site/src/pug/vars.json",
+    "pug": "pug3 ./site/src/pug/views/ -o ./site/prod/ -O ./site/src/pug/vars.json",
+    "html-minify":"html-minifier-terser --collapse-inline-tag-whitespace --collapse-whitespace --process-conditional-comments --remove-tag-whitespace --input-dir ./site/prod/docs/ --output-dir ./site/prod/docs/ --file-ext html"
   },
   "type": "module",
   "dependencies": {

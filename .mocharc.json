@@ -4,5 +4,5 @@
     "recursive": true,
     "fail-zero": true,
     "color": true,
-    "bail": true
+    "bail": false
 }

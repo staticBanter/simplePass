@@ -1,6 +1,6 @@
 @use "sass:math";
 
-@import "../../node_modules/normalize.css/normalize";
+@import "../../../node_modules/normalize.css/normalize.css";
 
 $padding: 1rem;
 $padding-small: math.div($padding, 2);
@@ -49,6 +49,10 @@ html > body > {
 
 main {
     padding-bottom: 1rem;
+}
+
+footer{
+    padding: 0 $padding-small;
 }
 
 form {

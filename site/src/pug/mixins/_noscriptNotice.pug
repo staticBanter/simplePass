@@ -1,0 +1,16 @@
+mixin noscriptNotice(short)
+    if !short
+
+        noscript
+            p
+                strong Notice!
+            |   JavaScript is disabled!
+    else
+        noscript
+            p
+                strong Notice!
+                | This site requires JavaScript to be enabled in order to function.
+                | If you do not have JavaScript enabled you may experience a degraded version of this website or may not
+                | be able to use this website entirely.
+                | We strongly recommend you enable JavaScript and restart your browser before continuing to use this
+                | website.

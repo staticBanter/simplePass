@@ -342,12 +342,27 @@ export default function validateModifier (
         };
     }
 
-    if(modifierCount > modifier.length) {
+    if(modifier.customRepeatingCharacters){
 
-        throw {
-            errorKey: 'toManyAttributes',
-            replacements: ['vM', '3', `${modifier.length}`, `${modifierCount}`]
-        };
+        if((modifierCount-1) > modifier.length) {
+
+            throw {
+                errorKey: 'toManyAttributes',
+                replacements: ['vM', '3', `${modifier.length}`, `${modifierCount}`]
+            };
+
+        }
+
+    }else{
+
+        if(modifierCount > modifier.length) {
+
+            throw {
+                errorKey: 'toManyAttributes',
+                replacements: ['vM', '3', `${modifier.length}`, `${modifierCount}`]
+            };
+
+        }
 
     }
 

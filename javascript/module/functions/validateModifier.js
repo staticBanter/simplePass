@@ -264,11 +264,21 @@ export default function validateModifier(modifier) {
             replacements: ['vM', '7', Object.keys(characterCodeConstraints).toString()]
         };
     }
-    if (modifierCount > modifier.length) {
-        throw {
-            errorKey: 'toManyAttributes',
-            replacements: ['vM', '3', `${modifier.length}`, `${modifierCount}`]
-        };
+    if (modifier.customRepeatingCharacters) {
+        if ((modifierCount - 1) > modifier.length) {
+            throw {
+                errorKey: 'toManyAttributes',
+                replacements: ['vM', '3', `${modifier.length}`, `${modifierCount}`]
+            };
+        }
+    }
+    else {
+        if (modifierCount > modifier.length) {
+            throw {
+                errorKey: 'toManyAttributes',
+                replacements: ['vM', '3', `${modifier.length}`, `${modifierCount}`]
+            };
+        }
     }
     return true;
 }

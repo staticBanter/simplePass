@@ -1,0 +1,11 @@
+mixin infoButton(toggleTarget,ariaControl)
+    button(
+        type="button"
+        class="toggle"
+        data-toggle-target=toggleTarget
+        data-toggle="hidden"
+        data-load-toggle="true"
+        aria-expanded="true"
+        aria-controls=ariaControl
+        aria-label="Show or hide extra information about the application."
+    ) ?
